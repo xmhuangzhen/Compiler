@@ -23,6 +23,78 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarDef(MxStarParser.VarDefContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxStarParser#singlevarDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSinglevarDef(MxStarParser.SinglevarDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#classDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassDef(MxStarParser.ClassDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#funcDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncDef(MxStarParser.FuncDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#funcType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncType(MxStarParser.FuncTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxStarParser#parDefList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParDefList(MxStarParser.ParDefListContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arrayType}
+	 * labeled alternative in {@link MxStarParser#typedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayType(MxStarParser.ArrayTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code narrayType}
+	 * labeled alternative in {@link MxStarParser#typedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNarrayType(MxStarParser.NarrayTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code narrayTypeInt}
+	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNarrayTypeInt(MxStarParser.NarrayTypeIntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code narrayTypeBool}
+	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNarrayTypeBool(MxStarParser.NarrayTypeBoolContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code narrayTypeString}
+	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNarrayTypeString(MxStarParser.NarrayTypeStringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code narrayTypeIdentifier}
+	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNarrayTypeIdentifier(MxStarParser.NarrayTypeIdentifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxStarParser#suite}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -49,6 +121,13 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIfStmt(MxStarParser.IfStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code forStmt}
+	 * labeled alternative in {@link MxStarParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStmt(MxStarParser.ForStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code whileStmt}
 	 * labeled alternative in {@link MxStarParser#statement}.
@@ -92,6 +171,20 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEmptyStmt(MxStarParser.EmptyStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code newExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewExpr(MxStarParser.NewExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThisExpr(MxStarParser.ThisExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code unaryExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
@@ -99,12 +192,26 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnaryExpr(MxStarParser.UnaryExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code funccal}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunccal(MxStarParser.FunccalContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code selfExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSelfExpr(MxStarParser.SelfExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code memberAcc}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMemberAcc(MxStarParser.MemberAccContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code atomExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
@@ -119,6 +226,13 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBinaryExpr(MxStarParser.BinaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arraydef}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArraydef(MxStarParser.ArraydefContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code assignExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
@@ -138,4 +252,25 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLiteral(MxStarParser.LiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code nonarraynewtype}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newtypeobject}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewtypeobject(MxStarParser.NewtypeobjectContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newtypearray}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewtypearray(MxStarParser.NewtypearrayContext ctx);
 }
