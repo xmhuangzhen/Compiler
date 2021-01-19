@@ -1,10 +1,11 @@
 import AST.RootNode;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
-import Parser.YxLexer;
-import Parser.YxParser;
+import Parser.MxStarLexer;
+import Parser.MxStarParser;
 import Util.YxErrorListener;
 import Util.error.error;
+import Util.globalScope;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -22,14 +23,16 @@ public class Main {
         try {
             RootNode ASTRoot;
 
-            YxLexer lexer = new YxLexer(CharStreams.fromStream(input));
+            globalScope gScope = new globalScope(null);
+
+            MxStarLexer lexer = new MxStarLexer(CharStreams.fromStream(input));
             lexer.removeErrorListeners();
             lexer.addErrorListener(new YxErrorListener());
-            YxParser parser = new YxParser(new CommonTokenStream(lexer));
+            MxStarParser parser = new MxStarParser(new CommonTokenStream(lexer));
             parser.removeErrorListeners();
             parser.addErrorListener(new YxErrorListener());
             ParseTree parseTreeRoot = parser.program();
-            ASTBuilder astBuilder = new ASTBuilder();
+            ASTBuilder astBuilder = new ASTBuilder(gScope);
             ASTRoot = (RootNode)astBuilder.visit(parseTreeRoot);
             new SemanticChecker().visit(ASTRoot);
         } catch (error er) {

@@ -2,14 +2,14 @@ package AST;
 
 import Util.position;
 
-public class varDefStmtNode extends StmtNode {
-    public String name;
-    public ExprNode init;
+import java.util.ArrayList;
 
-    public varDefStmtNode(String name, ExprNode init, position pos) {
+public class varDefStmtNode extends StmtNode {
+    public ArrayList<singlevarDefStmtNode> stmts;
+
+    public varDefStmtNode(position pos) {
         super(pos);
-        this.name = name;
-        this.init = init;
+        this.stmts = new ArrayList<>();
     }
 
     @Override

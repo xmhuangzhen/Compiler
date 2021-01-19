@@ -2,33 +2,60 @@ package Frontend;
 
 import AST.*;
 import Util.Scope;
+import Util.globalScope;
+import Util.Type;
 import Util.error.semanticError;
 
 public class SemanticChecker implements ASTVisitor {
-    Scope currentScope;
-
+    private Scope currentScope;
+    private globalScope gScope;
+    private Type currentClassType, currentFuncType;
+/*
     @Override
     public void visit(RootNode it) {
         currentScope = new Scope(null);
         for (StmtNode stmt : it.stmts) stmt.accept(this);
     }
-
+*/
     @Override
     public void visit(varDefStmtNode it) {
-        if (it.init != null) {
-            it.init.accept(this);
-            if (!it.init.type.isInt)
-                throw new semanticError("Semantic Error: type not match. It should be int",
-                                        it.init.pos);
+        if (!it.stmts.isEmpty()) {
+            for (singlevarDefStmtNode stmt : it.stmts) stmt.accept(this);
         }
-        currentScope.defineVariable(it.name, it.pos);
     }
 
     @Override
-    public void visit(returnStmtNode it) {
+    public void visit(singlevarDefStmtNode it) {
+        if (it.init != null) {
+            it.init.accept(this);
+            if(!gScope.checkName(it.name))
+                throw new semanticError("Semantic Error: type not match.",
+                        it.init.pos);
+        }
+        currentScope.defineVariable(it.name, it.type, it.pos);
+    }
+
+    @Override
+    public void visit(classDefNode it){
+        currentClassType = gScope.getTypeFromName(it.name, it.pos);
+        for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
+        for(funcDefNode funcnode : it.funcDefs) funcnode.accept(this);
+        currentClassType = null;
+    }
+
+    @Override
+    public void visit(funcDefNode it){
+        currentFuncType = gScope.getTypeFromName(it.name,it.pos);
+        for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
+        for()
+        currentFuncType = null;
+    }
+
+    @Override
+    public void visit(returnStmtNode it) {/////////////////////////////////////////////////////
         if (it.value != null) {
             it.value.accept(this);
-            if (!it.value.type.isInt)
+            if (!it.value.type.isInt)//////////////////////////////////////////////////////////////
                 throw new semanticError("Semantic Error: type not match. It should be int",
                         it.value.pos);
         }

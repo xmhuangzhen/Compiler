@@ -1,6 +1,6 @@
 grammar MxStar;
 
-program: (varDef | classDef | funcDef)* suite EOF;
+program: (varDef | classDef | funcDef)* EOF;
 
 varDef : singlevarDef (',' singlevarDef)* ';';
 
@@ -12,7 +12,7 @@ funcDef : funcType Identifier '(' parDefList? ')' suite ;
 
 funcType: Void | typedef ;
 
-parDefList : typedef Identifier(',' typedef Identifier)* ;
+parDefList : singlevarDef (',' singlevarDef)* ;
 
 typedef
     : typedef '['']'      #arrayType
@@ -45,16 +45,15 @@ statement
 
 expression
     : primary                                               #atomExpr
-    | expression op=('+' | '-') expression                  #binaryExpr
     | expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) expression               #binaryExpr
     | expression op=('*' | '/' | '%') expression            #binaryExpr
+    | expression op=('+' | '-') expression                  #binaryExpr
     | expression op=('<<' | '>>') expression                  #binaryExpr
     | expression op='&&' expression                #binaryExpr
     | expression op='||' expression                #binaryExpr
     | expression op='&' expression                #binaryExpr
     | expression op='|' expression                #binaryExpr
     | expression op='^' expression                #binaryExpr
-
     | <assoc=right> expression '=' expression               #assignExpr
     | expression op=('++' | '--')                           #selfExpr
     | <assoc=right> op=('++' | '--') expression             #unaryExpr
