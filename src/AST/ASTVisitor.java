@@ -7,6 +7,7 @@ public interface ASTVisitor {
     void visit(singlevarDefStmtNode it);
     void visit(classDefNode it);
     void visit(funcDefNode it);
+    void visit(FuncTypeNode it);
 
     void visit(returnStmtNode it);
     void visit(blockStmtNode it);

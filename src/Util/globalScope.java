@@ -5,10 +5,15 @@ import Util.error.semanticError;
 import java.util.HashMap;
 
 public class globalScope extends Scope {
-    private HashMap<String, Type> types = new HashMap<>();
+    private HashMap<String, Type> types;
 
     public globalScope(Scope parentScope) {
         super(parentScope);
+
+        types = new HashMap<>();
+
+        //int bool void string null
+
     }
 
     public void addType(String name, Type t, position pos) {

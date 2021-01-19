@@ -1,22 +1,26 @@
 package Frontend;
 
 import AST.*;
-import Util.Scope;
-import Util.globalScope;
-import Util.Type;
+import Util.*;
 import Util.error.semanticError;
 
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
     private globalScope gScope;
-    private Type currentClassType, currentFuncType;
-/*
+    private ClassType currentClassType;
+    private FuncType currentFuncType;
+
     @Override
     public void visit(RootNode it) {
-        currentScope = new Scope(null);
+        //create global scope
+        gScope = new globalScope(null);
+        currentScope = gScope;
+
         for (StmtNode stmt : it.stmts) stmt.accept(this);
+
+        // check int main()
     }
-*/
+
     @Override
     public void visit(varDefStmtNode it) {
         if (!it.stmts.isEmpty()) {
@@ -37,10 +41,16 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(classDefNode it){
+
         currentClassType = gScope.getTypeFromName(it.name, it.pos);
         for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
         for(funcDefNode funcnode : it.funcDefs) funcnode.accept(this);
         currentClassType = null;
+    }
+
+    @Override
+    public void visit(FuncTypeNode it){
+        currentFuncType = gScope.getTypeFromName(it.name, it.pos);
     }
 
     @Override

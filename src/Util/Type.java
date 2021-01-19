@@ -1,11 +1,25 @@
 package Util;
 
-import java.util.HashMap;
+abstract public class Type {
+    //int bool string null void class
 
-public class Type {
-    //int bool string null void true false if else for while break continue return new class this
+    private String name;
+    private long size;
 
-    public boolean isInt = false, isBool = false, isString = false;
-    public HashMap<String, Type> members;
+    public Type(String name, long size){
+        this.name = name;
+        this.size = size;
+    }
 
+    public String getName(){
+        return name;
+    }
+
+    public long getSize(){
+        return size;
+    }
+
+    @Override public String toString(){
+        return name;
+    }
 }

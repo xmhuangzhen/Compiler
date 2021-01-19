@@ -4,14 +4,14 @@ import AST.ASTNode;
 import Parser.MxStarBaseVisitor;
 import Parser.MxStarParser;
 import AST.*;
-import Util.Scope;
-import Util.position;
-import Util.globalScope;
+import Util.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     private globalScope gScope;
     private Scope currentScope;
+
+
     public ASTBuilder(globalScope gScope) {
         this.gScope = gScope;
     }
@@ -20,7 +20,9 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitProgram(MxStarParser.ProgramContext ctx) {
         RootNode root = new RootNode(new position(ctx));
-        ctx.classDef().forEach(cd -> root.strDefs.add((structDefNode) visit(cd)));
+        ctx.classDef().forEach(cd -> root.classDefs.add(( classDefNode)  visit(cd)));
+        ctx.funcDef().forEach(cd -> root.funcDefs.add((funcDefNode) visit(cd)));
+        ctx.varDef().forEach(cd -> root.varDefs.add((varDefStmtNode) visit(cd)));
         return root;
     }
 
@@ -58,6 +60,8 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     public ASTNode visitFuncDef(MxStarParser.FuncDefContext ctx) {
         currentScope = new Scope(currentScope);
         String name = ctx.Identifier().toString();
+
+        FuncTypeNode type = (FuncTypeNode) visit(ctx.funcType());
         funcDefNode node = new funcDefNode(name, gScope.getTypeFromName(name, new position(ctx)), new position(ctx));
         if(!ctx.parDefList().singlevarDef().isEmpty()){
             for(ParserRuleContext par : ctx.parDefList().singlevarDef()){
@@ -70,8 +74,9 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFuncType(MxStarParser.FuncTypeContext ctx) {
+        String name = ctx.typedef().toString();
 
-        return super.visitFuncType(ctx);
+        return new FuncTypeNode(name, new position(ctx));
     }
 
     @Override
