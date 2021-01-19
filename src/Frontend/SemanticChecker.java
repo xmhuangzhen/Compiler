@@ -12,11 +12,37 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(RootNode it) {
-        //create global scope
+        //(1) create global scope
         gScope = new globalScope(null);
         currentScope = gScope;
 
-        for (StmtNode stmt : it.stmts) stmt.accept(this);
+        //(2) class
+        for(classDefNode tmpNode : it.classDefs){
+            tmpNode.accept(this);
+            if(gScope.checkName(tmpNode.className)){
+                throw new semanticError("The class name is existed.", tmpNode.pos);
+            }
+
+            TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
+            Type tmpType = new ClassType(tmpNode.className);
+
+            if(gScope.types.containsKey(tmpTypeNode)){
+                throw new semanticError("The TypeNode exists.", tmpNode.pos);
+            }
+
+            gScope.types.put(tmpTypeNode,tmpType);
+        }
+
+        //(3) function
+        for(funcDefNode tmpNode : it.funcDefs){
+            tmpNode.accept(this);
+
+            funcDefNode tmpfuncDefNode = new funcDefNode(tmpNode.funcName,tmpNode.funcType, tmpNode.pos);
+            if(gScope.func.containsValue(tmpNode.funcName)){
+                throw new semanticError("The function's name exists.", tmpNode.pos);
+            }
+            gScope.func.put(tmpfuncDefNode,tmpNode.funcName);
+        }
 
         // check int main()
     }

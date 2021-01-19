@@ -10,12 +10,12 @@ public class funcDefNode extends StmtNode {
     public ArrayList<varDefStmtNode> varDefs;
     public HashMap<String, Type> parDefs;
     public ArrayList<StmtNode> stmts;
-    public String name;
-    public Type funcType;
+    public String funcName;
+    public TypeNode funcType;
 
-    public funcDefNode(String name, Type funcType, position pos) {
+    public funcDefNode(String name, TypeNode funcType, position pos) {
         super(pos);
-        this.name = name;
+        this.funcName = name;
         this.funcType = funcType;
         this.varDefs = new ArrayList<>();
         this.parDefs = new HashMap<>();

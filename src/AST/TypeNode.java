@@ -2,8 +2,11 @@ package AST;
 
 import Util.position;
 
-public abstract class TypeNode extends ASTNode {
-    public TypeNode(position pos) {
+abstract public class TypeNode extends ASTNode {
+    String name;
+    public TypeNode(String name, position pos) {
         super(pos);
+        this.name = name;
     }
+
 }
