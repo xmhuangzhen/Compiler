@@ -1,4 +1,4 @@
-package Frontend;
+/*package Frontend;
 
 import AST.*;
 import Util.Type;
@@ -16,12 +16,12 @@ public class SymbolCollector implements ASTVisitor {
         it.strDefs.forEach(sd -> sd.accept(this));
     }
 
-/*    @Override public void visit(structDefNode it) {
+    @Override public void visit(structDefNode it) {
         Type struct = new Type();
         struct.members = new HashMap<>();
         it.varDefs.forEach(vd -> vd.accept(this));
         gScope.addType(it.name, struct, it.pos);
-    }*/
+    }
     @Override public void visit(FnRootNode it) {}
     @Override public void visit(varDefStmtNode it) {}
     @Override public void visit(returnStmtNode it) {}
@@ -33,4 +33,4 @@ public class SymbolCollector implements ASTVisitor {
     @Override public void visit(constExprNode it) {}
     @Override public void visit(cmpExprNode it) {}
     @Override public void visit(varExprNode it) {}
-}
+}*/

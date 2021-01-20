@@ -2,16 +2,12 @@ package Frontend;
 
 import AST.*;
 import Util.*;
-import Util.error.semanticError;
+import Util.error.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
     private globalScope gScope;
-    private String currentClassType;
-    private String currentFuncType;
 
     @Override
     public void visit(RootNode it) {
@@ -85,12 +81,16 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(singlevarDefStmtNode it) {
         if (it.varexpr != null)
             it.varexpr.accept(this);
+        if (!gScope.checkVarType(it.typeNode.getTypeName())){
+            throw new semanticError("The var type doesn't exist", it.pos);
+        }
         currentScope.defineVariable(it.varname, it.typeNode, it.pos);
     }
 
     @Override
     public void visit(classDefNode it){
         it.classDefScope = new classScope(gScope, it.className);
+        currentScope = it.classDefScope;
 
         //(1) functions
         for(funcDefNode tmpNode : it.funcDefs){
@@ -140,28 +140,72 @@ public class SemanticChecker implements ASTVisitor {
             throw new semanticError("The construction function should not have par.", it.pos);
         }
 
+        currentScope = gScope;
     }
 
     @Override
     public void visit(FuncTypeNode it){
-        currentFuncType = gScope.getTypeFromName(it.name, it.pos);
+        if(!gScope.checkVarType(it.getTypeName())){
+            throw new semanticError("The function doesn't have correct type name", it.pos);
+        }
     }
 
     @Override
     public void visit(funcDefNode it){
-        currentFuncType = gScope.getTypeFromName(it.name,it.pos);
-        for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
-        for();
-        currentFuncType = null;
+        it.funcScope = new Scope(currentScope);
+        it.funcScope.inFunc = true;
+        it.funcScope.FuncReturnType = it.funcType;
+        currentScope = it.funcScope;
+        it.funcType.accept(this);
+
+        //////////////////////////////////////////////////
+        for(singlevarDefStmtNode parNode : it.parDefs){
+            parNode.accept(this);
+            if(!gScope.checkVarType(parNode.typeNode.getTypeName())){
+                throw new semanticError("The variable's type doesn't exists.", parNode.pos);
+            }
+            it.parDefs.add(parNode);
+            it.funcScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
+        }
+
+        for(StmtNode stmt : it.stmts){
+            stmt.accept(this);
+            it.stmts.add(stmt);
+        }
+
+        currentScope = currentScope.parentScope();
     }
 
     @Override
-    public void visit(returnStmtNode it) {/////////////////////////////////////////////////////
+    public void visit(ArrayTypeNode it){
+        it.baseType.accept(this);
+        if(!gScope.checkVarType(it.baseType.getTypeName())){///////////////////
+            throw new semanticError("The ArrayTypeNode's type doesn't exist.",it.pos);
+        }
+    }
+
+    @Override
+    public void visit(NonArrayTypeNode it){
+        if(!gScope.checkVarType(it.getTypeName())){
+            throw new semanticError("The NonarrayTypeNode's type doesn't exist.", it.pos);
+        }
+    }
+
+
+    @Override
+    public void visit(returnStmtNode it) {
+        if(!currentScope.inFunc){
+            throw new semanticError("return is wrong. it doesn't in function scope", it.pos);
+        }
+
         if (it.value != null) {
             it.value.accept(this);
-            if (!it.value.type.isInt)//////////////////////////////////////////////////////////////
-                throw new semanticError("Semantic Error: type not match. It should be int",
-                        it.value.pos);
+            if (!it.value.ExprType.equals(currentScope.FuncReturnType.getTypeName()))
+                throw new semanticError("Semantic Error: return type not match.", it.value.pos);
+        } else{
+            if(!currentScope.FuncReturnType.getTypeName().equals("void")){
+                throw new semanticError("There should be a return value.", it.pos);
+            }
         }
     }
 
@@ -182,12 +226,75 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(ifStmtNode it) {
         it.condition.accept(this);
-        if (!it.condition.type.isBool)
+        if (!it.condition.ExprType.equals("bool"))
             throw new semanticError("Semantic Error: type not match. It should be bool",
                     it.condition.pos);
+
+        currentScope = new Scope(currentScope);
         it.thenStmt.accept(this);
-        if (it.elseStmt != null) it.elseStmt.accept(this);
+        currentScope = currentScope.parentScope();
+
+        if (it.elseStmt != null) {
+            currentScope = new Scope(currentScope);
+            it.elseStmt.accept(this);
+            currentScope = currentScope.parentScope();
+        }
     }
+
+    @Override
+    public void visit(ForStmtNode it){
+        if(it.initExpr != null){
+            it.initExpr.accept(this);
+        }
+
+        if(it.condExpr != null){
+            it.condExpr.accept(this);
+            if (!it.condExpr.ExprType.equals("bool"))
+                throw new semanticError("Semantic Error: type not match. It should be bool",
+                        it.condExpr.pos);
+        }
+
+        if(it.stepExpr != null){
+            it.stepExpr.accept(this);
+        }
+
+        if (it.stmt != null) {
+            currentScope = new Scope(currentScope);
+            currentScope.inLoop = true;
+            it.stmt.accept(this);
+            currentScope = currentScope.parentScope();
+        }
+    }
+
+    @Override
+    public void visit(WhileStmtNode it){
+        it.condExpr.accept(this);
+        if (!it.condExpr.ExprType.equals("bool"))
+            throw new semanticError("Semantic Error: type not match. It should be bool",
+                    it.condExpr.pos);
+
+        if (it.stmt != null) {
+            currentScope = new Scope(currentScope);
+            currentScope.inLoop = true;
+            it.stmt.accept(this);
+            currentScope = currentScope.parentScope();
+        }
+    }
+
+    @Override
+    public void visit(continueStmtNode it){
+        if(!currentScope.inLoop){
+            throw new semanticError("continue failed", it.pos);
+        }
+    }
+
+    @Override
+    public void visit(breakStmtNode it){
+        if(!currentScope.inLoop){
+            throw new semanticError("continue failed", it.pos);
+        }
+    }
+
 
     @Override
     public void visit(assignExprNode it) {

@@ -1,13 +1,13 @@
 package AST;
 
-import Util.Type;
 import Util.position;
 
 public abstract class ExprNode extends ASTNode {
-    public Type type;
+    public String ExprType;
 
-    public ExprNode(position pos) {
+    public ExprNode(String exprTypeName, position pos) {
         super(pos);
+        this.ExprType = exprTypeName;
     }
 
     public boolean isAssignable() {

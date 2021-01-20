@@ -7,10 +7,11 @@ public class singlevarDefStmtNode extends StmtNode {
     public ExprNode varexpr;
     public TypeNode typeNode;
 
-    public singlevarDefStmtNode(String name, ExprNode init, position pos) {
+    public singlevarDefStmtNode(String name, ExprNode init, TypeNode typeNode, position pos) {
         super(pos);
         this.varname = name;
         this.varexpr = init;
+        this.typeNode = typeNode;
     }
 
     @Override

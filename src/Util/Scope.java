@@ -12,11 +12,14 @@ public class Scope {
     private Map<String, TypeNode> members;// varname Typenode
     public Map<String, funcDefNode> funcs;// funcname, funcdefnode
     private Scope parentScope;
-
+    public boolean inFunc, inLoop;
+    public TypeNode FuncReturnType;
 
     public Scope(Scope parentScope) {
-        members = new HashMap<>();
+        this.members = new HashMap<>();
         this.parentScope = parentScope;
+        this.inFunc = false;
+        this.inLoop = false;
     }
 
     public Scope parentScope() {

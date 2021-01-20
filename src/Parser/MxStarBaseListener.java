@@ -148,49 +148,13 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNarrayTypeInt(MxStarParser.NarrayTypeIntContext ctx) { }
+	@Override public void enterNonarraytypedef(MxStarParser.NonarraytypedefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNarrayTypeInt(MxStarParser.NarrayTypeIntContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNarrayTypeBool(MxStarParser.NarrayTypeBoolContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNarrayTypeBool(MxStarParser.NarrayTypeBoolContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNarrayTypeString(MxStarParser.NarrayTypeStringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNarrayTypeString(MxStarParser.NarrayTypeStringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNarrayTypeIdentifier(MxStarParser.NarrayTypeIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNarrayTypeIdentifier(MxStarParser.NarrayTypeIdentifierContext ctx) { }
+	@Override public void exitNonarraytypedef(MxStarParser.NonarraytypedefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

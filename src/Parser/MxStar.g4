@@ -20,14 +20,14 @@ parVarDef : typedef Identifier ;
 
 typedef
     : typedef '['']'      #arrayType
-    | nonarraytypedef   #narrayType
+    | nonarraytypedef     #narrayType
 ;
 
 nonarraytypedef :
-    Int                 #narrayTypeInt
-    | Bool              #narrayTypeBool
-    | String            #narrayTypeString
-    | Identifier        #narrayTypeIdentifier
+    Int
+    | Bool
+    | String
+    | Identifier
 ;
 
 suite : '{' statement* '}';

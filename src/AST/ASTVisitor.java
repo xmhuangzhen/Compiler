@@ -20,6 +20,10 @@ public interface ASTVisitor {
     void visit(blockStmtNode it);
     void visit(exprStmtNode it);
     void visit(ifStmtNode it);
+    void visit(ForStmtNode it);
+    void visit(WhileStmtNode it);
+    void visit(continueStmtNode it);
+    void visit(breakStmtNode it);
 
     void visit(assignExprNode it);
     void visit(binaryExprNode it);

@@ -79,33 +79,11 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNarrayType(MxStarParser.NarrayTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code narrayTypeInt}
-	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
+	 * Visit a parse tree produced by {@link MxStarParser#nonarraytypedef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNarrayTypeInt(MxStarParser.NarrayTypeIntContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code narrayTypeBool}
-	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNarrayTypeBool(MxStarParser.NarrayTypeBoolContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code narrayTypeString}
-	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNarrayTypeString(MxStarParser.NarrayTypeStringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code narrayTypeIdentifier}
-	 * labeled alternative in {@link MxStarParser#nonarraytypedef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNarrayTypeIdentifier(MxStarParser.NarrayTypeIdentifierContext ctx);
+	T visitNonarraytypedef(MxStarParser.NonarraytypedefContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#suite}.
 	 * @param ctx the parse tree

@@ -31,22 +31,22 @@ public class globalScope extends Scope {
 
         //函数：void print(string str); 作用：向标准输出流中输出字符串str。
         tmpfuncDefNode = new funcDefNode("print", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.put("str", "string");
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new NonArrayTypeNode("string",pos),pos));
         declared_func.put("print",tmpfuncDefNode);
 
         //函数：void println(string str); 作用：向标准输出流中输出字符串str，并且在行尾处输出一个换行符。
         tmpfuncDefNode = new funcDefNode("println", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.put("str","string");
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new NonArrayTypeNode("string",pos),pos));
         declared_func.put("println",tmpfuncDefNode);
 
         //函数：void printInt(int n); 作用：向标准输出流中输出数字n。
         tmpfuncDefNode = new funcDefNode("printInt", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.put("n","int");
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("n",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("printInt",tmpfuncDefNode);
 
         //函数：void printlnInt(int n); 作用：向标准输出流中输出数字n，并且在行尾处输出一个换行符。
         tmpfuncDefNode = new funcDefNode("printlnInt", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.put("n","int");
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("n",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("printlnInt",tmpfuncDefNode);
 
         //函数：string getString(); 作用：从标准输入流中读取一行并且返回。
@@ -59,7 +59,7 @@ public class globalScope extends Scope {
 
         //函数：string toString(int i); 作用：把整数i转换为字符串。
         tmpfuncDefNode = new funcDefNode("toString", new FuncTypeNode("string", pos),pos);
-        tmpfuncDefNode.parDefs.put("i","int");
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("i",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("toString",tmpfuncDefNode);
     }
 

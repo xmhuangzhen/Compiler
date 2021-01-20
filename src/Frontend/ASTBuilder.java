@@ -1,10 +1,11 @@
 package Frontend;
 
-import AST.ASTNode;
+import AST.*;
 import Parser.MxStarBaseVisitor;
 import Parser.MxStarParser;
-import AST.*;
-import Util.*;
+import Util.Scope;
+import Util.globalScope;
+import Util.position;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
@@ -43,10 +44,10 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSinglevarDef(MxStarParser.SinglevarDefContext ctx) {
-        String name = ctx.Identifier().toString();
+        String varname = ctx.Identifier().toString();
         ExprNode expr = null;
         if(ctx.expression() != null ) expr = (ExprNode) visit(ctx.expression());
-        return new singlevarDefStmtNode(name, expr, new position(ctx));
+        return new singlevarDefStmtNode(varname, expr, null, new position(ctx));
     }
 
     @Override
@@ -79,11 +80,16 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
         FuncTypeNode tmpFuncTypeNode = (FuncTypeNode) visit(ctx.funcType());
 
         funcDefNode node = new funcDefNode(FuncName, tmpFuncTypeNode, new position(ctx));
-        if(!ctx.parDefList().singlevarDef().isEmpty()){
-            for(ParserRuleContext par : ctx.parDefList().singlevarDef()){
+        if(!ctx.parDefList().parVarDef().isEmpty()){
+            for(var par : ctx.parDefList().parVarDef()){
                 singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(par);
-                if(tmp != null) node.parDefs.put(tmp.name, tmp.type);
+                if(tmp != null) node.parDefs.add(tmp);
             }
+        }
+
+        for(var stmt : ctx.suite().statement()){
+            StmtNode tmpStmtNode = (StmtNode) visit(stmt);
+            node.stmts.add(tmpStmtNode);
         }
         return node;
     }
@@ -101,44 +107,32 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitParDefList(MxStarParser.ParDefListContext ctx) {
-        return super.visitParDefList(ctx);
+        varDefStmtNode node = new varDefStmtNode(null,new position(ctx));
+        for(var tmpNode : ctx.parVarDef()){
+            singlevarDefStmtNode parNode = (singlevarDefStmtNode) visit(tmpNode);
+            node.stmts.add(parNode);
+        }
+        return node;
     }
 
     @Override
     public ASTNode visitArrayType(MxStarParser.ArrayTypeContext ctx) {
-        return super.visitArrayType(ctx);
+        TypeNode tmpNode = (TypeNode) visit(ctx.typedef());
+        ArrayTypeNode node = new ArrayTypeNode(tmpNode, new position(ctx));
+        return node;
     }
 
     @Override
     public ASTNode visitNarrayType(MxStarParser.NarrayTypeContext ctx) {
-        return super.visitNarrayType(ctx);
+        NonArrayTypeNode node = new NonArrayTypeNode(ctx.nonarraytypedef().getText(), new position(ctx));
+        return node;
     }
 
     @Override
-    public ASTNode visitNarrayTypeInt(MxStarParser.NarrayTypeIntContext ctx) {
-        return super.visitNarrayTypeInt(ctx);
-    }
-
-    @Override
-    public ASTNode visitNarrayTypeBool(MxStarParser.NarrayTypeBoolContext ctx) {
-        return super.visitNarrayTypeBool(ctx);
-    }
-
-    @Override
-    public ASTNode visitNarrayTypeString(MxStarParser.NarrayTypeStringContext ctx) {
-        return super.visitNarrayTypeString(ctx);
-    }
-
-    @Override
-    public ASTNode visitNarrayTypeIdentifier(MxStarParser.NarrayTypeIdentifierContext ctx) {
-        return super.visitNarrayTypeIdentifier(ctx);
-    }
-
-    @Override
-    public ASTNode visitSuite(MxStarParser.SuiteContext ctx) {
+    public ASTNode visitSuite(MxStarParser.SuiteContext ctx) {///////////////////
         blockStmtNode node = new blockStmtNode(new position(ctx));
         if(!ctx.statement().isEmpty()){
-            for(ParserRuleContext stmt : ctx.statement()){
+            for(var stmt : ctx.statement()){
                 StmtNode tmp = (StmtNode) visit(stmt);
                 if(tmp != null) node.stmts.add(tmp);
             }
@@ -167,12 +161,23 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitForStmt(MxStarParser.ForStmtContext ctx) {
-        return super.visitForStmt(ctx);
+        ExprNode tmpinitExpr = null;
+        if(ctx.initexp != null) tmpinitExpr = (ExprNode) visit(ctx.initexp);
+        ExprNode tmpcondExpr = null;
+        if(ctx.condexp != null) tmpcondExpr = (ExprNode) visit(ctx.condexp);
+        ExprNode tmpstepExpr = null;
+        if(ctx.stepexp != null) tmpstepExpr = (ExprNode) visit(ctx.stepexp);
+        StmtNode tmpstmt = null;
+        if(ctx.statement() != null) tmpstmt = (StmtNode) visit(ctx.statement());
+        return new ForStmtNode(tmpinitExpr, tmpcondExpr, tmpstepExpr, tmpstmt, new position(ctx));
     }
 
     @Override
     public ASTNode visitWhileStmt(MxStarParser.WhileStmtContext ctx) {
-        return super.visitWhileStmt(ctx);
+        ExprNode tmpcondExpr = (ExprNode) visit(ctx.expression());
+        StmtNode tmpstmt = null;
+        if(ctx.statement() != null) tmpstmt = (StmtNode) visit(ctx.statement());
+        return new WhileStmtNode(tmpcondExpr, tmpstmt, new position(ctx));
     }
 
     @Override
@@ -189,7 +194,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBreakStmt(MxStarParser.BreakStmtContext ctx) {
-        return super.visitBreakStmt(ctx);
+        return new breakStmtNode(new position(ctx));
     }
 
     @Override
