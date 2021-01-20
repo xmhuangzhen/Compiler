@@ -28,11 +28,14 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDef(MxStarParser.VarDefContext ctx) {
-        varDefStmtNode node = new varDefStmtNode(new position(ctx));
+        TypeNode varTypeNode = (TypeNode) visit(ctx.typedef());
+        varDefStmtNode node = new varDefStmtNode(varTypeNode, new position(ctx));
+
         if(!ctx.singlevarDef().isEmpty()) {
             for(ParserRuleContext stmt: ctx.singlevarDef()){
                 singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(stmt);
-                if(tmp != null) node.stmts.add(tmp);
+                tmp.typeNode = varTypeNode;
+                node.stmts.add(tmp);
             }
         }
         return node;
@@ -42,27 +45,40 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     public ASTNode visitSinglevarDef(MxStarParser.SinglevarDefContext ctx) {
         String name = ctx.Identifier().toString();
         ExprNode expr = null;
-        if(ctx.expression() != null )
-            expr = (ExprNode) visit(ctx.expression());
-        return new singlevarDefStmtNode(name,expr, gScope.getTypeFromName(name,new position(ctx)), new position(ctx));
+        if(ctx.expression() != null ) expr = (ExprNode) visit(ctx.expression());
+        return new singlevarDefStmtNode(name, expr, new position(ctx));
     }
 
     @Override
     public ASTNode visitClassDef(MxStarParser.ClassDefContext ctx) {
-        String name = ctx.Identifier().toString();
-        classDefNode node = new classDefNode(name, gScope.getTypeFromName(name, new position(ctx)), new position(ctx));
-        ctx.varDef().forEach(vd -> node.varDefs.add((varDefStmtNode) visit(vd)) );
-        ctx.funcDef().forEach(vd -> node.funcDefs.add((funcDefNode) visit(vd)) );
+        String className = ctx.Identifier().toString();
+        classDefNode node = new classDefNode(className, new position(ctx));
+
+        for(var vd : ctx.varDef()){
+            varDefStmtNode tmpvarDefStmtNode = (varDefStmtNode) visit(vd);
+            node.varDefs.add(tmpvarDefStmtNode);
+        }
+
+        for(var vd : ctx.funcDef()){
+            funcDefNode tmpfuncDefNode = (funcDefNode) visit(vd);
+            node.funcDefs.add(tmpfuncDefNode);
+        }
+
+        for(var vd : ctx.constructorDef()){
+            constructorDefNode tmpconsDefNode = (constructorDefNode) visit(vd);
+            node.tmpconsDefs.add(tmpconsDefNode);
+            node.consDef = tmpconsDefNode;
+        }
         return node;
     }
 
     @Override
     public ASTNode visitFuncDef(MxStarParser.FuncDefContext ctx) {
         currentScope = new Scope(currentScope);
-        String name = ctx.Identifier().toString();
+        String FuncName = ctx.Identifier().toString();
+        FuncTypeNode tmpFuncTypeNode = (FuncTypeNode) visit(ctx.funcType());
 
-        FuncTypeNode type = (FuncTypeNode) visit(ctx.funcType());
-        funcDefNode node = new funcDefNode(name, gScope.getTypeFromName(name, new position(ctx)), new position(ctx));
+        funcDefNode node = new funcDefNode(FuncName, tmpFuncTypeNode, new position(ctx));
         if(!ctx.parDefList().singlevarDef().isEmpty()){
             for(ParserRuleContext par : ctx.parDefList().singlevarDef()){
                 singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(par);
@@ -74,9 +90,13 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFuncType(MxStarParser.FuncTypeContext ctx) {
-        String name = ctx.typedef().toString();
-
-        return new FuncTypeNode(name, new position(ctx));
+        FuncTypeNode tmpNode;
+        if(ctx.typedef() != null){
+            tmpNode = (FuncTypeNode) visit(ctx.typedef());
+        } else {
+            tmpNode = new FuncTypeNode("void", new position(ctx));
+        }
+        return tmpNode;
     }
 
     @Override

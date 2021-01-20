@@ -1,18 +1,16 @@
 package AST;
 
 import Util.position;
-import Util.Type;
 
 public class singlevarDefStmtNode extends StmtNode {
-    public String name;
-    public ExprNode init;
-    public Type type;
+    public String varname;
+    public ExprNode varexpr;
+    public TypeNode typeNode;
 
-    public singlevarDefStmtNode(String name, ExprNode init, Type type, position pos) {
+    public singlevarDefStmtNode(String name, ExprNode init, position pos) {
         super(pos);
-        this.name = name;
-        this.init = init;
-        this.type = type;
+        this.varname = name;
+        this.varexpr = init;
     }
 
     @Override

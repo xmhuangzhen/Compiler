@@ -48,6 +48,16 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitClassDef(MxStarParser.ClassDefContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxStarParser#constructorDef}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstructorDef(MxStarParser.ConstructorDefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxStarParser#constructorDef}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstructorDef(MxStarParser.ConstructorDefContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxStarParser#funcDef}.
 	 * @param ctx the parse tree
 	 */
@@ -77,6 +87,16 @@ public interface MxStarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParDefList(MxStarParser.ParDefListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxStarParser#parVarDef}.
+	 * @param ctx the parse tree
+	 */
+	void enterParVarDef(MxStarParser.ParVarDefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxStarParser#parVarDef}.
+	 * @param ctx the parse tree
+	 */
+	void exitParVarDef(MxStarParser.ParVarDefContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code arrayType}
 	 * labeled alternative in {@link MxStarParser#typedef}.

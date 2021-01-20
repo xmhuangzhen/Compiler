@@ -8,15 +8,19 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class Scope {
+public class classScope extends Scope {
     private Map<String, TypeNode> members;// varname Typenode
     public Map<String, funcDefNode> funcs;// funcname, funcdefnode
     private Scope parentScope;
+    public String ClassName;
+    public constructorDefNode consDef;
 
 
-    public Scope(Scope parentScope) {
+    public classScope(Scope parentScope, String ClassName) {
+        super(parentScope);
         members = new HashMap<>();
         this.parentScope = parentScope;
+        this.ClassName = ClassName;
     }
 
     public Scope parentScope() {

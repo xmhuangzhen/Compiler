@@ -3,11 +3,11 @@ package AST;
 import Util.*;
 
 public class FuncTypeNode extends TypeNode{
-    FuncType functype;
+    String FuncTypeName;
 
-    public FuncTypeNode(String name,position pos){
-        super(name, pos);
-        this.functype = new FuncType(name);
+    public FuncTypeNode(String tmpTypeName , position pos){
+        super(tmpTypeName, 0, pos);
+        this.FuncTypeName = tmpTypeName;
     }
 
     @Override

@@ -5,7 +5,7 @@ import Util.*;
 public class NonArrayTypeNode extends TypeNode{
 
     public NonArrayTypeNode(String name, position pos){
-        super(name, pos);
+        super(name, 0, pos);
     }
 
     @Override

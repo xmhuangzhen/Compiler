@@ -3,7 +3,7 @@ import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
-import Util.YxErrorListener;
+import Util.MxStarErrorListener;
 import Util.error.error;
 import Util.globalScope;
 import org.antlr.v4.runtime.CharStreams;
@@ -17,7 +17,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        String name = "test.yx";
+        String name = "test.MxStar";
         InputStream input = new FileInputStream(name);
 
         try {
@@ -27,10 +27,10 @@ public class Main {
 
             MxStarLexer lexer = new MxStarLexer(CharStreams.fromStream(input));
             lexer.removeErrorListeners();
-            lexer.addErrorListener(new YxErrorListener());
+            lexer.addErrorListener(new MxStarErrorListener());
             MxStarParser parser = new MxStarParser(new CommonTokenStream(lexer));
             parser.removeErrorListeners();
-            parser.addErrorListener(new YxErrorListener());
+            parser.addErrorListener(new MxStarErrorListener());
             ParseTree parseTreeRoot = parser.program();
             ASTBuilder astBuilder = new ASTBuilder(gScope);
             ASTRoot = (RootNode)astBuilder.visit(parseTreeRoot);

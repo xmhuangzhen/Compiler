@@ -4,11 +4,14 @@ import AST.*;
 import Util.*;
 import Util.error.semanticError;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
     private globalScope gScope;
-    private ClassType currentClassType;
-    private FuncType currentFuncType;
+    private String currentClassType;
+    private String currentFuncType;
 
     @Override
     public void visit(RootNode it) {
@@ -19,59 +22,124 @@ public class SemanticChecker implements ASTVisitor {
         //(2) class
         for(classDefNode tmpNode : it.classDefs){
             tmpNode.accept(this);
-            if(gScope.checkName(tmpNode.className)){
+            TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
+            if(gScope.checkVarName(tmpNode.className)){
                 throw new semanticError("The class name is existed.", tmpNode.pos);
             }
-
-            TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
-            Type tmpType = new ClassType(tmpNode.className);
-
-            if(gScope.types.containsKey(tmpTypeNode)){
-                throw new semanticError("The TypeNode exists.", tmpNode.pos);
-            }
-
-            gScope.types.put(tmpTypeNode,tmpType);
+            gScope.types.put(tmpNode.className, tmpTypeNode);
         }
 
         //(3) function
         for(funcDefNode tmpNode : it.funcDefs){
             tmpNode.accept(this);
-
             funcDefNode tmpfuncDefNode = new funcDefNode(tmpNode.funcName,tmpNode.funcType, tmpNode.pos);
-            if(gScope.func.containsValue(tmpNode.funcName)){
+            if(gScope.checkFuncName(tmpNode.funcName)){
                 throw new semanticError("The function's name exists.", tmpNode.pos);
             }
-            gScope.func.put(tmpfuncDefNode,tmpNode.funcName);
+            gScope.declared_func.put(tmpNode.funcName,tmpfuncDefNode);
+        }
+
+        //(4) variables
+        for(varDefStmtNode tmpNode : it.varDefs){
+            tmpNode.accept(this);
+
+            varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode,tmpNode.pos);
+            if(gScope.checkVarNameList(tmpvarDefStmtNode) ){
+                throw new semanticError("The variable's name exists.", tmpNode.pos);
+            }
+            if(!gScope.checkVarTypeList(tmpvarDefStmtNode)){
+                throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
+            }
+            gScope.addVarList(tmpvarDefStmtNode);
         }
 
         // check int main()
+        if(!gScope.checkMainFunction()){
+            throw new semanticError("The main() function doesn't exists.",new position(0,0));
+        }
+        if(!gScope.checkMainType()){
+            throw new semanticError("The main() function doesn't have the correct type.", new position(0,0));
+        }
+        if(!gScope.checkMainPar()){
+            throw new semanticError("The main() function doesn't have the correct par.", new position(0,0));
+        }
     }
 
     @Override
     public void visit(varDefStmtNode it) {
+        //check var type
+        if(!gScope.checkVarType(it.varTypeNode.getTypeName())){
+            throw new semanticError("The var type doesn't exist.", it.pos);
+        }
+        if(it.varTypeNode.getTypeName().equals("void")){
+            throw new semanticError("The var type can not be void", it.pos);
+        }
+        it.varTypeNode.accept(this);
         if (!it.stmts.isEmpty()) {
-            for (singlevarDefStmtNode stmt : it.stmts) stmt.accept(this);
+            for (singlevarDefStmtNode stmt : it.stmts)
+                stmt.accept(this);
         }
     }
 
     @Override
     public void visit(singlevarDefStmtNode it) {
-        if (it.init != null) {
-            it.init.accept(this);
-            if(!gScope.checkName(it.name))
-                throw new semanticError("Semantic Error: type not match.",
-                        it.init.pos);
-        }
-        currentScope.defineVariable(it.name, it.type, it.pos);
+        if (it.varexpr != null)
+            it.varexpr.accept(this);
+        currentScope.defineVariable(it.varname, it.typeNode, it.pos);
     }
 
     @Override
     public void visit(classDefNode it){
+        it.classDefScope = new classScope(gScope, it.className);
 
-        currentClassType = gScope.getTypeFromName(it.name, it.pos);
-        for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
-        for(funcDefNode funcnode : it.funcDefs) funcnode.accept(this);
-        currentClassType = null;
+        //(1) functions
+        for(funcDefNode tmpNode : it.funcDefs){
+            tmpNode.accept(this);
+            funcDefNode tmpfuncDefNode = new funcDefNode(tmpNode.funcName, tmpNode.funcType, tmpNode.pos);
+            if(it.classDefScope.checkFuncName(tmpNode.funcName)){
+                throw new semanticError("The function's name exists.", tmpNode.pos);
+            }
+            if(it.className.equals(tmpNode.funcName)){
+                throw new semanticError("The constructor definition is not correct.", tmpNode.pos);
+            }
+            it.classDefScope.funcs.put(tmpNode.funcName,tmpfuncDefNode);
+        }
+
+        //(2) variables
+        for(varDefStmtNode tmpNode : it.varDefs){
+            tmpNode.accept(this);
+
+            varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode,tmpNode.pos);
+            if(gScope.checkVarNameList(tmpvarDefStmtNode) ){
+                throw new semanticError("The variable's name exists.", tmpNode.pos);
+            }
+            if(it.classDefScope.checkVarNameList(tmpvarDefStmtNode) ){
+                throw new semanticError("The variable's name exists.", tmpNode.pos);
+            }
+            if(!gScope.checkVarType(tmpvarDefStmtNode.varTypeNode.getTypeName())){
+                throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
+            }
+            it.classDefScope.addVarList(tmpvarDefStmtNode);
+        }
+
+        //(3) constructor
+        if(it.tmpconsDefs.size() > 1){
+            throw new semanticError("The class has more than one constructor.", it.pos);
+        }
+        for(constructorDefNode tmpNode : it.tmpconsDefs){
+            tmpNode.accept(this);
+
+            constructorDefNode tmpconsDefNode = new constructorDefNode(it.className, tmpNode.pos);
+            if(!tmpNode.FuncName.equals(it.className)){
+                throw new semanticError("The type of constructor function is incorrect.", tmpNode.pos);
+            }
+            it.classDefScope.consDef = tmpconsDefNode;
+        }
+
+        if(it.classDefScope.consDef.parDefs.size() != 0){
+            throw new semanticError("The construction function should not have par.", it.pos);
+        }
+
     }
 
     @Override
@@ -83,7 +151,7 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(funcDefNode it){
         currentFuncType = gScope.getTypeFromName(it.name,it.pos);
         for(varDefStmtNode varnode : it.varDefs) varnode.accept(this);
-        for()
+        for();
         currentFuncType = null;
     }
 

@@ -4,8 +4,11 @@ import Util.*;
 
 public class ClassTypeNode extends TypeNode{
 
-    public ClassTypeNode(String name, position pos){
-        super(name, pos);
+    String ClassName;
+
+    public ClassTypeNode(String TypeName, position pos){
+        super(TypeName, 0, pos);
+        ClassName = TypeName;
     }
 
     @Override

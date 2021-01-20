@@ -2,17 +2,21 @@ grammar MxStar;
 
 program: (varDef | classDef | funcDef)* EOF;
 
-varDef : singlevarDef (',' singlevarDef)* ';';
+varDef : typedef singlevarDef (',' singlevarDef)* ';';
 
-singlevarDef : typedef Identifier ('=' expression)? ;
+singlevarDef : Identifier ('=' expression)? ;
 
-classDef : Class Identifier '{' (funcDef | varDef)* '}' ';' ;
+classDef : Class Identifier '{' (funcDef | varDef | constructorDef)* '}' ';' ;
+
+constructorDef : Identifier '(' parDefList? ')' suite;
 
 funcDef : funcType Identifier '(' parDefList? ')' suite ;
 
 funcType: Void | typedef ;
 
-parDefList : singlevarDef (',' singlevarDef)* ;
+parDefList : parVarDef (',' parVarDef)* ;
+
+parVarDef : typedef Identifier ;
 
 typedef
     : typedef '['']'      #arrayType

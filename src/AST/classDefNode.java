@@ -1,20 +1,25 @@
 package AST;
 
-import Util.position;
-
+import Util.*;
 import java.util.ArrayList;
 
+
 public class classDefNode extends StmtNode {
-    public ArrayList<varDefStmtNode> varDefs;
-    public ArrayList<funcDefNode> funcDefs;
+    public ArrayList<funcDefNode> funcDefs; //funcname funcDefNode
+    public ArrayList<constructorDefNode> tmpconsDefs; //funcname funcDefNode
+    public ArrayList<varDefStmtNode> varDefs; //varname varDefStmtNode
+    public constructorDefNode consDef;
+
+    public classScope classDefScope;
 
     public String className;
 
-    public classDefNode(String name, position pos) {
+    public classDefNode(String ClassName, position pos) {
         super(pos);
-        this.className = name;
+        this.className = ClassName;
         this.varDefs = new ArrayList<>();
         this.funcDefs = new ArrayList<>();
+        this.tmpconsDefs = new ArrayList<>();
     }
 
     @Override
