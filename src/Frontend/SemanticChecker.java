@@ -167,27 +167,28 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(funcDefNode it){
-        it.funcScope = new Scope(currentScope);
-        it.funcScope.inFunc = true;
-        it.funcScope.FuncReturnType = it.funcType;
-        currentScope = it.funcScope;
+        currentScope = new Scope(currentScope);
+        currentScope.inFunc = true;
+        currentScope.FuncReturnType = it.funcType;
+
         it.funcType.accept(this);
 
         //////////////////////////////////////////////////
-        for(singlevarDefStmtNode parNode : it.parDefs){
+
+        for(var parNode : it.parDefs){
             parNode.accept(this);
             if(!gScope.checkVarType(parNode.typeNode.getTypeName())){
                 throw new semanticError("The variable's type doesn't exists.", parNode.pos);
             }
-            it.parDefs.add(parNode);
-            it.funcScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
+    //        it.parDefs.add(parNode);
+//            currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
         }
 
         for(var tmpstmt : it.stmts){
             tmpstmt.accept(this);
-            it.stmts.add(tmpstmt);
+        //    it.stmts.add(tmpstmt);
         }
-
+        it.funcScope = currentScope;
         currentScope = currentScope.parentScope();
     }
 
@@ -224,7 +225,6 @@ public class SemanticChecker implements ASTVisitor {
         if(!currentScope.inFunc){
             throw new semanticError("return is wrong. it doesn't in function scope", it.pos);
         }
-
         if (it.value != null) {
             it.value.accept(this);
             if (!it.value.ExprType.getTypeName().equals(currentScope.FuncReturnType.getTypeName()))
@@ -475,10 +475,15 @@ public class SemanticChecker implements ASTVisitor {
         String tmpIdentifier = it.Identifier;
 
         if(!currentScope.containsVariable(tmpIdentifier,true)){
-            throw new semanticError("IdExprNode's identifier doesn't exist.",it.pos);
+            String checkString;
+            checkString = "#"+tmpIdentifier+"#"+currentScope.members.containsKey("a")+"]";
+            throw new semanticError("IdExprNode's identifier doesn't exist." + checkString,it.pos);
         } else {
             it.IsLvalue = true;
-            it.ExprType = gScope.types.get(tmpIdentifier);
+            it.ExprType = currentScope.getVariableTypeNode(tmpIdentifier,true);
+            if(it.ExprType == null){
+                it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier,it.pos);
+            }
         }
     }
 

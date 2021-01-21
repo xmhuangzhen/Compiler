@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 
 public class Scope {
-    private Map<String, TypeNode> members;// varname Typenode
+    public Map<String, TypeNode> members;// varname Typenode
     public Map<String, funcDefNode> funcs;// funcname, funcdefnode
     private Scope parentScope;
     public boolean inFunc, inLoop, inClass;
@@ -30,7 +30,7 @@ public class Scope {
 
     public void defineVariable(String name, TypeNode typeNode, position pos) {
         if (members.containsKey(name))
-            throw new semanticError("Semantic Error: variable redefine", pos);
+            throw new semanticError("Semantic Error: variable redefine: "+name, pos);
         members.put(name, typeNode);
     }
 
@@ -40,6 +40,14 @@ public class Scope {
             return parentScope.containsVariable(name, true);
         else return false;
     }
+
+    public TypeNode getVariableTypeNode(String name, boolean lookUpon) {
+        if (members.containsKey(name)) return members.get(name);
+        else if (parentScope != null && lookUpon)
+            return parentScope.getVariableTypeNode(name, true);
+        else return null;
+    }
+
 
     public boolean containsFuncName(String name, boolean lookUpon) {
         if (funcs.containsKey(name)) return true;
@@ -67,12 +75,5 @@ public class Scope {
         }
     }
 
-/*
-    public String getType(String name, boolean lookUpon) {
-        if (members.containsKey(name)) return members.get(name);
-        else if (parentScope != null && lookUpon)
-            return parentScope.getType(name, true);
-        return null;
-    }
-*/
+
 }

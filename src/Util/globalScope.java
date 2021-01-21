@@ -137,7 +137,7 @@ public class globalScope extends Scope {
     }
 
     public boolean checkMainType(){
-        return declared_func.equals(new NonArrayTypeNode("int",new position(0,0)));
+        return declared_func.get("main").funcType.getTypeName().equals("int");
     }
 
     public boolean checkMainPar(){
@@ -145,8 +145,8 @@ public class globalScope extends Scope {
         return tmpNode.parDefs.size() == 0;
     }
 
-    public String getTypeFromName(String name, position pos) {
-        if (types.containsKey(name)) return types.get(name).getTypeName();
+    public TypeNode getTypeNodeFromName(String name, position pos) {
+        if (declared_var.containsKey(name)) return declared_var.get(name);
         throw new semanticError("no such type: " + name, pos);
     }
 }

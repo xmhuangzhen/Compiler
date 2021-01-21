@@ -4,6 +4,7 @@ import AST.*;
 import Parser.MxStarBaseVisitor;
 import Parser.MxStarParser;
 import Util.Scope;
+import Util.error.semanticError;
 import Util.globalScope;
 import Util.position;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -95,6 +96,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
             for(var par : ctx.parDefList().parVarDef()){
                 singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(par);
                 if(tmp != null) node.parDefs.add(tmp);
+                else throw new semanticError("par is null",new position(ctx));
             }
         }
 
@@ -102,6 +104,24 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
             StmtNode tmpStmtNode = (StmtNode) visit(stmt);
             if(tmpStmtNode != null) node.stmts.add(tmpStmtNode);
         }
+        return node;
+    }
+
+    @Override
+    public ASTNode visitNonarraytypedef(MxStarParser.NonarraytypedefContext ctx) {
+        TypeNode node;
+        if(ctx.Bool() != null) node = new NonArrayTypeNode("bool",new position(ctx));
+        else if(ctx.Int() != null) node = new NonArrayTypeNode("int",new position(ctx));
+        else if(ctx.String() != null) node = new ClassTypeNode("string",new position(ctx));
+        else node = new ClassTypeNode(ctx.Identifier().getText(),new position(ctx));
+        return node;
+    }
+
+    @Override
+    public ASTNode visitParVarDef(MxStarParser.ParVarDefContext ctx){
+        singlevarDefStmtNode node = new singlevarDefStmtNode(null,null,null,new position(ctx));
+        node.typeNode = (TypeNode) visit(ctx.typedef());
+        node.varname = ctx.Identifier().getText();
         return node;
     }
 
