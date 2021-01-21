@@ -21,10 +21,17 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitProgram(MxStarParser.ProgramContext ctx) {
         RootNode root = new RootNode(new position(ctx));
-        ctx.classDef().forEach(cd -> root.classDefs.add(( classDefNode)  visit(cd)));
-        ctx.funcDef().forEach(cd -> root.funcDefs.add((funcDefNode) visit(cd)));
-        ctx.varDef().forEach(cd -> root.varDefs.add((varDefStmtNode) visit(cd)));
+        ctx.programUnit().forEach(cd -> root.ProgramDefs.add((ProgramUnitNode) visit(cd)));
         return root;
+    }
+
+    @Override
+    public ASTNode visitProgramUnit(MxStarParser.ProgramUnitContext ctx){
+        ProgramUnitNode node;
+        if(ctx.classDef() != null) node = (classDefNode) visit(ctx.classDef());
+        else if(ctx.funcDef() != null) node = (funcDefNode) visit(ctx.funcDef());
+        else node = (varDefStmtNode) visit(ctx.varDef());
+        return node;
     }
 
     @Override
@@ -301,33 +308,53 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitAtomExpr(MxStarParser.AtomExprContext ctx) {
-        return super.visitAtomExpr(ctx);
+    public ASTNode visitSubExpr(MxStarParser.SubExprContext ctx) {
+        return visit(ctx.expression());
+    }
+
+    @Override
+    public ASTNode visitIdExpr(MxStarParser.IdExprContext ctx){
+        IdExprNode node = new IdExprNode(ctx.getText(),new position(ctx));
+        node.Identifier = ctx.Identifier().getText();
+        return node;
+    }
+
+    @Override
+    public ASTNode visitConstExpr(MxStarParser.ConstExprContext ctx){
+        return visit(ctx.literal());
     }
 
     @Override
     public ASTNode visitBinaryExpr(MxStarParser.BinaryExprContext ctx) {
-        return super.visitBinaryExpr(ctx);
-    }
-
-    @Override
-    public ASTNode visitArraydef(MxStarParser.ArraydefContext ctx) {
-        return super.visitArraydef(ctx);
+        binaryExprNode node = new binaryExprNode(ctx.getText(),ctx.op.getText(),new position(ctx));
+        node.lhs = (ExprNode) visit(ctx.exprl);
+        node.rhs = (ExprNode) visit(ctx.exprr);
+        return node;
     }
 
     @Override
     public ASTNode visitAssignExpr(MxStarParser.AssignExprContext ctx) {
-        return super.visitAssignExpr(ctx);
-    }
-
-    @Override
-    public ASTNode visitPrimary(MxStarParser.PrimaryContext ctx) {
-        return super.visitPrimary(ctx);
+        assignExprNode node = new assignExprNode(ctx.getText(),new position(ctx));
+        node.lhs = (ExprNode) visit(ctx.exprl);
+        node.rhs = (ExprNode) visit(ctx.exprr);
+        return node;
     }
 
     @Override
     public ASTNode visitLiteral(MxStarParser.LiteralContext ctx) {
-        return super.visitLiteral(ctx);
+        String value = ctx.getText();
+        constExprNode node;
+        position pos = new position(ctx);
+        if(ctx.BoolConstant() != null) node = new BoolConstExprNode(value,pos);
+        else if(ctx.StringConstant() != null) node = new StringConstExprNode(value,pos);
+        else if(ctx.DecimalInteger() != null) node = new IntConstExprNode(value,pos);
+        else node = new NullConstExprNode(value,pos);
+        return node;
+    }
+
+    @Override
+    public ASTNode visitArraydef(MxStarParser.ArraydefContext ctx){
+
     }
 
 }

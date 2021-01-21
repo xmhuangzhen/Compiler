@@ -13,8 +13,4 @@ public abstract class ExprNode extends ASTNode {
         this.ExprType = type;
         this.IsLvalue = false;
     }
-
-    public boolean isAssignable() {
-        return false;
-    }
 }

@@ -5,7 +5,7 @@ import Util.position;
 
 import java.util.ArrayList;
 
-public class funcDefNode extends StmtNode {
+public class funcDefNode extends ProgramUnitNode {
     public ArrayList<singlevarDefStmtNode> parDefs; //varname, vartype
     public ArrayList<StmtNode> stmts;
     public String funcName;

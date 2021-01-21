@@ -16,6 +16,8 @@ public class SemanticChecker implements ASTVisitor {
         currentScope = gScope;
 
         //(2) class
+//        for(ProgramUnitNode tmpNode : )
+
         for(classDefNode tmpNode : it.classDefs){
             TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
             if(gScope.checkVarName(tmpNode.className)){
@@ -393,46 +395,92 @@ public class SemanticChecker implements ASTVisitor {
             if(!tmpIdentifier.equals("size")) throw new semanticError("ArrayTypeNode doesn't have the func.",it.pos);
             it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);/////////////////////////////
         } else if(tmpTypeNode instanceof ClassTypeNode){
-
+            ClassTypeNode tmpClassTypeNode = (ClassTypeNode) tmpTypeNode;
+            classDefNode tmpclassDefNode = gScope.declared_class.get(tmpClassTypeNode.getTypeName());
+            if(tmpclassDefNode.funcDefs.contains(tmpIdentifier)){
+                it.ExprType = new FuncTypeNode(tmpIdentifier,it.pos);
+            } else if(tmpclassDefNode.varDefs.contains(tmpIdentifier)){
+                it.IsLvalue = true;
+                it.ExprType = tmpClassTypeNode;
+            } else throw new semanticError("MemacccNode has wrong in classType.",it.pos);
+        } else{
+            throw new semanticError("MemberAccNode has wrong type.",it.pos);
         }
     }
 
     @Override
-    public void visit(assignExprNode it) {
-        it.rhs.accept(this);
-        it.lhs.accept(this);
-        if (it.rhs.type != it.lhs.type)
-            throw new semanticError("Semantic Error: type not match. ", it.pos);
-        if (!it.lhs.isAssignable())
-            throw new semanticError("Semantic Error: not assignable", it.lhs.pos);
+    public void visit(IdExprNode it){
+        String tmpIdentifier = it.Identifier;
+
+        if(!currentScope.containsVariable(tmpIdentifier,true)){
+            throw new semanticError("IdExprNode's identifier doesn't exist.",it.pos);
+        } else {
+            it.IsLvalue = true;
+            it.ExprType = gScope.types.get(tmpIdentifier);
+        }
     }
 
     @Override
     public void visit(binaryExprNode it) {
         it.lhs.accept(this);
         it.rhs.accept(this);
-        if (!it.lhs.type.isInt)
-            throw new semanticError("Semantic error: type not match. It should be int",
-                    it.lhs.pos);
-        if (!it.rhs.type.isInt)
-            throw new semanticError("Semantic error: type not match. It should be int",
-                    it.rhs.pos);
+        String lhsTypeName = it.lhs.ExprType.getTypeName();
+        String rhsTypeName = it.rhs.ExprType.getTypeName();
+        if(it.op.equals("*") || it.op.equals("/") || it.op.equals("%") || it.op.equals("-")
+            || it.op.equals("<<") || it.op.equals(">>") || it.op.equals("&") || it.op.equals("|") || it.op.equals("^")){
+            //'*' | '/' | '%'    '-' '<<' '>>' '&' '|' '^'
+            if(!lhsTypeName.equals("int")) throw new semanticError("BinaryNode lhs should be int.",it.pos);
+            if(!rhsTypeName.equals("int")) throw new semanticError("BinaryNode rhs should be int.",it.pos);
+            it.ExprType = new NonArrayTypeNode("int",it.pos);
+        } else if(it.op.equals("+") || it.op.equals(">") || it.op.equals("<") || it.op.equals(">=") || it.op.equals("<=")){
+            //'+'      '>' | '<' | '>=' | '<='
+            if(!lhsTypeName.equals(rhsTypeName)) throw new semanticError("BinaryNode should be equal",it.pos);
+            if(!lhsTypeName.equals("int") && !lhsTypeName.equals("string"))
+                throw new semanticError("BinaryNode of + should be int or string",it.pos);
+            if(it.op.equals("+")) it.ExprType = it.lhs.ExprType;
+            else it.ExprType = new NonArrayTypeNode("bool",it.pos);
+        } else if(it.op.equals("==") || it.op.equals("!=")){
+            if(!lhsTypeName.equals(rhsTypeName) && !lhsTypeName.equals("null") && !rhsTypeName.equals("null"))
+                throw new semanticError("BinaryNode should be equal",it.pos);
+            it.ExprType = new NonArrayTypeNode("bool",it.pos);
+        } else if(it.op.equals("&&") || it.op.equals("||")){
+            if(!lhsTypeName.equals("bool")) throw new semanticError("BiinaryNode &&/|| lhs should be bool",it.pos);
+            if(!rhsTypeName.equals("bool")) throw new semanticError("BiinaryNode &&/|| rhs should be bool",it.pos);
+            it.ExprType = new NonArrayTypeNode("bool",it.pos);
+        }
     }
 
-    @Override
-    public void visit(constExprNode it) {}
 
     @Override
-    public void visit(cmpExprNode it) {
-        it.lhs.accept(this);
+    public void visit(assignExprNode it) {
         it.rhs.accept(this);
-        if (it.rhs.type != it.lhs.type)
-            throw new semanticError("Semantic Error: type not match. ", it.pos);
+        it.lhs.accept(this);
+        String lhsTypeName = it.lhs.ExprType.getTypeName();
+        String rhsTypeName = it.rhs.ExprType.getTypeName();
+        if(!lhsTypeName.equals(rhsTypeName) && !lhsTypeName.equals("null") && !rhsTypeName.equals("null"))
+            throw new semanticError("BinaryNode should be equal",it.pos);
+        it.ExprType = it.lhs.ExprType;
     }
 
     @Override
-    public void visit(varExprNode it) {
-        if (!currentScope.containsVariable(it.name, true))
-            throw new semanticError("Semantic Error: variable not defined. ", it.pos);
+    public void visit(BoolConstExprNode it){
+        it.ExprType = new NonArrayTypeNode("bool",it.pos);
     }
+
+    @Override
+    public void visit(IntConstExprNode it){
+        it.ExprType = new NonArrayTypeNode("int",it.pos);
+    }
+
+    @Override
+    public void visit(NullConstExprNode it){
+        it.ExprType = new NonArrayTypeNode("null",it.pos);
+    }
+
+    @Override
+    public void visit(StringConstExprNode it){
+        it.ExprType = new ClassTypeNode("string",it.pos);
+    }
+
+
 }

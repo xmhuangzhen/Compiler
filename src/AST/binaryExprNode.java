@@ -1,21 +1,14 @@
 package AST;
 
-import Util.Type;
-import Util.position;
+import Util.*;
 
 public class binaryExprNode extends ExprNode {
     public ExprNode lhs, rhs;
-    public enum binaryOpType {
-        add, sub
-    }
-    public binaryOpType opCode;
+    public String op;
 
-    public binaryExprNode(ExprNode lhs, ExprNode rhs, binaryOpType opCode, Type intType, position pos) {
-        super(pos);
-        this.lhs = lhs;
-        this.rhs = rhs;
-        this.opCode = opCode;
-        type = intType;
+    public binaryExprNode(String Text,String tmpop, position pos) {
+        super(Text,null,pos);
+        this.op = tmpop;
     }
 
     @Override

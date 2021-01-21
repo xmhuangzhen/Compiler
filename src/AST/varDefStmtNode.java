@@ -4,7 +4,7 @@ import Util.position;
 
 import java.util.ArrayList;
 
-public class varDefStmtNode extends StmtNode {
+public class varDefStmtNode extends ProgramUnitNode {
     public ArrayList<singlevarDefStmtNode> stmts;
     public TypeNode varTypeNode;
 

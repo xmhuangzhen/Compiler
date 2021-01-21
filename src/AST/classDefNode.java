@@ -4,7 +4,7 @@ import Util.*;
 import java.util.ArrayList;
 
 
-public class classDefNode extends StmtNode {
+public class classDefNode extends ProgramUnitNode {
     public ArrayList<funcDefNode> funcDefs; //funcname funcDefNode
     public ArrayList<constructorDefNode> tmpconsDefs; //funcname funcDefNode
     public ArrayList<varDefStmtNode> varDefs; //varname varDefStmtNode

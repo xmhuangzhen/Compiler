@@ -17,6 +17,12 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(MxStarParser.ProgramContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxStarParser#programUnit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProgramUnit(MxStarParser.ProgramUnitContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxStarParser#varDef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -203,19 +209,19 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMemberAcc(MxStarParser.MemberAccContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code atomExpr}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAtomExpr(MxStarParser.AtomExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code binaryExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBinaryExpr(MxStarParser.BinaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code subExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubExpr(MxStarParser.SubExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code arraydef}
 	 * labeled alternative in {@link MxStarParser#expression}.
@@ -231,17 +237,25 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignExpr(MxStarParser.AssignExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code idExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdExpr(MxStarParser.IdExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code constExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstExpr(MxStarParser.ConstExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxStarParser#exprList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExprList(MxStarParser.ExprListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxStarParser#primary}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrimary(MxStarParser.PrimaryContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#literal}.
 	 * @param ctx the parse tree

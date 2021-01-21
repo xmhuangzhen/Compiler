@@ -2,6 +2,7 @@ package AST;
 
 public interface ASTVisitor {
     void visit(RootNode it);
+    void visit(ProgranUnitNode it);
 
     void visit(varDefStmtNode it);
     void visit(singlevarDefStmtNode it);
@@ -28,12 +29,15 @@ public interface ASTVisitor {
     void visit(assignExprNode it);
     void visit(binaryExprNode it);
     void visit(constExprNode it);
-    void visit(cmpExprNode it);
-    void visit(varExprNode it);
     void visit(NewExprNode it);
     void visit(ThisExprNode it);
     void visit(UnaryExprNode it);
     void visit(FunccalExprNode it);
     void visit(SelfExprNode it);
     void visit(MemberAccExprNode it);
+    void visit(IdExprNode it);
+    void visit(BoolConstExprNode it);
+    void visit(NullConstExprNode it);
+    void visit(IntConstExprNode it);
+    void visit(StringConstExprNode it);
 }

@@ -2,10 +2,10 @@ package AST;
 
 import Util.*;
 
-public class constExprNode extends ExprNode {
-    String value;
+public class IdExprNode extends ExprNode{
+    public String Identifier;
 
-    public constExprNode(String Text, position pos) {
+    public IdExprNode (String Text,position pos){
         super(Text,null,pos);
     }
 

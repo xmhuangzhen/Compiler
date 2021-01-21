@@ -1,6 +1,8 @@
 grammar MxStar;
 
-program: (varDef | classDef | funcDef)* EOF;
+program: (programUnit)* EOF;
+
+programUnit: varDef | classDef | funcDef;
 
 varDef : typedef singlevarDef (',' singlevarDef)* ';';
 
@@ -48,17 +50,19 @@ statement
     ;
 
 expression
-    : primary                                               #atomExpr
-    | expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) expression               #binaryExpr
-    | expression op=('*' | '/' | '%') expression            #binaryExpr
-    | expression op=('+' | '-') expression                  #binaryExpr
-    | expression op=('<<' | '>>') expression                  #binaryExpr
-    | expression op='&&' expression                #binaryExpr
-    | expression op='||' expression                #binaryExpr
-    | expression op='&' expression                #binaryExpr
-    | expression op='|' expression                #binaryExpr
-    | expression op='^' expression                #binaryExpr
-    | <assoc=right> expression '=' expression               #assignExpr
+    : '('expression')'                                           #subExpr
+    | Identifier                                            #idExpr
+    | literal                                               #constExpr
+    | exprl=expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) exprr=expression               #binaryExpr
+    | exprl=expression op=('*' | '/' | '%') exprr=expression            #binaryExpr
+    | exprl=expression op=('+' | '-') exprr=expression                  #binaryExpr
+    | exprl=expression op=('<<' | '>>') exprr=expression                  #binaryExpr
+    | exprl=expression op='&&' exprr=expression                #binaryExpr
+    | exprl=expression op='||' exprr=expression                #binaryExpr
+    | exprl=expression op='&' exprr=expression                #binaryExpr
+    | exprl=expression op='|' exprr=expression                #binaryExpr
+    | exprl=expression op='^' exprr=expression                #binaryExpr
+    | <assoc=right> exprl=expression '=' exprr=expression               #assignExpr
     | expression op=('++' | '--')                           #selfExpr
     | <assoc=right> op=('++' | '--') expression             #unaryExpr
     | <assoc=right> op=('!' | '~') expression               #unaryExpr
@@ -71,12 +75,6 @@ expression
     ;
 
 exprList : expression (',' expression)* ;
-
-primary
-    : '(' expression ')'
-    | Identifier
-    | literal
-    ;
 
 literal
     : DecimalInteger
