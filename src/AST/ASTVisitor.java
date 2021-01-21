@@ -2,7 +2,7 @@ package AST;
 
 public interface ASTVisitor {
     void visit(RootNode it);
-    void visit(ProgranUnitNode it);
+    void visit(ProgramUnitNode it);
 
     void visit(varDefStmtNode it);
     void visit(singlevarDefStmtNode it);
