@@ -12,7 +12,7 @@ public class NewExprNode extends ExprNode{
     public TypeNode exprTypeNode;
 
     public NewExprNode(String tmpexprText, TypeNode tmpTypeNode, position pos){
-        super(tmpexprText, tmpTypeNode.getTypeName(), pos);
+        super(tmpexprText, tmpTypeNode, pos);
         this.exprText = tmpexprText;
         this.exprTypeNode = tmpTypeNode;
         this.IsWrong = false;

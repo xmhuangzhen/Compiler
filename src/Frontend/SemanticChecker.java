@@ -73,7 +73,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(ProgramUnitNode it) {
-        
+
     }
 
     @Override
