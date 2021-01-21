@@ -21,7 +21,10 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitProgram(MxStarParser.ProgramContext ctx) {
         RootNode root = new RootNode(new position(ctx));
-        ctx.programUnit().forEach(cd -> root.ProgramDefs.add((ProgramUnitNode) visit(cd)));
+        for(var proNode : ctx.programUnit()){
+            ProgramUnitNode tmpNode = (ProgramUnitNode) visit(proNode);
+            root.ProgramDefs.add(tmpNode);
+        }
         return root;
     }
 
@@ -84,10 +87,11 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     public ASTNode visitFuncDef(MxStarParser.FuncDefContext ctx) {
         currentScope = new Scope(currentScope);
         String FuncName = ctx.Identifier().toString();
-        FuncTypeNode tmpFuncTypeNode = (FuncTypeNode) visit(ctx.funcType());
+        TypeNode tmpFuncTypeNode = (TypeNode) visit(ctx.funcType());
 
         funcDefNode node = new funcDefNode(FuncName, tmpFuncTypeNode, new position(ctx));
-        if(!ctx.parDefList().parVarDef().isEmpty()){
+
+        if(ctx.parDefList() != null){
             for(var par : ctx.parDefList().parVarDef()){
                 singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(par);
                 if(tmp != null) node.parDefs.add(tmp);
@@ -96,16 +100,16 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
         for(var stmt : ctx.suite().statement()){
             StmtNode tmpStmtNode = (StmtNode) visit(stmt);
-            node.stmts.add(tmpStmtNode);
+            if(tmpStmtNode != null) node.stmts.add(tmpStmtNode);
         }
         return node;
     }
 
     @Override
     public ASTNode visitFuncType(MxStarParser.FuncTypeContext ctx) {
-        FuncTypeNode tmpNode;
+        TypeNode tmpNode;
         if(ctx.typedef() != null){
-            tmpNode = (FuncTypeNode) visit(ctx.typedef());
+            tmpNode = (TypeNode) visit(ctx.typedef());
         } else {
             tmpNode = new FuncTypeNode("void", new position(ctx));
         }

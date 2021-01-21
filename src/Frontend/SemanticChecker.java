@@ -41,26 +41,21 @@ public class SemanticChecker implements ASTVisitor {
             }
 
         //(4) variables
-        for(ProgramUnitNode tmpProgNode : it.ProgramDefs)
-            if(tmpProgNode instanceof varDefStmtNode){
+        for(ProgramUnitNode tmpProgNode : it.ProgramDefs) {
+            tmpProgNode.accept(this);
+            if (tmpProgNode instanceof varDefStmtNode) {
                 varDefStmtNode tmpNode = (varDefStmtNode) tmpProgNode;
-                tmpNode.accept(this);
 
-                varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode,tmpNode.pos);
-                if(gScope.checkVarNameList(tmpvarDefStmtNode) ){
+                varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode, tmpNode.pos);
+                if (gScope.checkVarNameList(tmpvarDefStmtNode)) {
                     throw new semanticError("The variable's name exists.", tmpNode.pos);
                 }
-                if(!gScope.checkVarTypeList(tmpvarDefStmtNode)){
+                if (!gScope.checkVarTypeList(tmpvarDefStmtNode)) {
                     throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
                 }
                 gScope.addVarList(tmpvarDefStmtNode);
-            } else if(tmpProgNode instanceof classDefNode){
-                classDefNode tmpNode = (classDefNode) tmpProgNode;
-                tmpNode.accept(this);
-            } else {
-                funcDefNode tmpNode = (funcDefNode) tmpProgNode;
-                tmpNode.accept(this);
             }
+        }
 
         // check int main()
         if(!gScope.checkMainFunction()){
@@ -188,9 +183,9 @@ public class SemanticChecker implements ASTVisitor {
             it.funcScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
         }
 
-        for(StmtNode stmt : it.stmts){
-            stmt.accept(this);
-            it.stmts.add(stmt);
+        for(var tmpstmt : it.stmts){
+            tmpstmt.accept(this);
+            it.stmts.add(tmpstmt);
         }
 
         currentScope = currentScope.parentScope();
@@ -232,7 +227,7 @@ public class SemanticChecker implements ASTVisitor {
 
         if (it.value != null) {
             it.value.accept(this);
-            if (!it.value.ExprType.equals(currentScope.FuncReturnType.getTypeName()))
+            if (!it.value.ExprType.getTypeName().equals(currentScope.FuncReturnType.getTypeName()))
                 throw new semanticError("Semantic Error: return type not match.", it.value.pos);
         } else{
             if(!currentScope.FuncReturnType.getTypeName().equals("void")){
@@ -555,7 +550,7 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(constExprNode it){
-        
+
     }
 
     @Override
