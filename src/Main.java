@@ -17,7 +17,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        String name = "test.MxStar";
+        String name = "System.in";
         InputStream input = new FileInputStream(name);
 
         try {
