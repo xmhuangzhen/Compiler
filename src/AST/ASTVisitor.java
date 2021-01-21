@@ -40,4 +40,5 @@ public interface ASTVisitor {
     void visit(NullConstExprNode it);
     void visit(IntConstExprNode it);
     void visit(StringConstExprNode it);
+    void visit(ArraydefExprNode it);
 }

@@ -215,7 +215,9 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(ClassTypeNode it) {
-
+        if(!gScope.checkVarType(it.getTypeName())){
+            throw new semanticError("ClassTypeNode type doesn't exist",it.pos);
+        }
     }
 
 
@@ -507,5 +509,10 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(VoidTypeNode it){
 
+    }
+
+    @Override
+    public void visit(ArraydefExprNode it){
+        
     }
 }

@@ -368,18 +368,6 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitSubExpr(MxStarParser.SubExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code arraydef}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterArraydef(MxStarParser.ArraydefContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arraydef}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitArraydef(MxStarParser.ArraydefContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code assignExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
@@ -391,6 +379,18 @@ public interface MxStarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignExpr(MxStarParser.AssignExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arraydefExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterArraydefExpr(MxStarParser.ArraydefExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arraydefExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitArraydefExpr(MxStarParser.ArraydefExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code idExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.

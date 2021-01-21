@@ -353,7 +353,8 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitArraydef(MxStarParser.ArraydefContext ctx){
+    public ASTNode visitArraydefExpr(MxStarParser.ArraydefExprContext ctx){
+
         return null;
     }
 

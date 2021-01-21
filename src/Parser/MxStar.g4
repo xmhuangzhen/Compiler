@@ -70,7 +70,7 @@ expression
     | This                                                  #thisExpr
     | <assoc=right> New  newType                        #newExpr
     | expression '.' Identifier                     #memberAcc
-    | arr=expression '[' index = expression ']'         #arraydef
+    | arr=expression '[' index = expression ']'         #arraydefExpr
     | expression '(' exprList? ')'                     #funccal
     ;
 
