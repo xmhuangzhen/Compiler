@@ -18,6 +18,7 @@ public class globalScope extends Scope {
         types = new HashMap<>();
         declared_var = new HashMap<>();
         declared_func = new HashMap<>();
+        declared_class = new HashMap<>();
         position pos = new position(0,0);
 
         //(1) put basic types -- int bool void string null
