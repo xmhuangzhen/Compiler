@@ -412,6 +412,18 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExprList(MxStarParser.ExprListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExprList(MxStarParser.ExprListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrimary(MxStarParser.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -436,13 +448,25 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx) { }
+	@Override public void enterNewtypeWrong(MxStarParser.NewtypeWrongContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx) { }
+	@Override public void exitNewtypeWrong(MxStarParser.NewtypeWrongContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNewtypearray(MxStarParser.NewtypearrayContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNewtypearray(MxStarParser.NewtypearrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -460,13 +484,13 @@ public class MxStarBaseListener implements MxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNewtypearray(MxStarParser.NewtypearrayContext ctx) { }
+	@Override public void enterNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNewtypearray(MxStarParser.NewtypearrayContext ctx) { }
+	@Override public void exitNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

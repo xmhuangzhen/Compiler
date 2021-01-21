@@ -3,11 +3,15 @@ package AST;
 import Util.position;
 
 public abstract class ExprNode extends ASTNode {
-    public String ExprType;
+    public String ExprText;
+    public TypeNode ExprType;
+    public boolean IsLvalue;
 
-    public ExprNode(String exprTypeName, position pos) {
+    public ExprNode(String text, TypeNode type, position pos) {
         super(pos);
-        this.ExprType = exprTypeName;
+        this.ExprText = text;
+        this.ExprType = type;
+        this.IsLvalue = false;
     }
 
     public boolean isAssignable() {

@@ -231,6 +231,12 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignExpr(MxStarParser.AssignExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxStarParser#exprList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprList(MxStarParser.ExprListContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxStarParser#primary}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -243,12 +249,19 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral(MxStarParser.LiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code nonarraynewtype}
+	 * Visit a parse tree produced by the {@code newtypeWrong}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx);
+	T visitNewtypeWrong(MxStarParser.NewtypeWrongContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newtypearray}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewtypearray(MxStarParser.NewtypearrayContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code newtypeobject}
 	 * labeled alternative in {@link MxStarParser#newType}.
@@ -257,10 +270,10 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNewtypeobject(MxStarParser.NewtypeobjectContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code newtypearray}
+	 * Visit a parse tree produced by the {@code newtypenonarray}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNewtypearray(MxStarParser.NewtypearrayContext ctx);
+	T visitNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx);
 }

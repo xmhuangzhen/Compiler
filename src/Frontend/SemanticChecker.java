@@ -17,7 +17,6 @@ public class SemanticChecker implements ASTVisitor {
 
         //(2) class
         for(classDefNode tmpNode : it.classDefs){
-            tmpNode.accept(this);
             TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
             if(gScope.checkVarName(tmpNode.className)){
                 throw new semanticError("The class name is existed.", tmpNode.pos);
@@ -27,12 +26,19 @@ public class SemanticChecker implements ASTVisitor {
 
         //(3) function
         for(funcDefNode tmpNode : it.funcDefs){
-            tmpNode.accept(this);
             funcDefNode tmpfuncDefNode = new funcDefNode(tmpNode.funcName,tmpNode.funcType, tmpNode.pos);
             if(gScope.checkFuncName(tmpNode.funcName)){
                 throw new semanticError("The function's name exists.", tmpNode.pos);
             }
             gScope.declared_func.put(tmpNode.funcName,tmpfuncDefNode);
+        }
+
+        for(classDefNode tmpNode : it.classDefs) {
+            tmpNode.accept(this);
+        }
+
+        for(funcDefNode tmpNode : it.funcDefs) {
+            tmpNode.accept(this);
         }
 
         //(4) variables
@@ -90,6 +96,8 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(classDefNode it){
         it.classDefScope = new classScope(gScope, it.className);
+        it.classDefScope.inClass = true;
+        it.classDefScope.ClassType = new ClassTypeNode(it.className,it.pos);
         currentScope = it.classDefScope;
 
         //(1) functions
@@ -295,6 +303,99 @@ public class SemanticChecker implements ASTVisitor {
         }
     }
 
+    @Override
+    public void visit(NewExprNode it){
+        if(it.IsWrong){
+            throw new semanticError("new type is wrong.",it.pos);
+        }
+
+        it.exprTypeNode.accept(this);
+
+        if(it.exprTypeNode.getTypeName().equals("void")){
+            throw new semanticError("expr type cannot be void", it.pos);
+        }
+
+        if(it.dim == 0){
+            TypeNode tmpTypeNode = it.exprTypeNode;
+            if(tmpTypeNode.getTypeName().equals("int") || tmpTypeNode.getTypeName().equals("bool")
+                    || tmpTypeNode.getTypeName().equals("string")){
+                throw new semanticError("expr type cannot be int/bool/string", it.pos);
+            }
+            it.IsLvalue = true;
+            it.ExprType = tmpTypeNode;
+        } else {
+            TypeNode tmpTypeNode = it.exprTypeNode;
+            for(ExprNode tmpNode : it.exprDim){
+                tmpNode.accept(this);
+                if(!tmpNode.ExprType.equals("int")){
+                    throw new semanticError("expr in new array type can only be int", it.pos);
+                }
+            }
+            it.IsLvalue = true;
+            it.ExprType = tmpTypeNode;
+        }
+    }
+
+    @Override
+    public void visit(ThisExprNode it){
+        if(currentScope.inClass && currentScope.inFunc){
+            it.IsLvalue = true;
+            it.ExprType = currentScope.ClassType ;
+        } else {
+            throw new semanticError("this miss", it.pos);
+        }
+    }
+
+    @Override
+    public void visit(UnaryExprNode it){
+        it.expr.accept(this);
+        if(it.op.equals("++") || it.op.equals("--")){
+            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.IsLvalue) throw new semanticError("++/-- is not lvalue.", it.pos);
+            it.IsLvalue = true;
+            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+        } else if(it.op.equals("+") || it.op.equals("-")){
+            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+        } else if(it.op.equals("!")){
+            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.expr.ExprType = new NonArrayTypeNode("bool",it.pos);
+        } else if(it.op.equals("~")){
+            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+        } else {
+            throw new semanticError("UnaryExprNode type is not correct.", it.pos);
+        }
+    }
+
+    @Override/////////////////////////////////////////////////////////////////////////////
+    public void visit(FunccalExprNode it){
+//////////////////////////////////////////////////
+    }
+
+    @Override
+    public void visit(SelfExprNode it){
+        it.expr.accept(this);
+
+        if(!it.expr.ExprType.equals("int")) throw new semanticError("++/-- type should be int", it.pos);
+        if(!it.expr.IsLvalue) throw new semanticError("++/-- should be lvalue.", it.pos);
+        it.ExprType = new NonArrayTypeNode("int",it.pos);
+    }
+
+    @Override
+    public void visit(MemberAccExprNode it){
+        it.expr.accept(this);
+
+        String tmpIdentifier = it.Identifier;
+        TypeNode tmpTypeNode = it.expr.ExprType;
+
+        if(tmpTypeNode instanceof ArrayTypeNode){
+            if(!tmpIdentifier.equals("size")) throw new semanticError("ArrayTypeNode doesn't have the func.",it.pos);
+            it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);/////////////////////////////
+        } else if(tmpTypeNode instanceof ClassTypeNode){
+
+        }
+    }
 
     @Override
     public void visit(assignExprNode it) {

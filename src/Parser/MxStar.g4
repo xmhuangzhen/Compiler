@@ -64,11 +64,13 @@ expression
     | <assoc=right> op=('!' | '~') expression               #unaryExpr
     | <assoc=right> op=('+' | '-') expression               #unaryExpr
     | This                                                  #thisExpr
-    | <assoc=right> New  newType #newExpr
-    | expression '.' Identifier #memberAcc
-    | arr=expression '[' index = expression ']' #arraydef
-    | expression '(' parDefList? ')' #funccal
+    | <assoc=right> New  newType                        #newExpr
+    | expression '.' Identifier                     #memberAcc
+    | arr=expression '[' index = expression ']'         #arraydef
+    | expression '(' exprList? ')'                     #funccal
     ;
+
+exprList : expression (',' expression)* ;
 
 primary
     : '(' expression ')'
@@ -84,9 +86,10 @@ literal
     ;
 
 newType
-    : nonarraytypedef #nonarraynewtype
-    | nonarraytypedef '(' expression (',' expression)*? ')' #newtypeobject
-    | nonarraytypedef ('[' expression? ']')+ #newtypearray
+    : nonarraytypedef ('[' expression ']')*('['']')+('['expression']')+('['expression?']')* #newtypeWrong
+    | nonarraytypedef ('[' expression? ']')+                #newtypearray
+    | nonarraytypedef '(' ')'                               #newtypeobject
+    | nonarraytypedef                                       #newtypenonarray
 ;
 
 

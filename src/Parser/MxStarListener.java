@@ -382,6 +382,16 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitAssignExpr(MxStarParser.AssignExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxStarParser#exprList}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprList(MxStarParser.ExprListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxStarParser#exprList}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprList(MxStarParser.ExprListContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxStarParser#primary}.
 	 * @param ctx the parse tree
 	 */
@@ -402,17 +412,29 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitLiteral(MxStarParser.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code nonarraynewtype}
+	 * Enter a parse tree produced by the {@code newtypeWrong}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 */
-	void enterNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx);
+	void enterNewtypeWrong(MxStarParser.NewtypeWrongContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code nonarraynewtype}
+	 * Exit a parse tree produced by the {@code newtypeWrong}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 */
-	void exitNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx);
+	void exitNewtypeWrong(MxStarParser.NewtypeWrongContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code newtypearray}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 */
+	void enterNewtypearray(MxStarParser.NewtypearrayContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code newtypearray}
+	 * labeled alternative in {@link MxStarParser#newType}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewtypearray(MxStarParser.NewtypearrayContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code newtypeobject}
 	 * labeled alternative in {@link MxStarParser#newType}.
@@ -426,15 +448,15 @@ public interface MxStarListener extends ParseTreeListener {
 	 */
 	void exitNewtypeobject(MxStarParser.NewtypeobjectContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code newtypearray}
+	 * Enter a parse tree produced by the {@code newtypenonarray}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 */
-	void enterNewtypearray(MxStarParser.NewtypearrayContext ctx);
+	void enterNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code newtypearray}
+	 * Exit a parse tree produced by the {@code newtypenonarray}
 	 * labeled alternative in {@link MxStarParser#newType}.
 	 * @param ctx the parse tree
 	 */
-	void exitNewtypearray(MxStarParser.NewtypearrayContext ctx);
+	void exitNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx);
 }

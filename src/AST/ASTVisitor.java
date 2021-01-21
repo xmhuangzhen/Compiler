@@ -30,4 +30,10 @@ public interface ASTVisitor {
     void visit(constExprNode it);
     void visit(cmpExprNode it);
     void visit(varExprNode it);
+    void visit(NewExprNode it);
+    void visit(ThisExprNode it);
+    void visit(UnaryExprNode it);
+    void visit(FunccalExprNode it);
+    void visit(SelfExprNode it);
+    void visit(MemberAccExprNode it);
 }

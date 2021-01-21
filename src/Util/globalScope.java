@@ -9,6 +9,7 @@ import java.util.Map;
 public class globalScope extends Scope {
     public Map<String, TypeNode> types;//typename, typenode
     public Map<String, funcDefNode> declared_func;// funcname, funcdefnode
+    public Map<String, classDefNode> declared_class; //classname, classdefnode
     public Map<String, TypeNode> declared_var;// varname , typenode
 
     public globalScope(Scope parentScope) {
@@ -23,7 +24,7 @@ public class globalScope extends Scope {
         types.put("int",new NonArrayTypeNode("int",pos));
         types.put("bool",new NonArrayTypeNode("bool",pos));
         types.put("void",new NonArrayTypeNode("void",pos));
-        types.put("string",new NonArrayTypeNode("string",pos));
+        types.put("string",new ClassTypeNode("string",pos));
         types.put("null", new NonArrayTypeNode("null",pos));
 
         //(2) put basic func -- print ; println ; printInt ; printlnInt ; getString ; getInt ; toString
@@ -31,12 +32,12 @@ public class globalScope extends Scope {
 
         //函数：void print(string str); 作用：向标准输出流中输出字符串str。
         tmpfuncDefNode = new funcDefNode("print", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new NonArrayTypeNode("string",pos),pos));
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new ClassTypeNode("string",pos),pos));
         declared_func.put("print",tmpfuncDefNode);
 
         //函数：void println(string str); 作用：向标准输出流中输出字符串str，并且在行尾处输出一个换行符。
         tmpfuncDefNode = new funcDefNode("println", new FuncTypeNode("void", pos),pos);
-        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new NonArrayTypeNode("string",pos),pos));
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new ClassTypeNode("string",pos),pos));
         declared_func.put("println",tmpfuncDefNode);
 
         //函数：void printInt(int n); 作用：向标准输出流中输出数字n。
@@ -61,6 +62,39 @@ public class globalScope extends Scope {
         tmpfuncDefNode = new funcDefNode("toString", new FuncTypeNode("string", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("i",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("toString",tmpfuncDefNode);
+
+        //(3) put string class
+        classDefNode tmpclassDefNode = new classDefNode("string", pos);
+
+        //函数：int length();
+        //使用：<StringIdentifier>.length();
+        tmpfuncDefNode = new funcDefNode("length", new FuncTypeNode("int", pos),pos);
+        tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+
+        //函数：string substring(int left, int right);
+        //使用：<StringIdentifier>.substring(left, right);
+        tmpfuncDefNode = new funcDefNode("substring", new FuncTypeNode("string", pos),pos);
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("left",null,new NonArrayTypeNode("int",pos),pos));
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("right",null,new NonArrayTypeNode("int",pos),pos));
+        tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+
+        //函数：int parseInt();
+        //使用：<StringIdentifier>.parseInt();
+        //作用：返回一个整数，这个整数应该是该字符串的最长前缀。如果该字符串没有一个前缀是整数，结果未定义。如果该整数超界，结果也未定义。
+        tmpfuncDefNode = new funcDefNode("parseInt", new FuncTypeNode("int", pos),pos);
+        tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+
+        //函数：int ord(int pos);
+        //使用：<StringIdentifier>.ord(pos);
+        //作用：返回字符串中的第pos位上的字符的ASCII码。下标从0开始编号。
+        tmpfuncDefNode = new funcDefNode("ord", new FuncTypeNode("int", pos),pos);
+        tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("pos",null,new NonArrayTypeNode("int",pos),pos));
+        tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+
+        //常量字符串不具有内建方法，使用内建方法的常量字符串未定义。
+
+        declared_class.put("string",tmpclassDefNode);
+
     }
 
     public boolean checkVarName(String varname){

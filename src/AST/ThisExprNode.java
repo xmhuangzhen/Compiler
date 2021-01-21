@@ -2,9 +2,9 @@ package AST;
 
 import Util.*;
 
-public class StringTypeNode extends TypeNode{
-    public StringTypeNode(position pos){
-        super("string",0,pos);
+public class ThisExprNode extends ExprNode{
+    public ThisExprNode(String Text,position pos){
+        super(Text,null,pos);
     }
 
     @Override

@@ -199,7 +199,8 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitPureExprStmt(MxStarParser.PureExprStmtContext ctx) {
-        return super.visitPureExprStmt(ctx);
+        ExprNode tmpNode = (ExprNode) visit(ctx.expression());
+        return new exprStmtNode(tmpNode,new position(ctx));
     }
 
     @Override
@@ -207,34 +208,96 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
         return null;
     }
 
+    //---new---
     @Override
     public ASTNode visitNewExpr(MxStarParser.NewExprContext ctx) {
-        return super.visitNewExpr(ctx);
+        NewExprNode node = (NewExprNode) visit(ctx.newType());
+        return node;
     }
 
     @Override
+    public ASTNode visitNewtypeWrong(MxStarParser.NewtypeWrongContext ctx){
+        NewExprNode node = new NewExprNode(null,null,null);
+        node.IsWrong = true;
+        return node;
+    }
+
+    @Override
+    public ASTNode visitNewtypearray(MxStarParser.NewtypearrayContext ctx) {
+        TypeNode typeNode = (TypeNode) visit(ctx.nonarraytypedef());
+        NewExprNode node = new NewExprNode(ctx.expression().toString(),typeNode,new position(ctx));
+        int dimension = 0;
+        for(var ch : ctx.children){
+            if(ch.getText().equals("[")) dimension++;
+        }
+        node.dim = dimension;
+
+        for(var expr : ctx.expression()){
+            ExprNode tmpNode = (ExprNode) visit(expr);
+            node.exprDim.add(tmpNode);
+        }
+        return node;
+    }
+
+    @Override
+    public ASTNode visitNewtypeobject(MxStarParser.NewtypeobjectContext ctx) {
+        TypeNode typeNode = (TypeNode) visit(ctx.nonarraytypedef());
+        NewExprNode node = new NewExprNode(ctx.getText(),typeNode,new position(ctx));
+        return node;
+    }
+
+    @Override
+    public ASTNode visitNewtypenonarray(MxStarParser.NewtypenonarrayContext ctx) {
+        TypeNode typeNode = (TypeNode) visit(ctx.nonarraytypedef());
+        NewExprNode node = new NewExprNode(ctx.getText(),typeNode,new position(ctx));
+        return node;
+    }
+
+    //---expr---
+    @Override
     public ASTNode visitThisExpr(MxStarParser.ThisExprContext ctx) {
-        return super.visitThisExpr(ctx);
+        ThisExprNode node = new ThisExprNode(ctx.getText(),new position(ctx));
+        return node;
     }
 
     @Override
     public ASTNode visitUnaryExpr(MxStarParser.UnaryExprContext ctx) {
-        return super.visitUnaryExpr(ctx);
+        UnaryExprNode node = new UnaryExprNode(ctx.getText(),null,ctx.op.getText(),new position(ctx));
+        node.expr = (ExprNode) visit(ctx.expression());
+        return node;
     }
 
     @Override
     public ASTNode visitFunccal(MxStarParser.FunccalContext ctx) {
-        return super.visitFunccal(ctx);
+        ExprNode tmpExprNode = (ExprNode) visit(ctx.expression());
+        FunccalExprNode node = new FunccalExprNode(ctx.getText(), tmpExprNode,new position(ctx));
+        if(ctx.exprList() != null){
+            for(var expr : ctx.exprList().expression()){
+                ExprNode tmpNode = (ExprNode) visit(expr);
+                node.pars.add(tmpNode);
+            }
+        }
+        return node;
+    }
+
+    @Override
+    public ASTNode visitExprList(MxStarParser.ExprListContext ctx){
+        return null;
     }
 
     @Override
     public ASTNode visitSelfExpr(MxStarParser.SelfExprContext ctx) {
-        return super.visitSelfExpr(ctx);
+        SelfExprNode node = new SelfExprNode(ctx.getText(),null,ctx.op.toString(),new position(ctx));
+        node.expr = (ExprNode) visit(ctx.expression());
+        return node;
     }
 
     @Override
     public ASTNode visitMemberAcc(MxStarParser.MemberAccContext ctx) {
-        return super.visitMemberAcc(ctx);
+        MemberAccExprNode node = new MemberAccExprNode(ctx.getText(),null,new position(ctx));
+        node.expr = (ExprNode) visit(ctx.expression());
+        node.Identifier = ctx.Identifier().getText();
+        return node;
     }
 
     @Override
@@ -265,21 +328,6 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitLiteral(MxStarParser.LiteralContext ctx) {
         return super.visitLiteral(ctx);
-    }
-
-    @Override
-    public ASTNode visitNonarraynewtype(MxStarParser.NonarraynewtypeContext ctx) {
-        return super.visitNonarraynewtype(ctx);
-    }
-
-    @Override
-    public ASTNode visitNewtypeobject(MxStarParser.NewtypeobjectContext ctx) {
-        return super.visitNewtypeobject(ctx);
-    }
-
-    @Override
-    public ASTNode visitNewtypearray(MxStarParser.NewtypearrayContext ctx) {
-        return super.visitNewtypearray(ctx);
     }
 
 }
