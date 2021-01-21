@@ -554,6 +554,11 @@ public class SemanticChecker implements ASTVisitor {
     }
 
     @Override
+    public void visit(constExprNode it){
+        
+    }
+
+    @Override
     public void visit(ArraydefExprNode it){
         it.arr.accept(this);
         it.index.accept(this);
