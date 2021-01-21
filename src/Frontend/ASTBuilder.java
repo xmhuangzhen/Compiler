@@ -354,8 +354,10 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitArraydefExpr(MxStarParser.ArraydefExprContext ctx){
-
-        return null;
+        ArraydefExprNode node = new ArraydefExprNode(ctx.getText(),new position(ctx));
+        node.arr = (ExprNode) visit(ctx.arr);
+        node.index = (ExprNode) visit(ctx.index);
+        return node;
     }
 
 

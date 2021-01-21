@@ -1,8 +1,11 @@
 package Frontend;
 
 import AST.*;
-import Util.*;
-import Util.error.*;
+import Util.Scope;
+import Util.classScope;
+import Util.error.semanticError;
+import Util.globalScope;
+import Util.position;
 
 
 public class SemanticChecker implements ASTVisitor {
@@ -389,9 +392,54 @@ public class SemanticChecker implements ASTVisitor {
         }
     }
 
-    @Override/////////////////////////////////////////////////////////////////////////////
+    @Override
     public void visit(FunccalExprNode it){
-//////////////////////////////////////////////////
+        //(1) check func name
+        ExprNode funcName = it.funcName;
+        if(funcName instanceof MemberAccExprNode){
+            funcName.accept(this);
+            ////////////////////////////////////////////
+        } else if(funcName instanceof IdExprNode){
+            funcName.accept(this);
+            if(!currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)){
+                throw new semanticError("FuncName doesn't exist",it.pos);
+            }
+        } else {
+            throw new semanticError("Func cal name error.",it.pos);
+        }
+
+        //(2) check par
+        for(var ParNode : it.pars) ParNode.accept(this);
+
+        funcDefNode tmpfuncDefNode = null;
+        if(funcName instanceof MemberAccExprNode){///////////////////////////
+            classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).Identifier);
+            for(var tmpNode: tmpclassDefNode.funcDefs)
+                if(tmpNode.funcName.equals(((MemberAccExprNode)funcName).Identifier)) {
+                    tmpfuncDefNode = tmpNode;
+                    break;
+                }
+        } else {
+            tmpfuncDefNode = currentScope.funcs.get(((IdExprNode) funcName).Identifier);
+        }
+
+        if(tmpfuncDefNode == null) throw new semanticError("The func name doesn't exist.",it.pos);
+
+        if(tmpfuncDefNode.parDefs.size() != it.pars.size()){
+            throw new semanticError("par size is not correct", it.pos);
+        }
+
+        int parSize = it.pars.size();
+        for(int i = 0;i < parSize ;++i){
+            ExprNode CallPar = it.pars.get(i);
+            singlevarDefStmtNode FuncPar = tmpfuncDefNode.parDefs.get(i);
+            TypeNode CallType = CallPar.ExprType;
+            TypeNode FuncParType = FuncPar.typeNode;
+            if(!CallType.getTypeName().equals(FuncParType.getTypeName()) &&
+                    !CallType.getTypeName().equals("null"))
+                throw new semanticError("par type error",it.pos);
+        }
+        it.ExprType = tmpfuncDefNode.funcType;
     }
 
     @Override
@@ -470,12 +518,6 @@ public class SemanticChecker implements ASTVisitor {
     }
 
     @Override
-    public void visit(constExprNode it) {
-
-    }
-
-
-    @Override
     public void visit(assignExprNode it) {
         it.rhs.accept(this);
         it.lhs.accept(this);
@@ -513,6 +555,13 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(ArraydefExprNode it){
-        
+        it.arr.accept(this);
+        it.index.accept(this);
+        if(!(it.arr.ExprType instanceof ArrayTypeNode))
+            throw new semanticError("ArraydefExprNode is not array type", it.pos);
+        if(!it.index.ExprType.getTypeName().equals("int"))
+            throw new semanticError("ArraydefExprNode of index is not int type", it.pos);
+        it.IsLvalue = true;
+        it.ExprType = it.arr.ExprType;
     }
 }

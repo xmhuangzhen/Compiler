@@ -41,6 +41,14 @@ public class Scope {
         else return false;
     }
 
+    public boolean containsFuncName(String name, boolean lookUpon) {
+        if (funcs.containsKey(name)) return true;
+        else if (parentScope != null && lookUpon)
+            return parentScope.containsFuncName(name, true);
+        else return false;
+    }
+
+
     public boolean checkVarNameList(varDefStmtNode tmpvarDefStmtNode){
         for(singlevarDefStmtNode tmpNode : tmpvarDefStmtNode.stmts){
             if(containsVariable(tmpNode.varname,true))
