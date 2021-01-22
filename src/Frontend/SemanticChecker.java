@@ -649,10 +649,13 @@ public class SemanticChecker implements ASTVisitor {
 
         if (!(it.arr instanceof ArraydefExprNode)) {
             TypeNode tmpNode = currentScope.getVariableTypeNode(it.arr.ExprText,true);
-            if(tmpNode instanceof ArrayTypeNode){
+            if(tmpNode instanceof ArrayTypeNode) {
                 it.dim = ((ArrayTypeNode) tmpNode).dimension;
+            } else if(it.arr instanceof NewExprNode) {
+                NewExprNode tmpNewExprNode = (NewExprNode) it.arr;
+                it.dim = tmpNewExprNode.dim;
             } else {
-                throw new semanticError("ArrayDefExprNode of type is not array/",it.pos);
+                throw new semanticError("ArrayDefExprNode of type is not array\n",it.pos);
             }
         } else{
             it.dim = ((ArraydefExprNode) it.arr).dim-1;

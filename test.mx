@@ -1,17 +1,12 @@
-class testret
-{
-    int name;
-    testret()
-    {
-	name = 2;
-    }
-};
-testret ret_const()
-{
-    testret r = new testret;
-    return r;
-}
+/*
+Test Package: Sema_Local_Preview
+Test Target: Array
+Author: 16' Jinxiao Chen
+Time: 2019-11-11
+Verdict: Success
+Origin Package: Semantic Pretest
+*/
 int main()
 {
-    ret_const() = new testret;
+int [][][]a = (new int[3][2][][])[1];
 }
