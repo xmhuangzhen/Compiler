@@ -412,12 +412,10 @@ public class SemanticChecker implements ASTVisitor {
         funcDefNode tmpfuncDefNode = null;
         if(funcName instanceof MemberAccExprNode){///////////////////////////
            // throw new semanticError("["+it.funcName.ExprText+","+((MemberAccExprNode)it.funcName).ExprType.getTypeName()+"]", it.pos);
-            classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).Identifier);
-            for(var tmpNode: tmpclassDefNode.funcDefs)
-                if(tmpNode.funcName.equals(((MemberAccExprNode)funcName).Identifier)) {
-                    tmpfuncDefNode = tmpNode;
-                    break;
-                }
+            classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).expr.ExprType.getTypeName());
+            classScope tmpScope = tmpclassDefNode.classDefScope;
+
+            tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode)funcName).Identifier,true);
         } else {
             if(currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)) {
                 tmpfuncDefNode = currentScope.getfuncDefNode(((IdExprNode) funcName).Identifier, true);

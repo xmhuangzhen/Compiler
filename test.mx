@@ -5,10 +5,10 @@ int main(){
     for(i=0;i<t;++i){
         s = getString();
 		l = s.length();
-//		if(l > 10)
-  //          println(s.substring(0, 1) + toString(l-2) + s.substring(l-1, l));
-	//	else
-      //      println(s);
+		if(l > 10)
+            println(s.substring(0, 1) + toString(l-2) + s.substring(l-1, l));
+		else
+            println(s);
 	}
 
 }
