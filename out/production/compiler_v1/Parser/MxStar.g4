@@ -51,27 +51,27 @@ statement
 
 expression
     : '('expression')'                                           #subExpr
-    | Identifier                                            #idExpr
-    | literal                                               #constExpr
-    | expression '(' exprList? ')'                     #funccal
-    | exprl=expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) exprr=expression               #binaryExpr
-    | exprl=expression op=('*' | '/' | '%') exprr=expression            #binaryExpr
-    | exprl=expression op=('+' | '-') exprr=expression                  #binaryExpr
-    | exprl=expression op=('<<' | '>>') exprr=expression                  #binaryExpr
-    | exprl=expression op='&&' exprr=expression                #binaryExpr
-    | exprl=expression op='||' exprr=expression                #binaryExpr
-    | exprl=expression op='&' exprr=expression                #binaryExpr
-    | exprl=expression op='|' exprr=expression                #binaryExpr
-    | exprl=expression op='^' exprr=expression                #binaryExpr
-    | <assoc=right> exprl=expression '=' exprr=expression               #assignExpr
+    | <assoc=right> New  newType                        #newExpr
+    | expression '.' Identifier                     #memberAcc
+    | arr=expression '[' index = expression ']'         #arraydefExpr
     | expression op=('++' | '--')                           #selfExpr
     | <assoc=right> op=('++' | '--') expression             #unaryExpr
     | <assoc=right> op=('!' | '~') expression               #unaryExpr
     | <assoc=right> op=('+' | '-') expression               #unaryExpr
+    | expression '(' exprList? ')'                     #funccal
+    | exprl=expression op=('*' | '/' | '%') exprr=expression            #binaryExpr
+    | exprl=expression op=('+' | '-') exprr=expression                  #binaryExpr
+    | exprl=expression op=('<<' | '>>') exprr=expression                  #binaryExpr
+    | exprl=expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) exprr=expression               #binaryExpr
+    | exprl=expression op='&' exprr=expression                #binaryExpr
+    | exprl=expression op='|' exprr=expression                #binaryExpr
+    | exprl=expression op='^' exprr=expression                #binaryExpr
+    | exprl=expression op='&&' exprr=expression                #binaryExpr
+    | exprl=expression op='||' exprr=expression                #binaryExpr
+    | <assoc=right> exprl=expression '=' exprr=expression               #assignExpr
     | This                                                  #thisExpr
-    | <assoc=right> New  newType                        #newExpr
-    | expression '.' Identifier                     #memberAcc
-    | arr=expression '[' index = expression ']'         #arraydefExpr
+    | Identifier                                            #idExpr
+    | literal                                               #constExpr
     ;
 
 exprList : expression (',' expression)* ;

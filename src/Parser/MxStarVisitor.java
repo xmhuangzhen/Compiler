@@ -195,19 +195,19 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunccal(MxStarParser.FunccalContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code selfExpr}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSelfExpr(MxStarParser.SelfExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code memberAcc}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMemberAcc(MxStarParser.MemberAccContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code selfExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelfExpr(MxStarParser.SelfExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code binaryExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.

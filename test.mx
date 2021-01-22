@@ -1,8 +1,9 @@
-int n,m,a;
+int w;
 int main(){
-    n = getInt();
-    m = getInt();
-    a = getInt();
-    
+    w = getInt();
+    if (w%2==0&&w>2)
+        print("YES");
+    else
+        print("NO");
     return 0;
 }

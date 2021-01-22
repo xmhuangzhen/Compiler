@@ -253,8 +253,9 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(ifStmtNode it) {
         it.condition.accept(this);
-        if (!it.condition.ExprType.equals("bool"))
-            throw new semanticError("Semantic Error: type not match. It should be bool",
+        if (!it.condition.ExprType.getTypeName().equals("bool"))
+            throw new semanticError("Semantic Error: type not match. It should be bool"+"["+it.condition.ExprText+"]"
+                    +"{"+it.condition.ExprType.getTypeName()+"}",
                     it.condition.pos);
 
         currentScope = new Scope(currentScope);
@@ -509,7 +510,7 @@ public class SemanticChecker implements ASTVisitor {
             || it.op.equals("<<") || it.op.equals(">>") || it.op.equals("&") || it.op.equals("|") || it.op.equals("^")){
             //'*' | '/' | '%'    '-' '<<' '>>' '&' '|' '^'
             if(!lhsTypeName.equals("int")) throw new semanticError("BinaryNode lhs should be int.",it.pos);
-            if(!rhsTypeName.equals("int")) throw new semanticError("BinaryNode rhs should be int.",it.pos);
+            if(!rhsTypeName.equals("int")) throw new semanticError("BinaryNode rhs should be int." + it.ExprText + rhsTypeName,it.pos);
             it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("+") || it.op.equals(">") || it.op.equals("<") || it.op.equals(">=") || it.op.equals("<=")){
             //'+'      '>' | '<' | '>=' | '<='
