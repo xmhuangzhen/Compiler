@@ -433,7 +433,7 @@ public class SemanticChecker implements ASTVisitor {
             String tmpIden = ((IdExprNode) funcName).Identifier;
             if(gScope.containsFuncName(tmpIden,true)) {
                 tmpfuncDefNode = gScope.declared_func.get(tmpIden);
-         //   throw new semanticError("Here-1.\n"+tmpIden+"["+tmpfuncDefNode.parDefs.size()+"]\n",it.pos);
+         //   throw new semanticError("Here.\n"+tmpIden+"["+tmpfuncDefNode.parDefs.size()+"]\n",it.pos);
             }
             else {
                 tmpfuncDefNode = gScope.declared_func.get(((IdExprNode) funcName).Identifier);
