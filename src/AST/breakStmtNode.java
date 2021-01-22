@@ -3,7 +3,7 @@ package AST;
 import Util.position;
 
 
-public class breakStmtNode extends ASTNode {
+public class breakStmtNode extends StmtNode {
 
     public breakStmtNode(position pos) {
         super(pos);

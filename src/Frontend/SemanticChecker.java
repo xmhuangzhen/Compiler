@@ -301,7 +301,7 @@ public class SemanticChecker implements ASTVisitor {
 
         if (it.stmt != null) {
             currentScope = new Scope(currentScope);
-            currentScope.inLoop = true;
+            currentScope.inLoop++;
             it.stmt.accept(this);
             currentScope = currentScope.parentScope();
         }
@@ -316,7 +316,7 @@ public class SemanticChecker implements ASTVisitor {
 
         if (it.stmt != null) {
             currentScope = new Scope(currentScope);
-            currentScope.inLoop = true;
+            currentScope.inLoop++;
             it.stmt.accept(this);
             currentScope = currentScope.parentScope();
         }
@@ -324,15 +324,15 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(continueStmtNode it){
-        if(!currentScope.inLoop){
+        if(currentScope.inLoop == 0){
             throw new semanticError("continue failed", it.pos);
         }
     }
 
     @Override
     public void visit(breakStmtNode it){
-        if(!currentScope.inLoop){
-            throw new semanticError("continue failed", it.pos);
+        if(currentScope.inLoop == 0){
+            throw new semanticError("break failed"+currentScope.inLoop, it.pos);
         }
     }
 

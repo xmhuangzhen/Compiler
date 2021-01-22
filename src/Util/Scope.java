@@ -12,7 +12,8 @@ public class Scope {
     public Map<String, TypeNode> members;// varname Typenode
     public Map<String, funcDefNode> funcs;// funcname, funcdefnode
     private Scope parentScope;
-    public boolean inFunc, inLoop, inClass;
+    public boolean inFunc, inClass;
+    public int inLoop;
     public TypeNode FuncReturnType;
     public TypeNode ClassType;
 
@@ -25,7 +26,8 @@ public class Scope {
             this.inFunc = true;
             this.FuncReturnType = parentScope.FuncReturnType;
         }
-        this.inLoop = false;
+        this.inLoop = 0;
+        if(parentScope != null) this.inLoop = parentScope.inLoop;
         this.inClass = false;
     }
 
