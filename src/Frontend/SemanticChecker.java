@@ -277,8 +277,8 @@ public class SemanticChecker implements ASTVisitor {
 
         if(it.condExpr != null){
             it.condExpr.accept(this);
-            if (!it.condExpr.ExprType.equals("bool"))
-                throw new semanticError("Semantic Error: type not match. It should be bool",
+            if (!it.condExpr.ExprType.getTypeName().equals("bool"))
+                throw new semanticError("Semantic Error: type not match. It should be bool, conExpr",
                         it.condExpr.pos);
         }
 
@@ -297,7 +297,7 @@ public class SemanticChecker implements ASTVisitor {
     @Override
     public void visit(WhileStmtNode it){
         it.condExpr.accept(this);
-        if (!it.condExpr.ExprType.equals("bool"))
+        if (!it.condExpr.ExprType.getTypeName().equals("bool"))
             throw new semanticError("Semantic Error: type not match. It should be bool",
                     it.condExpr.pos);
 
@@ -347,7 +347,7 @@ public class SemanticChecker implements ASTVisitor {
             TypeNode tmpTypeNode = it.exprTypeNode;
             for(ExprNode tmpNode : it.exprDim){
                 tmpNode.accept(this);
-                if(!tmpNode.ExprType.equals("int")){
+                if(!tmpNode.ExprType.getTypeName().equals("int")){
                     throw new semanticError("expr in new array type can only be int", it.pos);
                 }
             }
@@ -370,18 +370,18 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(UnaryExprNode it){
         it.expr.accept(this);
         if(it.op.equals("++") || it.op.equals("--")){
-            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
             if(!it.IsLvalue) throw new semanticError("++/-- is not lvalue.", it.pos);
             it.IsLvalue = true;
             it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("+") || it.op.equals("-")){
-            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
             it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("!")){
-            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
             it.expr.ExprType = new NonArrayTypeNode("bool",it.pos);
         } else if(it.op.equals("~")){
-            if(!it.ExprType.equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
             it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
         } else {
             throw new semanticError("UnaryExprNode type is not correct.", it.pos);
@@ -446,7 +446,7 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(SelfExprNode it){
         it.expr.accept(this);
 
-        if(!it.expr.ExprType.equals("int")) throw new semanticError("++/-- type should be int", it.pos);
+        if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type should be int", it.pos);
         if(!it.expr.IsLvalue) throw new semanticError("++/-- should be lvalue.", it.pos);
         it.ExprType = new NonArrayTypeNode("int",it.pos);
     }
