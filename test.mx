@@ -1,24 +1,27 @@
-int n;
-int[] a = new int[20];
-int jud(int x){
-	int i,j;
-	for(i=0;i<n/x;i++){
-		bool flag=false;
-		for(j=0;j<x-1;j++){
-			if(a[i*x+j]>a[i*x+j+1])flag=true;
-		}
-		if(!flag)return 1;
-	}
-	return 0;
-}
+int main() {
 int i;
-int main(){
-	n = getInt();
-	for(i=0;i<n;i++) a[i] = getInt();
-	for(i=n; i > 0;i = i / 2)
-        if(jud(i) > 0){
-            print(toString(i));
-            return 0;
-        }
-	return 0;
+int j;
+int k;
+int[] A = new int[3];
+int[][] B = new int[4][2];
+int[][] C = new int[3][2];
+for (i = 0; i < 3; ++i)
+	for (j = 0; j < 4; ++j)
+			A[i][j] = i + j;
+for (i = 0; i < 4; ++i)
+	for (j = 0; j < 2; ++j)
+			B[i][j] = i * j;
+for (i = 0; i < 3; ++i)
+	for (j = 0; j < 2; ++j)
+			C[i][j] = 0;
+for (i = 0; i < 3; ++i)
+	for (j = 0; j < 2; ++j)
+		for (k = 0; k < 4; ++k)
+			C[i][j] = C[i][j] + A[i][k] * B[k][j];
+int ans = 0;
+for (i = 0; i < 3; ++i)
+	for (j = 0; j < 2; ++j)
+		ans = ans + C[i][j];
+print(toString(ans));
+return 0;
 }

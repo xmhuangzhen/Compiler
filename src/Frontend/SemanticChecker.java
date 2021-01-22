@@ -426,7 +426,8 @@ public class SemanticChecker implements ASTVisitor {
 
         funcDefNode tmpfuncDefNode = null;
         if(funcName instanceof MemberAccExprNode){///////////////////////////
-           // throw new semanticError("["+it.funcName.ExprText+","+((MemberAccExprNode)it.funcName).ExprType.getTypeName()+"]", it.pos);
+           // throw new semanticError("["+it.funcName.ExprText+","
+            // +((MemberAccExprNode)it.funcName).ExprType.getTypeName()+"]", it.pos);
             classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).expr.ExprType.getTypeName());
             classScope tmpScope = tmpclassDefNode.classDefScope;
 
@@ -499,7 +500,8 @@ public class SemanticChecker implements ASTVisitor {
             throw new semanticError("MAN shouldn't be non array "+"["+it.ExprText+"]"
                     +(gScope.types.get("string") instanceof ClassTypeNode),it.pos);
         } else{
-            throw new semanticError("MemberAccNode has wrong type."+"["+it.ExprText+"]"+"{"+tmpTypeNode.getTypeName()+"}",it.pos);
+            throw new semanticError("MemberAccNode has wrong type."+
+                    "["+it.ExprText+"]"+"{"+tmpTypeNode.getTypeName()+"}",it.pos);
         }
     }
 
@@ -543,7 +545,7 @@ public class SemanticChecker implements ASTVisitor {
             || it.op.equals("<<") || it.op.equals(">>") || it.op.equals("&") || it.op.equals("|") || it.op.equals("^")){
             //'*' | '/' | '%'    '-' '<<' '>>' '&' '|' '^'
             if(!lhsTypeName.equals("int")) throw new semanticError("BinaryNode lhs should be int.",it.pos);
-            if(!rhsTypeName.equals("int")) throw new semanticError("BinaryNode rhs should be int." + it.ExprText + rhsTypeName,it.pos);
+            if(!rhsTypeName.equals("int")) throw new semanticError("BinaryNode rhs should be int.",it.pos);
             it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("+") || it.op.equals(">") || it.op.equals("<") || it.op.equals(">=") || it.op.equals("<=")){
             //'+'      '>' | '<' | '>=' | '<='
@@ -613,6 +615,9 @@ public class SemanticChecker implements ASTVisitor {
             throw new semanticError("ArraydefExprNode is not array type", it.pos);
         if(!it.index.ExprType.getTypeName().equals("int"))
             throw new semanticError("ArraydefExprNode of index is not int type", it.pos);
+        if(it.dim != ((ArrayTypeNode) it.arr.ExprType).dimension)
+            throw new semanticError(Long.toString(it.dim)+","
+                    +Long.toString(((ArrayTypeNode) it.arr.ExprType).dimension), it.pos);
         it.IsLvalue = true;
         it.ExprType = it.arr.ExprType;
     }
