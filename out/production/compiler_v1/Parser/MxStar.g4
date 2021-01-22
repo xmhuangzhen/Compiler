@@ -90,6 +90,10 @@ newType
     | nonarraytypedef                                       #newtypenonarray
 ;
 
+BoolConstant : True | False;
+DecimalInteger : [1-9] [0-9]* | '0' ;
+StringConstant :  '"' ('\\n' | '\\\\' | '\\"' | .)*? '"' ;
+NullConstant : Null ;
 
 Class : 'class';
 Void : 'void';
@@ -97,11 +101,6 @@ This : 'this';
 New : 'new';
 
 
-BoolConstant : True | False;
-DecimalInteger : [1-9] [0-9]* | '0' ;
-StringConstant :  '"' ('\\n' | '\\\\' | '\\"' | .)*? '"' ;
-Identifier : [a-zA-Z] [a-zA-Z_0-9]* ;
-NullConstant : Null ;
 
 Int : 'int';
 Bool : 'bool';
@@ -118,6 +117,7 @@ Return : 'return';
 Continue : 'continue';
 Break : 'break';
 
+Identifier : [a-zA-Z] [a-zA-Z_0-9]* ;
 
 Whitespace : [ \t]+ -> skip ;
 
