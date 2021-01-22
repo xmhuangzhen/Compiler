@@ -98,6 +98,12 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
                 if(tmp != null) node.parDefs.add(tmp);
                 else throw new semanticError("par is null",new position(ctx));
             }
+            /*
+            if(node.parDefs.size() != 0){
+                throw new semanticError("{{{"+Long.toString(node.parDefs.size())+","+
+                        ctx.getText()+"}}}\n",new position(ctx));
+            }
+            */
         }
 
         for(var stmt : ctx.suite().statement()){

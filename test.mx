@@ -1,14 +1,21 @@
-int t,l,i;
-string s;
-int main(){
-	t = getInt();
-    for(i=0;i<t;++i){
-        s = getString();
-		l = s.length();
-		if(l > 10)
-            println(s.substring(0, 1) + toString(l-2) + s.substring(l-1, l));
-		else
-            println(s);
-	}
+int n;
+int r;
+int c;
+int i;
+int j;
+int abs(int c){
+    if(c>0) return c;
+    return -c;
+}
 
+int main()
+{
+	for (i=0;i<5;i++)
+		for (j=0;j<5;j++)
+		{
+            n = getInt();
+		if (n==1)
+		{r=i;c=j;}}
+    printInt(abs(2-r) + abs(2-c));
+	return 0;
 }

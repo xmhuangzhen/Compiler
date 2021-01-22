@@ -21,6 +21,10 @@ public class Scope {
         this.funcs = new HashMap<>();
         this.parentScope = parentScope;
         this.inFunc = false;
+        if(parentScope != null && parentScope.inFunc) {
+            this.inFunc = true;
+            this.FuncReturnType = parentScope.FuncReturnType;
+        }
         this.inLoop = false;
         this.inClass = false;
     }

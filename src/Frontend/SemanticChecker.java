@@ -22,11 +22,12 @@ public class SemanticChecker implements ASTVisitor {
         for(ProgramUnitNode tmpProgNode : it.ProgramDefs)
             if(tmpProgNode instanceof classDefNode){
                 classDefNode tmpNode = (classDefNode) tmpProgNode;
-                TypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
+                ClassTypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
                 if(gScope.checkVarName(tmpNode.className)){
                     throw new semanticError("The class name is existed.", tmpNode.pos);
                 }
                 gScope.types.put(tmpNode.className, tmpTypeNode);
+                gScope.declared_class.put(tmpNode.className,tmpNode);
             }
 
         //(3) function
@@ -37,7 +38,11 @@ public class SemanticChecker implements ASTVisitor {
                 if(gScope.checkFuncName(tmpNode.funcName)){
                     throw new semanticError("The function's name exists.", tmpNode.pos);
                 }
+//                throw new semanticError(Long.toString(tmpfuncDefNode.parDefs.size()),it.pos);
+//                tmpfuncDefNode.parDefs.size() = it.ProgramDefs.
+
                 gScope.declared_func.put(tmpNode.funcName,tmpfuncDefNode);
+                gScope.funcs.put(tmpNode.funcName, tmpfuncDefNode);
             }
 
         //(4) variables
@@ -54,6 +59,12 @@ public class SemanticChecker implements ASTVisitor {
                     throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
                 }
                 gScope.addVarList(tmpvarDefStmtNode);
+            } else if(tmpProgNode instanceof funcDefNode){
+                gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+                gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+            //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())+"]",it.pos);
+            } else if(tmpProgNode instanceof classDefNode){
+                gScope.declared_class.put(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
             }
         }
 
@@ -155,7 +166,7 @@ public class SemanticChecker implements ASTVisitor {
             throw new semanticError("The construction function should not have par.", it.pos);
         }
 
-        currentScope = gScope;
+        currentScope = currentScope.parentScope();
     }
 
     @Override
@@ -184,10 +195,12 @@ public class SemanticChecker implements ASTVisitor {
 //            currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
         }
 
+
         for(var tmpstmt : it.stmts){
             tmpstmt.accept(this);
         //    it.stmts.add(tmpstmt);
         }
+
         it.funcScope = currentScope;
         currentScope = currentScope.parentScope();
     }
@@ -417,9 +430,10 @@ public class SemanticChecker implements ASTVisitor {
 
             tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode)funcName).Identifier,true);
         } else {
-            if(currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)) {
-                tmpfuncDefNode = currentScope.getfuncDefNode(((IdExprNode) funcName).Identifier, true);
-           // throw new semanticError("Here-1.",it.pos);
+            String tmpIden = ((IdExprNode) funcName).Identifier;
+            if(gScope.containsFuncName(tmpIden,true)) {
+                tmpfuncDefNode = gScope.declared_func.get(tmpIden);
+         //   throw new semanticError("Here-1.\n"+tmpIden+"["+tmpfuncDefNode.parDefs.size()+"]\n",it.pos);
             }
             else {
                 tmpfuncDefNode = gScope.declared_func.get(((IdExprNode) funcName).Identifier);
@@ -430,7 +444,9 @@ public class SemanticChecker implements ASTVisitor {
         if(tmpfuncDefNode == null) throw new semanticError("The func name doesn't exist.",it.pos);
 
         if(tmpfuncDefNode.parDefs.size() != it.pars.size()){
-            throw new semanticError("par size is not correct", it.pos);
+            throw new semanticError("par size is not correct\n"+
+                    tmpfuncDefNode.funcType.getTypeName()+
+                    "[in declare,"+tmpfuncDefNode.parDefs.size()+it.pars.size(), it.pos);
         }
 
         int parSize = it.pars.size();
