@@ -582,11 +582,31 @@ public class SemanticChecker implements ASTVisitor {
                 if(lArraydefExprNode.dim != rArraydefExprNode.dim)
                     throw new semanticError(Long.toString(lArraydefExprNode.dim)+"!="
                     +Long.toString(rArraydefExprNode.dim),it.pos);
+                //throw new semanticError(lArraydefExprNode.dim+","+ rArraydefExprNode.dim,it.pos);
             } else {
                 if(lArraydefExprNode.dim != 1)
                     throw new semanticError("Binary Node type error."+lArraydefExprNode.dim ,it.pos);
             }
         }
+
+        if(it.lhs instanceof IdExprNode){
+            TypeNode tmplhsTypeNode = it.lhs.ExprType;
+            if(tmplhsTypeNode instanceof ArrayTypeNode){
+                if(it.rhs instanceof ArraydefExprNode){
+                    if(((ArrayTypeNode) tmplhsTypeNode).dimension != ((ArraydefExprNode) it.rhs).dim)
+                        throw new semanticError("Binary type dim error",it.pos);
+                } else if(it.rhs instanceof IdExprNode){
+                    TypeNode tmprhsTypeNode = it.rhs.ExprType;
+                    if(tmprhsTypeNode instanceof ArrayTypeNode){
+                        if(((ArrayTypeNode) tmplhsTypeNode).dimension != ((ArrayTypeNode) tmprhsTypeNode).dimension)
+                            throw new semanticError("Binary type dim error . ", it.pos);
+                    } else {
+                        throw new semanticError("Binary type error", it.pos);
+                    }
+                }
+            }
+        }
+
         it.ExprType = it.lhs.ExprType;
     }
 
