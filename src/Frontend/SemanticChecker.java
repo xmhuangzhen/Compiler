@@ -388,13 +388,15 @@ public class SemanticChecker implements ASTVisitor {
             it.IsLvalue = true;
             it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("+") || it.op.equals("-")){
-            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("+/- type isn't int.",it.pos);
             it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("!")){
-            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int") && !it.expr.ExprType.getTypeName().equals("bool"))
+                throw new semanticError("! type isn't int/bool.",it.pos);
             it.ExprType = new NonArrayTypeNode("bool",it.pos);
         } else if(it.op.equals("~")){
-            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int"))
+                throw new semanticError("~ type isn't int.",it.pos);
             it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else {
             throw new semanticError("UnaryExprNode type is not correct.", it.pos);
