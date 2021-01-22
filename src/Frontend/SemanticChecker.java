@@ -583,8 +583,8 @@ public class SemanticChecker implements ASTVisitor {
                     throw new semanticError(Long.toString(lArraydefExprNode.dim)+"!="
                     +Long.toString(rArraydefExprNode.dim),it.pos);
             } else {
-                if(lArraydefExprNode.dim != 0)
-                    throw new semanticError("Binary Node type error." ,it.pos);
+                if(lArraydefExprNode.dim != 1)
+                    throw new semanticError("Binary Node type error."+lArraydefExprNode.dim ,it.pos);
             }
         }
         it.ExprType = it.lhs.ExprType;
