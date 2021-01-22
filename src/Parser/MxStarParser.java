@@ -22,9 +22,9 @@ public class MxStarParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, Class=33, Void=34, This=35, New=36, Int=37, Bool=38, String=39, 
-		If=40, Else=41, For=42, While=43, Return=44, Continue=45, Break=46, Identifier=47, 
-		DecimalInteger=48, StringConstant=49, BoolConstant=50, NullConstant=51, 
-		Whitespace=52, Newline=53, BlockComment=54, LineComment=55;
+		True=40, False=41, If=42, Else=43, For=44, While=45, Return=46, Continue=47, 
+		Break=48, Identifier=49, DecimalInteger=50, StringConstant=51, BoolConstant=52, 
+		NullConstant=53, Whitespace=54, Newline=55, BlockComment=56, LineComment=57;
 	public static final int
 		RULE_program = 0, RULE_programUnit = 1, RULE_varDef = 2, RULE_singlevarDef = 3, 
 		RULE_classDef = 4, RULE_constructorDef = 5, RULE_funcDef = 6, RULE_funcType = 7, 
@@ -46,8 +46,8 @@ public class MxStarParser extends Parser {
 			"'.'", "'++'", "'--'", "'!'", "'~'", "'+'", "'-'", "'*'", "'/'", "'%'", 
 			"'<<'", "'>>'", "'>'", "'<'", "'>='", "'<='", "'=='", "'!='", "'&'", 
 			"'|'", "'^'", "'&&'", "'||'", "'class'", "'void'", "'this'", "'new'", 
-			"'int'", "'bool'", "'string'", "'if'", "'else'", "'for'", "'while'", 
-			"'return'", "'continue'", "'break'"
+			"'int'", "'bool'", "'string'", "'true'", "'false'", "'if'", "'else'", 
+			"'for'", "'while'", "'return'", "'continue'", "'break'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -56,10 +56,10 @@ public class MxStarParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, "Class", "Void", 
-			"This", "New", "Int", "Bool", "String", "If", "Else", "For", "While", 
-			"Return", "Continue", "Break", "Identifier", "DecimalInteger", "StringConstant", 
-			"BoolConstant", "NullConstant", "Whitespace", "Newline", "BlockComment", 
-			"LineComment"
+			"This", "New", "Int", "Bool", "String", "True", "False", "If", "Else", 
+			"For", "While", "Return", "Continue", "Break", "Identifier", "DecimalInteger", 
+			"StringConstant", "BoolConstant", "NullConstant", "Whitespace", "Newline", 
+			"BlockComment", "LineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1644,23 +1644,6 @@ public class MxStarParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IdExprContext extends ExpressionContext {
-		public TerminalNode Identifier() { return getToken(MxStarParser.Identifier, 0); }
-		public IdExprContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MxStarListener ) ((MxStarListener)listener).enterIdExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MxStarListener ) ((MxStarListener)listener).exitIdExpr(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MxStarVisitor ) return ((MxStarVisitor<? extends T>)visitor).visitIdExpr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class ConstExprContext extends ExpressionContext {
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
@@ -1677,6 +1660,23 @@ public class MxStarParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MxStarVisitor ) return ((MxStarVisitor<? extends T>)visitor).visitConstExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IdExprContext extends ExpressionContext {
+		public TerminalNode Identifier() { return getToken(MxStarParser.Identifier, 0); }
+		public IdExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MxStarListener ) ((MxStarListener)listener).enterIdExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MxStarListener ) ((MxStarListener)listener).exitIdExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MxStarVisitor ) return ((MxStarVisitor<? extends T>)visitor).visitIdExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1797,15 +1797,6 @@ public class MxStarParser extends Parser {
 				match(This);
 				}
 				break;
-			case Identifier:
-				{
-				_localctx = new IdExprContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(194);
-				match(Identifier);
-				}
-				break;
 			case DecimalInteger:
 			case StringConstant:
 			case BoolConstant:
@@ -1814,8 +1805,17 @@ public class MxStarParser extends Parser {
 				_localctx = new ConstExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(195);
+				setState(194);
 				literal();
+				}
+				break;
+			case Identifier:
+				{
+				_localctx = new IdExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(195);
+				match(Identifier);
 				}
 				break;
 			default:
@@ -2540,7 +2540,7 @@ public class MxStarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u0139\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3;\u0139\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\3\2\7\2(\n\2\f\2\16\2+\13\2\3\2\3\2\3\3\3\3\3\3\5\3\62\n\3"+
@@ -2565,8 +2565,8 @@ public class MxStarParser extends Parser {
 		"\n\23\3\23\7\23\u0123\n\23\f\23\16\23\u0126\13\23\3\23\3\23\3\23\5\23"+
 		"\u012b\n\23\3\23\6\23\u012e\n\23\r\23\16\23\u012f\3\23\3\23\3\23\3\23"+
 		"\3\23\5\23\u0137\n\23\3\23\2\4\26\36\24\2\4\6\b\n\f\16\20\22\24\26\30"+
-		"\32\34\36 \"$\2\n\4\2\')\61\61\3\2\r\16\3\2\17\20\3\2\21\22\3\2\23\25"+
-		"\3\2\26\27\3\2\30\35\3\2\62\65\2\u0163\2)\3\2\2\2\4\61\3\2\2\2\6\63\3"+
+		"\32\34\36 \"$\2\n\4\2\')\63\63\3\2\r\16\3\2\17\20\3\2\21\22\3\2\23\25"+
+		"\3\2\26\27\3\2\30\35\3\2\64\67\2\u0163\2)\3\2\2\2\4\61\3\2\2\2\6\63\3"+
 		"\2\2\2\b>\3\2\2\2\nC\3\2\2\2\fQ\3\2\2\2\16Y\3\2\2\2\20d\3\2\2\2\22f\3"+
 		"\2\2\2\24n\3\2\2\2\26q\3\2\2\2\30|\3\2\2\2\32~\3\2\2\2\34\u00b4\3\2\2"+
 		"\2\36\u00c6\3\2\2\2 \u00fb\3\2\2\2\"\u0103\3\2\2\2$\u0136\3\2\2\2&(\5"+
@@ -2574,87 +2574,87 @@ public class MxStarParser extends Parser {
 		"-\7\2\2\3-\3\3\2\2\2.\62\5\6\4\2/\62\5\n\6\2\60\62\5\16\b\2\61.\3\2\2"+
 		"\2\61/\3\2\2\2\61\60\3\2\2\2\62\5\3\2\2\2\63\64\5\26\f\2\649\5\b\5\2\65"+
 		"\66\7\3\2\2\668\5\b\5\2\67\65\3\2\2\28;\3\2\2\29\67\3\2\2\29:\3\2\2\2"+
-		":<\3\2\2\2;9\3\2\2\2<=\7\4\2\2=\7\3\2\2\2>A\7\61\2\2?@\7\5\2\2@B\5\36"+
-		"\20\2A?\3\2\2\2AB\3\2\2\2B\t\3\2\2\2CD\7#\2\2DE\7\61\2\2EK\7\6\2\2FJ\5"+
+		":<\3\2\2\2;9\3\2\2\2<=\7\4\2\2=\7\3\2\2\2>A\7\63\2\2?@\7\5\2\2@B\5\36"+
+		"\20\2A?\3\2\2\2AB\3\2\2\2B\t\3\2\2\2CD\7#\2\2DE\7\63\2\2EK\7\6\2\2FJ\5"+
 		"\16\b\2GJ\5\6\4\2HJ\5\f\7\2IF\3\2\2\2IG\3\2\2\2IH\3\2\2\2JM\3\2\2\2KI"+
 		"\3\2\2\2KL\3\2\2\2LN\3\2\2\2MK\3\2\2\2NO\7\7\2\2OP\7\4\2\2P\13\3\2\2\2"+
-		"QR\7\61\2\2RT\7\b\2\2SU\5\22\n\2TS\3\2\2\2TU\3\2\2\2UV\3\2\2\2VW\7\t\2"+
-		"\2WX\5\32\16\2X\r\3\2\2\2YZ\5\20\t\2Z[\7\61\2\2[]\7\b\2\2\\^\5\22\n\2"+
+		"QR\7\63\2\2RT\7\b\2\2SU\5\22\n\2TS\3\2\2\2TU\3\2\2\2UV\3\2\2\2VW\7\t\2"+
+		"\2WX\5\32\16\2X\r\3\2\2\2YZ\5\20\t\2Z[\7\63\2\2[]\7\b\2\2\\^\5\22\n\2"+
 		"]\\\3\2\2\2]^\3\2\2\2^_\3\2\2\2_`\7\t\2\2`a\5\32\16\2a\17\3\2\2\2be\7"+
 		"$\2\2ce\5\26\f\2db\3\2\2\2dc\3\2\2\2e\21\3\2\2\2fk\5\24\13\2gh\7\3\2\2"+
 		"hj\5\24\13\2ig\3\2\2\2jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\23\3\2\2\2mk\3\2"+
-		"\2\2no\5\26\f\2op\7\61\2\2p\25\3\2\2\2qr\b\f\1\2rs\5\30\r\2sy\3\2\2\2"+
+		"\2\2no\5\26\f\2op\7\63\2\2p\25\3\2\2\2qr\b\f\1\2rs\5\30\r\2sy\3\2\2\2"+
 		"tu\f\4\2\2uv\7\n\2\2vx\7\13\2\2wt\3\2\2\2x{\3\2\2\2yw\3\2\2\2yz\3\2\2"+
 		"\2z\27\3\2\2\2{y\3\2\2\2|}\t\2\2\2}\31\3\2\2\2~\u0082\7\6\2\2\177\u0081"+
 		"\5\34\17\2\u0080\177\3\2\2\2\u0081\u0084\3\2\2\2\u0082\u0080\3\2\2\2\u0082"+
 		"\u0083\3\2\2\2\u0083\u0085\3\2\2\2\u0084\u0082\3\2\2\2\u0085\u0086\7\7"+
 		"\2\2\u0086\33\3\2\2\2\u0087\u00b5\5\32\16\2\u0088\u00b5\5\6\4\2\u0089"+
-		"\u008a\7*\2\2\u008a\u008b\7\b\2\2\u008b\u008c\5\36\20\2\u008c\u008d\7"+
-		"\t\2\2\u008d\u0090\5\34\17\2\u008e\u008f\7+\2\2\u008f\u0091\5\34\17\2"+
+		"\u008a\7,\2\2\u008a\u008b\7\b\2\2\u008b\u008c\5\36\20\2\u008c\u008d\7"+
+		"\t\2\2\u008d\u0090\5\34\17\2\u008e\u008f\7-\2\2\u008f\u0091\5\34\17\2"+
 		"\u0090\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u00b5\3\2\2\2\u0092\u0093"+
-		"\7,\2\2\u0093\u0095\7\b\2\2\u0094\u0096\5\36\20\2\u0095\u0094\3\2\2\2"+
+		"\7.\2\2\u0093\u0095\7\b\2\2\u0094\u0096\5\36\20\2\u0095\u0094\3\2\2\2"+
 		"\u0095\u0096\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0099\7\4\2\2\u0098\u009a"+
 		"\5\36\20\2\u0099\u0098\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009b\3\2\2\2"+
 		"\u009b\u009d\7\4\2\2\u009c\u009e\5\36\20\2\u009d\u009c\3\2\2\2\u009d\u009e"+
 		"\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a0\7\t\2\2\u00a0\u00b5\5\34\17\2"+
-		"\u00a1\u00a2\7-\2\2\u00a2\u00a3\7\b\2\2\u00a3\u00a4\5\36\20\2\u00a4\u00a5"+
-		"\7\t\2\2\u00a5\u00a6\5\34\17\2\u00a6\u00b5\3\2\2\2\u00a7\u00a9\7.\2\2"+
-		"\u00a8\u00aa\5\36\20\2\u00a9\u00a8\3\2\2\2\u00a9\u00aa\3\2\2\2\u00aa\u00ab"+
-		"\3\2\2\2\u00ab\u00b5\7\4\2\2\u00ac\u00ad\7/\2\2\u00ad\u00b5\7\4\2\2\u00ae"+
-		"\u00af\7\60\2\2\u00af\u00b5\7\4\2\2\u00b0\u00b1\5\36\20\2\u00b1\u00b2"+
-		"\7\4\2\2\u00b2\u00b5\3\2\2\2\u00b3\u00b5\7\4\2\2\u00b4\u0087\3\2\2\2\u00b4"+
-		"\u0088\3\2\2\2\u00b4\u0089\3\2\2\2\u00b4\u0092\3\2\2\2\u00b4\u00a1\3\2"+
-		"\2\2\u00b4\u00a7\3\2\2\2\u00b4\u00ac\3\2\2\2\u00b4\u00ae\3\2\2\2\u00b4"+
-		"\u00b0\3\2\2\2\u00b4\u00b3\3\2\2\2\u00b5\35\3\2\2\2\u00b6\u00b7\b\20\1"+
-		"\2\u00b7\u00b8\7\b\2\2\u00b8\u00b9\5\36\20\2\u00b9\u00ba\7\t\2\2\u00ba"+
-		"\u00c7\3\2\2\2\u00bb\u00bc\7&\2\2\u00bc\u00c7\5$\23\2\u00bd\u00be\t\3"+
-		"\2\2\u00be\u00c7\5\36\20\23\u00bf\u00c0\t\4\2\2\u00c0\u00c7\5\36\20\22"+
-		"\u00c1\u00c2\t\5\2\2\u00c2\u00c7\5\36\20\21\u00c3\u00c7\7%\2\2\u00c4\u00c7"+
-		"\7\61\2\2\u00c5\u00c7\5\"\22\2\u00c6\u00b6\3\2\2\2\u00c6\u00bb\3\2\2\2"+
-		"\u00c6\u00bd\3\2\2\2\u00c6\u00bf\3\2\2\2\u00c6\u00c1\3\2\2\2\u00c6\u00c3"+
-		"\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c5\3\2\2\2\u00c7\u00f8\3\2\2\2\u00c8"+
-		"\u00c9\f\17\2\2\u00c9\u00ca\t\6\2\2\u00ca\u00f7\5\36\20\20\u00cb\u00cc"+
-		"\f\16\2\2\u00cc\u00cd\t\5\2\2\u00cd\u00f7\5\36\20\17\u00ce\u00cf\f\r\2"+
-		"\2\u00cf\u00d0\t\7\2\2\u00d0\u00f7\5\36\20\16\u00d1\u00d2\f\f\2\2\u00d2"+
-		"\u00d3\t\b\2\2\u00d3\u00f7\5\36\20\r\u00d4\u00d5\f\13\2\2\u00d5\u00d6"+
-		"\7\36\2\2\u00d6\u00f7\5\36\20\f\u00d7\u00d8\f\n\2\2\u00d8\u00d9\7\37\2"+
-		"\2\u00d9\u00f7\5\36\20\13\u00da\u00db\f\t\2\2\u00db\u00dc\7 \2\2\u00dc"+
-		"\u00f7\5\36\20\n\u00dd\u00de\f\b\2\2\u00de\u00df\7!\2\2\u00df\u00f7\5"+
-		"\36\20\t\u00e0\u00e1\f\7\2\2\u00e1\u00e2\7\"\2\2\u00e2\u00f7\5\36\20\b"+
-		"\u00e3\u00e4\f\6\2\2\u00e4\u00e5\7\5\2\2\u00e5\u00f7\5\36\20\6\u00e6\u00e7"+
-		"\f\26\2\2\u00e7\u00e8\7\f\2\2\u00e8\u00f7\7\61\2\2\u00e9\u00ea\f\25\2"+
-		"\2\u00ea\u00eb\7\n\2\2\u00eb\u00ec\5\36\20\2\u00ec\u00ed\7\13\2\2\u00ed"+
-		"\u00f7\3\2\2\2\u00ee\u00ef\f\24\2\2\u00ef\u00f7\t\3\2\2\u00f0\u00f1\f"+
-		"\20\2\2\u00f1\u00f3\7\b\2\2\u00f2\u00f4\5 \21\2\u00f3\u00f2\3\2\2\2\u00f3"+
-		"\u00f4\3\2\2\2\u00f4\u00f5\3\2\2\2\u00f5\u00f7\7\t\2\2\u00f6\u00c8\3\2"+
-		"\2\2\u00f6\u00cb\3\2\2\2\u00f6\u00ce\3\2\2\2\u00f6\u00d1\3\2\2\2\u00f6"+
-		"\u00d4\3\2\2\2\u00f6\u00d7\3\2\2\2\u00f6\u00da\3\2\2\2\u00f6\u00dd\3\2"+
-		"\2\2\u00f6\u00e0\3\2\2\2\u00f6\u00e3\3\2\2\2\u00f6\u00e6\3\2\2\2\u00f6"+
-		"\u00e9\3\2\2\2\u00f6\u00ee\3\2\2\2\u00f6\u00f0\3\2\2\2\u00f7\u00fa\3\2"+
-		"\2\2\u00f8\u00f6\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\37\3\2\2\2\u00fa\u00f8"+
-		"\3\2\2\2\u00fb\u0100\5\36\20\2\u00fc\u00fd\7\3\2\2\u00fd\u00ff\5\36\20"+
-		"\2\u00fe\u00fc\3\2\2\2\u00ff\u0102\3\2\2\2\u0100\u00fe\3\2\2\2\u0100\u0101"+
-		"\3\2\2\2\u0101!\3\2\2\2\u0102\u0100\3\2\2\2\u0103\u0104\t\t\2\2\u0104"+
-		"#\3\2\2\2\u0105\u010c\5\30\r\2\u0106\u0107\7\n\2\2\u0107\u0108\5\36\20"+
-		"\2\u0108\u0109\7\13\2\2\u0109\u010b\3\2\2\2\u010a\u0106\3\2\2\2\u010b"+
-		"\u010e\3\2\2\2\u010c\u010a\3\2\2\2\u010c\u010d\3\2\2\2\u010d\u0111\3\2"+
-		"\2\2\u010e\u010c\3\2\2\2\u010f\u0110\7\n\2\2\u0110\u0112\7\13\2\2\u0111"+
-		"\u010f\3\2\2\2\u0112\u0113\3\2\2\2\u0113\u0111\3\2\2\2\u0113\u0114\3\2"+
-		"\2\2\u0114\u0119\3\2\2\2\u0115\u0116\7\n\2\2\u0116\u0117\5\36\20\2\u0117"+
-		"\u0118\7\13\2\2\u0118\u011a\3\2\2\2\u0119\u0115\3\2\2\2\u011a\u011b\3"+
-		"\2\2\2\u011b\u0119\3\2\2\2\u011b\u011c\3\2\2\2\u011c\u0124\3\2\2\2\u011d"+
-		"\u011f\7\n\2\2\u011e\u0120\5\36\20\2\u011f\u011e\3\2\2\2\u011f\u0120\3"+
-		"\2\2\2\u0120\u0121\3\2\2\2\u0121\u0123\7\13\2\2\u0122\u011d\3\2\2\2\u0123"+
-		"\u0126\3\2\2\2\u0124\u0122\3\2\2\2\u0124\u0125\3\2\2\2\u0125\u0137\3\2"+
-		"\2\2\u0126\u0124\3\2\2\2\u0127\u012d\5\30\r\2\u0128\u012a\7\n\2\2\u0129"+
-		"\u012b\5\36\20\2\u012a\u0129\3\2\2\2\u012a\u012b\3\2\2\2\u012b\u012c\3"+
-		"\2\2\2\u012c\u012e\7\13\2\2\u012d\u0128\3\2\2\2\u012e\u012f\3\2\2\2\u012f"+
-		"\u012d\3\2\2\2\u012f\u0130\3\2\2\2\u0130\u0137\3\2\2\2\u0131\u0132\5\30"+
-		"\r\2\u0132\u0133\7\b\2\2\u0133\u0134\7\t\2\2\u0134\u0137\3\2\2\2\u0135"+
-		"\u0137\5\30\r\2\u0136\u0105\3\2\2\2\u0136\u0127\3\2\2\2\u0136\u0131\3"+
-		"\2\2\2\u0136\u0135\3\2\2\2\u0137%\3\2\2\2!)\619AIKT]dky\u0082\u0090\u0095"+
-		"\u0099\u009d\u00a9\u00b4\u00c6\u00f3\u00f6\u00f8\u0100\u010c\u0113\u011b"+
-		"\u011f\u0124\u012a\u012f\u0136";
+		"\u00a1\u00a2\7/\2\2\u00a2\u00a3\7\b\2\2\u00a3\u00a4\5\36\20\2\u00a4\u00a5"+
+		"\7\t\2\2\u00a5\u00a6\5\34\17\2\u00a6\u00b5\3\2\2\2\u00a7\u00a9\7\60\2"+
+		"\2\u00a8\u00aa\5\36\20\2\u00a9\u00a8\3\2\2\2\u00a9\u00aa\3\2\2\2\u00aa"+
+		"\u00ab\3\2\2\2\u00ab\u00b5\7\4\2\2\u00ac\u00ad\7\61\2\2\u00ad\u00b5\7"+
+		"\4\2\2\u00ae\u00af\7\62\2\2\u00af\u00b5\7\4\2\2\u00b0\u00b1\5\36\20\2"+
+		"\u00b1\u00b2\7\4\2\2\u00b2\u00b5\3\2\2\2\u00b3\u00b5\7\4\2\2\u00b4\u0087"+
+		"\3\2\2\2\u00b4\u0088\3\2\2\2\u00b4\u0089\3\2\2\2\u00b4\u0092\3\2\2\2\u00b4"+
+		"\u00a1\3\2\2\2\u00b4\u00a7\3\2\2\2\u00b4\u00ac\3\2\2\2\u00b4\u00ae\3\2"+
+		"\2\2\u00b4\u00b0\3\2\2\2\u00b4\u00b3\3\2\2\2\u00b5\35\3\2\2\2\u00b6\u00b7"+
+		"\b\20\1\2\u00b7\u00b8\7\b\2\2\u00b8\u00b9\5\36\20\2\u00b9\u00ba\7\t\2"+
+		"\2\u00ba\u00c7\3\2\2\2\u00bb\u00bc\7&\2\2\u00bc\u00c7\5$\23\2\u00bd\u00be"+
+		"\t\3\2\2\u00be\u00c7\5\36\20\23\u00bf\u00c0\t\4\2\2\u00c0\u00c7\5\36\20"+
+		"\22\u00c1\u00c2\t\5\2\2\u00c2\u00c7\5\36\20\21\u00c3\u00c7\7%\2\2\u00c4"+
+		"\u00c7\5\"\22\2\u00c5\u00c7\7\63\2\2\u00c6\u00b6\3\2\2\2\u00c6\u00bb\3"+
+		"\2\2\2\u00c6\u00bd\3\2\2\2\u00c6\u00bf\3\2\2\2\u00c6\u00c1\3\2\2\2\u00c6"+
+		"\u00c3\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c5\3\2\2\2\u00c7\u00f8\3\2"+
+		"\2\2\u00c8\u00c9\f\17\2\2\u00c9\u00ca\t\6\2\2\u00ca\u00f7\5\36\20\20\u00cb"+
+		"\u00cc\f\16\2\2\u00cc\u00cd\t\5\2\2\u00cd\u00f7\5\36\20\17\u00ce\u00cf"+
+		"\f\r\2\2\u00cf\u00d0\t\7\2\2\u00d0\u00f7\5\36\20\16\u00d1\u00d2\f\f\2"+
+		"\2\u00d2\u00d3\t\b\2\2\u00d3\u00f7\5\36\20\r\u00d4\u00d5\f\13\2\2\u00d5"+
+		"\u00d6\7\36\2\2\u00d6\u00f7\5\36\20\f\u00d7\u00d8\f\n\2\2\u00d8\u00d9"+
+		"\7\37\2\2\u00d9\u00f7\5\36\20\13\u00da\u00db\f\t\2\2\u00db\u00dc\7 \2"+
+		"\2\u00dc\u00f7\5\36\20\n\u00dd\u00de\f\b\2\2\u00de\u00df\7!\2\2\u00df"+
+		"\u00f7\5\36\20\t\u00e0\u00e1\f\7\2\2\u00e1\u00e2\7\"\2\2\u00e2\u00f7\5"+
+		"\36\20\b\u00e3\u00e4\f\6\2\2\u00e4\u00e5\7\5\2\2\u00e5\u00f7\5\36\20\6"+
+		"\u00e6\u00e7\f\26\2\2\u00e7\u00e8\7\f\2\2\u00e8\u00f7\7\63\2\2\u00e9\u00ea"+
+		"\f\25\2\2\u00ea\u00eb\7\n\2\2\u00eb\u00ec\5\36\20\2\u00ec\u00ed\7\13\2"+
+		"\2\u00ed\u00f7\3\2\2\2\u00ee\u00ef\f\24\2\2\u00ef\u00f7\t\3\2\2\u00f0"+
+		"\u00f1\f\20\2\2\u00f1\u00f3\7\b\2\2\u00f2\u00f4\5 \21\2\u00f3\u00f2\3"+
+		"\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\u00f5\3\2\2\2\u00f5\u00f7\7\t\2\2\u00f6"+
+		"\u00c8\3\2\2\2\u00f6\u00cb\3\2\2\2\u00f6\u00ce\3\2\2\2\u00f6\u00d1\3\2"+
+		"\2\2\u00f6\u00d4\3\2\2\2\u00f6\u00d7\3\2\2\2\u00f6\u00da\3\2\2\2\u00f6"+
+		"\u00dd\3\2\2\2\u00f6\u00e0\3\2\2\2\u00f6\u00e3\3\2\2\2\u00f6\u00e6\3\2"+
+		"\2\2\u00f6\u00e9\3\2\2\2\u00f6\u00ee\3\2\2\2\u00f6\u00f0\3\2\2\2\u00f7"+
+		"\u00fa\3\2\2\2\u00f8\u00f6\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\37\3\2\2"+
+		"\2\u00fa\u00f8\3\2\2\2\u00fb\u0100\5\36\20\2\u00fc\u00fd\7\3\2\2\u00fd"+
+		"\u00ff\5\36\20\2\u00fe\u00fc\3\2\2\2\u00ff\u0102\3\2\2\2\u0100\u00fe\3"+
+		"\2\2\2\u0100\u0101\3\2\2\2\u0101!\3\2\2\2\u0102\u0100\3\2\2\2\u0103\u0104"+
+		"\t\t\2\2\u0104#\3\2\2\2\u0105\u010c\5\30\r\2\u0106\u0107\7\n\2\2\u0107"+
+		"\u0108\5\36\20\2\u0108\u0109\7\13\2\2\u0109\u010b\3\2\2\2\u010a\u0106"+
+		"\3\2\2\2\u010b\u010e\3\2\2\2\u010c\u010a\3\2\2\2\u010c\u010d\3\2\2\2\u010d"+
+		"\u0111\3\2\2\2\u010e\u010c\3\2\2\2\u010f\u0110\7\n\2\2\u0110\u0112\7\13"+
+		"\2\2\u0111\u010f\3\2\2\2\u0112\u0113\3\2\2\2\u0113\u0111\3\2\2\2\u0113"+
+		"\u0114\3\2\2\2\u0114\u0119\3\2\2\2\u0115\u0116\7\n\2\2\u0116\u0117\5\36"+
+		"\20\2\u0117\u0118\7\13\2\2\u0118\u011a\3\2\2\2\u0119\u0115\3\2\2\2\u011a"+
+		"\u011b\3\2\2\2\u011b\u0119\3\2\2\2\u011b\u011c\3\2\2\2\u011c\u0124\3\2"+
+		"\2\2\u011d\u011f\7\n\2\2\u011e\u0120\5\36\20\2\u011f\u011e\3\2\2\2\u011f"+
+		"\u0120\3\2\2\2\u0120\u0121\3\2\2\2\u0121\u0123\7\13\2\2\u0122\u011d\3"+
+		"\2\2\2\u0123\u0126\3\2\2\2\u0124\u0122\3\2\2\2\u0124\u0125\3\2\2\2\u0125"+
+		"\u0137\3\2\2\2\u0126\u0124\3\2\2\2\u0127\u012d\5\30\r\2\u0128\u012a\7"+
+		"\n\2\2\u0129\u012b\5\36\20\2\u012a\u0129\3\2\2\2\u012a\u012b\3\2\2\2\u012b"+
+		"\u012c\3\2\2\2\u012c\u012e\7\13\2\2\u012d\u0128\3\2\2\2\u012e\u012f\3"+
+		"\2\2\2\u012f\u012d\3\2\2\2\u012f\u0130\3\2\2\2\u0130\u0137\3\2\2\2\u0131"+
+		"\u0132\5\30\r\2\u0132\u0133\7\b\2\2\u0133\u0134\7\t\2\2\u0134\u0137\3"+
+		"\2\2\2\u0135\u0137\5\30\r\2\u0136\u0105\3\2\2\2\u0136\u0127\3\2\2\2\u0136"+
+		"\u0131\3\2\2\2\u0136\u0135\3\2\2\2\u0137%\3\2\2\2!)\619AIKT]dky\u0082"+
+		"\u0090\u0095\u0099\u009d\u00a9\u00b4\u00c6\u00f3\u00f6\u00f8\u0100\u010c"+
+		"\u0113\u011b\u011f\u0124\u012a\u012f\u0136";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

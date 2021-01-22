@@ -527,7 +527,7 @@ public class SemanticChecker implements ASTVisitor {
         } else if(gScope.checkFuncName(tmpIdentifier)){
             it.ExprType = gScope.getTypeNodeFromFuncName(tmpIdentifier,it.pos);
         } else {
-            throw new semanticError("IdExprNode type wrong" + tmpIdentifier,it.pos);
+            throw new semanticError("IdExprNode type wrong" +"["+ tmpIdentifier+"]"+it.ExprText,it.pos);
         }
     }
 

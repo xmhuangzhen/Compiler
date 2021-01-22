@@ -70,8 +70,8 @@ expression
     | exprl=expression op='||' exprr=expression                #binaryExpr
     | <assoc=right> exprl=expression '=' exprr=expression               #assignExpr
     | This                                                  #thisExpr
-    | Identifier                                            #idExpr
     | literal                                               #constExpr
+    | Identifier                                            #idExpr
     ;
 
 exprList : expression (',' expression)* ;
@@ -100,8 +100,8 @@ Int : 'int';
 Bool : 'bool';
 String : 'string';
 fragment Null : 'null';
-fragment True : 'true';
-fragment False : 'false';
+ True : 'true';
+ False : 'false';
 
 If : 'if';
 Else : 'else';

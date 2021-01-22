@@ -237,19 +237,19 @@ public interface MxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArraydefExpr(MxStarParser.ArraydefExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code idExpr}
-	 * labeled alternative in {@link MxStarParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdExpr(MxStarParser.IdExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code constExpr}
 	 * labeled alternative in {@link MxStarParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitConstExpr(MxStarParser.ConstExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code idExpr}
+	 * labeled alternative in {@link MxStarParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdExpr(MxStarParser.IdExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxStarParser#exprList}.
 	 * @param ctx the parse tree
