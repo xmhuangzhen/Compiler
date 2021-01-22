@@ -29,6 +29,10 @@ public class Scope {
         this.inLoop = 0;
         if(parentScope != null) this.inLoop = parentScope.inLoop;
         this.inClass = false;
+        if(parentScope != null && parentScope.inClass) {
+            this.inClass = true;
+            this.ClassType = parentScope.ClassType;
+        }
     }
 
     public Scope parentScope() {

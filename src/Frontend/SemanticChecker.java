@@ -162,7 +162,7 @@ public class SemanticChecker implements ASTVisitor {
             it.classDefScope.consDef = tmpconsDefNode;
         }
 
-        if(it.classDefScope.consDef.parDefs.size() != 0){
+        if(it.classDefScope.consDef != null && it.classDefScope.consDef.parDefs.size() != 0){
             throw new semanticError("The construction function should not have par.", it.pos);
         }
 
@@ -375,7 +375,7 @@ public class SemanticChecker implements ASTVisitor {
             it.IsLvalue = true;
             it.ExprType = currentScope.ClassType ;
         } else {
-            throw new semanticError("this miss", it.pos);
+            throw new semanticError("this miss"+currentScope.inClass+currentScope.inFunc, it.pos);
         }
     }
 
@@ -500,8 +500,7 @@ public class SemanticChecker implements ASTVisitor {
             throw new semanticError("MAN shouldn't be non array "+"["+it.ExprText+"]"
                     +(gScope.types.get("string") instanceof ClassTypeNode),it.pos);
         } else{
-            throw new semanticError("MemberAccNode has wrong type."+
-                    "["+it.ExprText+"]"+"{"+tmpTypeNode.getTypeName()+"}",it.pos);
+            throw new semanticError("MemberAccNode has wrong type.",it.pos);
         }
     }
 
