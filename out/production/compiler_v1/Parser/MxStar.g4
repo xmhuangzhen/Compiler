@@ -96,12 +96,19 @@ Void : 'void';
 This : 'this';
 New : 'new';
 
+
+BoolConstant : True | False;
+DecimalInteger : [1-9] [0-9]* | '0' ;
+StringConstant :  '"' ('\\n' | '\\\\' | '\\"' | .)*? '"' ;
+Identifier : [a-zA-Z] [a-zA-Z_0-9]* ;
+NullConstant : Null ;
+
 Int : 'int';
 Bool : 'bool';
 String : 'string';
-fragment Null : 'null';
- True : 'true';
- False : 'false';
+Null : 'null';
+True : 'true';
+False : 'false';
 
 If : 'if';
 Else : 'else';
@@ -111,15 +118,6 @@ Return : 'return';
 Continue : 'continue';
 Break : 'break';
 
-Identifier : [a-zA-Z] [a-zA-Z_0-9]* ;
-
-DecimalInteger : [1-9] [0-9]* | '0' ;
-
-StringConstant :  '"' ('\\n' | '\\\\' | '\\"' | .)*? '"' ;
-
-BoolConstant : True | False;
-
-NullConstant : Null ;
 
 Whitespace : [ \t]+ -> skip ;
 
