@@ -632,6 +632,8 @@ public class SemanticChecker implements ASTVisitor {
             } else {
                 throw new semanticError("ArrayDefExprNode of type is not array/",it.pos);
             }
+        } else{
+            it.dim = ((ArraydefExprNode) it.arr).dim-1;
         }
         if(!it.index.ExprType.getTypeName().equals("int"))
             throw new semanticError("ArraydefExprNode of index is not int type", it.pos);
