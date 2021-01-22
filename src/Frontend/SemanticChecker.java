@@ -571,6 +571,9 @@ public class SemanticChecker implements ASTVisitor {
         String lhsTypeName = it.lhs.ExprType.getTypeName();
         String rhsTypeName = it.rhs.ExprType.getTypeName();
 
+        if(!it.lhs.IsLvalue)
+            throw new semanticError("Assign Node lhs should be lvalue",it.pos);
+
         if(!lhsTypeName.equals(rhsTypeName))
             throw new semanticError("BinaryNode should be equal",it.pos);
 
