@@ -1,16 +1,23 @@
 /*
 Test Package: Sema_Local_Preview
-Test Target: Array
-Author: 16' Boyu Tian
-Time: 2019-11-11
+Test Target: Function
+Author: Admin
+Time: 2020-02-11
 Verdict: Fail
-Comment: Assignment with different dimension.
+Comment: Return type doesn't match in function foo_1.
 Origin Package: Semantic Pretest
 */
-int main()
-{
-    int[][][][] a = new int[1][2][3][4];
-    int[] b = new int[5];
-    int c = b[a];
+
+int[] foo(){
+    return new int[10];
+}
+
+int[][] foo_1(int[] args){
+    return args;
+}
+
+int main() {
+    int[] a = foo();
+    int[] b = foo_1(a);
     return 0;
 }
