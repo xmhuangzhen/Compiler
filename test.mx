@@ -1,6 +1,8 @@
-int func(int a){
-	return a;
-}
+int n,m,a;
 int main(){
+    n = getInt();
+    m = getInt();
+    a = getInt();
+    
     return 0;
 }

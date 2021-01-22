@@ -53,6 +53,7 @@ expression
     : '('expression')'                                           #subExpr
     | Identifier                                            #idExpr
     | literal                                               #constExpr
+    | expression '(' exprList? ')'                     #funccal
     | exprl=expression op=('>' | '<' | '>=' | '<=' | '==' | '!=' ) exprr=expression               #binaryExpr
     | exprl=expression op=('*' | '/' | '%') exprr=expression            #binaryExpr
     | exprl=expression op=('+' | '-') exprr=expression                  #binaryExpr
@@ -71,7 +72,6 @@ expression
     | <assoc=right> New  newType                        #newExpr
     | expression '.' Identifier                     #memberAcc
     | arr=expression '[' index = expression ']'         #arraydefExpr
-    | expression '(' exprList? ')'                     #funccal
     ;
 
 exprList : expression (',' expression)* ;

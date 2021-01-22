@@ -396,11 +396,12 @@ public class SemanticChecker implements ASTVisitor {
             ////////////////////////////////////////////
         } else if(funcName instanceof IdExprNode){
             funcName.accept(this);
-            if(!currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)){
+            if(!currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)
+            && !gScope.checkFuncName(((IdExprNode) funcName).Identifier)){
                 throw new semanticError("FuncName doesn't exist",it.pos);
             }
         } else {
-            throw new semanticError("Func cal name error.",it.pos);
+            throw new semanticError("Func cal name error."+it.ExprText, it.pos);
         }
 
         //(2) check par
@@ -415,7 +416,10 @@ public class SemanticChecker implements ASTVisitor {
                     break;
                 }
         } else {
-            tmpfuncDefNode = currentScope.funcs.get(((IdExprNode) funcName).Identifier);
+            if(currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true))
+                tmpfuncDefNode = currentScope.funcs.get(((IdExprNode) funcName).Identifier);
+            else
+                tmpfuncDefNode = gScope.declared_func.get(((IdExprNode)funcName).Identifier);
         }
 
         if(tmpfuncDefNode == null) throw new semanticError("The func name doesn't exist.",it.pos);
@@ -471,19 +475,27 @@ public class SemanticChecker implements ASTVisitor {
     }
 
     @Override
-    public void visit(IdExprNode it){
+    public void visit(IdExprNode it) {
         String tmpIdentifier = it.Identifier;
 
-        if(!currentScope.containsVariable(tmpIdentifier,true)){
-            String checkString;
-            checkString = "#"+tmpIdentifier+"#"+currentScope.members.containsKey("a")+"]";
-            throw new semanticError("IdExprNode's identifier doesn't exist." + checkString,it.pos);
-        } else {
+        if(currentScope.containsVariable(tmpIdentifier,true)) {
             it.IsLvalue = true;
-            it.ExprType = currentScope.getVariableTypeNode(tmpIdentifier,true);
-            if(it.ExprType == null){
-                it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier,it.pos);
+            it.ExprType = currentScope.getVariableTypeNode(tmpIdentifier, true);
+            if (it.ExprType == null) {
+                it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier, it.pos);
             }
+        } else if(gScope.checkVarName(tmpIdentifier)){
+            it.IsLvalue = true;
+            it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier, it.pos);
+        } else if(currentScope.containsFuncName(tmpIdentifier,true)){
+            it.ExprType = currentScope.getFuncTypeNode(tmpIdentifier,true);
+            if (it.ExprType == null) {
+                it.ExprType = gScope.getTypeNodeFromFuncName(tmpIdentifier, it.pos);
+            }
+        } else if(gScope.checkFuncName(tmpIdentifier)){
+            it.ExprType = gScope.getTypeNodeFromFuncName(tmpIdentifier,it.pos);
+        } else {
+            throw new semanticError("IdExprNode type wrong" + tmpIdentifier,it.pos);
         }
     }
 
@@ -523,6 +535,7 @@ public class SemanticChecker implements ASTVisitor {
         it.lhs.accept(this);
         String lhsTypeName = it.lhs.ExprType.getTypeName();
         String rhsTypeName = it.rhs.ExprType.getTypeName();
+//        throw new semanticError(lhsTypeName+rhsTypeName,it.pos);
         if(!lhsTypeName.equals(rhsTypeName) && !lhsTypeName.equals("null") && !rhsTypeName.equals("null"))
             throw new semanticError("BinaryNode should be equal",it.pos);
         it.ExprType = it.lhs.ExprType;

@@ -149,4 +149,9 @@ public class globalScope extends Scope {
         if (declared_var.containsKey(name)) return declared_var.get(name);
         throw new semanticError("no such type: " + name, pos);
     }
+    public TypeNode getTypeNodeFromFuncName(String name, position pos) {
+        if (declared_func.containsKey(name)) return declared_func.get(name).funcType;
+        throw new semanticError("no such type: " + name, pos);
+    }
+
 }

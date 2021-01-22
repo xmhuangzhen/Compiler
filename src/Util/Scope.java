@@ -35,27 +35,32 @@ public class Scope {
     }
 
     public boolean containsVariable(String name, boolean lookUpon) {
-        if (members.containsKey(name)) return true;
+        if (members != null && members.containsKey(name)) return true;
         else if (parentScope != null && lookUpon)
             return parentScope.containsVariable(name, true);
         else return false;
     }
 
     public TypeNode getVariableTypeNode(String name, boolean lookUpon) {
-        if (members.containsKey(name)) return members.get(name);
+        if (members != null && members.containsKey(name)) return members.get(name);
         else if (parentScope != null && lookUpon)
             return parentScope.getVariableTypeNode(name, true);
         else return null;
     }
 
-
     public boolean containsFuncName(String name, boolean lookUpon) {
-        if (funcs.containsKey(name)) return true;
+        if (funcs != null && funcs.containsKey(name)) return true;
         else if (parentScope != null && lookUpon)
             return parentScope.containsFuncName(name, true);
         else return false;
     }
 
+    public TypeNode getFuncTypeNode(String name, boolean lookUpon) {
+        if (funcs != null && funcs.containsKey(name)) return funcs.get(name).funcType;
+        else if (parentScope != null && lookUpon)
+            return parentScope.getFuncTypeNode(name, true);
+        else return null;
+    }
 
     public boolean checkVarNameList(varDefStmtNode tmpvarDefStmtNode){
         for(singlevarDefStmtNode tmpNode : tmpvarDefStmtNode.stmts){
