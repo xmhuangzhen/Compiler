@@ -26,6 +26,7 @@ public class ArrayTypeNode extends TypeNode {
         visitor.visit(this);
     }
 
+
     @Override
     public String toString(){
         return "ArrayTypeNode # " + baseType.getTypeName() + dimension;

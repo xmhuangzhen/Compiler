@@ -571,9 +571,22 @@ public class SemanticChecker implements ASTVisitor {
         it.lhs.accept(this);
         String lhsTypeName = it.lhs.ExprType.getTypeName();
         String rhsTypeName = it.rhs.ExprType.getTypeName();
-//        throw new semanticError(lhsTypeName+rhsTypeName,it.pos);
-        if(!lhsTypeName.equals(rhsTypeName) && !lhsTypeName.equals("null") && !rhsTypeName.equals("null"))
+
+        if(!lhsTypeName.equals(rhsTypeName))
             throw new semanticError("BinaryNode should be equal",it.pos);
+
+        if(it.lhs instanceof ArraydefExprNode){
+            ArraydefExprNode lArraydefExprNode = (ArraydefExprNode) it.lhs;
+            if(it.rhs instanceof ArraydefExprNode){
+                ArraydefExprNode rArraydefExprNode = (ArraydefExprNode) it.rhs;
+                if(lArraydefExprNode.dim != rArraydefExprNode.dim)
+                    throw new semanticError(Long.toString(lArraydefExprNode.dim)+"!="
+                    +Long.toString(rArraydefExprNode.dim),it.pos);
+            } else {
+                if(lArraydefExprNode.dim != 0)
+                    throw new semanticError("Binary Node type error." ,it.pos);
+            }
+        }
         it.ExprType = it.lhs.ExprType;
     }
 
@@ -608,16 +621,20 @@ public class SemanticChecker implements ASTVisitor {
     }
 
     @Override
-    public void visit(ArraydefExprNode it){
+    public void visit(ArraydefExprNode it) {
         it.arr.accept(this);
         it.index.accept(this);
-        if(!(it.arr.ExprType instanceof ArrayTypeNode))
-            throw new semanticError("ArraydefExprNode is not array type", it.pos);
+
+        if (!(it.arr instanceof ArraydefExprNode)) {
+            TypeNode tmpNode = currentScope.getVariableTypeNode(it.arr.ExprText,true);
+            if(tmpNode instanceof ArrayTypeNode){
+                it.dim = ((ArrayTypeNode) tmpNode).dimension;
+            } else {
+                throw new semanticError("ArrayDefExprNode of type is not array/",it.pos);
+            }
+        }
         if(!it.index.ExprType.getTypeName().equals("int"))
             throw new semanticError("ArraydefExprNode of index is not int type", it.pos);
-        if(it.dim != ((ArrayTypeNode) it.arr.ExprType).dimension)
-            throw new semanticError(Long.toString(it.dim)+","
-                    +Long.toString(((ArrayTypeNode) it.arr.ExprType).dimension), it.pos);
         it.IsLvalue = true;
         it.ExprType = it.arr.ExprType;
     }

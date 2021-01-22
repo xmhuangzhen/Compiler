@@ -9,8 +9,8 @@ public class ArraydefExprNode extends ExprNode{
 
     public ArraydefExprNode(String Text, position pos){
         super(Text,null,pos);
-        if(arr instanceof ArraydefExprNode) dim = ((ArraydefExprNode) arr).dim + 1;
-        else dim = 1;
+        if(arr instanceof ArraydefExprNode) dim = ((ArraydefExprNode) arr).dim - 1;
+
     }
 
     @Override
