@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class constructorDefNode extends StmtNode {
     public ArrayList<varDefStmtNode> varDefs;
-    public HashMap<String, String> parDefs;//varname, type
+    public HashMap<String, TypeNode> parDefs;//varname, typenode
     public ArrayList<StmtNode> stmts;
     public String FuncName;
 

@@ -18,6 +18,7 @@ public class Scope {
 
     public Scope(Scope parentScope) {
         this.members = new HashMap<>();
+        this.funcs = new HashMap<>();
         this.parentScope = parentScope;
         this.inFunc = false;
         this.inLoop = false;
@@ -59,6 +60,13 @@ public class Scope {
         if (funcs != null && funcs.containsKey(name)) return funcs.get(name).funcType;
         else if (parentScope != null && lookUpon)
             return parentScope.getFuncTypeNode(name, true);
+        else return null;
+    }
+
+    public funcDefNode getfuncDefNode(String name, boolean lookUpon) {
+        if (funcs != null && funcs.containsKey(name)) return funcs.get(name);
+        else if (parentScope != null && lookUpon)
+            return parentScope.getfuncDefNode(name, true);
         else return null;
     }
 

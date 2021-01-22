@@ -107,6 +107,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
         return node;
     }
 
+
     @Override
     public ASTNode visitNonarraytypedef(MxStarParser.NonarraytypedefContext ctx) {
         TypeNode node;
@@ -155,8 +156,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitNarrayType(MxStarParser.NarrayTypeContext ctx) {
-        NonArrayTypeNode node = new NonArrayTypeNode(ctx.nonarraytypedef().getText(), new position(ctx));
-        return node;
+        return visit(ctx.nonarraytypedef());
     }
 
     @Override
@@ -384,5 +384,24 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
         return node;
     }
 
+    @Override
+    public ASTNode visitConstructorDef(MxStarParser.ConstructorDefContext ctx) {
+        constructorDefNode node = new constructorDefNode(ctx.Identifier().getText(),new position(ctx));
+        currentScope = new Scope(currentScope);
 
+        if(ctx.parDefList() != null){
+            for(var par : ctx.parDefList().parVarDef()){
+                singlevarDefStmtNode tmp = (singlevarDefStmtNode) visit(par);
+                if(tmp != null) node.parDefs.put(tmp.varname,tmp.typeNode);
+                else throw new semanticError("par is null",new position(ctx));
+            }
+        }
+
+        for(var stmt : ctx.suite().statement()){
+            StmtNode tmpStmtNode = (StmtNode) visit(stmt);
+            if(tmpStmtNode != null) node.stmts.add(tmpStmtNode);
+        }
+
+        return node;
+    }
 }

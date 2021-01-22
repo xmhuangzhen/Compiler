@@ -370,19 +370,19 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(UnaryExprNode it){
         it.expr.accept(this);
         if(it.op.equals("++") || it.op.equals("--")){
-            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
-            if(!it.IsLvalue) throw new semanticError("++/-- is not lvalue.", it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            if(!it.expr.IsLvalue) throw new semanticError("++/-- is not lvalue.", it.pos);
             it.IsLvalue = true;
-            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+            it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("+") || it.op.equals("-")){
-            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
-            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else if(it.op.equals("!")){
-            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
-            it.expr.ExprType = new NonArrayTypeNode("bool",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.ExprType = new NonArrayTypeNode("bool",it.pos);
         } else if(it.op.equals("~")){
-            if(!it.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
-            it.expr.ExprType = new NonArrayTypeNode("int",it.pos);
+            if(!it.expr.ExprType.getTypeName().equals("int")) throw new semanticError("++/-- type isn't int.",it.pos);
+            it.ExprType = new NonArrayTypeNode("int",it.pos);
         } else {
             throw new semanticError("UnaryExprNode type is not correct.", it.pos);
         }
@@ -392,6 +392,7 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(FunccalExprNode it){
         //(1) check func name
         ExprNode funcName = it.funcName;
+
         if(funcName instanceof MemberAccExprNode){
             funcName.accept(this);
             ////////////////////////////////////////////
@@ -410,6 +411,7 @@ public class SemanticChecker implements ASTVisitor {
 
         funcDefNode tmpfuncDefNode = null;
         if(funcName instanceof MemberAccExprNode){///////////////////////////
+           // throw new semanticError("["+it.funcName.ExprText+","+((MemberAccExprNode)it.funcName).ExprType.getTypeName()+"]", it.pos);
             classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).Identifier);
             for(var tmpNode: tmpclassDefNode.funcDefs)
                 if(tmpNode.funcName.equals(((MemberAccExprNode)funcName).Identifier)) {
@@ -417,10 +419,14 @@ public class SemanticChecker implements ASTVisitor {
                     break;
                 }
         } else {
-            if(currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true))
-                tmpfuncDefNode = currentScope.funcs.get(((IdExprNode) funcName).Identifier);
-            else
-                tmpfuncDefNode = gScope.declared_func.get(((IdExprNode)funcName).Identifier);
+            if(currentScope.containsFuncName(((IdExprNode) funcName).Identifier,true)) {
+                tmpfuncDefNode = currentScope.getfuncDefNode(((IdExprNode) funcName).Identifier, true);
+           // throw new semanticError("Here-1.",it.pos);
+            }
+            else {
+                tmpfuncDefNode = gScope.declared_func.get(((IdExprNode) funcName).Identifier);
+           // throw new semanticError("Here",it.pos);
+            }
         }
 
         if(tmpfuncDefNode == null) throw new semanticError("The func name doesn't exist.",it.pos);
@@ -459,19 +465,25 @@ public class SemanticChecker implements ASTVisitor {
         TypeNode tmpTypeNode = it.expr.ExprType;
 
         if(tmpTypeNode instanceof ArrayTypeNode){
-            if(!tmpIdentifier.equals("size")) throw new semanticError("ArrayTypeNode doesn't have the func.",it.pos);
             it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);/////////////////////////////
-        } else if(tmpTypeNode instanceof ClassTypeNode){
+        } else if(tmpTypeNode instanceof ClassTypeNode) {
             ClassTypeNode tmpClassTypeNode = (ClassTypeNode) tmpTypeNode;
             classDefNode tmpclassDefNode = gScope.declared_class.get(tmpClassTypeNode.getTypeName());
-            if(tmpclassDefNode.funcDefs.contains(tmpIdentifier)){
-                it.ExprType = new FuncTypeNode(tmpIdentifier,it.pos);
-            } else if(tmpclassDefNode.varDefs.contains(tmpIdentifier)){
+            classScope tmpScope = tmpclassDefNode.classDefScope;
+
+            if (tmpScope.containsFuncName(tmpIdentifier,true)) {
+                it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);
+            } else if (tmpScope.containsVariable(tmpIdentifier,true)) {
                 it.IsLvalue = true;
                 it.ExprType = tmpClassTypeNode;
-            } else throw new semanticError("MemacccNode has wrong in classType.",it.pos);
+            } else {
+                throw new semanticError("MemacccNode has wrong in classType."+tmpclassDefNode.className, it.pos);
+            }
+        } else if(tmpTypeNode instanceof NonArrayTypeNode){
+            throw new semanticError("MAN shouldn't be non array "+"["+it.ExprText+"]"
+                    +(gScope.types.get("string") instanceof ClassTypeNode),it.pos);
         } else{
-            throw new semanticError("MemberAccNode has wrong type.",it.pos);
+            throw new semanticError("MemberAccNode has wrong type."+"["+it.ExprText+"]"+"{"+tmpTypeNode.getTypeName()+"}",it.pos);
         }
     }
 
@@ -483,11 +495,16 @@ public class SemanticChecker implements ASTVisitor {
             it.IsLvalue = true;
             it.ExprType = currentScope.getVariableTypeNode(tmpIdentifier, true);
             if (it.ExprType == null) {
-                it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier, it.pos);
+                throw new semanticError("current scope doesn't exist",it.pos);
+//                it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier, it.pos);
             }
+//            if(it.ExprType.getTypeName().equals("string")){
+  //              throw new semanticError("it is string"+(it.ExprType instanceof ClassTypeNode)+"{"+it.ExprText+"}",it.pos);
+    //        }
         } else if(gScope.checkVarName(tmpIdentifier)){
             it.IsLvalue = true;
             it.ExprType = gScope.getTypeNodeFromName(tmpIdentifier, it.pos);
+            if(it.ExprType == null)throw new semanticError("gscope doesn't have it.",it.pos);
         } else if(currentScope.containsFuncName(tmpIdentifier,true)){
             it.ExprType = currentScope.getFuncTypeNode(tmpIdentifier,true);
             if (it.ExprType == null) {

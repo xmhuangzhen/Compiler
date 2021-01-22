@@ -1,26 +1,14 @@
-int p;
-int q;
-int r;
-int x = 0;
-int y = 0;
-int z = 0;
-int n;
-int i;
-int main()
-{	//int p,q,r,x=0,y=0,z=0,n,i;
-	n = getInt();
-    //scanf("%d", &n);
-	for(i=0;i<n;i++)
-	{	p = getInt();
-        q = getInt();
-        r = getInt();
-        //scanf("%d %d %d", &p,&q,&r);
-		x = x + p; 
-        y = y + q;
-        z = z + r;
+int t,l,i;
+string s;
+int main(){
+	t = getInt();
+    for(i=0;i<t;++i){
+        s = getString();
+		l = s.length();
+//		if(l > 10)
+  //          println(s.substring(0, 1) + toString(l-2) + s.substring(l-1, l));
+	//	else
+      //      println(s);
 	}
-if(x==0 && y==0&& z==0)
-print("YES");
-else print("NO");
+
 }
- 

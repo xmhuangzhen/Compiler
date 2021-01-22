@@ -66,11 +66,13 @@ public class globalScope extends Scope {
 
         //(3) put string class
         classDefNode tmpclassDefNode = new classDefNode("string", pos);
+        tmpclassDefNode.classDefScope = new classScope(this,"string");
 
         //函数：int length();
         //使用：<StringIdentifier>.length();
         tmpfuncDefNode = new funcDefNode("length", new FuncTypeNode("int", pos),pos);
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+        tmpclassDefNode.classDefScope.funcs.put("length",tmpfuncDefNode);
 
         //函数：string substring(int left, int right);
         //使用：<StringIdentifier>.substring(left, right);
@@ -78,12 +80,15 @@ public class globalScope extends Scope {
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("left",null,new NonArrayTypeNode("int",pos),pos));
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("right",null,new NonArrayTypeNode("int",pos),pos));
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+        tmpclassDefNode.classDefScope.funcs.put("substring",tmpfuncDefNode);
 
         //函数：int parseInt();
         //使用：<StringIdentifier>.parseInt();
         //作用：返回一个整数，这个整数应该是该字符串的最长前缀。如果该字符串没有一个前缀是整数，结果未定义。如果该整数超界，结果也未定义。
         tmpfuncDefNode = new funcDefNode("parseInt", new FuncTypeNode("int", pos),pos);
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+        tmpclassDefNode.classDefScope.funcs.put("parseInt",tmpfuncDefNode);
+
 
         //函数：int ord(int pos);
         //使用：<StringIdentifier>.ord(pos);
@@ -91,12 +96,14 @@ public class globalScope extends Scope {
         tmpfuncDefNode = new funcDefNode("ord", new FuncTypeNode("int", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("pos",null,new NonArrayTypeNode("int",pos),pos));
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
+        tmpclassDefNode.classDefScope.funcs.put("ord",tmpfuncDefNode);
+
 
         //常量字符串不具有内建方法，使用内建方法的常量字符串未定义。
 
         declared_class.put("string",tmpclassDefNode);
-
     }
+
 
     public boolean checkVarName(String varname){
         return declared_var.containsKey(varname);
@@ -153,5 +160,39 @@ public class globalScope extends Scope {
         if (declared_func.containsKey(name)) return declared_func.get(name).funcType;
         throw new semanticError("no such type: " + name, pos);
     }
+
+
+    public void defineVariable(String name, TypeNode typeNode, position pos) {
+        if (declared_var.containsKey(name))
+            throw new semanticError("Semantic Error: variable redefine: "+name, pos);
+        declared_var.put(name, typeNode);
+    }
+
+    public boolean containsVariable(String name, boolean lookUpon) {
+        if (declared_var != null && declared_var.containsKey(name)) return true;
+        else return false;
+    }
+
+    public TypeNode getVariableTypeNode(String name, boolean lookUpon) {
+        if (declared_var != null && declared_var.containsKey(name)) return declared_var.get(name);
+        else return null;
+    }
+
+    public boolean containsFuncName(String name, boolean lookUpon) {
+        if (declared_func != null && declared_func.containsKey(name)) return true;
+        else return false;
+    }
+
+    public TypeNode getFuncTypeNode(String name, boolean lookUpon) {
+        if (declared_func != null && declared_func.containsKey(name)) return declared_func.get(name).funcType;
+        else return null;
+    }
+
+    public funcDefNode getfuncDefNode(String name, boolean lookUpon) {
+        if (declared_func != null && declared_func.containsKey(name)) return declared_func.get(name);
+        else return null;
+    }
+
+
 
 }
