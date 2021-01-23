@@ -1,32 +1,43 @@
 /*
 Test Package: Sema_Local_Preview
-Test Target: codeforces
-Author: Pikachu
-Time: 2020-02-02
+Test Target: Symbol
+Author: 15' Nayun Xu
+Time: 2019-10-20
 Verdict: Success
-Origin Package: Codeforces 1145A #52445759
+Origin Package: Semantic Extended
 */
-int n;
-int[] a = new int[20];
-int jud(int x){
-	int i,j;
-	for(i=0;i<n/x;i++){
-		bool flag=false;
-		for(j=0;j<x-1;j++){
-			if(a[i*x+j]>a[i*x+j+1])flag=true;
-		}
-		if(!flag)return 1;
+class A{
+	A(){}
+	B x;
+	string abc;
+	int aabc(int abc) {
+		return abc;
 	}
-	return 0;
-}
-int i;
-int main(){
-	n = getInt();
-	for(i=0;i<n;i++) a[i] = getInt();
-	for(i=n; i > 0;i = i / 2)
-        if(jud(i) > 0){
-            print(toString(i));
-            return 0;
-        }
-	return 0;
+};
+
+class B {
+	B(){
+
+	}
+	void D() {
+
+	}
+	A x;
+	B y;
+	void t() {
+		this.D();
+	}
+};
+
+class f{
+
+};
+
+int main() {
+	int [  ] ff = new int[1 ];
+	f g;
+	int [  ][  ][ ] fg = new int[4][ ][	];
+	string String;
+	String = toString(getInt());
+	println(toString(String.length()));
 }

@@ -1,12 +1,8 @@
 package Frontend;
 
 import AST.*;
-import Util.Scope;
-import Util.classScope;
+import Util.*;
 import Util.error.semanticError;
-import Util.globalScope;
-import Util.position;
-
 
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
@@ -30,6 +26,14 @@ public class SemanticChecker implements ASTVisitor {
                 if(gScope.checkVarName(tmpNode.className)){
                     throw new semanticError("The class name is existed.", tmpNode.pos);
                 }
+
+                gScope.types.put(tmpNode.className, tmpTypeNode);
+                gScope.declared_class.put(tmpNode.className,tmpNode);
+            }
+
+        for (ProgramUnitNode tmpProgNode : it.ProgramDefs)
+            if(tmpProgNode instanceof classDefNode){
+                classDefNode tmpNode = (classDefNode) tmpProgNode;
 
                 //(2.1)put func declare
                 for(funcDefNode tmpFuncDefs : tmpNode.funcDefs){
@@ -74,9 +78,7 @@ public class SemanticChecker implements ASTVisitor {
                     throw new semanticError("The construction function should not have par.", it.pos);
                 }
 
-
-                gScope.types.put(tmpNode.className, tmpTypeNode);
-                gScope.declared_class.put(tmpNode.className,tmpNode);
+                gScope.declared_class.replace(tmpNode.className, tmpNode);
             }
 
         //(3) function
@@ -109,15 +111,16 @@ public class SemanticChecker implements ASTVisitor {
                     throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
                 }
              //   gScope.addVarList(tmpNode);
-            } else if(tmpProgNode instanceof funcDefNode){
-           //     gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
-           //     gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
-            //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())+"]",it.pos);
-            } else if(tmpProgNode instanceof classDefNode){
-             //   gScope.declared_class.put(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
             }
             currentScope = gScope;
             tmpProgNode.accept(this);
+            if(tmpProgNode instanceof funcDefNode){
+                gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+                gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+                //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())+"]",it.pos);
+            } else if(tmpProgNode instanceof classDefNode){
+                gScope.declared_class.replace(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
+            }
         }
 
         // check int main()
@@ -130,6 +133,8 @@ public class SemanticChecker implements ASTVisitor {
         if(!gScope.checkMainPar()){
             throw new semanticError("The main() function doesn't have the correct par.", new position(0,0));
         }
+
+
     }
 
     @Override
@@ -217,9 +222,9 @@ public class SemanticChecker implements ASTVisitor {
         for(funcDefNode tmpNode : it.funcDefs) {
             tmpNode.accept(this);
         }
-        for(varDefStmtNode tmpNode : it.varDefs) {
-            tmpNode.accept(this);
-        }
+//        for(varDefStmtNode tmpNode : it.varDefs) {
+  //          tmpNode.accept(this);
+    //    }
         if(it.classDefScope.consDef != null)
             it.classDefScope.consDef.accept(this);
 
