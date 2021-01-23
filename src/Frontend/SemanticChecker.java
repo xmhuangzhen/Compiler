@@ -22,12 +22,19 @@ public class SemanticChecker implements ASTVisitor {
                 classDefNode tmpNode = (classDefNode) tmpProgNode;
                 ClassTypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
 
+                if(tmpNode.className.equals("main")){
+                    throw new semanticError("class name cannot be main",it.pos);
+                }
+
                 tmpNode.classDefScope = new classScope(gScope, tmpNode.className);
                 tmpNode.classDefScope.inClass = true;
                 tmpNode.classDefScope.ClassType = new ClassTypeNode(tmpNode.className,it.pos);
 
                 if(gScope.checkVarName(tmpNode.className)){
                     throw new semanticError("The class name is existed.", tmpNode.pos);
+                }
+                if(gScope.declared_class.containsKey(tmpNode.className)){
+                    throw new semanticError("The class name exists", tmpNode.pos);
                 }
 
                 gScope.types.put(tmpNode.className, tmpTypeNode);
@@ -38,9 +45,6 @@ public class SemanticChecker implements ASTVisitor {
             if(tmpProgNode instanceof classDefNode){
                 classDefNode tmpNode = (classDefNode) tmpProgNode;
 
-                if(tmpNode.className.equals("main")){
-                    throw new semanticError("class name cannot be main",it.pos);
-                }
 
                 //(2.1)put func declare
                 for(funcDefNode tmpFuncDefs : tmpNode.funcDefs){
