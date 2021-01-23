@@ -564,7 +564,24 @@ public class SemanticChecker implements ASTVisitor {
         TypeNode tmpTypeNode = it.expr.ExprType;
 
         if(tmpTypeNode instanceof ArrayTypeNode){
-            it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);/////////////////////////////
+            TypeNode tmpBaseTypeNode = ((ArrayTypeNode) tmpTypeNode).baseType;
+            if(it.expr instanceof ArraydefExprNode){
+                if(((ArraydefExprNode) it.expr).dim != 1)
+                    throw new semanticError("Memacc dim should be 1",it.pos);
+                classDefNode tmpclassDefNode = gScope.declared_class.get(tmpBaseTypeNode.getTypeName());
+                if(tmpclassDefNode.classDefScope.containsVariable(tmpIdentifier,true)){
+                    it.ExprType = tmpclassDefNode.classDefScope.getVariableTypeNode(tmpIdentifier,true);
+                } else if(tmpclassDefNode.classDefScope.containsFuncName(tmpIdentifier,true)){
+                    it.ExprType = tmpclassDefNode.classDefScope.getFuncTypeNode(tmpIdentifier,true);
+                } else {
+                    throw new semanticError("Memacc wrong",it.pos);
+                }
+
+
+            } else {
+                ////////////////////////
+                throw new semanticError("Memacc arrtype error",it.pos);
+            }
         } else if(tmpTypeNode instanceof ClassTypeNode) {
             ClassTypeNode tmpClassTypeNode = (ClassTypeNode) tmpTypeNode;
             classDefNode tmpclassDefNode = gScope.declared_class.get(tmpClassTypeNode.getTypeName());
@@ -578,13 +595,15 @@ public class SemanticChecker implements ASTVisitor {
                 it.ExprType = tmpScope.getVariableTypeNode(tmpIdentifier,true);
             } else {
                 throw new semanticError("MemacccNode has wrong in classType."+tmpclassDefNode.className+"\n"
-                        +it.ExprText+","+tmpIdentifier, it.pos);
+                        +it.ExprText+"\n"+tmpIdentifier+"\n"
+                        +tmpclassDefNode.className, it.pos);
             }
         } else if(tmpTypeNode instanceof NonArrayTypeNode){
             throw new semanticError("MAN shouldn't be non array "+"["+it.ExprText+"]"
                     +(gScope.types.get("string") instanceof ClassTypeNode),it.pos);
-        } else{
-            throw new semanticError("MemberAccNode has wrong type.",it.pos);
+        } else if(tmpTypeNode != null){
+             throw new semanticError("MemberAccNode has wrong type.\n"+
+                     it.expr.ExprType.getTypeName()+"\n",it.pos);
         }
     }
 
