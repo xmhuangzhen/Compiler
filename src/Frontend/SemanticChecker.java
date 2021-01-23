@@ -16,16 +16,65 @@ public class SemanticChecker implements ASTVisitor {
     public void visit(RootNode it) {
         //(1) create global scope
         gScope = new globalScope(null);
-        currentScope = gScope;
 
         //(2) class
         for(ProgramUnitNode tmpProgNode : it.ProgramDefs)
             if(tmpProgNode instanceof classDefNode){
                 classDefNode tmpNode = (classDefNode) tmpProgNode;
                 ClassTypeNode tmpTypeNode = new ClassTypeNode(tmpNode.className,tmpNode.pos);
+
+                tmpNode.classDefScope = new classScope(gScope, tmpNode.className);
+                tmpNode.classDefScope.inClass = true;
+                tmpNode.classDefScope.ClassType = new ClassTypeNode(tmpNode.className,it.pos);
+
                 if(gScope.checkVarName(tmpNode.className)){
                     throw new semanticError("The class name is existed.", tmpNode.pos);
                 }
+
+                //(2.1)put func declare
+                for(funcDefNode tmpFuncDefs : tmpNode.funcDefs){
+                    funcDefNode tmpfuncDefNode = new funcDefNode(tmpFuncDefs.funcName,tmpFuncDefs.funcType, tmpFuncDefs.pos);
+                    if(tmpNode.classDefScope.checkFuncName(tmpFuncDefs.funcName)){
+                        throw new semanticError("The function's name exists.", tmpFuncDefs.pos);
+                    }
+
+                    for(singlevarDefStmtNode tmpPar : tmpFuncDefs.parDefs){
+                        tmpfuncDefNode.parDefs.add(tmpPar);
+                    }
+
+                    tmpNode.classDefScope.funcs.put(tmpFuncDefs.funcName,tmpfuncDefNode);
+                }
+
+                //(2.2) put var declare
+                for(var tmpvarDefs : tmpNode.varDefs) {
+//                    varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpvarDefs.varTypeNode, tmpvarDefs.pos);
+                    if (tmpNode.classDefScope.checkVarNameList(tmpvarDefs)) {
+                        throw new semanticError("The variable's name exists.", tmpNode.pos);
+                    }
+                    if (!gScope.checkVarTypeList(tmpvarDefs)) {
+                        throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
+                    }
+                    tmpNode.classDefScope.addVarList(tmpvarDefs);
+                }
+
+                //(2.3) put constructor
+                if(tmpNode.tmpconsDefs.size() > 1){
+                    throw new semanticError("The class has more than one constructor.", it.pos);
+                }
+
+                for(constructorDefNode tmpconsDefs : tmpNode.tmpconsDefs){
+                    constructorDefNode tmpconsDefNode = new constructorDefNode(tmpNode.className, tmpNode.pos);
+                    if(!tmpconsDefs.FuncName.equals(tmpNode.className)){
+                        throw new semanticError("The type of constructor function is incorrect.", tmpNode.pos);
+                    }
+                    tmpNode.classDefScope.consDef = tmpconsDefNode;
+                }
+
+                if(tmpNode.classDefScope.consDef != null && tmpNode.classDefScope.consDef.parDefs.size() != 0){
+                    throw new semanticError("The construction function should not have par.", it.pos);
+                }
+
+
                 gScope.types.put(tmpNode.className, tmpTypeNode);
                 gScope.declared_class.put(tmpNode.className,tmpNode);
             }
@@ -49,25 +98,26 @@ public class SemanticChecker implements ASTVisitor {
 
         //(4) variables
         for(ProgramUnitNode tmpProgNode : it.ProgramDefs) {
-            tmpProgNode.accept(this);
             if (tmpProgNode instanceof varDefStmtNode) {
                 varDefStmtNode tmpNode = (varDefStmtNode) tmpProgNode;
 
                 varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode, tmpNode.pos);
-                if (gScope.checkVarNameList(tmpvarDefStmtNode)) {
+                if (gScope.checkVarNameList(tmpNode)) {
                     throw new semanticError("The variable's name exists.", tmpNode.pos);
                 }
-                if (!gScope.checkVarTypeList(tmpvarDefStmtNode)) {
+                if (!gScope.checkVarTypeList(tmpNode)) {
                     throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
                 }
-                gScope.addVarList(tmpvarDefStmtNode);
+                gScope.addVarList(tmpNode);
             } else if(tmpProgNode instanceof funcDefNode){
-                gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
-                gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+           //     gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
+           //     gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
             //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())+"]",it.pos);
             } else if(tmpProgNode instanceof classDefNode){
-                gScope.declared_class.put(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
+             //   gScope.declared_class.put(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
             }
+            currentScope = gScope;
+            tmpProgNode.accept(this);
         }
 
         // check int main()
@@ -98,8 +148,10 @@ public class SemanticChecker implements ASTVisitor {
         }
         it.varTypeNode.accept(this);
         if (!it.stmts.isEmpty()) {
-            for (singlevarDefStmtNode stmt : it.stmts)
+            for (singlevarDefStmtNode stmt : it.stmts) {
                 stmt.accept(this);
+            //    currentScope.defineVariable(stmt.varname,stmt.typeNode,it.pos);
+            }
         }
     }
 
@@ -110,18 +162,14 @@ public class SemanticChecker implements ASTVisitor {
         if (!gScope.checkVarType(it.typeNode.getTypeName())){
             throw new semanticError("The var type doesn't exist", it.pos);
         }
-        currentScope.defineVariable(it.varname, it.typeNode, it.pos);
+//        currentScope.defineVariable(it.varname, it.typeNode, it.pos);
     }
 
     @Override
     public void visit(classDefNode it){
-        it.classDefScope = new classScope(gScope, it.className);
-        it.classDefScope.inClass = true;
-        it.classDefScope.ClassType = new ClassTypeNode(it.className,it.pos);
-
 
         //(1) functions
-        for(funcDefNode tmpNode : it.funcDefs){
+/*        for(funcDefNode tmpNode : it.funcDefs){
             funcDefNode tmpfuncDefNode = new funcDefNode(tmpNode.funcName, tmpNode.funcType, tmpNode.pos);
             if(it.classDefScope.checkFuncName(tmpNode.funcName)){
                 throw new semanticError("The function's name exists.", tmpNode.pos);
@@ -132,9 +180,9 @@ public class SemanticChecker implements ASTVisitor {
             tmpfuncDefNode.parDefs.addAll(tmpNode.parDefs);
             it.classDefScope.funcs.put(tmpNode.funcName,tmpfuncDefNode);
         }
-
+*/
         //(2) variables
-        for(varDefStmtNode tmpNode : it.varDefs){
+  /*      for(varDefStmtNode tmpNode : it.varDefs){
 
             varDefStmtNode tmpvarDefStmtNode = new varDefStmtNode(tmpNode.varTypeNode,tmpNode.pos);
             if(gScope.checkVarNameList(tmpvarDefStmtNode) ){
@@ -148,9 +196,9 @@ public class SemanticChecker implements ASTVisitor {
             }
             it.classDefScope.addVarList(tmpvarDefStmtNode);
         }
-
+*/
         //(3) constructor
-        if(it.tmpconsDefs.size() > 1){
+  /*      if(it.tmpconsDefs.size() > 1){
             throw new semanticError("The class has more than one constructor.", it.pos);
         }
         for(constructorDefNode tmpNode : it.tmpconsDefs){
@@ -164,7 +212,7 @@ public class SemanticChecker implements ASTVisitor {
         if(it.classDefScope.consDef != null && it.classDefScope.consDef.parDefs.size() != 0){
             throw new semanticError("The construction function should not have par.", it.pos);
         }
-
+*/
         currentScope = it.classDefScope;
 
         for(funcDefNode tmpNode : it.funcDefs) {
@@ -197,12 +245,12 @@ public class SemanticChecker implements ASTVisitor {
         //////////////////////////////////////////////////
 
         for(var parNode : it.parDefs){
+            currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
             parNode.accept(this);
             if(!gScope.checkVarType(parNode.typeNode.getTypeName())){
                 throw new semanticError("The variable's type doesn't exists.", parNode.pos);
             }
     //        it.parDefs.add(parNode);
-//            currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
         }
 
 
@@ -261,13 +309,14 @@ public class SemanticChecker implements ASTVisitor {
                     if(((ArraydefExprNode) it.value).dim != 1)
                         throw new semanticError("return type wrong",it.pos);
                 }
-            }else if(it.value.ExprType instanceof ArrayTypeNode){
+            } else if(it.value.ExprType instanceof ArrayTypeNode){
                 if(currentScope.FuncReturnType instanceof ArrayTypeNode){
                     if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
                             ((ArrayTypeNode) it.value.ExprType).dimension)
                         throw new semanticError("return type dim wrong", it.pos);
                 } else {
-                    throw new semanticError("return type wrong.",it.pos);
+                    throw new semanticError("return type wrong."+
+                            (it.value instanceof ArraydefExprNode),it.pos);
                 }
             }
         } else{
@@ -462,17 +511,18 @@ public class SemanticChecker implements ASTVisitor {
             tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode)funcName).Identifier,true);
         } else {
             String tmpIden = ((IdExprNode) funcName).Identifier;
-            if(gScope.containsFuncName(tmpIden,true)) {
+            if(currentScope.inClass){
+                tmpfuncDefNode = currentScope.getfuncDefNode(tmpIden,true);
+            } else {
                 tmpfuncDefNode = gScope.declared_func.get(tmpIden);
-         //   throw new semanticError("Here.\n"+tmpIden+"["+tmpfuncDefNode.parDefs.size()+"]\n",it.pos);
-            }
-            else {
-                tmpfuncDefNode = gScope.declared_func.get(((IdExprNode) funcName).Identifier);
            // throw new semanticError("Here",it.pos);
             }
         }
 
-        if(tmpfuncDefNode == null) throw new semanticError("The func name doesn't exist.",it.pos);
+        if(tmpfuncDefNode == null) {
+            throw new semanticError("The func name doesn't exist.\n"+it.ExprText+"\n"+
+                    (funcName instanceof IdExprNode),it.pos);
+        }
 
         if(tmpfuncDefNode.parDefs.size() != it.pars.size()){
             throw new semanticError("par size is not correct\n"+
@@ -517,12 +567,14 @@ public class SemanticChecker implements ASTVisitor {
             classScope tmpScope = tmpclassDefNode.classDefScope;
 
             if (tmpScope.containsFuncName(tmpIdentifier,true)) {
+                ///////////////////////////////////////////attention constructor
                 it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);
             } else if (tmpScope.containsVariable(tmpIdentifier,true)) {
                 it.IsLvalue = true;
-                it.ExprType = tmpClassTypeNode;
+                it.ExprType = tmpScope.getVariableTypeNode(tmpIdentifier,true);
             } else {
-                throw new semanticError("MemacccNode has wrong in classType."+tmpclassDefNode.className, it.pos);
+                throw new semanticError("MemacccNode has wrong in classType."+tmpclassDefNode.className+"\n"
+                        +it.ExprText+","+tmpIdentifier, it.pos);
             }
         } else if(tmpTypeNode instanceof NonArrayTypeNode){
             throw new semanticError("MAN shouldn't be non array "+"["+it.ExprText+"]"
@@ -555,7 +607,7 @@ public class SemanticChecker implements ASTVisitor {
         } else if(gScope.checkFuncName(tmpIdentifier)){
             it.ExprType = gScope.getTypeNodeFromFuncName(tmpIdentifier,it.pos);
         } else {
-            throw new semanticError("IdExprNode type wrong",it.pos);
+            throw new semanticError("IdExprNode type wrong"+it.ExprText,it.pos);
         }
     }
 
@@ -576,7 +628,10 @@ public class SemanticChecker implements ASTVisitor {
             if(!lhsTypeName.equals(rhsTypeName)) throw new semanticError("BinaryNode should be equal",it.pos);
             if(!lhsTypeName.equals("int") && !lhsTypeName.equals("string"))
                 throw new semanticError("BinaryNode of + should be int or string",it.pos);
-            if(it.op.equals("+")) it.ExprType = it.lhs.ExprType;
+            if(it.op.equals("+")) {
+                if(lhsTypeName.equals("int")) it.ExprType = new NonArrayTypeNode("int",it.pos);
+                else it.ExprType = new ClassTypeNode("string",it.pos);
+            }
             else it.ExprType = new NonArrayTypeNode("bool",it.pos);
         } else if(it.op.equals("==") || it.op.equals("!=")){
             if(!lhsTypeName.equals(rhsTypeName) && !lhsTypeName.equals("null") && !rhsTypeName.equals("null"))
