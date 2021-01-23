@@ -53,12 +53,12 @@ expression
     : '('expression')'                                           #subExpr
     | <assoc=right> New  newType                        #newExpr
     | expression '.' Identifier                     #memberAcc
+    | expression '(' exprList? ')'                     #funccal
     | arr=expression '[' index = expression ']'         #arraydefExpr
     | expression op=('++' | '--')                           #selfExpr
     | <assoc=right> op=('++' | '--') expression             #unaryExpr
     | <assoc=right> op=('!' | '~') expression               #unaryExpr
     | <assoc=right> op=('+' | '-') expression               #unaryExpr
-    | expression '(' exprList? ')'                     #funccal
     | exprl=expression op=('*' | '/' | '%') exprr=expression            #binaryExpr
     | exprl=expression op=('+' | '-') exprr=expression                  #binaryExpr
     | exprl=expression op=('<<' | '>>') exprr=expression                  #binaryExpr
