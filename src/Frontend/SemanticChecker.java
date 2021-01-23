@@ -108,7 +108,7 @@ public class SemanticChecker implements ASTVisitor {
                 if (!gScope.checkVarTypeList(tmpNode)) {
                     throw new semanticError("The variable's type doesn't exists.", tmpNode.pos);
                 }
-                gScope.addVarList(tmpNode);
+             //   gScope.addVarList(tmpNode);
             } else if(tmpProgNode instanceof funcDefNode){
            //     gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
            //     gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
@@ -150,7 +150,6 @@ public class SemanticChecker implements ASTVisitor {
         if (!it.stmts.isEmpty()) {
             for (singlevarDefStmtNode stmt : it.stmts) {
                 stmt.accept(this);
-            //    currentScope.defineVariable(stmt.varname,stmt.typeNode,it.pos);
             }
         }
     }
@@ -162,7 +161,7 @@ public class SemanticChecker implements ASTVisitor {
         if (!gScope.checkVarType(it.typeNode.getTypeName())){
             throw new semanticError("The var type doesn't exist", it.pos);
         }
-//        currentScope.defineVariable(it.varname, it.typeNode, it.pos);
+        currentScope.defineVariable(it.varname, it.typeNode, it.pos);
     }
 
     @Override
@@ -245,18 +244,18 @@ public class SemanticChecker implements ASTVisitor {
         //////////////////////////////////////////////////
 
         for(var parNode : it.parDefs){
-            currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
+            //currentScope.defineVariable(parNode.varname,parNode.typeNode, parNode.pos);
+            it.funcScope = currentScope;
             parNode.accept(this);
             if(!gScope.checkVarType(parNode.typeNode.getTypeName())){
                 throw new semanticError("The variable's type doesn't exists.", parNode.pos);
             }
-    //        it.parDefs.add(parNode);
         }
 
 
         for(var tmpstmt : it.stmts){
+            it.funcScope = currentScope;
             tmpstmt.accept(this);
-        //    it.stmts.add(tmpstmt);
         }
 
         it.funcScope = currentScope;
@@ -607,7 +606,8 @@ public class SemanticChecker implements ASTVisitor {
         } else if(gScope.checkFuncName(tmpIdentifier)){
             it.ExprType = gScope.getTypeNodeFromFuncName(tmpIdentifier,it.pos);
         } else {
-            throw new semanticError("IdExprNode type wrong"+it.ExprText,it.pos);
+            throw new semanticError("IdExprNode type wrong"+it.ExprText
+                    +"\n"+currentScope.containsVariable("flag",true),it.pos);
         }
     }
 
