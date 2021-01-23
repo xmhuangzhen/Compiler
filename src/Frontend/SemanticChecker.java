@@ -38,6 +38,10 @@ public class SemanticChecker implements ASTVisitor {
             if(tmpProgNode instanceof classDefNode){
                 classDefNode tmpNode = (classDefNode) tmpProgNode;
 
+                if(tmpNode.className.equals("main")){
+                    throw new semanticError("class name cannot be main",it.pos);
+                }
+
                 //(2.1)put func declare
                 for(funcDefNode tmpFuncDefs : tmpNode.funcDefs){
                     funcDefNode tmpfuncDefNode = new funcDefNode(tmpFuncDefs.funcName,tmpFuncDefs.funcType, tmpFuncDefs.pos);
@@ -140,8 +144,6 @@ public class SemanticChecker implements ASTVisitor {
         if(!gScope.checkMainPar()){
             throw new semanticError("The main() function doesn't have the correct par.", new position(0,0));
         }
-
-
     }
 
     @Override
