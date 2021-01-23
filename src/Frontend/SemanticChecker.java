@@ -609,6 +609,7 @@ public class SemanticChecker implements ASTVisitor {
                     throw new semanticError("Memacc dim should be 1",it.pos);
                 classDefNode tmpclassDefNode = gScope.declared_class.get(tmpBaseTypeNode.getTypeName());
                 if(tmpclassDefNode.classDefScope.containsVariable(tmpIdentifier,true)){
+                    it.IsLvalue = true;
                     it.ExprType = tmpclassDefNode.classDefScope.getVariableTypeNode(tmpIdentifier,true);
                 } else if(tmpclassDefNode.classDefScope.containsFuncName(tmpIdentifier,true)){
                     it.ExprType = tmpclassDefNode.classDefScope.getFuncTypeNode(tmpIdentifier,true);
