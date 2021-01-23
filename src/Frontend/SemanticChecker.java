@@ -332,8 +332,10 @@ public class SemanticChecker implements ASTVisitor {
             if (it.value instanceof ArraydefExprNode){
                 if(currentScope.FuncReturnType instanceof ArrayTypeNode){
                     if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
-                    ((ArraydefExprNode) it.value).dim)
-                        throw new semanticError("return type dim wrong", it.pos);
+                    ((ArraydefExprNode) it.value).dim -1 )
+                        throw new semanticError("return type dim wrong-1\n"+
+                                ((ArrayTypeNode) currentScope.FuncReturnType).dimension +"\n"+
+                                ((ArraydefExprNode) it.value).dim, it.pos);
                 } else {
                     if(((ArraydefExprNode) it.value).dim != 1)
                         throw new semanticError("return type wrong",it.pos);
@@ -342,7 +344,7 @@ public class SemanticChecker implements ASTVisitor {
                 if(currentScope.FuncReturnType instanceof ArrayTypeNode){
                     if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
                             ((ArrayTypeNode) it.value.ExprType).dimension)
-                        throw new semanticError("return type dim wrong", it.pos);
+                        throw new semanticError("return type dim wrong-2", it.pos);
                 } else {
                     throw new semanticError("return type wrong."+
                             (it.value instanceof ArraydefExprNode),it.pos);
@@ -538,6 +540,13 @@ public class SemanticChecker implements ASTVisitor {
             classScope tmpScope = tmpclassDefNode.classDefScope;
 
             tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode)funcName).Identifier,true);
+            if(tmpfuncDefNode == null){
+                if(((MemberAccExprNode) funcName).Identifier.equals("size")){
+                    tmpfuncDefNode = new funcDefNode("size",new NonArrayTypeNode("int",it.pos),it.pos);
+                } else {
+                    throw new semanticError("Func cal memacc error",it.pos);
+                }
+            }
         } else {
             String tmpIden = ((IdExprNode) funcName).Identifier;
             if(currentScope.inClass){
@@ -550,8 +559,9 @@ public class SemanticChecker implements ASTVisitor {
 
         if(tmpfuncDefNode == null) {
             throw new semanticError("The func name doesn't exist.\n"+it.ExprText+"\n"+
-                    (funcName instanceof IdExprNode),it.pos);
+                    (funcName instanceof MemberAccExprNode),it.pos);
         }
+
 
         if(tmpfuncDefNode.parDefs.size() != it.pars.size()){
             throw new semanticError("par size is not correct\n"+
@@ -604,8 +614,11 @@ public class SemanticChecker implements ASTVisitor {
 
 
             } else {
-                ////////////////////////
-                throw new semanticError("Memacc arrtype error",it.pos);
+                if(it.Identifier.equals("size")){
+                    it.ExprType = new NonArrayTypeNode("int",it.pos);
+                } else {
+                    throw new semanticError("Memacc arrtype error", it.pos);
+                }
             }
         } else if(tmpTypeNode instanceof ClassTypeNode) {
             ClassTypeNode tmpClassTypeNode = (ClassTypeNode) tmpTypeNode;
@@ -614,7 +627,8 @@ public class SemanticChecker implements ASTVisitor {
 
             if (tmpScope.containsFuncName(tmpIdentifier,true)) {
                 ///////////////////////////////////////////attention constructor
-                it.ExprType = new FuncTypeNode(tmpIdentifier, it.pos);
+                TypeNode tmpFuncTypeNode = tmpScope.getFuncTypeNode(tmpIdentifier,true);
+                it.ExprType = tmpFuncTypeNode;//new FuncTypeNode(tmpIdentifier, it.pos);
             } else if (tmpScope.containsVariable(tmpIdentifier,true)) {
                 it.IsLvalue = true;
                 it.ExprType = tmpScope.getVariableTypeNode(tmpIdentifier,true);
@@ -628,7 +642,8 @@ public class SemanticChecker implements ASTVisitor {
                     +(gScope.types.get("string") instanceof ClassTypeNode),it.pos);
         } else if(tmpTypeNode != null){
              throw new semanticError("MemberAccNode has wrong type.\n"+
-                     it.expr.ExprType.getTypeName()+"\n",it.pos);
+                     it.expr.ExprType.getTypeName()+"\n"+it.expr.ExprText+"\n"
+                     +(it.expr.ExprType instanceof FuncTypeNode),it.pos);
         }
     }
 

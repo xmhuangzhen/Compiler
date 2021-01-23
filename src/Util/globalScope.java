@@ -32,35 +32,35 @@ public class globalScope extends Scope {
         funcDefNode tmpfuncDefNode;
 
         //函数：void print(string str); 作用：向标准输出流中输出字符串str。
-        tmpfuncDefNode = new funcDefNode("print", new FuncTypeNode("void", pos),pos);
+        tmpfuncDefNode = new funcDefNode("print", new VoidTypeNode("void", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new ClassTypeNode("string",pos),pos));
         declared_func.put("print",tmpfuncDefNode);
 
         //函数：void println(string str); 作用：向标准输出流中输出字符串str，并且在行尾处输出一个换行符。
-        tmpfuncDefNode = new funcDefNode("println", new FuncTypeNode("void", pos),pos);
+        tmpfuncDefNode = new funcDefNode("println", new VoidTypeNode("void", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("str",null,new ClassTypeNode("string",pos),pos));
         declared_func.put("println",tmpfuncDefNode);
 
         //函数：void printInt(int n); 作用：向标准输出流中输出数字n。
-        tmpfuncDefNode = new funcDefNode("printInt", new FuncTypeNode("void", pos),pos);
+        tmpfuncDefNode = new funcDefNode("printInt", new VoidTypeNode("void", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("n",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("printInt",tmpfuncDefNode);
 
         //函数：void printlnInt(int n); 作用：向标准输出流中输出数字n，并且在行尾处输出一个换行符。
-        tmpfuncDefNode = new funcDefNode("printlnInt", new FuncTypeNode("void", pos),pos);
+        tmpfuncDefNode = new funcDefNode("printlnInt", new VoidTypeNode("void", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("n",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("printlnInt",tmpfuncDefNode);
 
         //函数：string getString(); 作用：从标准输入流中读取一行并且返回。
-        tmpfuncDefNode = new funcDefNode("getString", new FuncTypeNode("string", pos),pos);
+        tmpfuncDefNode = new funcDefNode("getString", new ClassTypeNode("string", pos),pos);
         declared_func.put("getString",tmpfuncDefNode);
 
         //函数：int getInt(); 作用：从标准输入流中读取一个整数，遇到空格、回车符、制表符作为分隔，返回这个整数。
-        tmpfuncDefNode = new funcDefNode("getInt", new FuncTypeNode("int", pos),pos);
+        tmpfuncDefNode = new funcDefNode("getInt", new NonArrayTypeNode("int", pos),pos);
         declared_func.put("getInt",tmpfuncDefNode);
 
         //函数：string toString(int i); 作用：把整数i转换为字符串。
-        tmpfuncDefNode = new funcDefNode("toString", new FuncTypeNode("string", pos),pos);
+        tmpfuncDefNode = new funcDefNode("toString", new ClassTypeNode("string", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("i",null,new NonArrayTypeNode("int",pos),pos));
         declared_func.put("toString",tmpfuncDefNode);
 
@@ -70,13 +70,13 @@ public class globalScope extends Scope {
 
         //函数：int length();
         //使用：<StringIdentifier>.length();
-        tmpfuncDefNode = new funcDefNode("length", new FuncTypeNode("int", pos),pos);
+        tmpfuncDefNode = new funcDefNode("length", new NonArrayTypeNode("int", pos),pos);
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
         tmpclassDefNode.classDefScope.funcs.put("length",tmpfuncDefNode);
 
         //函数：string substring(int left, int right);
         //使用：<StringIdentifier>.substring(left, right);
-        tmpfuncDefNode = new funcDefNode("substring", new FuncTypeNode("string", pos),pos);
+        tmpfuncDefNode = new funcDefNode("substring", new ClassTypeNode("string", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("left",null,new NonArrayTypeNode("int",pos),pos));
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("right",null,new NonArrayTypeNode("int",pos),pos));
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
@@ -85,7 +85,7 @@ public class globalScope extends Scope {
         //函数：int parseInt();
         //使用：<StringIdentifier>.parseInt();
         //作用：返回一个整数，这个整数应该是该字符串的最长前缀。如果该字符串没有一个前缀是整数，结果未定义。如果该整数超界，结果也未定义。
-        tmpfuncDefNode = new funcDefNode("parseInt", new FuncTypeNode("int", pos),pos);
+        tmpfuncDefNode = new funcDefNode("parseInt", new NonArrayTypeNode("int", pos),pos);
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
         tmpclassDefNode.classDefScope.funcs.put("parseInt",tmpfuncDefNode);
 
@@ -93,7 +93,7 @@ public class globalScope extends Scope {
         //函数：int ord(int pos);
         //使用：<StringIdentifier>.ord(pos);
         //作用：返回字符串中的第pos位上的字符的ASCII码。下标从0开始编号。
-        tmpfuncDefNode = new funcDefNode("ord", new FuncTypeNode("int", pos),pos);
+        tmpfuncDefNode = new funcDefNode("ord", new NonArrayTypeNode("int", pos),pos);
         tmpfuncDefNode.parDefs.add(new singlevarDefStmtNode("pos",null,new NonArrayTypeNode("int",pos),pos));
         tmpclassDefNode.funcDefs.add(tmpfuncDefNode);
         tmpclassDefNode.classDefScope.funcs.put("ord",tmpfuncDefNode);
