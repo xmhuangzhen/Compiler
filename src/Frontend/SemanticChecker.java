@@ -103,6 +103,9 @@ public class SemanticChecker implements ASTVisitor {
                 if(gScope.checkFuncName(tmpNode.funcName)){
                     throw new semanticError("The function's name exists.", tmpNode.pos);
                 }
+                if(gScope.declared_class.containsKey(tmpNode.funcName)){
+                    throw new semanticError("the Func name cannot equal class name", tmpNode.pos);
+                }
 
                 for(singlevarDefStmtNode tmpPar : tmpNode.parDefs){
                     tmpfuncDefNode.parDefs.add(tmpPar);
@@ -611,18 +614,23 @@ public class SemanticChecker implements ASTVisitor {
         if(tmpTypeNode instanceof ArrayTypeNode){
             TypeNode tmpBaseTypeNode = ((ArrayTypeNode) tmpTypeNode).baseType;
             if(it.expr instanceof ArraydefExprNode){
-                if(((ArraydefExprNode) it.expr).dim != 1)
-                    throw new semanticError("Memacc dim should be 1",it.pos);
-                classDefNode tmpclassDefNode = gScope.declared_class.get(tmpBaseTypeNode.getTypeName());
-                if(tmpclassDefNode.classDefScope.containsVariable(tmpIdentifier,true)){
-                    it.IsLvalue = true;
-                    it.ExprType = tmpclassDefNode.classDefScope.getVariableTypeNode(tmpIdentifier,true);
-                } else if(tmpclassDefNode.classDefScope.containsFuncName(tmpIdentifier,true)){
-                    it.ExprType = tmpclassDefNode.classDefScope.getFuncTypeNode(tmpIdentifier,true);
+                if(((ArraydefExprNode) it.expr).dim != 1) {
+                    if (it.Identifier.equals("size")) {
+                        it.ExprType = new NonArrayTypeNode("int", it.pos);
+                    } else {
+                        throw new semanticError("Memacc dim should be 1", it.pos);
+                    }
                 } else {
-                    throw new semanticError("Memacc wrong",it.pos);
+                    classDefNode tmpclassDefNode = gScope.declared_class.get(tmpBaseTypeNode.getTypeName());
+                    if (tmpclassDefNode.classDefScope.containsVariable(tmpIdentifier, true)) {
+                        it.IsLvalue = true;
+                        it.ExprType = tmpclassDefNode.classDefScope.getVariableTypeNode(tmpIdentifier, true);
+                    } else if (tmpclassDefNode.classDefScope.containsFuncName(tmpIdentifier, true)) {
+                        it.ExprType = tmpclassDefNode.classDefScope.getFuncTypeNode(tmpIdentifier, true);
+                    } else {
+                        throw new semanticError("Memacc wrong", it.pos);
+                    }
                 }
-
 
             } else {
                 if(it.Identifier.equals("size")){
@@ -729,8 +737,18 @@ public class SemanticChecker implements ASTVisitor {
         if(!it.lhs.IsLvalue)
             throw new semanticError("Assign Node lhs should be lvalue",it.pos);
 
-        if(!lhsTypeName.equals(rhsTypeName) && !rhsTypeName.equals("null"))
-            throw new semanticError("BinaryNode should be equal",it.pos);
+        if(!lhsTypeName.equals(rhsTypeName)) {
+            if (rhsTypeName.equals("null")) {
+                if (it.lhs.ExprType instanceof NonArrayTypeNode)
+                    throw new semanticError("BinaryNode should be equal", it.pos);
+                else if (it.lhs instanceof ArraydefExprNode){
+                    if(((ArraydefExprNode) it.lhs).dim == 1)
+                        throw new semanticError("Assign node wrong", it.pos);
+                }
+            } else {
+                throw new semanticError("Assign node type wrong", it.pos);
+            }
+        }
 
         if(it.lhs instanceof ArraydefExprNode){
             ArraydefExprNode lArraydefExprNode = (ArraydefExprNode) it.lhs;
