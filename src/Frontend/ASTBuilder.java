@@ -80,6 +80,13 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
             constructorDefNode tmpconsDefNode = (constructorDefNode) visit(vd);
             node.tmpconsDefs.add(tmpconsDefNode);
             node.consDef = tmpconsDefNode;
+
+            for(var stmt : ctx.constructorDef().get(0).suite().statement()){
+                StmtNode tmpStmtNode = (StmtNode) visit(stmt);
+                if(tmpStmtNode != null) node.consDef.stmts.add(tmpStmtNode);
+            }
+//            throw new semanticError("here"+ctx.constructorDef().get(0).suite().statement().size()
+  //                  ,new position(ctx));
         }
         return node;
     }

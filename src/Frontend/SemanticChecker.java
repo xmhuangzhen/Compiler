@@ -120,7 +120,8 @@ public class SemanticChecker implements ASTVisitor {
             if(tmpProgNode instanceof funcDefNode){
                 gScope.declared_func.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
                 gScope.funcs.replace((((funcDefNode) tmpProgNode).funcName),(funcDefNode) tmpProgNode);
-                //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())+"]",it.pos);
+                //    throw new semanticError("["+Long.toString(((funcDefNode) tmpProgNode).parDefs.size())
+                //    +"]",it.pos);
             } else if(tmpProgNode instanceof classDefNode){
                 gScope.declared_class.replace(((classDefNode) tmpProgNode).className,(classDefNode) tmpProgNode);
             }
@@ -228,8 +229,11 @@ public class SemanticChecker implements ASTVisitor {
 //        for(varDefStmtNode tmpNode : it.varDefs) {
   //          tmpNode.accept(this);
     //    }
-        if(it.classDefScope.consDef != null)
+        it.classDefScope.consDef = it.consDef;
+        if(it.classDefScope.consDef != null) {
             it.classDefScope.consDef.accept(this);
+       //     throw new semanticError("here-2",it.pos);
+        }
 
         currentScope = currentScope.parentScope();
     }
@@ -272,7 +276,13 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(constructorDefNode it) {
-
+        for(var tmp : it.stmts){
+            tmp.accept(this);
+            if(tmp instanceof returnStmtNode){
+                throw new semanticError("constructor cannot have return",it.pos);
+            }
+        }
+        throw new semanticError("\n"+it.stmts.size(),it.pos);
     }
 
     @Override
