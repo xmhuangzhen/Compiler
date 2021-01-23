@@ -1,47 +1,40 @@
 /*
 Test Package: Sema_Local_Preview
 Test Target: Classes
-Author: 15' Bowen Tan
+Author: 15' Lianming Zheng
 Time: 2019-10-20
 Verdict: Success
 Origin Package: Semantic Extended
 */
-class AAA {
-    string str;
-
-    AAA() {
-        str = "abcde";
-    }
-
-    void AAAprint() {
-        print(str);
-        print(toString(str.length()));
-    }
-};
-
-class BBB {
-    AAA a;
-
-    BBB() {
-        a.str = a.str + "1234567890";
-    }
-};
+A a;
+B b;
 
 int main() {
-    int a;
-    int b = a + a * a % a;
+    a = new A;
+    b = new B;
+    A[] a = (new A).many()[0];
+    B[][] b = (new B).many()[1][1].many();
+    return 0;
+}
 
-    BBB[][] bb = new BBB[10][10];
-
-    int i;
-    for (i = 1; i <= 10; i++) {
-        bool i = false;
-        if (i) {
-            print("a");
-        } else {
-            println("b");
-        }
+class A {
+    B b;
+    A one() {
+        return a;
     }
 
-    bb[5][5].a.AAAprint();
-}
+    A[][] many() {
+        return new A[10][10];
+    }
+};
+
+class B {
+    A a;
+    B one() {
+        return b;
+    }
+
+    B[][] many() {
+        return new B[10][10];
+    }
+};

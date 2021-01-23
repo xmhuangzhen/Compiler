@@ -41,6 +41,9 @@ public class SemanticChecker implements ASTVisitor {
                     if(tmpNode.classDefScope.checkFuncName(tmpFuncDefs.funcName)){
                         throw new semanticError("The function's name exists.", tmpFuncDefs.pos);
                     }
+                    if(tmpFuncDefs.funcName.equals(tmpNode.className)){
+                        throw new semanticError("Constructor error", tmpFuncDefs.pos);
+                    }
 
                     for(singlevarDefStmtNode tmpPar : tmpFuncDefs.parDefs){
                         tmpfuncDefNode.parDefs.add(tmpPar);
@@ -759,7 +762,7 @@ public class SemanticChecker implements ASTVisitor {
                 NewExprNode tmpNewExprNode = (NewExprNode) it.arr;
                 it.dim = tmpNewExprNode.dim;
             } else {
-                throw new semanticError("ArrayDefExprNode of type is not array\n",it.pos);
+                throw new semanticError("ArrayDefExprNode of type is not array\n"+it.ExprText,it.pos);
             }
         } else{
             it.dim = ((ArraydefExprNode) it.arr).dim-1;
