@@ -173,7 +173,8 @@ public class SemanticChecker implements ASTVisitor {
         for(varDefStmtNode tmpNode : it.varDefs) {
             tmpNode.accept(this);
         }
-        it.classDefScope.consDef.accept(this);
+        if(it.classDefScope.consDef != null)
+            it.classDefScope.consDef.accept(this);
 
         currentScope = currentScope.parentScope();
     }
@@ -259,6 +260,14 @@ public class SemanticChecker implements ASTVisitor {
                 } else {
                     if(((ArraydefExprNode) it.value).dim != 1)
                         throw new semanticError("return type wrong",it.pos);
+                }
+            }else if(it.value.ExprType instanceof ArrayTypeNode){
+                if(currentScope.FuncReturnType instanceof ArrayTypeNode){
+                    if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
+                            ((ArrayTypeNode) it.value.ExprType).dimension)
+                        throw new semanticError("return type dim wrong", it.pos);
+                } else {
+                    throw new semanticError("return type wrong.",it.pos);
                 }
             }
         } else{
