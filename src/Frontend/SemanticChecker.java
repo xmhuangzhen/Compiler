@@ -327,27 +327,29 @@ public class SemanticChecker implements ASTVisitor {
         }
         if (it.value != null) {
             it.value.accept(this);
-            if (!it.value.ExprType.getTypeName().equals(currentScope.FuncReturnType.getTypeName()))
-                throw new semanticError("Semantic Error: return type not match.", it.value.pos);
-            if (it.value instanceof ArraydefExprNode){
-                if(currentScope.FuncReturnType instanceof ArrayTypeNode){
-                    if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
-                    ((ArraydefExprNode) it.value).dim -1 )
-                        throw new semanticError("return type dim wrong-1\n"+
-                                ((ArrayTypeNode) currentScope.FuncReturnType).dimension +"\n"+
-                                ((ArraydefExprNode) it.value).dim, it.pos);
-                } else {
-                    if(((ArraydefExprNode) it.value).dim != 1)
-                        throw new semanticError("return type wrong",it.pos);
-                }
-            } else if(it.value.ExprType instanceof ArrayTypeNode){
-                if(currentScope.FuncReturnType instanceof ArrayTypeNode){
-                    if(((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
-                            ((ArrayTypeNode) it.value.ExprType).dimension)
-                        throw new semanticError("return type dim wrong-2", it.pos);
-                } else {
-                    throw new semanticError("return type wrong."+
-                            (it.value instanceof ArraydefExprNode),it.pos);
+            if(!it.value.ExprText.equals("null")) {
+                if (!it.value.ExprType.getTypeName().equals(currentScope.FuncReturnType.getTypeName()))
+                    throw new semanticError("Semantic Error: return type not match.", it.value.pos);
+                if (it.value instanceof ArraydefExprNode) {
+                    if (currentScope.FuncReturnType instanceof ArrayTypeNode) {
+                        if (((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
+                                ((ArraydefExprNode) it.value).dim - 1)
+                            throw new semanticError("return type dim wrong-1\n" +
+                                    ((ArrayTypeNode) currentScope.FuncReturnType).dimension + "\n" +
+                                    ((ArraydefExprNode) it.value).dim, it.pos);
+                    } else {
+                        if (((ArraydefExprNode) it.value).dim != 1)
+                            throw new semanticError("return type wrong", it.pos);
+                    }
+                } else if (it.value.ExprType instanceof ArrayTypeNode) {
+                    if (currentScope.FuncReturnType instanceof ArrayTypeNode) {
+                        if (((ArrayTypeNode) currentScope.FuncReturnType).dimension !=
+                                ((ArrayTypeNode) it.value.ExprType).dimension)
+                            throw new semanticError("return type dim wrong-2", it.pos);
+                    } else {
+                        throw new semanticError("return type wrong." +
+                                (it.value instanceof ArraydefExprNode), it.pos);
+                    }
                 }
             }
         } else{
@@ -537,9 +539,11 @@ public class SemanticChecker implements ASTVisitor {
            // throw new semanticError("["+it.funcName.ExprText+","
             // +((MemberAccExprNode)it.funcName).ExprType.getTypeName()+"]", it.pos);
             classDefNode tmpclassDefNode = gScope.declared_class.get(((MemberAccExprNode)funcName).expr.ExprType.getTypeName());
-            classScope tmpScope = tmpclassDefNode.classDefScope;
 
-            tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode)funcName).Identifier,true);
+            if(tmpclassDefNode != null) {
+                classScope tmpScope = tmpclassDefNode.classDefScope;
+                tmpfuncDefNode = tmpScope.getfuncDefNode(((MemberAccExprNode) funcName).Identifier, true);
+            }
             if(tmpfuncDefNode == null){
                 if(((MemberAccExprNode) funcName).Identifier.equals("size")){
                     tmpfuncDefNode = new funcDefNode("size",new NonArrayTypeNode("int",it.pos),it.pos);
