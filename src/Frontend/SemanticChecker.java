@@ -382,12 +382,12 @@ public class SemanticChecker implements ASTVisitor {
                     it.condition.pos);
 
         currentScope = new Scope(currentScope);
-        it.thenStmt.accept(this);
+        if (it.thenStmt != null) it.thenStmt.accept(this);
         currentScope = currentScope.parentScope();
 
         if (it.elseStmt != null) {
             currentScope = new Scope(currentScope);
-            it.elseStmt.accept(this);
+            if(it.elseStmt != null) it.elseStmt.accept(this);
             currentScope = currentScope.parentScope();
         }
     }
