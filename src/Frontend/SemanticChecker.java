@@ -1,8 +1,11 @@
 package Frontend;
 
 import AST.*;
-import Util.*;
+import Util.Scope;
+import Util.classScope;
 import Util.error.semanticError;
+import Util.globalScope;
+import Util.position;
 
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
@@ -772,8 +775,12 @@ public class SemanticChecker implements ASTVisitor {
                 NewExprNode tmpNewExprNode = (NewExprNode) it.arr;
                 it.dim = tmpNewExprNode.dim;
             } else {
-                throw new semanticError("ArrayDefExprNode of type is not array\n"+it.ExprText
-                        +"\n"+(it.arr.ExprType instanceof ArrayTypeNode),it.pos);
+                if(it.arr.ExprType instanceof ArrayTypeNode) {
+                    it.dim = ((ArrayTypeNode) it.arr.ExprType).dimension;
+                } else {
+                    throw new semanticError("ArrayDefExprNode of type is not array\n" + it.ExprText
+                            + "\n" + (it.arr.ExprText) + "\n" +it.index.ExprText+"\n", it.pos);
+                }
             }
         } else{
             it.dim = ((ArraydefExprNode) it.arr).dim-1;
