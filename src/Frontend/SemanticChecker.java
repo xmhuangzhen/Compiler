@@ -279,13 +279,22 @@ public class SemanticChecker implements ASTVisitor {
 
     @Override
     public void visit(constructorDefNode it) {
+        currentScope = new Scope(currentScope);
+        currentScope.inFunc = true;
+        currentScope.FuncReturnType = null;
+
+
         for(var tmp : it.stmts){
+            it.funcScope = currentScope;
             tmp.accept(this);
             if(tmp instanceof returnStmtNode){
-                throw new semanticError("constructor cannot have return",it.pos);
+                if(((returnStmtNode) tmp).value != null)
+                    throw new semanticError("constructor cannot have return",it.pos);
             }
         }
-//        throw new semanticError("\n"+it.stmts.size(),it.pos);
+
+        it.funcScope = currentScope;
+        currentScope = currentScope.parentScope();
     }
 
     @Override
@@ -340,7 +349,7 @@ public class SemanticChecker implements ASTVisitor {
                 }
             }
         } else{
-            if(!currentScope.FuncReturnType.getTypeName().equals("void")){
+            if(currentScope.FuncReturnType != null && !currentScope.FuncReturnType.getTypeName().equals("void")){
                 throw new semanticError("There should be a return value.", it.pos);
             }
         }
@@ -694,19 +703,24 @@ public class SemanticChecker implements ASTVisitor {
         if(!it.lhs.IsLvalue)
             throw new semanticError("Assign Node lhs should be lvalue",it.pos);
 
-        if(!lhsTypeName.equals(rhsTypeName))
+        if(!lhsTypeName.equals(rhsTypeName) && !rhsTypeName.equals("null"))
             throw new semanticError("BinaryNode should be equal",it.pos);
 
         if(it.lhs instanceof ArraydefExprNode){
             ArraydefExprNode lArraydefExprNode = (ArraydefExprNode) it.lhs;
-            if(it.rhs instanceof ArraydefExprNode){
+            if(it.rhs instanceof ArraydefExprNode) {
                 ArraydefExprNode rArraydefExprNode = (ArraydefExprNode) it.rhs;
-                if(lArraydefExprNode.dim != rArraydefExprNode.dim)
-                    throw new semanticError(Long.toString(lArraydefExprNode.dim)+"!="
-                    +Long.toString(rArraydefExprNode.dim),it.pos);
+                if (lArraydefExprNode.dim != rArraydefExprNode.dim)
+                    throw new semanticError(Long.toString(lArraydefExprNode.dim) + "!="
+                            + Long.toString(rArraydefExprNode.dim), it.pos);
                 //throw new semanticError(lArraydefExprNode.dim+","+ rArraydefExprNode.dim,it.pos);
+            } else if(it.rhs instanceof NewExprNode){
+                NewExprNode rNewExprNode = (NewExprNode) it.rhs;
+                if(lArraydefExprNode.dim-1 != rNewExprNode.dim)
+                    throw new semanticError("Assign node New type dim error\n"+lArraydefExprNode.dim+","+rNewExprNode.dim
+                            +"\n"+lArraydefExprNode.ExprText,it.pos);
             } else {
-                if(lArraydefExprNode.dim != 1)
+                if(lArraydefExprNode.dim != 1 && !rhsTypeName.equals("null"))
                     throw new semanticError("Binary Node type error."+lArraydefExprNode.dim ,it.pos);
             }
         }

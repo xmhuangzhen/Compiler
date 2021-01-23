@@ -1,6 +1,6 @@
 package AST;
 
-import Util.position;
+import Util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ public class constructorDefNode extends StmtNode {
     public HashMap<String, TypeNode> parDefs;//varname, typenode
     public ArrayList<StmtNode> stmts;
     public String FuncName;
+    public Scope funcScope;
 
     public constructorDefNode(String FuncName, position pos) {
         super(pos);
