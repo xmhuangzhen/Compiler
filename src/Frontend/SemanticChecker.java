@@ -282,7 +282,7 @@ public class SemanticChecker implements ASTVisitor {
                 throw new semanticError("constructor cannot have return",it.pos);
             }
         }
-        throw new semanticError("\n"+it.stmts.size(),it.pos);
+//        throw new semanticError("\n"+it.stmts.size(),it.pos);
     }
 
     @Override
@@ -772,7 +772,8 @@ public class SemanticChecker implements ASTVisitor {
                 NewExprNode tmpNewExprNode = (NewExprNode) it.arr;
                 it.dim = tmpNewExprNode.dim;
             } else {
-                throw new semanticError("ArrayDefExprNode of type is not array\n"+it.ExprText,it.pos);
+                throw new semanticError("ArrayDefExprNode of type is not array\n"+it.ExprText
+                        +"\n"+(it.arr.ExprType instanceof ArrayTypeNode),it.pos);
             }
         } else{
             it.dim = ((ArraydefExprNode) it.arr).dim-1;
