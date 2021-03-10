@@ -271,162 +271,157 @@ public class IRBuilder implements ASTVisitor {
     public void visit(binaryExprNode it) {
         it.lhs.accept(this);
         it.rhs.accept(this);
+        String RegisterName;
+        Register tmpResult = null;
 
         if(it.op.equals("*")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"mul");
+            RegisterName = "mul";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.mul,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("/")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"sdiv");
+            RegisterName = "sdiv";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.sdiv,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("%")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"srem");
+            RegisterName = "srem";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.srem,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("-")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"sub");
+            RegisterName = "sub";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.sub,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("<<")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"shl");
+            RegisterName = "shl";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.shl,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals(">>")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"ashr");
+            RegisterName = "ashr";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.ashr,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("&")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"and");
+            RegisterName = "and";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.and,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("|")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"or");
+            RegisterName = "or";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.or,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("^")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"ashr");
+            RegisterName = "ashr";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("+")){
+            RegisterName = "add";
             if(it.lhs.ExprType.Typename.equals("int")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"add");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),RegisterName);
                 currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                         binaryOpInstruction.BinaryOperandENUM.add,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"add");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_add");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else {
                 throw new RuntimeException();
             }
         } else if(it.op.equals(">")){
+            RegisterName = "sgt";
             if(it.lhs.ExprType.Typename.equals("int")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"sgt");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.sgt, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"sgt");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sgt");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else {
                 throw new RuntimeException();
             }
         } else if(it.op.equals("<")){
+            RegisterName = "slt";
             if(it.lhs.ExprType.Typename.equals("int")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"slt");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.slt, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"slt");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_slt");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else {
                 throw new RuntimeException();
             }
         } else if(it.op.equals(">=")){
+            RegisterName = "sge";
             if(it.lhs.ExprType.Typename.equals("int")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"sge");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.sge, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"sge");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sge");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else {
                 throw new RuntimeException();
             }
         } else if(it.op.equals("<=")){
+            RegisterName = "sle";
             if(it.lhs.ExprType.Typename.equals("int")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"sle");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.sle, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"sle");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sle");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else {
                 throw new RuntimeException();
             }
         } else if(it.op.equals("==")){
+            RegisterName = "eq";
             if(it.lhs.ExprType.Typename.equals("int")) {
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "eq");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.eq, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("bool")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "eq");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.eq, new IntegerType(IntegerType.IRBitWidth.i1),
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"eq");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_eq");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("null")){
                 if(it.rhs.ExprType.Typename.equals("null")){
                     it.ExprResult = new BooleanConstant(true);
@@ -435,26 +430,24 @@ public class IRBuilder implements ASTVisitor {
                 }
             }
         } else if(it.op.equals("!=")){
+            RegisterName = "ne";
             if(it.lhs.ExprType.Typename.equals("int")) {
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "ne");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.eq, new IntegerType(IntegerType.IRBitWidth.i32),
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("bool")){
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "ne");
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), RegisterName);
                 currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
                         icmpInstruction.IcmpOperandENUM.eq, new IntegerType(IntegerType.IRBitWidth.i1),
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("string")){
-                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"ne");
+                tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
                 IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_ne");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
-                it.ExprResult = tmpResult;
             } else if(it.lhs.ExprType.Typename.equals("null")){
                 if(it.rhs.ExprType.Typename.equals("null")){
                     it.ExprResult = new BooleanConstant(false);
@@ -479,13 +472,12 @@ public class IRBuilder implements ASTVisitor {
             phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = AndandDestBlock;
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"Andand");
+            RegisterName = "Andand";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
             phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
             tmpphiInst.PhiLabel.add(phiBlock1); tmpphiInst.PhiValue.add(new BooleanConstant(false));
             tmpphiInst.PhiLabel.add(phiBlock2); tmpphiInst.PhiValue.add(it.rhs.ExprResult);
             currentBasicBlock.addBasicBlockInst(tmpphiInst);
-
-            it.ExprResult = tmpResult;
         } else if(it.op.equals("||")){
             IRBasicBlock OrorBBlock = new IRBasicBlock(currentFunction,"oror_b_block");
             IRBasicBlock OrorDestBlock = new IRBasicBlock(currentFunction,"oror_dest_block");
@@ -503,17 +495,17 @@ public class IRBuilder implements ASTVisitor {
             phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = OrorDestBlock;
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"Oror");
+            RegisterName = "Oror";
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
             phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
             tmpphiInst.PhiLabel.add(phiBlock1); tmpphiInst.PhiValue.add(new BooleanConstant(true));
             tmpphiInst.PhiLabel.add(phiBlock2); tmpphiInst.PhiValue.add(it.rhs.ExprResult);
             currentBasicBlock.addBasicBlockInst(tmpphiInst);
-
-            it.ExprResult = tmpResult;
-
         } else {
             throw new RuntimeException();
         }
+        it.ExprResult = tmpResult;
+        currentBasicBlock.addBasicBlockRegister(RegisterName,tmpResult);
     }
 
     @Override
@@ -529,6 +521,7 @@ public class IRBuilder implements ASTVisitor {
 
             Register tmpResult = new Register(tmpIRType, "new");
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("new",tmpResult);
         } else if(it.exprTypeNode instanceof ClassTypeNode){
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"Malloc_Result");
@@ -544,6 +537,7 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,tmpMallocResult,
                     currentModule.getIRType(it.ExprType), tmpResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("new",tmpResult);
 
             //call constructor
             String tmpClassName = ((ClassTypeNode) it.exprTypeNode).ClassName;
@@ -560,7 +554,9 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(ThisExprNode it) {
-        //todo
+        IRTypeSystem CurrentClassType = currentModule.getIRType(it.ExprType);
+        it.ExprResult = new Register(CurrentClassType,"this");
+        //whether ptr?
     }
 
     @Override
@@ -574,14 +570,16 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("PreAdd",tmpResult);
         } else if(it.op.equals("--")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"PreAdd");
+            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"PreSub");
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.sub,it.expr.ExprResult,
                     new IntegerConstant(IntegerType.IRBitWidth.i32,1),tmpResult));
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("PreSub",tmpResult);
         } else if(it.op.equals("+")){
             it.ExprResult = it.expr.ExprResult;
         } else if(it.op.equals("-")){
@@ -597,6 +595,7 @@ public class IRBuilder implements ASTVisitor {
                         binaryOpInstruction.BinaryOperandENUM.sub,
                         new IntegerConstant(IntegerType.IRBitWidth.i32,1),it.expr.ExprResult, tmpResult));
                 it.ExprResult = tmpResult;
+                currentBasicBlock.addBasicBlockRegister("Negation",tmpResult);
             }
         } else if(it.op.equals("!")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "not");
@@ -604,12 +603,14 @@ public class IRBuilder implements ASTVisitor {
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
                     new BooleanConstant(true), it.expr.ExprResult, tmpResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("not",tmpResult);
         } else if(it.op.equals("~")){
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "not");
+            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "notb");
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
                     new IntegerConstant(IntegerType.IRBitWidth.i32,-1), it.expr.ExprResult, tmpResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("notb",tmpResult);
         } else {
             throw new RuntimeException();
         }
@@ -617,6 +618,7 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(FunccalExprNode it) {
+        //todo
 
     }
 
@@ -624,46 +626,61 @@ public class IRBuilder implements ASTVisitor {
     public void visit(SelfExprNode it) {
         it.expr.accept(this);
         if(it.op.equals("++")){ //a++
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"PreAdd");
+            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"SelfAdd");
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.add,it.expr.ExprResult,
                     new IntegerConstant(IntegerType.IRBitWidth.i32,1),tmpResult));
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("SelfAdd",tmpResult);
         } else if(it.op.equals("--")) {
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "PreAdd");
+            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "SelfSub");
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                     binaryOpInstruction.BinaryOperandENUM.sub, it.expr.ExprResult,
                     new IntegerConstant(IntegerType.IRBitWidth.i32, 1), tmpResult));
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult, it.expr.ExprResult));
             it.ExprResult = tmpResult;
+            currentBasicBlock.addBasicBlockRegister("SelfSub",tmpResult);
         }
     }
 
     @Override
     public void visit(MemberAccExprNode it) {
         it.expr.accept(this);
+
+        //(1) get the Class Type of the Member
         IRTypeSystem tmpIRType = currentModule.getIRType(it.ExprType);
         if(!(tmpIRType instanceof StructureType))
             throw new RuntimeException();
 
-        int pos = 0;
+        //(2) get the Identifier in the Class
+        IRTypeSystem tmpMemberIRType = null;
+        int tmpMemberIndex = 0;
         for(var tmp : ((StructureType) tmpIRType).StructureMember){
             if(tmp.toString().equals(it.Identifier)){
+                tmpMemberIRType = tmp;
                 break;
             }
+            ++tmpMemberIndex;
         }
 
-
-        //todo
+        //(3) do the getElementPtr inst
+        String RegisterName = "memacc_result";
+        Register tmpResult = new Register(tmpMemberIRType,RegisterName);
+        getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock,it.expr.ExprResult,tmpResult);
+        tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,0));
+        tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,tmpMemberIndex));
+        currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
+        it.ExprResult = tmpResult;
+        currentBasicBlock.addBasicBlockRegister(RegisterName,tmpResult);
     }
 
     @Override
     public void visit(IdExprNode it) {
-            //todo
-
+        //no Identifier in class
+        it.ExprResult = currentBasicBlock.BasicBlockRegister.get(it.Identifier);
     }
 
     @Override
