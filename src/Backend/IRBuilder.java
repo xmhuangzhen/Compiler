@@ -618,8 +618,23 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(FunccalExprNode it) {
-        //todo
+        it.funcName.accept(this);
 
+        //need?
+        for(var tmp : it.pars) tmp.accept(this);
+
+        if(it.funcName instanceof MemberAccExprNode){
+            if(((MemberAccExprNode) it.funcName).Identifier.equals("size") && !(it.ExprType instanceof ClassTypeNode)){
+                //todo
+            } else if(it.ExprType instanceof ClassTypeNode){
+                //todo
+            } else {
+                throw new RuntimeException();
+            }
+        } else {
+            //function which is not in class
+            //todo
+        }
     }
 
     @Override
