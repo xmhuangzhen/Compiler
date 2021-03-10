@@ -1,6 +1,12 @@
 package Frontend;
 
-import AST.*;
+import AST.ASTDefNode.*;
+import AST.ASTExprNode.*;
+import AST.ASTStmtNode.*;
+import AST.ASTTypeNode.*;
+import AST.ASTVisitor;
+import AST.ProgramUnitNode;
+import AST.RootNode;
 import Util.Scope;
 import Util.classScope;
 import Util.error.semanticError;

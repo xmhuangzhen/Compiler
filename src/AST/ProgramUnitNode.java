@@ -1,8 +1,9 @@
 package AST;
 
-import Util.*;
+import AST.ASTStmtNode.StmtNode;
+import Util.position;
 
-public class ProgramUnitNode extends StmtNode{
+public class ProgramUnitNode extends StmtNode {
     public ProgramUnitNode(position pos){
         super(pos);
     }

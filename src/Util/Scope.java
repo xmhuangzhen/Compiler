@@ -1,11 +1,11 @@
 package Util;
 
+import AST.ASTDefNode.*;
+import AST.ASTTypeNode.*;
 import Util.error.semanticError;
 
-import AST.*;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Scope {

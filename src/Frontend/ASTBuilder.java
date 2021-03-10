@@ -1,6 +1,12 @@
 package Frontend;
 
-import AST.*;
+import AST.ASTDefNode.*;
+import AST.ASTStmtNode.*;
+import AST.ASTExprNode.*;
+import AST.ASTTypeNode.*;
+import AST.ASTNode;
+import AST.ProgramUnitNode;
+import AST.RootNode;
 import Parser.MxStarBaseVisitor;
 import Parser.MxStarParser;
 import Util.Scope;
@@ -76,6 +82,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
             node.funcDefs.add(tmpfuncDefNode);
         }
 
+        node.consDef = null;
         for(var vd : ctx.constructorDef()){
             constructorDefNode tmpconsDefNode = (constructorDefNode) visit(vd);
             node.tmpconsDefs.add(tmpconsDefNode);
@@ -354,11 +361,6 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
         IdExprNode node = new IdExprNode(ctx.getText(),new position(ctx));
         node.Identifier = ctx.Identifier().getText();
         return node;
-    }
-
-    @Override
-    public ASTNode visitConstExpr(MxStarParser.ConstExprContext ctx){
-        return visit(ctx.literal());
     }
 
     @Override

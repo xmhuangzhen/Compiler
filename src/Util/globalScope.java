@@ -1,7 +1,8 @@
 package Util;
 
-import AST.*;
-import Util.error.*;
+import AST.ASTDefNode.*;
+import AST.ASTTypeNode.*;
+import Util.error.semanticError;
 
 import java.util.HashMap;
 import java.util.Map;

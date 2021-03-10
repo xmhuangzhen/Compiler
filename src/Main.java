@@ -1,4 +1,5 @@
 import AST.RootNode;
+import Backend.IRBuilder;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import Parser.MxStarLexer;
@@ -39,6 +40,10 @@ public class Main {
             ASTBuilder astBuilder = new ASTBuilder(gScope);
             ASTRoot = (RootNode)astBuilder.visit(parseTreeRoot);
             new SemanticChecker().visit(ASTRoot);
+
+            new IRBuilder(gScope).visit(ASTRoot);
+            //new IRPrinter(System.out).visitFn(f);
+
         } catch (error er) {
             System.err.println(er.toString());
             throw new RuntimeException();

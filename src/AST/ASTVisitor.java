@@ -1,5 +1,11 @@
 package AST;
 
+
+import AST.ASTStmtNode.*;
+import AST.ASTTypeNode.*;
+import AST.ASTExprNode.*;
+import AST.ASTDefNode.*;
+
 public interface ASTVisitor {
     void visit(RootNode it);
     void visit(ProgramUnitNode it);
