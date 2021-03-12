@@ -590,12 +590,12 @@ public class IRBuilder implements ASTVisitor {
                 else
                     throw new RuntimeException();
             } else {
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"Negation");
+                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"minus");
                 currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
                         binaryOpInstruction.BinaryOperandENUM.sub,
                         new IntegerConstant(IntegerType.IRBitWidth.i32,1),it.expr.ExprResult, tmpResult));
                 it.ExprResult = tmpResult;
-                currentBasicBlock.addBasicBlockRegister("Negation",tmpResult);
+                currentBasicBlock.addBasicBlockRegister("minus",tmpResult);
             }
         } else if(it.op.equals("!")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "not");
@@ -619,21 +619,61 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(FunccalExprNode it) {
         it.funcName.accept(this);
-
-        //need?
         for(var tmp : it.pars) tmp.accept(this);
 
         if(it.funcName instanceof MemberAccExprNode){
-            if(((MemberAccExprNode) it.funcName).Identifier.equals("size") && !(it.ExprType instanceof ClassTypeNode)){
-                //todo
-            } else if(it.ExprType instanceof ClassTypeNode){
-                //todo
+            if(it.ExprType instanceof ClassTypeNode){
+                String tmpFuncNameInString = ((ClassTypeNode) it.ExprType).ClassName + "." + ((MemberAccExprNode) it.funcName).Identifier;
+                IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
+                funcDefNode tmpFuncDefNode = gScope.getfuncDefNode(tmpFuncNameInString,true);
+                IRTypeSystem tmpFuncIRType = currentModule.getIRType(tmpFuncDefNode.funcType);
+                Register tmpResult = null;
+                if(!tmpFuncIRType.toString().equals("void")){
+                    tmpResult = new Register(tmpFuncIRType,"funccal");
+                }
+                callInstruction tmpCallInst = new callInstruction(currentBasicBlock,tmpResult,tmpIRFunction);
+                for(var tmp : it.pars){
+                    tmpCallInst.CallParameters.add(tmp.ExprResult);
+                }
+                currentBasicBlock.addBasicBlockInst(tmpCallInst);
+            } else if(((MemberAccExprNode) it.funcName).Identifier.equals("size")){
+                //array.size()
+
+                //turn the funcName into the correct type
+                IROperand tmpFuncResult = it.funcName.ExprResult;
+                if(!(tmpFuncResult.thisType instanceof PointerType)){
+                    Register tmpCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"FuncName_bitcast");
+                    currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,it.funcName.ExprResult,
+                            new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),tmpCastResult));
+                    tmpFuncResult = tmpCastResult;
+                    currentBasicBlock.addBasicBlockRegister("FuncName_bitcast",tmpCastResult);
+                }
+
+                //get the element ptr
+                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"array_size");
+                getElementPtrInstruction tmpGetElementPtr = new getElementPtrInstruction(currentBasicBlock,tmpFuncResult,tmpResult);
+                tmpGetElementPtr.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,-1));
+                currentBasicBlock.addBasicBlockInst(tmpGetElementPtr);
             } else {
                 throw new RuntimeException();
             }
-        } else {
+        } else if(it.funcName instanceof IdExprNode){
             //function which is not in class
-            //todo
+            String tmpFuncNameInString = ((IdExprNode) it.funcName).Identifier;
+            IRFunction tmpIRFunction = currentModule.IRGlobalFunctionTable.get(tmpFuncNameInString);
+            funcDefNode tmpFuncDefNode = gScope.getfuncDefNode(tmpFuncNameInString,true);
+            IRTypeSystem tmpFuncIRType = currentModule.getIRType(tmpFuncDefNode.funcType);
+            Register tmpResult = null;
+            if(!tmpFuncIRType.toString().equals("void")){
+                tmpResult = new Register(tmpFuncIRType,"funccal");
+            }
+            callInstruction tmpCallInst = new callInstruction(currentBasicBlock,tmpResult,tmpIRFunction);
+            for(var tmp : it.pars){
+                tmpCallInst.CallParameters.add(tmp.ExprResult);
+            }
+            currentBasicBlock.addBasicBlockInst(tmpCallInst);
+        } else {
+            throw new RuntimeException();
         }
     }
 
