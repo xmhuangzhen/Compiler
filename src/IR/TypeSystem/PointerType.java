@@ -12,7 +12,7 @@ public class PointerType extends IRTypeSystem{
     }
 
     @Override
-    public int getTypeSize() {
+    public long getTypeSize() {
         return 4;
     }
 

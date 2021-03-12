@@ -16,7 +16,7 @@ public class IntegerType extends IRTypeSystem{
     }
 
     @Override
-    public int getTypeSize() {
+    public long getTypeSize() {
         if(BitWidth == IRBitWidth.i32) return 4;
         else return 1;
     }

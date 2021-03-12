@@ -4,7 +4,7 @@ import IR.Operand.IROperand;
 
 public class VoidType extends IRTypeSystem{
     @Override
-    public int getTypeSize(){
+    public long getTypeSize(){
         return 0;
     }
 

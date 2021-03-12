@@ -14,8 +14,8 @@ public class StructureType extends IRTypeSystem{
     }
 
     @Override
-    public int getTypeSize() {
-        int res = 0;
+    public long getTypeSize() {
+        long res = 0;
         for(IRTypeSystem tmpMember : StructureMember){
             res += tmpMember.getTypeSize();
         }

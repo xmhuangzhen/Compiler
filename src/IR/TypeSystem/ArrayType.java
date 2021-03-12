@@ -5,15 +5,15 @@ import IR.Operand.IROperand;
 public class ArrayType extends IRTypeSystem{
 
     public IRTypeSystem baseType;
-    public int ArraySize;
+    public long ArraySize;
 
-    public ArrayType(IRTypeSystem tmpbaseType, int tmpArraySize){
+    public ArrayType(IRTypeSystem tmpbaseType, long tmpArraySize){
         baseType = tmpbaseType;
         ArraySize = tmpArraySize;
     }
 
     @Override
-    public int getTypeSize() {
+    public long getTypeSize() {
         return baseType.getTypeSize()*ArraySize;
     }
 

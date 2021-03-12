@@ -15,7 +15,7 @@ public class FunctionType extends IRTypeSystem{
     }
 
     @Override
-    public int getTypeSize(){
+    public long getTypeSize(){
         return 0;
     }
 

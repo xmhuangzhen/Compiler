@@ -4,7 +4,7 @@ import IR.Operand.IROperand;
 
 abstract public class IRTypeSystem {
 
-    abstract public int getTypeSize();
+    abstract public long getTypeSize();
 
     abstract public IROperand getValue();
 

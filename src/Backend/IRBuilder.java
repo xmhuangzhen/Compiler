@@ -511,17 +511,79 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(constExprNode it) { }
 
+    public Register NewArrayMalloc(int cur_dim, IRTypeSystem cur_type, NewExprNode it){
+        //(1) call malloc function
+        Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"call_malloc_func");
+        IRFunction tmpCallFunc = currentModule.IRGlobalFunctionTable.get("malloc");
+        callInstruction tmpCallInst = new callInstruction(currentBasicBlock,tmpCallResult,tmpCallFunc);
+        //CallSize2 = cur_dim -  cur_type.size + 4(the size of PointerType)
+        Register tmpCallSize1 = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"call_size_1");
+        Register tmpCallSize2 = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"call_size_2");
+        currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock, binaryOpInstruction.BinaryOperandENUM.sub,
+                it.exprDim.get(cur_dim).ExprResult,new IntegerConstant(IntegerType.IRBitWidth.i32,cur_type.getTypeSize()),tmpCallSize1));
+        currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock, binaryOpInstruction.BinaryOperandENUM.add,
+                tmpCallSize1,new IntegerConstant(IntegerType.IRBitWidth.i32,4),tmpCallSize2));
+        tmpCallInst.CallParameters.add(tmpCallSize2);
+        currentBasicBlock.addBasicBlockInst(tmpCallInst);
+        Register tmpCallCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"call_malloc_cast");
+        currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,tmpCallResult,
+                new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),tmpCallCastResult));
+        currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,it.exprDim.get(cur_dim).ExprResult,tmpCallCastResult));//
+
+        //(2) Malloc by recursion, it likes a loop
+        if(cur_dim < it.dim - 1){
+            IRBasicBlock CondBlock = new IRBasicBlock(currentFunction,"cond_block");
+            IRBasicBlock BodyBlock = new IRBasicBlock(currentFunction,"body_block");
+            IRBasicBlock DestBlock = new IRBasicBlock(currentFunction,"dest_block");
+
+            Register pre_register = new Register(new PointerType(cur_type),"pre_register");
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,pre_register,tmpCallCastResult));
+
+            //(2.1) condition block
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,CondBlock,null));
+            currentBasicBlock = CondBlock;
+            Register now_element = new Register(new PointerType(cur_type),"now_element");
+            getElementPtrInstruction tmpGetElementInst = new getElementPtrInstruction(currentBasicBlock,tmpCallCastResult,now_element);
+            tmpGetElementInst.GetElementPtrIdx.add(it.exprDim.get(cur_dim).ExprResult);
+            currentBasicBlock.addBasicBlockInst(tmpGetElementInst);
+            Register cmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"cmp_result");
+            currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock, icmpInstruction.IcmpOperandENUM.ne,
+                    new PointerType(cur_type),now_element,pre_register,cmpResult));
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,cmpResult,BodyBlock,DestBlock));
+
+            //(2.2) body block
+            currentBasicBlock = BodyBlock;
+            Register tmp_pre_register = new Register(new PointerType(cur_type),"tmp_pre_register");
+            getElementPtrInstruction tmpGetNextElementInst = new getElementPtrInstruction(currentBasicBlock,pre_register,tmp_pre_register);
+            tmpGetNextElementInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
+            currentBasicBlock.addBasicBlockInst(tmpGetNextElementInst);
+            Register next_register;
+
+            if(cur_type instanceof PointerType)
+                next_register = NewArrayMalloc(cur_dim+1,((PointerType) cur_type).baseType,it);
+            else
+                throw new RuntimeException();
+
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,next_register,pre_register));
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,CondBlock,null));
+
+            //(2.3) dest block
+            currentBasicBlock = DestBlock;
+        }
+        return tmpCallCastResult;
+    }
+
     @Override
     public void visit(NewExprNode it) {
         if(it.exprTypeNode instanceof ArrayTypeNode){
             IRTypeSystem tmpIRType = currentModule.getIRType(((ArrayTypeNode) it.exprTypeNode).baseType);
             for(int i = 0;i < ((ArrayTypeNode) it.exprTypeNode).dimension;++i)
                 tmpIRType = new PointerType(tmpIRType);
-            /////////////////////todo
-
-            Register tmpResult = new Register(tmpIRType, "new");
-            it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("new",tmpResult);
+            for(int i = 0;i < ((ArrayTypeNode) it.exprTypeNode).dimension;++i)
+                it.exprDim.get(i).accept(this);
+            Register tmpNewArrayResult = NewArrayMalloc(0,tmpIRType,it);
+            it.ExprResult = tmpNewArrayResult;
+            currentBasicBlock.addBasicBlockRegister(tmpNewArrayResult.RegisterName, tmpNewArrayResult);
         } else if(it.exprTypeNode instanceof ClassTypeNode){
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"Malloc_Result");
