@@ -14,16 +14,20 @@ public class IRFunction {
     public ArrayList<Parameter> thisFunctionParameters;
     public Map<String, Register> thisFunctionVariableTable;
 
-    //about ret instruction
     public Register thisReturnValue;
     public IRBasicBlock thisLastBasicBlock;
 
+    public IRBasicBlock thisEntranceBlock;
+    public IRBasicBlock thisReturnBlock;
 
     public IRFunction(FunctionType tmpFunctionType, String tmpFunctionName){
         thisFunctionType = tmpFunctionType;
         thisFunctionName = tmpFunctionName;
         thisFunctionBasicBlocks = new ArrayList<>();
         thisFunctionParameters = new ArrayList<>();
+        thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
+        thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
+
     }
 
     public void addVariableinFunc(Register tmpVar){

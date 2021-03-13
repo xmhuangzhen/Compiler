@@ -12,10 +12,7 @@ import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.*;
-import IR.TypeSystem.IRTypeSystem;
-import IR.TypeSystem.IntegerType;
-import IR.TypeSystem.PointerType;
-import IR.TypeSystem.StructureType;
+import IR.TypeSystem.*;
 import Util.Scope;
 import Util.globalScope;
 
@@ -37,14 +34,72 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(RootNode it) {
-        //(1) class def (add class functions to module)
+        //(1) add class functions to module
         for(var tmpProgramDefs: it.ProgramDefs)
-            if(tmpProgramDefs instanceof classDefNode){
-                if(((classDefNode) tmpProgramDefs).consDef != null){
-                    //todo
+            if(tmpProgramDefs instanceof classDefNode) {
+                classDefNode tmpClassDefNode = (classDefNode) tmpProgramDefs;
+                //add constructor (no par)
+                FunctionType tmpFuncType = new FunctionType(new VoidType());
+                String tmpFuncName = tmpClassDefNode.className + "." + tmpClassDefNode.className;
+                IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
+                currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
+
+                for (var tmpFunc : tmpClassDefNode.funcDefs) {
+                    //add functions in class
+                    tmpFuncType = new FunctionType(currentModule.getIRType(tmpFunc.funcType));
+                    for (var tmpPar : tmpFunc.parDefs)
+                        tmpFuncType.FuncParameter.add(currentModule.getIRType(tmpPar.typeNode));
+                    tmpFuncName = tmpClassDefNode.className + "." + tmpFunc.funcName;
+                    tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
+                    for (var tmpPar : tmpFunc.parDefs)
+                        tmpIRFunction.thisFunctionParameters.add(new Parameter(currentModule.getIRType(tmpPar.typeNode), tmpPar.varname));
+                    currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
                 }
             }
-        //todo
+
+        //(2) add functions to module
+        for(var tmpProgramDefs : it.ProgramDefs){
+            if(tmpProgramDefs instanceof funcDefNode){
+                funcDefNode tmpFuncDefNode = (funcDefNode) tmpProgramDefs;
+                FunctionType tmpFuncType = new FunctionType(currentModule.getIRType(tmpFuncDefNode.funcType));
+                for (var tmpPar : tmpFuncDefNode.parDefs)
+                    tmpFuncType.FuncParameter.add(currentModule.getIRType(tmpPar.typeNode));
+                String tmpFuncName = tmpFuncDefNode.funcName;
+                IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
+                for (var tmpPar : tmpFuncDefNode.parDefs)
+                    tmpIRFunction.thisFunctionParameters.add(new Parameter(currentModule.getIRType(tmpPar.typeNode), tmpPar.varname));
+                currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
+            }
+        }
+
+        //(3) declare global variables (declare a function "__init" to save the global variables)
+        FunctionType tmpFuncType = new FunctionType(new VoidType());
+        String tmpFuncName = "__init";
+        IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
+        currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
+
+        currentFunction = tmpIRFunction;
+        currentBasicBlock = tmpIRFunction.thisEntranceBlock;
+        for(var tmpProgramDefs : it.ProgramDefs){
+            if(tmpProgramDefs instanceof varDefStmtNode){
+                tmpProgramDefs.accept(this);
+            }
+        }
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock, null));
+        currentFunction = null;
+        currentBasicBlock = null;
+
+        //(4) visit FuncDefnode &  ClassDefNode
+        for(var tmpProgramDefs : it.ProgramDefs){
+            if(tmpProgramDefs instanceof classDefNode){
+                tmpProgramDefs.accept(this);
+            }
+        }
+
+        for(var tmpProgramDefs : it.ProgramDefs){
+            if(tmpProgramDefs instanceof funcDefNode)
+                tmpProgramDefs.accept(this);
+        }
     }
 
     @Override public void visit(ProgramUnitNode it) { }
@@ -93,17 +148,65 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(classDefNode it) {
-        //todo
+        currentClassName = it.className;
+        for(var tmp : it.varDefs)
+            tmp.accept(this);
+        for(var tmp : it.funcDefs)
+            tmp.accept(this);
+        if(it.consDef != null)
+            it.consDef.accept(this);
+        currentClassName = null;
     }
 
     @Override
     public void visit(funcDefNode it) {
-        //todo
+        //(1) generate function name
+        String tmpFuncName;
+        if(currentClassName.isEmpty()){
+            tmpFuncName = it.funcName;
+        } else {
+            tmpFuncName = currentClassName + "." + it.funcName;
+        }
+
+        //(2) visit par
+        for(var tmp : it.parDefs)
+            tmp.accept(this);
+
+        //(3) IRFunctionNode has been created in the Program Unit Node, so just use it
+        IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
+        currentFunction = tmpIRFunction;
+        currentBasicBlock = tmpIRFunction.thisEntranceBlock;
+
+        if(it.funcName.equals("main")){
+            Register tmpResult = new Register(new VoidType(),"call_init");
+            IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init");
+            callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult,tmpFunc);
+            currentBasicBlock.addBasicBlockInst(tmpCallInst);
+        }
+
+        //(4) visit stmts
+        for(var tmp : it.stmts)
+            tmp.accept(this);
+
+        //(5) goto the last block
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock,null));
+        currentBasicBlock = currentFunction.thisReturnBlock;
+        currentFunction = null;
     }
 
     @Override
     public void visit(constructorDefNode it) {
-        //todo
+        //the same as the function def but doesn't have pars
+        String tmpFuncName = currentClassName + "." + currentClassName;
+
+        IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
+        currentFunction = tmpIRFunction;
+        currentBasicBlock = tmpIRFunction.thisEntranceBlock;
+
+        for(var tmp : it.stmts) tmp.accept(this);
+
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock,null));
+        currentBasicBlock = currentFunction.thisReturnBlock;
     }
 
     @Override public void visit(FuncTypeNode it) { }
@@ -327,7 +430,7 @@ public class IRBuilder implements ASTVisitor {
                         binaryOpInstruction.BinaryOperandENUM.add,it.lhs.ExprResult,it.rhs.ExprResult, tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_add");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_add");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -344,7 +447,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sgt");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_sgt");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -361,7 +464,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_slt");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_slt");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -378,7 +481,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sge");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_sge");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -395,7 +498,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult,it.rhs.ExprResult,tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_sle");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_sle");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -417,7 +520,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_eq");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_eq");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -443,7 +546,7 @@ public class IRBuilder implements ASTVisitor {
                         it.lhs.ExprResult, it.rhs.ExprResult, tmpResult));
             } else if(it.lhs.ExprType.Typename.equals("string")){
                 tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),RegisterName);
-                IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__string_ne");
+                IRFunction tmpFunction = currentModule.IRFunctionTable.get("__string_ne");
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpResult,tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
@@ -514,7 +617,7 @@ public class IRBuilder implements ASTVisitor {
     public Register NewArrayMalloc(int cur_dim, IRTypeSystem cur_type, NewExprNode it){
         //(1) call malloc function
         Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"call_malloc_func");
-        IRFunction tmpCallFunc = currentModule.IRGlobalFunctionTable.get("malloc");
+        IRFunction tmpCallFunc = currentModule.IRFunctionTable.get("malloc");
         callInstruction tmpCallInst = new callInstruction(currentBasicBlock,tmpCallResult,tmpCallFunc);
         //CallSize2 = cur_dim -  cur_type.size + 4(the size of PointerType)
         Register tmpCallSize1 = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"call_size_1");
@@ -587,7 +690,7 @@ public class IRBuilder implements ASTVisitor {
         } else if(it.exprTypeNode instanceof ClassTypeNode){
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"Malloc_Result");
-            IRFunction tmpFunction = currentModule.IRGlobalFunctionTable.get("__malloc_foo");
+            IRFunction tmpFunction = currentModule.IRFunctionTable.get("__malloc_foo");
             callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpMallocResult,tmpFunction);
             tmpcallInst.CallParameters.add(
                     new IntegerConstant(IntegerType.IRBitWidth.i32,
@@ -604,7 +707,7 @@ public class IRBuilder implements ASTVisitor {
             //call constructor
             String tmpClassName = ((ClassTypeNode) it.exprTypeNode).ClassName;
             if(gScope.declared_class.get(tmpClassName).consDef != null){
-                tmpFunction = currentModule.IRGlobalFunctionTable.get(tmpClassName + "." + tmpClassName);
+                tmpFunction = currentModule.IRFunctionTable.get(tmpClassName + "." + tmpClassName);
                 tmpcallInst = new callInstruction(currentBasicBlock,null,tmpFunction);
                 tmpcallInst.CallParameters.add(tmpResult);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
@@ -722,7 +825,7 @@ public class IRBuilder implements ASTVisitor {
         } else if(it.funcName instanceof IdExprNode){
             //function which is not in class
             String tmpFuncNameInString = ((IdExprNode) it.funcName).Identifier;
-            IRFunction tmpIRFunction = currentModule.IRGlobalFunctionTable.get(tmpFuncNameInString);
+            IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
             funcDefNode tmpFuncDefNode = gScope.getfuncDefNode(tmpFuncNameInString,true);
             IRTypeSystem tmpFuncIRType = currentModule.getIRType(tmpFuncDefNode.funcType);
             Register tmpResult = null;
