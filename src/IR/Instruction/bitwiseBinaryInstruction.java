@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
@@ -30,4 +31,9 @@ public class bitwiseBinaryInstruction extends IRInstruction{
                 + bitwiseBinaryOp1.toString() + ", "
                 + bitwiseBinaryOp2.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

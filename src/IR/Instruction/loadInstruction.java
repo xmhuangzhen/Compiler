@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 
@@ -18,4 +19,8 @@ public class loadInstruction extends IRInstruction{
         return LoadResult.toString() + " = load " + LoadResult.thisType.toString()
                 +", " + LoadPointer.thisType.toString() + " "+ LoadPointer.toString();
     }
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

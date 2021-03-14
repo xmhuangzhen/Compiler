@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.TypeSystem.PointerType;
@@ -22,4 +23,9 @@ public class storeInstruction extends IRInstruction{
                 + " " + StorePointer.toString();
         else throw new RuntimeException();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

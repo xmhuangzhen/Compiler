@@ -4,6 +4,7 @@ import AST.ASTTypeNode.ArrayTypeNode;
 import AST.ASTTypeNode.ClassTypeNode;
 import AST.ASTTypeNode.NonArrayTypeNode;
 import AST.ASTTypeNode.TypeNode;
+import Backend.IRVisitor;
 import IR.Operand.GlobalVariables;
 import IR.Operand.Parameter;
 import IR.Operand.StringConstant;
@@ -13,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IRModule {
-  //  public Map<String, IRFunction> IRGlobalFunctionTable;
     public Map<String, IRFunction> IRFunctionTable;
     public Map<String, IRTypeSystem> IRTypeTable;
     public Map<String, GlobalVariables> IRGlobalVarTable;
@@ -21,7 +21,6 @@ public class IRModule {
     public Map<String, StructureType> IRClassTable;
 
     public IRModule(){
-  //      IRGlobalFunctionTable = new LinkedHashMap<>();
         IRFunctionTable = new LinkedHashMap<>();
         IRTypeTable = new LinkedHashMap<>();
         IRGlobalVarTable = new LinkedHashMap<>();
@@ -228,5 +227,9 @@ public class IRModule {
             IRGlobalVarTable.put("const_string_no"+IRConstStringTable.size(),tmpGlobalVariables);
             return tmpGlobalVariables;
         }
+    }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
     }
 }

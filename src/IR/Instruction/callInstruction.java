@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.IRFunction;
 import IR.Operand.IROperand;
@@ -34,4 +35,9 @@ public class callInstruction extends IRInstruction{
         CallName.append(")");
         return CallName.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

@@ -1,37 +1,49 @@
 package IR;
 
+import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
-import IR.Operand.Register;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class IRBasicBlock {
     public String BasicBlockName;
     public IRFunction BasicBlockFunction;
-    public ArrayList<IRBasicBlock> prevBasicBlocks;
-    public ArrayList<IRBasicBlock> nextBasicBlocks;
+    public IRBasicBlock prevBasicBlocks;
+    public IRBasicBlock nextBasicBlocks;
     public ArrayList<IRInstruction> BasicBlockInstructions;
-    public Map<String, Register> BasicBlockRegister;
+    public IRInstruction HeadInst;
+    public IRInstruction TailInst;
 
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
         BasicBlockName = tmpName;
         BasicBlockInstructions = new ArrayList<>();
-        prevBasicBlocks = new ArrayList<>();
-        nextBasicBlocks = new ArrayList<>();
-        BasicBlockRegister = new LinkedHashMap<>();
+        prevBasicBlocks = null;
+        nextBasicBlocks = null;
+        HeadInst = null;
+        TailInst = null;
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){
         BasicBlockInstructions.add(tmpInst);
+        if(HeadInst == null){
+            HeadInst = tmpInst;
+            TailInst = tmpInst;
+        } else {
+            TailInst.nextIRInstruction = tmpInst;
+            tmpInst.preIRInstruction = TailInst;
+            TailInst = tmpInst;
+        }
     }
 
-    public void addBasicBlockRegister(String RegisterName, Register tmpRegister){
-        if(!BasicBlockRegister.containsKey(RegisterName))
-            BasicBlockRegister.put(RegisterName,tmpRegister);
-        else
-            BasicBlockRegister.replace(RegisterName,tmpRegister);
+
+    //for IRPrinter use
+    @Override
+    public String toString() {
+        return "%" + BasicBlockName;
+    }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
     }
 }

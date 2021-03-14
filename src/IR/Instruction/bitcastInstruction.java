@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
@@ -23,4 +24,9 @@ public class bitcastInstruction extends IRInstruction{
         return bitcastResult.RegisterName + " = bitcast " + bitcastOperand.thisType.toString() +
                 " " + bitcastOperand.toString() + " to " + bitcastType2.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

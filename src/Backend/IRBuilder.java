@@ -85,7 +85,8 @@ public class IRBuilder implements ASTVisitor {
                 tmpProgramDefs.accept(this);
             }
         }
-        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock, null));
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
+                currentFunction.thisReturnBlock, null));
         currentFunction = null;
         currentBasicBlock = null;
 
@@ -189,7 +190,8 @@ public class IRBuilder implements ASTVisitor {
             tmp.accept(this);
 
         //(5) goto the last block
-        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock,null));
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
+                currentFunction.thisReturnBlock,null));
         currentBasicBlock = currentFunction.thisReturnBlock;
         currentFunction = null;
     }
@@ -205,7 +207,8 @@ public class IRBuilder implements ASTVisitor {
 
         for(var tmp : it.stmts) tmp.accept(this);
 
-        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null, currentFunction.thisReturnBlock,null));
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
+                currentFunction.thisReturnBlock,null));
         currentBasicBlock = currentFunction.thisReturnBlock;
     }
 
@@ -260,16 +263,19 @@ public class IRBuilder implements ASTVisitor {
 
         //visit then
         currentBasicBlock = IfThenBlock;
+        currentFunction.addFunctionBasicBlock(currentBasicBlock);
         it.thenStmt.accept(this);
 
         //visit else
         if(it.elseStmt != null){
             currentBasicBlock = IfElseBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             it.elseStmt.accept(this);
         }
 
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,IfDestBlock,null));
+        currentFunction.addFunctionBasicBlock(IfDestBlock);
     }
 
     @Override
@@ -294,6 +300,7 @@ public class IRBuilder implements ASTVisitor {
             it.condExpr.thenBasicBlock = ForBodyBlock;
             it.condExpr.elseBasicBlock = ForDestBlock;
             currentBasicBlock = ForCondBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             it.condExpr.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                     it.condExpr.ExprResult, ForBodyBlock, ForDestBlock));
@@ -301,6 +308,7 @@ public class IRBuilder implements ASTVisitor {
 
         //visit body
         currentBasicBlock = ForBodyBlock;
+        currentFunction.addFunctionBasicBlock(currentBasicBlock);
         it.stmt.accept(this);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,ForStepBlock,null));
@@ -308,6 +316,7 @@ public class IRBuilder implements ASTVisitor {
         //visit step
         if(it.stepExpr != null){
             currentBasicBlock = ForStepBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             it.stepExpr.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                     null,ForBodyBlock,null));
@@ -315,6 +324,7 @@ public class IRBuilder implements ASTVisitor {
 
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,ForDestBlock,null));
+        currentFunction.addFunctionBasicBlock(ForDestBlock);
     }
 
     @Override
@@ -328,15 +338,18 @@ public class IRBuilder implements ASTVisitor {
         it.condExpr.thenBasicBlock = WhileBodyBlock;
         it.condExpr.elseBasicBlock = WhileDestBlock;
         currentBasicBlock = WhileCondBlock;
+        currentFunction.addFunctionBasicBlock(currentBasicBlock);
         it.condExpr.accept(this);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 it.condExpr.ExprResult, WhileBodyBlock,WhileDestBlock));
 
         //visit body
         currentBasicBlock = WhileBodyBlock;
+        currentFunction.addFunctionBasicBlock(currentBasicBlock);
         it.stmt.accept(this);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,WhileCondBlock,WhileDestBlock));
+        currentFunction.addFunctionBasicBlock(WhileDestBlock);
     }
 
     @Override
@@ -569,12 +582,14 @@ public class IRBuilder implements ASTVisitor {
             phiBlock1 = currentBasicBlock;
 
             currentBasicBlock = AndandBBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             it.rhs.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
                     AndandDestBlock,null));
             phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = AndandDestBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             RegisterName = "Andand";
             tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
             phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
@@ -592,12 +607,14 @@ public class IRBuilder implements ASTVisitor {
             phiBlock1 = currentBasicBlock;
 
             currentBasicBlock = OrorBBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             it.rhs.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
                     OrorDestBlock,null));
             phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = OrorDestBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             RegisterName = "Oror";
             tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
             phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
@@ -608,7 +625,6 @@ public class IRBuilder implements ASTVisitor {
             throw new RuntimeException();
         }
         it.ExprResult = tmpResult;
-        currentBasicBlock.addBasicBlockRegister(RegisterName,tmpResult);
     }
 
     @Override
@@ -645,6 +661,7 @@ public class IRBuilder implements ASTVisitor {
             //(2.1) condition block
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,CondBlock,null));
             currentBasicBlock = CondBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             Register now_element = new Register(new PointerType(cur_type),"now_element");
             getElementPtrInstruction tmpGetElementInst = new getElementPtrInstruction(currentBasicBlock,tmpCallCastResult,now_element);
             tmpGetElementInst.GetElementPtrIdx.add(it.exprDim.get(cur_dim).ExprResult);
@@ -656,6 +673,7 @@ public class IRBuilder implements ASTVisitor {
 
             //(2.2) body block
             currentBasicBlock = BodyBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
             Register tmp_pre_register = new Register(new PointerType(cur_type),"tmp_pre_register");
             getElementPtrInstruction tmpGetNextElementInst = new getElementPtrInstruction(currentBasicBlock,pre_register,tmp_pre_register);
             tmpGetNextElementInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
@@ -672,6 +690,7 @@ public class IRBuilder implements ASTVisitor {
 
             //(2.3) dest block
             currentBasicBlock = DestBlock;
+            currentFunction.addFunctionBasicBlock(currentBasicBlock);
         }
         return tmpCallCastResult;
     }
@@ -686,7 +705,6 @@ public class IRBuilder implements ASTVisitor {
                 it.exprDim.get(i).accept(this);
             Register tmpNewArrayResult = NewArrayMalloc(0,tmpIRType,it);
             it.ExprResult = tmpNewArrayResult;
-            currentBasicBlock.addBasicBlockRegister(tmpNewArrayResult.RegisterName, tmpNewArrayResult);
         } else if(it.exprTypeNode instanceof ClassTypeNode){
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"Malloc_Result");
@@ -702,7 +720,6 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,tmpMallocResult,
                     currentModule.getIRType(it.ExprType), tmpResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("new",tmpResult);
 
             //call constructor
             String tmpClassName = ((ClassTypeNode) it.exprTypeNode).ClassName;
@@ -735,7 +752,6 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("PreAdd",tmpResult);
         } else if(it.op.equals("--")){
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),"PreSub");
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
@@ -744,7 +760,6 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("PreSub",tmpResult);
         } else if(it.op.equals("+")){
             it.ExprResult = it.expr.ExprResult;
         } else if(it.op.equals("-")){
@@ -760,7 +775,6 @@ public class IRBuilder implements ASTVisitor {
                         binaryOpInstruction.BinaryOperandENUM.sub,
                         new IntegerConstant(IntegerType.IRBitWidth.i32,1),it.expr.ExprResult, tmpResult));
                 it.ExprResult = tmpResult;
-                currentBasicBlock.addBasicBlockRegister("minus",tmpResult);
             }
         } else if(it.op.equals("!")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "not");
@@ -768,14 +782,12 @@ public class IRBuilder implements ASTVisitor {
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
                     new BooleanConstant(true), it.expr.ExprResult, tmpResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("not",tmpResult);
         } else if(it.op.equals("~")){
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "notb");
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
                     new IntegerConstant(IntegerType.IRBitWidth.i32,-1), it.expr.ExprResult, tmpResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("notb",tmpResult);
         } else {
             throw new RuntimeException();
         }
@@ -807,11 +819,11 @@ public class IRBuilder implements ASTVisitor {
                 //turn the funcName into the correct type
                 IROperand tmpFuncResult = it.funcName.ExprResult;
                 if(!(tmpFuncResult.thisType instanceof PointerType)){
-                    Register tmpCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"FuncName_bitcast");
+                    Register tmpCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
+                            "FuncName_bitcast");
                     currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,it.funcName.ExprResult,
                             new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),tmpCastResult));
                     tmpFuncResult = tmpCastResult;
-                    currentBasicBlock.addBasicBlockRegister("FuncName_bitcast",tmpCastResult);
                 }
 
                 //get the element ptr
@@ -853,7 +865,6 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult,it.expr.ExprResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("SelfAdd",tmpResult);
         } else if(it.op.equals("--")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "SelfSub");
             currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock,
@@ -862,7 +873,6 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     tmpResult, it.expr.ExprResult));
             it.ExprResult = tmpResult;
-            currentBasicBlock.addBasicBlockRegister("SelfSub",tmpResult);
         }
     }
 
@@ -894,13 +904,12 @@ public class IRBuilder implements ASTVisitor {
         tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,tmpMemberIndex));
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
         it.ExprResult = tmpResult;
-        currentBasicBlock.addBasicBlockRegister(RegisterName,tmpResult);
     }
 
     @Override
     public void visit(IdExprNode it) {
         //no Identifier in class
-        it.ExprResult = currentBasicBlock.BasicBlockRegister.get(it.Identifier);
+        it.ExprResult = new Register(currentModule.getIRType(it.ExprType), "id_expr");
     }
 
     @Override

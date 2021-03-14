@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 
@@ -24,4 +25,9 @@ public class brInstruction extends IRInstruction{
         else return "br i1 " + brCond.toString() + ", label " + brIfTrue.toString() +
                  ", label " + brIfFalse.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
@@ -43,6 +44,10 @@ public class getElementPtrInstruction extends IRInstruction{
                     " " + GetElementPtrIdx.get(i).toString());
         }
         return GetElementPtrName.toString();
+    }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
     }
 
 }

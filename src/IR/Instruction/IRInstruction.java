@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.*;
 
 abstract public class IRInstruction {
@@ -11,4 +12,7 @@ abstract public class IRInstruction {
         thisBasicBlock = tmpBasicBlock;
     }
 
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
 }

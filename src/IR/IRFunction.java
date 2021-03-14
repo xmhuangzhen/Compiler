@@ -1,5 +1,6 @@
 package IR;
 
+import Backend.IRVisitor;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.FunctionType;
@@ -27,10 +28,38 @@ public class IRFunction {
         thisFunctionParameters = new ArrayList<>();
         thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
-
+        thisEntranceBlock.nextBasicBlocks = thisReturnBlock;
+        thisReturnBlock.prevBasicBlocks = thisEntranceBlock;
     }
 
     public void addVariableinFunc(Register tmpVar){
         thisFunctionVariableTable.put(tmpVar.RegisterName,tmpVar);
+    }
+
+    public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){
+        //always add before the ReturnBlock
+        IRBasicBlock tmpPreBlock = thisReturnBlock.prevBasicBlocks;
+        tmpBasicBlock.prevBasicBlocks = tmpPreBlock;
+        tmpBasicBlock.nextBasicBlocks = thisReturnBlock;
+        tmpPreBlock.nextBasicBlocks = tmpBasicBlock;
+        thisReturnBlock.prevBasicBlocks = tmpBasicBlock;
+    }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }//for IRPrinter
+
+    //for IRPrinter use
+    @Override
+    public String toString() {
+        StringBuilder tmpString = new StringBuilder("define ");
+        tmpString.append(thisFunctionType.toString()+" @"+thisFunctionName);
+        tmpString.append("(");
+        for(int i = 0;i < thisFunctionParameters.size();++i){
+            if(i != 0) tmpString.append(", ");
+            tmpString.append(thisFunctionParameters.get(i).thisType.toString());
+        }
+        tmpString.append(")");
+        return tmpString.toString();
     }
 }

@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.TypeSystem.IRTypeSystem;
@@ -22,4 +23,9 @@ public class retInstruction extends IRInstruction{
             return "ret void";
         return "ret " + returnType.toString() + " " + returnValue.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }

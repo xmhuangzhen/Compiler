@@ -1,5 +1,6 @@
 package IR.Instruction;
 
+import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
@@ -32,4 +33,9 @@ public class icmpInstruction extends IRInstruction{
         return IcmpResult.toString() + " = icmp " + IcmpOperandType.name() + " " + IcmpType.toString()
                 + " " + IcmpOp1.toString() + ", " + IcmpOp2.toString();
     }
+
+    public void accept(IRVisitor it){
+        it.visit(this);
+    }
+
 }
