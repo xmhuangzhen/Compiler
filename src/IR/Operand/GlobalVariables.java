@@ -6,10 +6,9 @@ public class GlobalVariables extends IROperand{
     public String VariablesName;
     public IROperand VariablesInitExpr;
 
-    public GlobalVariables(IRTypeSystem tmpType, String tmpName, IROperand tmpInitExpr) {
+    public GlobalVariables(IRTypeSystem tmpType, String tmpName) {
         super(tmpType);
         VariablesName = tmpName;
-        VariablesInitExpr = tmpInitExpr;
     }
 
     @Override

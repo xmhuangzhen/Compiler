@@ -75,7 +75,8 @@ public class IRPrinter implements IRVisitor {
         }
         outPrintWriter.println("");
 
-        for (IRInstruction curInst = it.HeadInst; curInst != it.TailInst; curInst = curInst.nextIRInstruction)
+        for (IRInstruction curInst = it.HeadInst; curInst != null && curInst != it.TailInst;
+             curInst = curInst.nextIRInstruction)
             curInst.accept(this);
     }
 

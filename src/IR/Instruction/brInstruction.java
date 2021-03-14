@@ -21,7 +21,7 @@ public class brInstruction extends IRInstruction{
     public String toString() {
         //br i1 <cond>, label <iftrue>, label <iffalse>
         //br label <dest>          ; Unconditional branch
-        if(brCond == null) return "br label " + brCond.toString();
+        if(brCond == null) return "br label " + brIfTrue.toString(); // = jump
         else return "br i1 " + brCond.toString() + ", label " + brIfTrue.toString() +
                  ", label " + brIfFalse.toString();
     }

@@ -6,6 +6,7 @@ import IR.Operand.Register;
 import IR.TypeSystem.FunctionType;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IRFunction {
@@ -26,10 +27,14 @@ public class IRFunction {
         thisFunctionName = tmpFunctionName;
         thisFunctionBasicBlocks = new ArrayList<>();
         thisFunctionParameters = new ArrayList<>();
+        thisFunctionVariableTable = new LinkedHashMap<>();
         thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
-        thisEntranceBlock.nextBasicBlocks = thisReturnBlock;
-        thisReturnBlock.prevBasicBlocks = thisEntranceBlock;
+        thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
+        thisEntranceBlock.nextBasicBlocks = thisLastBasicBlock;
+        thisLastBasicBlock.nextBasicBlocks = thisReturnBlock;
+        thisReturnBlock.prevBasicBlocks = thisLastBasicBlock;
+        thisLastBasicBlock.prevBasicBlocks = thisEntranceBlock;
     }
 
     public void addVariableinFunc(Register tmpVar){

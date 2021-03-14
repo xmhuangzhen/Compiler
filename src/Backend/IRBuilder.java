@@ -13,23 +13,22 @@ import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.*;
 import IR.TypeSystem.*;
-import Util.Scope;
 import Util.globalScope;
 
 public class IRBuilder implements ASTVisitor {
     public globalScope gScope;
-    public Scope currentScope;
     public IRBasicBlock currentBasicBlock;
     public IRModule currentModule;
     public IRFunction currentFunction;
     public String currentClassName;
+    public Boolean InFunc;
 
     public IRBuilder(globalScope tmpScope){
         gScope = tmpScope;
-        currentScope = gScope;
         currentModule = new IRModule();
         currentBasicBlock = null;
         currentFunction = null;
+        InFunc = false;
     }
 
     @Override
@@ -116,9 +115,9 @@ public class IRBuilder implements ASTVisitor {
     public void visit(singlevarDefStmtNode it) {
         TypeNode tmpSemaTypeNode = it.typeNode;
         IRTypeSystem tmpIRType = currentModule.getIRType(tmpSemaTypeNode);
-        if(currentScope == gScope){
+        if(!InFunc && (currentClassName == null||currentClassName.isEmpty())){
             //global variables
-            GlobalVariables tmpResult = new GlobalVariables(tmpIRType,it.varname,it.varexpr.ExprResult);
+            GlobalVariables tmpResult = new GlobalVariables(tmpIRType,it.varname);
             if(it.varexpr != null){
                 it.varexpr.accept(this);
                 tmpResult.VariablesInitExpr = it.varexpr.ExprResult;
@@ -161,9 +160,11 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(funcDefNode it) {
+        InFunc = true;
+
         //(1) generate function name
         String tmpFuncName;
-        if(currentClassName.isEmpty()){
+        if(currentClassName == null || currentClassName.isEmpty()){
             tmpFuncName = it.funcName;
         } else {
             tmpFuncName = currentClassName + "." + it.funcName;
@@ -176,6 +177,8 @@ public class IRBuilder implements ASTVisitor {
         //(3) IRFunctionNode has been created in the Program Unit Node, so just use it
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
         currentFunction = tmpIRFunction;
+        currentFunction.thisReturnValue = new Register(new PointerType(currentModule.getIRType(it.funcType)),
+                tmpFuncName+"return_value");
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
         if(it.funcName.equals("main")){
@@ -194,6 +197,8 @@ public class IRBuilder implements ASTVisitor {
                 currentFunction.thisReturnBlock,null));
         currentBasicBlock = currentFunction.thisReturnBlock;
         currentFunction = null;
+
+        InFunc = false;
     }
 
     @Override
