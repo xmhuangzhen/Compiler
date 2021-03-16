@@ -1,11 +1,43 @@
+class A {
+    int x; int y;
+   // void func1(int a, int b) {
+     //   func2(this.x*a, this.y*b);
+   // }
 
-/*int foo(int a,int b){
-	return a+b;
-}*/
+   // void func2(int xx, int yy) {
+     //   func1(x*this.x, y*this.y);
+    //}
+    void func1(int a,int b){
+       a = a + 1;
+       b = b + 1;
+    }
 
-int main(){
-//	int a = 0;
-	int a;
-	a = 0;
-	return 0;
+  /*  A set(int xx, int yy) {
+        return set(x, y).set(this.x, this.y).set(xx, yy).getThis();
+    }*/
+
+  /*  A copy(A other) {
+        // this = other;
+        return this;
+    }*/
+
+    /*A getThis() {
+        return getThis().getThis().getThis().getThis().copy(this);
+    }*/
+
+};
+
+A object;
+
+
+int main() {
+    object.func1(2, 3);
+
+ //   object.set(0, 1)
+   //       .set(1, 0);
+
+//    object.copy(object.getThis())
+  //        .copy(object.getThis().getThis());
+
+    return 0;
 }

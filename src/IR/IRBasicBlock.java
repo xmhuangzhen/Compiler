@@ -2,8 +2,11 @@ package IR;
 
 import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
+import IR.Operand.IROperand;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class IRBasicBlock {
     public String BasicBlockName;
@@ -14,6 +17,8 @@ public class IRBasicBlock {
     public IRInstruction HeadInst;
     public IRInstruction TailInst;
 
+    public Map<String, IROperand> IRRegisterTable;
+
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
         BasicBlockName = tmpName;
@@ -22,6 +27,7 @@ public class IRBasicBlock {
         nextBasicBlocks = null;
         HeadInst = null;
         TailInst = null;
+        IRRegisterTable = new LinkedHashMap<>();
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){
@@ -34,6 +40,14 @@ public class IRBasicBlock {
             tmpInst.preIRInstruction = TailInst;
             TailInst = tmpInst;
         }
+    }
+
+    public IROperand GetVarRegister(String tmpName){
+        if(IRRegisterTable.containsKey(tmpName))
+            return IRRegisterTable.get(tmpName);
+        if(BasicBlockFunction != null && BasicBlockFunction.thisFunctionVariableTable.containsKey(tmpName))
+            return BasicBlockFunction.thisFunctionVariableTable.get(tmpName);
+        return null;
     }
 
 

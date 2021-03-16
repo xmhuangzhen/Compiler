@@ -40,9 +40,10 @@ public class Main {
             ParseTree parseTreeRoot = parser.program();
             ASTBuilder astBuilder = new ASTBuilder(gScope);
             ASTRoot = (RootNode)astBuilder.visit(parseTreeRoot);
-            new SemanticChecker().visit(ASTRoot);
+            SemanticChecker semanticCheck  = new SemanticChecker();
+            semanticCheck.visit(ASTRoot);
 
-            IRBuilder tmpIRBuilder = new IRBuilder(gScope);
+            IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
             new IRPrinter("IRPrinter_test").run(tmpIRBuilder.currentModule);
 

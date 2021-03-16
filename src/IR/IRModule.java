@@ -7,6 +7,7 @@ import AST.ASTTypeNode.TypeNode;
 import Backend.IRVisitor;
 import IR.Operand.GlobalVariables;
 import IR.Operand.Parameter;
+import IR.Operand.Register;
 import IR.Operand.StringConstant;
 import IR.TypeSystem.*;
 
@@ -15,17 +16,19 @@ import java.util.Map;
 
 public class IRModule {
     public Map<String, IRFunction> IRFunctionTable;
-    public Map<String, IRTypeSystem> IRTypeTable;
+    //public Map<String, IRTypeSystem> IRTypeTable;
     public Map<String, GlobalVariables> IRGlobalVarTable;
     public Map<String, GlobalVariables> IRConstStringTable;
     public Map<String, StructureType> IRClassTable;
+    public Map<String, Register> IRGlobbalRegisterTable;
 
     public IRModule(){
         IRFunctionTable = new LinkedHashMap<>();
-        IRTypeTable = new LinkedHashMap<>();
+       // IRTypeTable = new LinkedHashMap<>();
         IRGlobalVarTable = new LinkedHashMap<>();
         IRConstStringTable = new LinkedHashMap<>();
         IRClassTable = new LinkedHashMap<>();
+        IRGlobbalRegisterTable = new LinkedHashMap<>();
 
         FunctionType tmpFuncType;
         IRFunction tmpFunc;
@@ -71,9 +74,9 @@ public class IRModule {
         //函数：string toString(int i);
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
-        tmpFunc = new IRFunction(tmpFuncType,"printlnInt");
+        tmpFunc = new IRFunction(tmpFuncType,"toString");
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"i"));
-        IRFunctionTable.put("printlnInt",tmpFunc);
+        IRFunctionTable.put("toString",tmpFunc);
 
         //----------------------string---------------------------
         //int length(); <StringIdentifier>.length();
@@ -195,7 +198,8 @@ public class IRModule {
         if (tmpSemaTypeNode instanceof ClassTypeNode) {
             if(tmpSemaTypeNode.Typename.equals("string"))
                 return new PointerType(new IntegerType(IntegerType.IRBitWidth.i8));
-            return new PointerType(IRTypeTable.get(((ClassTypeNode) tmpSemaTypeNode).ClassName));
+            //return new PointerType(IRTypeTable.get(((ClassTypeNode) tmpSemaTypeNode).ClassName));
+            return new PointerType(IRClassTable.get(((ClassTypeNode) tmpSemaTypeNode).ClassName));
         }
         if (tmpSemaTypeNode instanceof NonArrayTypeNode) {
             if (tmpSemaTypeNode.Typename.equals("int")) return new IntegerType(IntegerType.IRBitWidth.i32);
@@ -203,11 +207,6 @@ public class IRModule {
         }
         return new VoidType();
     }
-
-    public void addGlobalVariable(GlobalVariables tmpGlobalVar){
-        IRGlobalVarTable.put(tmpGlobalVar.VariablesName, tmpGlobalVar);
-    }
-
 
     public GlobalVariables addConstString(String tmpString){
         String RealString = tmpString;

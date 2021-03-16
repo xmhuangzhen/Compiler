@@ -21,7 +21,7 @@ public class storeInstruction extends IRInstruction{
             return "store " + ((PointerType) StorePointer.thisType).baseType.toString()
                 + " " + StoreValue.toString() + ", " + StorePointer.thisType.toString()
                 + " " + StorePointer.toString();
-        else throw new RuntimeException();
+        else throw new RuntimeException(StorePointer.thisType.toString());
     }
 
     public void accept(IRVisitor it){

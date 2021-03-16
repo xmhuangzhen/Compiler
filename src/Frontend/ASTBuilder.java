@@ -16,7 +16,7 @@ import Util.position;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
-    private globalScope gScope;
+    public globalScope gScope;
     private Scope currentScope;
 
 

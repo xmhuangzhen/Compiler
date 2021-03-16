@@ -11,6 +11,7 @@ public class StructureType extends IRTypeSystem{
 
     public StructureType(String tmpName){
         StructureName = tmpName;
+        StructureMember = new ArrayList<>();
     }
 
     @Override

@@ -15,7 +15,7 @@ import Util.position;
 
 public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
-    private globalScope gScope;
+    public globalScope gScope;
 
     @Override
     public void visit(RootNode it) {
@@ -483,8 +483,10 @@ public class SemanticChecker implements ASTVisitor {
             it.ExprType = tmpTypeNode;
         } else {
             TypeNode tmpTypeNode = it.exprTypeNode;
+
             for(ExprNode tmpNode : it.exprDim){
                 tmpNode.accept(this);
+                tmpTypeNode = new ArrayTypeNode(tmpTypeNode, it.pos);
                 if(!tmpNode.ExprType.getTypeName().equals("int")){
                     throw new semanticError("expr in new array type can only be int", it.pos);
                 }
