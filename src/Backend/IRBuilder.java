@@ -347,7 +347,7 @@ public class IRBuilder implements ASTVisitor {
         else StackForContinue.push(ForBodyBlock);
         StackForBreak.push(ForDestBlock);
 
-        it.stmt.accept(this);
+        if(it.stmt != null) it.stmt.accept(this);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,ForStepBlock,null));
 
@@ -920,13 +920,10 @@ public class IRBuilder implements ASTVisitor {
                 tmpFuncNameInString = currentClassName + "." + ((IdExprNode) it.funcName).Identifier;
             }
             IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
-            /*funcDefNode tmpFuncDefNode = gScope.getfuncDefNode(tmpFuncNameInString,true);
+            if(tmpIRFunction == null)
+                tmpIRFunction = currentModule.IRFunctionTable.get(((IdExprNode) it.funcName).Identifier);
 
-            if(tmpFuncDefNode == null){
-                StringBuilder tmpString = new StringBuilder();
-                tmpString.append(tmpFuncNameInString);
-                throw new RuntimeException(tmpString.toString());
-            }*/
+            if(tmpIRFunction == null) throw new RuntimeException();
 
             IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
             //currentModule.getIRType(tmpFuncDefNode.funcType);

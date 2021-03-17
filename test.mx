@@ -1,25 +1,169 @@
 /*
+int hashsize = 100;
+class node {
+	int key;
+    int data;
+	node next;
+};
+node[] table;
+int getHash(int n) {
+	return (n * 237) % hashsize;
+}
+void put(int key, int data) {
+	int p;
+	node ptr = null;
+	p = getHash(key);
+	if (table[p] == null) {
+		table[p] = new node;
+		table[p].key = key;
+		table[p].data = data;
+		table[p].next = null;
+		return;
+	}
+	ptr = table[p];
+	while (ptr.key != key) {
+		if (ptr.next == null) {
+			ptr.next = new node;
+			ptr.next.key = key;
+			ptr.next.next = null;
+		}
+		ptr = ptr.next;
+	}
+	ptr.data = data;
+}
+int get(int key) {
+	node ptr = null;
+	ptr = table[getHash(key)];
+	while (ptr.key != key) {
+		ptr = ptr.next;
+	}
+	return ptr.data;
+}
+int main() {
+	int i;
+	table = new node[100];
+	for (i = 0;i < hashsize;i++)
+		table[i] = null;
+	for (i = 0;i < 1000;i++)
+		put(i, i);
+	for (i = 0;i < 1000;i++)
+		println(toString(i) + " " + toString(get(i)));
+	return 0;
+}*/
+/*
 Test Package: Sema_Local_Preview
-Test Target: codeforces
-Author: Pikachu
-Time: 2020-02-03
+Test Target: Misc
+Author: 15' Zhekai Zhang
+Time: 2019-10-20
 Verdict: Success
-Origin Package:  Codeforces 158A #62259103
+Origin Package: Semantic Extended
 */
+int countA;
+int countB;
+int countC;
+C something;
 
-int[] a = new int[50];
-int m;
-int k;
-int i;
+class A
+{
+	A a;
+	B b;
+	A()
+	{
+		idx = countA++;
+		if(idx % 2 == 0)
+		{
+			a = new A;
+			if(countB % 2 == 0)
+				b = new B;
+			else
+				b = null;
+		}
+		else
+			a = null;
+		c = new C[2][];
+		c[0] = (new C[6][6][6][6])[2][3][3];
+		c[1] = null;
+		if(c.size() != 2)
+			println("Oops!");
+	}
+	C[] getc0()
+	{
+		return c[0];
+	}
+	C[][] c;
+	int idx;
+};
+
+class B
+{
+	int idx;
+	C c;
+	B()
+	{
+		idx = countB++;
+		c = (new A).getc0()[0].Me().Me();
+	}
+};
+
+class C
+{
+	int idx;
+	C()
+	{
+		this.idx = countC++;
+		str = toString(idx);
+		something = Me();
+	}
+	C Me() { return this; }
+	string str;
+};
+
+void count()
+{
+	countA = 0;
+	countB = 0;
+	countC = 0;
+	B b = new B;
+	println(toString(countA) + " " + toString(countB) + " " + toString(countC));
+	countA = 1;
+	countB = 1;
+	countC = 1;
+	b = new B;
+	print(toString(countA-1) + " " + toString(countB-1) + " " + toString(countC-1));
+	print("\n");
+	println(toString(something.Me().str.substring(1, something.str.length()-1).parseInt()));
+	string temp = toString(something.str.ord(42 & 21));
+	if(temp < something.str)
+		println(something.str + ">" + temp);
+	else
+		println(something.str + "<=" + temp);
+}
+
+///////////////////////////////////
+
 int main()
 {
-m = getInt();
-k = getInt();
-//scanf("%d%d",&m,&k);
-for(i=0;i<m;i++)
-//scanf("%d",&a[i]);
-a[i] = getInt();
-for(i=0;a[i]>=a[k-1]&&a[i] > 0&&i<m;i++);
-printInt(i);
-//printf("%d",i);
+	{{{;};{}}};
+	int i;
+	for(i=0;;i++)
+		if(((i ^ 891 & 759) == 666) == !false)
+		{
+			println(toString(i));
+			int i = 0;
+			println(toString(i));
+			{
+				int i = 1;
+				println(toString(i));
+			}
+			count();
+			break;
+		}
+	while(true)
+	{
+		if(i % 2 == 0)
+			continue;
+		print(toString(i)+",");
+	}
+	println("");
+	return 0;
 }

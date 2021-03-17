@@ -758,29 +758,28 @@ public class SemanticChecker implements ASTVisitor {
             }
         }
 
-        if(it.lhs instanceof ArraydefExprNode){
+        if(it.lhs instanceof ArraydefExprNode) {
             //ArraydefExprNode lArraydefExprNode = (ArraydefExprNode) it.lhs;
-            if(it.rhs.ExprType instanceof ArrayTypeNode) {
+            if (it.rhs instanceof ArraydefExprNode) {
+                if (((ArraydefExprNode) it.lhs).dim != ((ArraydefExprNode) it.rhs).dim)
+                    throw new semanticError("assign expr node error -4", it.pos);
+            } else if (it.rhs.ExprType instanceof ArrayTypeNode) {
                 //ArraydefExprNode rArraydefExprNode = (ArraydefExprNode) it.rhs;
-                if (((ArraydefExprNode) it.lhs).dim-1 != ((ArrayTypeNode) it.rhs.ExprType).dimension) {
+                if (((ArraydefExprNode) it.lhs).dim - 1 != ((ArrayTypeNode) it.rhs.ExprType).dimension) {
                     //if((((ArraydefExprNode) it.lhs).arr.ExprType instanceof ArrayTypeNode))
-                      //  throw new semanticError( ((ArraydefExprNode) it.lhs).arr+",",it.pos);
+                    //  throw new semanticError( ((ArraydefExprNode) it.lhs).arr+",",it.pos);
                     throw new semanticError("assign expr node error - 1 : " + ((ArraydefExprNode) it.lhs).dim
                             + "," + ((ArrayTypeNode) it.rhs.ExprType).dimension + ";" + it.lhs.ExprText +
                             (((ArraydefExprNode) it.lhs).arr instanceof ArraydefExprNode)
                             , it.pos);
                 }
-                //throw new semanticError(lArraydefExprNode.dim+","+ rArraydefExprNode.dim,it.pos);
-            } else if(it.rhs instanceof ArraydefExprNode){
-                if(((ArraydefExprNode) it.lhs).dim != ((ArraydefExprNode) it.rhs).dim)
-                    throw new semanticError("assign expr node error -4",it.pos);
-            } else if(it.rhs instanceof NewExprNode){
+            } else if (it.rhs instanceof NewExprNode) {
                 NewExprNode rNewExprNode = (NewExprNode) it.rhs;
-                if(((ArraydefExprNode) it.lhs).dim-1 != rNewExprNode.dim)
-                    throw new semanticError("Assign node-2",it.pos);
+                if (((ArraydefExprNode) it.lhs).dim - 1 != rNewExprNode.dim)
+                    throw new semanticError("Assign node-2", it.pos);
             } else {
-                if(((ArraydefExprNode) it.lhs).dim != 1 && !rhsTypeName.equals("null"))
-                    throw new semanticError("Assign node error -3",it.pos);
+                if (((ArraydefExprNode) it.lhs).dim != 1 && !rhsTypeName.equals("null"))
+                    throw new semanticError("Assign node error -3", it.pos);
             }
         }
 

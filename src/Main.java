@@ -41,9 +41,9 @@ public class Main {
             SemanticChecker semanticCheck  = new SemanticChecker();
             semanticCheck.visit(ASTRoot);
 
-    //        IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
-  //          tmpIRBuilder.visit(ASTRoot);
-//            new IRPrinter("IRPrinter_test").run(tmpIRBuilder.currentModule);
+          //  IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
+          //  tmpIRBuilder.visit(ASTRoot);
+          //  new IRPrinter("IRPrinter_test").run(tmpIRBuilder.currentModule);
 
         } catch (error er) {
             System.err.println(er.toString());
