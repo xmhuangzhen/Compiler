@@ -1,5 +1,4 @@
 
-@a
 @const_string_no0
 
 define ReturnType : void
@@ -327,137 +326,116 @@ Parameter :  @main(){
 main_entrance_block
 
     %call_init = call void @__init()
-    call_size_1 = sub i32 4, 4
+    store i32 10000, i32* %a
+    store i32 0, i32* %b
+    store i32 2800, i32* %c
+    store i32 0, i32* %d
+    store i32 0, i32* %e
+    call_size_1 = sub i32 2801, 4
     call_size_2 = add i32 %call_size_1, 4
     %call_malloc_func = call i8* @__malloc_foo(i32 %call_size_2)
     call_malloc_cast = bitcast i32* %call_malloc_func to i32*
-    store i32 4, i32* %call_malloc_cast
-    store i32** %call_malloc_cast, i32*** %b
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 0
-    store i32** %Id_a, i32*** %getElementPtr
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 1
-    store i32** %Id_a, i32*** %getElementPtr
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 2
-    store i32** %Id_a, i32*** %getElementPtr
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 3
-    store i32** %Id_a, i32*** %getElementPtr
-    FuncName_bitcast = bitcast ReturnType : i32
-Parameter :  %memacc_func to i32*
-    %array_size = getelementptr i32, i32* %FuncName_bitcast, i32 -1
-    %funccal = call i8* @toString(i32 %array_size)
-    %funccal = call void @println(ReturnType : i8*
-Parameter : i32  %funccal)
+    store i32 2801, i32* %call_malloc_cast
+    store i32* %call_malloc_cast, i32** %f
 
 main_last_block
                                     ; preds = %main_entrance_block
 
 for_cond_block
                                      ; preds = %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 0
-    FuncName_bitcast = bitcast ReturnType : i32
-Parameter :  %memacc_func to i32*
-    %array_size = getelementptr i32, i32* %FuncName_bitcast, i32 -1
-    %slt = icmp slt i32 %Id_i, %array_size
+    sub = sub i32 %Id_b, %Id_c
+    %ne = icmp eq i32 %sub, 0
 
 for_body_block
                                      ; preds = %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 0
-    %getElementPtr = getelementptr i32**, i32*** %getElementPtr, i32* %Id_i
-    %funccal = call i32 @getInt()
-    store i32** %funccal, i32*** %getElementPtr
+    %getElementPtr = getelementptr i32*, i32** %Id_f, i32* %Id_b
+    sdiv = sdiv i32 %Id_a, 5
+    store i32* %sdiv, i32** %getElementPtr
 
 for_step_block
                                      ; preds = %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    SelfAdd = add i32 %Id_i, 1
-    store i32 %SelfAdd, i32* %Id_i
+    SelfAdd = add i32 %Id_b, 1
+    store i32 %SelfAdd, i32* %Id_b
     br label %for_cond_block
-    br label %for_dest_block
 
 for_dest_block
                                      ; preds = %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
 
-for_cond_block
+for_body_block
                                      ; preds = %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 1
-    FuncName_bitcast = bitcast ReturnType : i32
-Parameter :  %memacc_func to i32*
-    %array_size = getelementptr i32, i32* %FuncName_bitcast, i32 -1
-    %slt = icmp slt i32 %Id_i, %array_size
+    store i32 0, i32* %Id_d
+    mul = mul i32 %Id_c, 2
+    store i32 %mul, i32* %Id_g
+    %eq = icmp eq i32 %Id_g, 0
+
+if_then_block
+                                      ; preds = %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+    br label %for_dest_block
+    br label %if_dest_block
+
+if_dest_block
+                                      ; preds = %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
 
 for_body_block
-                                     ; preds = %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 1
-    %getElementPtr = getelementptr i32**, i32*** %getElementPtr, i32* %Id_i
-    %funccal = call i8* @toString(i32*** %getElementPtr)
+                                     ; preds = %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+    %getElementPtr = getelementptr i32*, i32** %Id_f, i32* %Id_b
+    mul = mul i32 %getElementPtr, %Id_a
+    add = add i32 %Id_d, %mul
+    store i32 %add, i32* %Id_d
+    %getElementPtr = getelementptr i32*, i32** %Id_f, i32* %Id_b
+    PreSub = sub i32 %Id_g, 1
+    store i32 %PreSub, i32* %Id_g
+    srem = srem i32 %Id_d, %PreSub
+    store i32* %srem, i32** %getElementPtr
+    sdiv = sdiv i32 %Id_d, %Id_g
+    store i32 %sdiv, i32* %Id_d
+    SelfSub = sub i32 %Id_g, 1
+    store i32 %SelfSub, i32* %Id_g
+    PreSub = sub i32 %Id_b, 1
+    store i32 %PreSub, i32* %Id_b
+    %eq = icmp eq i32 %PreSub, 0
+
+if_then_block
+                                      ; preds = %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+    br label %for_dest_block
+    br label %if_dest_block
+
+if_dest_block
+                                      ; preds = %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+
+for_step_block
+                                     ; preds = %if_dest_block, %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+    mul = mul i32 %Id_d, %Id_b
+    store i32 %mul, i32* %Id_d
+    br label %for_body_block
+    br label %for_dest_block
+    sub = sub i32 %Id_c, 14
+    store i32 %sub, i32* %Id_c
+    sdiv = sdiv i32 %Id_d, %Id_a
+    add = add i32 %Id_e, %sdiv
+    %funccal = call i8* @toString(i32 %add)
     %funccal = call void @print(ReturnType : i8*
 Parameter : i32  %funccal)
 
-for_step_block
-                                     ; preds = %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    SelfAdd = add i32 %Id_i, 1
-    store i32 %SelfAdd, i32* %Id_i
-    br label %for_cond_block
-    br label %for_dest_block
-    %StringConst = getelementptr [3 x i8], [3 x i8]* @const_string_no0, i32 0, i32 0
-    %funccal = call void @println(i8* %StringConst)
-
 for_dest_block
-                                     ; preds = %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-
-for_cond_block
-                                     ; preds = %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 2
-    FuncName_bitcast = bitcast ReturnType : i32
-Parameter :  %memacc_func to i32*
-    %array_size = getelementptr i32, i32* %FuncName_bitcast, i32 -1
-    %slt = icmp slt i32 %Id_i, %array_size
-
-for_body_block
-                                     ; preds = %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 2
-    %getElementPtr = getelementptr i32**, i32*** %getElementPtr, i32* %Id_i
-    store i32** 0, i32*** %getElementPtr
+                                     ; preds = %for_step_block, %if_dest_block, %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
 
 for_step_block
-                                     ; preds = %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    SelfAdd = add i32 %Id_i, 1
-    store i32 %SelfAdd, i32* %Id_i
-    br label %for_cond_block
+                                     ; preds = %for_dest_block, %for_step_block, %if_dest_block, %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+    srem = srem i32 %Id_d, %Id_a
+    store i32 %srem, i32* %Id_e
+    br label %for_body_block
     br label %for_dest_block
-
-for_dest_block
-                                     ; preds = %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-
-for_cond_block
-                                     ; preds = %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 3
-    FuncName_bitcast = bitcast ReturnType : i32
-Parameter :  %memacc_func to i32*
-    %array_size = getelementptr i32, i32* %FuncName_bitcast, i32 -1
-    %slt = icmp slt i32 %Id_i, %array_size
-
-for_body_block
-                                     ; preds = %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    %getElementPtr = getelementptr i32**, i32*** %Id_b, i32 3
-    %getElementPtr = getelementptr i32**, i32*** %getElementPtr, i32* %Id_i
-    %funccal = call i8* @toString(i32*** %getElementPtr)
-    %funccal = call void @print(ReturnType : i8*
-Parameter : i32  %funccal)
-
-for_step_block
-                                     ; preds = %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
-    SelfAdd = add i32 %Id_i, 1
-    store i32 %SelfAdd, i32* %Id_i
-    br label %for_cond_block
-    br label %for_dest_block
+    %StringConst = getelementptr [4 x i8], [4 x i8]* @const_string_no0, i32 0, i32 0
+    %funccal = call void @print(i8* %StringConst)
     store i32 0, i32* %mainreturn_value
     br label %main_last_block
 
 for_dest_block
-                                     ; preds = %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+                                     ; preds = %for_step_block, %for_dest_block, %for_step_block, %if_dest_block, %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
 
 main_return_block
-                                  ; preds = %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
+                                  ; preds = %for_dest_block, %for_step_block, %for_dest_block, %for_step_block, %if_dest_block, %if_then_block, %for_body_block, %if_dest_block, %if_then_block, %for_body_block, %for_dest_block, %for_step_block, %for_body_block, %for_cond_block, %main_last_block, %main_entrance_block
 
 }
 
@@ -465,12 +443,6 @@ define ReturnType : void
 Parameter :  @__init(){
 __init_entrance_block
 
-    call_size_1 = sub i32 4, 4
-    call_size_2 = add i32 %call_size_1, 4
-    %call_malloc_func = call i8* @__malloc_foo(i32 %call_size_2)
-    call_malloc_cast = bitcast i32* %call_malloc_func to i32*
-    store i32 4, i32* %call_malloc_cast
-    store i32* %call_malloc_cast, i32** @a
 
 __init_last_block
                                   ; preds = %__init_entrance_block

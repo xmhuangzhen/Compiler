@@ -749,10 +749,10 @@ public class SemanticChecker implements ASTVisitor {
             if (rhsTypeName.equals("null")) {
                 if (it.lhs.ExprType instanceof NonArrayTypeNode)
                     throw new semanticError("BinaryNode should be equal", it.pos);
-                else if (it.lhs instanceof ArraydefExprNode){
-                    if(((ArraydefExprNode) it.lhs).dim == 1)
-                        throw new semanticError("Assign node wrong", it.pos);
-                }
+                //else if (it.lhs instanceof ArraydefExprNode){
+                   // if(((ArraydefExprNode) it.lhs).dim == 1)
+                     //   throw new semanticError("Assign node wrong", it.pos);
+                //}
             } else {
                 throw new semanticError("Assign node type wrong", it.pos);
             }
