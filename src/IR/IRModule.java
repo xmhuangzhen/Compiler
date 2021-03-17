@@ -188,7 +188,7 @@ public class IRModule {
         IRFunctionTable.put("__malloc_foo",tmpFunc);
     }
 
-    public IRTypeSystem getIRType(TypeNode tmpSemaTypeNode) {///???string
+    public IRTypeSystem getIRType(TypeNode tmpSemaTypeNode) {///???string--maybe correct
         if (tmpSemaTypeNode instanceof ArrayTypeNode) {
             IRTypeSystem tmpBaseType = getIRType(((ArrayTypeNode) tmpSemaTypeNode).baseType);
             for (int i = 0; i < ((ArrayTypeNode) tmpSemaTypeNode).dimension; ++i)

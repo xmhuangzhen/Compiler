@@ -61,7 +61,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSinglevarDef(MxStarParser.SinglevarDefContext ctx) {
-        String varname = ctx.Identifier().toString();
+        String varname = ctx.Identifier().getText();
         ExprNode expr = null;
         if(ctx.expression() != null ) expr = (ExprNode) visit(ctx.expression());
         return new singlevarDefStmtNode(varname, expr, null, new position(ctx));
@@ -69,7 +69,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitClassDef(MxStarParser.ClassDefContext ctx) {
-        String className = ctx.Identifier().toString();
+        String className = ctx.Identifier().getText();
         classDefNode node = new classDefNode(className, new position(ctx));
 
         for(var vd : ctx.varDef()){
@@ -101,7 +101,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitFuncDef(MxStarParser.FuncDefContext ctx) {
         currentScope = new Scope(currentScope);
-        String FuncName = ctx.Identifier().toString();
+        String FuncName = ctx.Identifier().getText();
         TypeNode tmpFuncTypeNode = (TypeNode) visit(ctx.funcType());
 
         funcDefNode node = new funcDefNode(FuncName, tmpFuncTypeNode, new position(ctx));
@@ -338,7 +338,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSelfExpr(MxStarParser.SelfExprContext ctx) {
-        SelfExprNode node = new SelfExprNode(ctx.getText(),null,ctx.op.toString(),new position(ctx));
+        SelfExprNode node = new SelfExprNode(ctx.getText(),null,ctx.op.getText(),new position(ctx));
         node.expr = (ExprNode) visit(ctx.expression());
         return node;
     }

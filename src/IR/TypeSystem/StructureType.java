@@ -7,17 +7,19 @@ import java.util.ArrayList;
 public class StructureType extends IRTypeSystem{
 
     public String StructureName;
-    public ArrayList<IRTypeSystem> StructureMember;
+    public ArrayList<IRTypeSystem> StructureMemberType;
+    public ArrayList<String> StructureMemberName;
 
     public StructureType(String tmpName){
         StructureName = tmpName;
-        StructureMember = new ArrayList<>();
+        StructureMemberType = new ArrayList<>();
+        StructureMemberName = new ArrayList<>();
     }
 
     @Override
     public long getTypeSize() {
         long res = 0;
-        for(IRTypeSystem tmpMember : StructureMember){
+        for(IRTypeSystem tmpMember : StructureMemberType){
             res += tmpMember.getTypeSize();
         }
         return res;

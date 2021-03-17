@@ -1,11 +1,9 @@
 package IR.Operand;
 
-import IR.Instruction.IRInstruction;
 import IR.TypeSystem.IRTypeSystem;
 
 public class Register extends IROperand{
     public String RegisterName;
-    public IRInstruction RegisterDef;
 
     public Register(IRTypeSystem tmpType, String tmpName) {
         super(tmpType);
