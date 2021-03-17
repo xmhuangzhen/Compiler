@@ -1,5 +1,4 @@
 import AST.RootNode;
-import Backend.IRBuilder;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import Parser.MxStarLexer;
@@ -42,8 +41,8 @@ public class Main {
             SemanticChecker semanticCheck  = new SemanticChecker();
             semanticCheck.visit(ASTRoot);
 
-            IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
-            tmpIRBuilder.visit(ASTRoot);
+    //        IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
+  //          tmpIRBuilder.visit(ASTRoot);
 //            new IRPrinter("IRPrinter_test").run(tmpIRBuilder.currentModule);
 
         } catch (error er) {
