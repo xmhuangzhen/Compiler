@@ -870,5 +870,14 @@ public class SemanticChecker implements ASTVisitor {
 
         it.IsLvalue = true;
         it.ExprType = it.arr.ExprType;
+
+        if(it.dim == 1){
+            if(it.arr.ExprType instanceof ArrayTypeNode)
+                it.ExprType = ((ArrayTypeNode) it.arr.ExprType).baseType;
+            else if(it.arr instanceof NewExprNode){
+                if(((NewExprNode) it.arr).exprTypeNode instanceof ArrayTypeNode)
+                    it.ExprType = ((ArrayTypeNode) ((NewExprNode) it.arr).exprTypeNode).baseType;
+            }
+        }
     }
 }
