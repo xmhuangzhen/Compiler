@@ -3,7 +3,8 @@ package RISCV.Inst;
 abstract public class RISCVInstruction {
     public enum RISCVBinaryENUMType{
         add,sub,mul,div,rem,
-        slt,sll,sra,
+        slt,
+        sll,sra,
         and,or,xor
     }
     public enum RISCVWidthENUMType{

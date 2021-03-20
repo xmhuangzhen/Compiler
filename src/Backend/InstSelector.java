@@ -6,9 +6,7 @@ import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.*;
 import RISCV.Inst.*;
-import RISCV.Operand.RISCVGlobalReg;
-import RISCV.Operand.RISCVImm;
-import RISCV.Operand.RISCVRegister;
+import RISCV.Operand.*;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVFunction;
 import RISCV.RISCVModule;
@@ -69,7 +67,7 @@ public class InstSelector implements IRVisitor{
         if(it.brCond == null){
             curRISCVBasicBlock.addInstruction(new RISCVJumpInst(curRISCVModule.BasicBlockMap.get(it.brIfTrue)));
         } else {
-            //todo
+            //todo (why need in here?)
         }
     }
 
@@ -132,12 +130,27 @@ public class InstSelector implements IRVisitor{
 
     @Override
     public void visit(loadInstruction it) {
+        RISCVRegister rd = curRISCVModule.getRISCVReg(it.LoadResult,curRISCVBasicBlock);
+        RISCVRegister rs = curRISCVModule.getRISCVReg(it.LoadPointer,curRISCVBasicBlock);
 
+        curRISCVBasicBlock.addInstruction(new RISCVlInst(curRISCVModule.getWidth(it.LoadResult)
+                ,rd,rs,new RISCVImm(0)));
     }
 
     @Override
     public void visit(storeInstruction it) {
-
+        RISCVRegister rd = curRISCVModule.getRISCVReg(it.StorePointer, curRISCVBasicBlock);
+        RISCVRegister rs = curRISCVModule.getRISCVReg(it.StoreValue, curRISCVBasicBlock);
+        if (rd instanceof RISCVGlobalReg) {
+            RISCVVirtualReg tmpRdReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpRdReg, new RISCVRelocationImm(
+                    (RISCVGlobalReg) rd, RISCVRelocationImm.RelocationENUMType.hi)));
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
+                    tmpRdReg, rs, new RISCVRelocationImm((RISCVGlobalReg) rd, RISCVRelocationImm.RelocationENUMType.lo)));
+        } else {
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
+                    rd, rs, new RISCVImm(0)));
+        }
     }
 
     @Override
@@ -147,12 +160,47 @@ public class InstSelector implements IRVisitor{
 
     @Override
     public void visit(icmpInstruction it) {
+        //eq, ne, sgt, sge, slt, sle -> eq,ne,lt,le,gt,ge
+        RISCVRegister rd = curRISCVModule.getRISCVReg(it.IcmpResult,curRISCVBasicBlock);
+        RISCVRegister rs1 = curRISCVModule.getRISCVReg(it.IcmpOp1,curRISCVBasicBlock);
+        RISCVRegister rs2 = curRISCVModule.getRISCVReg(it.IcmpOp2,curRISCVBasicBlock);
 
+        if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.eq){
+            RISCVVirtualReg tmpXorReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.xor,
+                    tmpXorReg,rs1,rs2,null));
+            curRISCVBasicBlock.addInstruction(new RISCVsetzInst(RISCVInstruction.RISCVCompareENUMType.eq
+                    ,rd,tmpXorReg));
+        } else if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.ne){
+            RISCVVirtualReg tmpXorReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.xor,
+                    tmpXorReg,rs1,rs2,null));
+            curRISCVBasicBlock.addInstruction(new RISCVsetzInst(RISCVInstruction.RISCVCompareENUMType.ne
+                    ,rd,tmpXorReg));
+        } else if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sgt){
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.slt,
+                    rd,rs2,rs1,null));
+        } else if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.slt){
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.slt,
+                    rd,rs1,rs2,null));
+        } else if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sge){
+            RISCVVirtualReg tmpSltReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.slt,
+                    tmpSltReg,rs1,rs2,null));
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.xor,
+                    rd,tmpSltReg,null,new RISCVImm(1)));
+        } else if(it.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sle){
+            RISCVVirtualReg tmpSltReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.slt,
+                    tmpSltReg,rs2,rs1,null));
+            curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.xor,
+                    rd,tmpSltReg,null,new RISCVImm(1)));
+        } else throw new RuntimeException();
     }
 
     @Override
     public void visit(phiInstruction it) {
-
+        //todo
     }
 
     @Override

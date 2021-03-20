@@ -3,6 +3,7 @@ package RISCV;
 import IR.IRBasicBlock;
 import IR.Instruction.binaryOpInstruction;
 import IR.Instruction.bitwiseBinaryInstruction;
+import IR.Instruction.icmpInstruction;
 import IR.Operand.*;
 import RISCV.Inst.RISCVInstruction;
 import RISCV.Inst.RISCVliInst;
@@ -92,4 +93,10 @@ public class RISCVModule {
         else if(tmpType == bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor) return RISCVInstruction.RISCVBinaryENUMType.xor;
         else throw new RuntimeException();
     }
+
+    public RISCVInstruction.RISCVWidthENUMType getWidth(IROperand tmpOperand){
+        if(tmpOperand.thisType.getTypeSize()/8 <= 1) return RISCVInstruction.RISCVWidthENUMType.b;
+        else return RISCVInstruction.RISCVWidthENUMType.w;
+    }
+
 }
