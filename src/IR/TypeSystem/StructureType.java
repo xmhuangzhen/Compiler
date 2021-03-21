@@ -25,6 +25,14 @@ public class StructureType extends IRTypeSystem{
         return res;
     }
 
+    public long getMemberOffset(long tmpIndex){
+        long res = 0;
+        for(int i = 0;i < tmpIndex;++i){
+            res += StructureMemberType.get(i).getTypeSize();
+        }
+        return res;
+    }
+
     @Override
     public IROperand getValue() {
         return null;

@@ -32,6 +32,7 @@ public class getElementPtrInstruction extends IRInstruction{
         } else {
             tmpBaseTypeName = GetElementPtrPtr.thisType.toString();
             tmpPointerTypeName = tmpBaseTypeName + "*";
+            throw new RuntimeException("Attention! GEP ptr is not PointerType!");
         }
 
         StringBuilder GetElementPtrName = new StringBuilder();
