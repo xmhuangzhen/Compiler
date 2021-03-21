@@ -1,6 +1,7 @@
 package RISCV;
 
 import IR.IRBasicBlock;
+import IR.IRFunction;
 import IR.Instruction.binaryOpInstruction;
 import IR.Instruction.bitwiseBinaryInstruction;
 import IR.Instruction.icmpInstruction;
@@ -23,6 +24,7 @@ public class RISCVModule {
     public ArrayList<RISCVPhyReg> PhyRegList;
     public HashMap<IROperand, RISCVVirtualReg> VirtualRegMap;
     public HashMap<IROperand, RISCVGlobalReg> GlobalRegMap;
+    public HashMap<IRFunction, RISCVFunction> RISCVFuncMap;
     public int VirtualRegCnt;
 
     public HashMap<IRBasicBlock, RISCVBasicBlock> BasicBlockMap;
@@ -39,6 +41,9 @@ public class RISCVModule {
 
         //BasicBlock
         BasicBlockMap = new LinkedHashMap<>();
+
+        //func
+        RISCVFuncMap = new LinkedHashMap<>();
     }
 
     public RISCVRegister getRISCVReg(IROperand tmpIROperand, RISCVBasicBlock tmpBasicBlock){
@@ -99,4 +104,11 @@ public class RISCVModule {
         else return RISCVInstruction.RISCVWidthENUMType.w;
     }
 
+    public RISCVPhyReg getPhyReg(String tmpName){
+        for(int i = 0;i < 32; ++i){
+            if(RISCVPhyRegName.get(i).equals(tmpName))
+                return PhyRegList.get(i);
+        }
+        throw new RuntimeException("no such PhyReg name");
+    }
 }
