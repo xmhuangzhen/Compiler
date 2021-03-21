@@ -6,6 +6,7 @@ import IR.Instruction.binaryOpInstruction;
 import IR.Instruction.bitwiseBinaryInstruction;
 import IR.Instruction.icmpInstruction;
 import IR.Operand.*;
+import IR.TypeSystem.ArrayType;
 import RISCV.Inst.RISCVInstruction;
 import RISCV.Inst.RISCVliInst;
 import RISCV.Operand.*;
@@ -25,7 +26,7 @@ public class RISCVModule {
     public HashMap<IROperand, RISCVVirtualReg> VirtualRegMap;
     public HashMap<IROperand, RISCVGlobalReg> GlobalRegMap;
     public HashMap<IRFunction, RISCVFunction> RISCVFuncMap;
-    public int VirtualRegCnt;
+    public int VirtualRegCnt, BlockCnt;
 
     public HashMap<IRBasicBlock, RISCVBasicBlock> BasicBlockMap;
 
@@ -41,6 +42,7 @@ public class RISCVModule {
 
         //BasicBlock
         BasicBlockMap = new LinkedHashMap<>();
+        BlockCnt = 0;
 
         //func
         RISCVFuncMap = new LinkedHashMap<>();
@@ -110,5 +112,39 @@ public class RISCVModule {
                 return PhyRegList.get(i);
         }
         throw new RuntimeException("no such PhyReg name");
+    }
+
+    public RISCVBasicBlock getRISCVBasicBlock(IRBasicBlock tmpBlock){
+        if(BasicBlockMap.containsKey(tmpBlock)) return BasicBlockMap.get(tmpBlock);
+        RISCVBasicBlock tmpRes = new RISCVBasicBlock(tmpBlock, tmpBlock.BasicBlockName+(BlockCnt++));
+        BasicBlockMap.put(tmpBlock,tmpRes);
+        return tmpRes;
+    }
+
+    public void addGlobalReg(GlobalVariables tmpGlobalVar){
+        String varName = tmpGlobalVar.VariablesName;
+        RISCVGlobalReg tmpGlobalReg = new RISCVGlobalReg(varName);
+
+        //set init
+        IROperand initExpr = tmpGlobalVar.VariablesInitExpr;
+        if(initExpr instanceof IntegerConstant){
+            tmpGlobalReg.isInt = true;
+            tmpGlobalReg.ValInt = (int)((IntegerConstant) initExpr).value;
+        } else if(initExpr instanceof BooleanConstant){
+            tmpGlobalReg.isBool = true;
+            tmpGlobalReg.ValBool = ((BooleanConstant) initExpr).value?1:0;
+        } else if(initExpr instanceof StringConstant){
+            tmpGlobalReg.isString = true;
+            tmpGlobalReg.ValString = ((StringConstant) initExpr).value;
+        } else {
+            tmpGlobalReg.isInt = true;
+            tmpGlobalReg.ValInt = 0;
+        }
+        GlobalRegMap.put(tmpGlobalVar,tmpGlobalReg);
+    }
+
+    public void addFunc(IRFunction tmpFunc){
+        RISCVFunction tmpRISCVFunc = new RISCVFunction(tmpFunc);
+        RISCVFuncMap.put(tmpFunc,tmpRISCVFunc);
     }
 }

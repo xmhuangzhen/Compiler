@@ -1,16 +1,19 @@
 package RISCV;
 
+import IR.IRFunction;
+
 import java.util.ArrayList;
 
 public class RISCVFunction {
 
-
+    public IRFunction thisIRFunc;
     public String FunctionName;
     public RISCVBasicBlock EntranceBlock = null;
     public ArrayList<RISCVBasicBlock> BasicBlockList;
 
-    public RISCVFunction(String tmpName){
-        FunctionName = tmpName;
+    public RISCVFunction(IRFunction tmpFunc){
+        thisIRFunc = tmpFunc;
+        FunctionName = tmpFunc.thisFunctionName;
         BasicBlockList = new ArrayList<>();
     }
 

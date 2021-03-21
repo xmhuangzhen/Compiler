@@ -1,5 +1,6 @@
 package RISCV;
 
+import IR.IRBasicBlock;
 import RISCV.Inst.RISCVInstruction;
 
 import java.util.ArrayList;
@@ -7,11 +8,13 @@ import java.util.ArrayList;
 public class RISCVBasicBlock {
 
     public String BlockName;
+    public IRBasicBlock thisIRBasicBlock;
     public ArrayList<RISCVInstruction> InstructionList;
     public RISCVInstruction HeadInst, TailInst;
     //public RISCVBasicBlock nextBlock;
 
-    public RISCVBasicBlock(String tmpName){
+    public RISCVBasicBlock(IRBasicBlock tmpBlock,String tmpName){
+        thisIRBasicBlock = tmpBlock;
         BlockName = tmpName;
         InstructionList = new ArrayList<>();
         HeadInst = null;

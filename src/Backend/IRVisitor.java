@@ -4,6 +4,7 @@ import IR.IRBasicBlock;
 import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.*;
+import IR.Operand.GlobalVariables;
 
 public interface IRVisitor {
     void visit(IRModule it);
