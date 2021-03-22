@@ -20,7 +20,6 @@ public class RISCVFunction {
     public void addBlock(RISCVBasicBlock tmpBlock){
         BasicBlockList.add(tmpBlock);
         if(EntranceBlock == null) EntranceBlock = tmpBlock;
-
     }
 
     @Override

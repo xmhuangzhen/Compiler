@@ -7,6 +7,7 @@ public class RISCVJumpInst extends RISCVInstruction{
     public RISCVBasicBlock JumpToBlock;
 
     public RISCVJumpInst(RISCVBasicBlock tmpBlock){
+        super();
         JumpToBlock = tmpBlock;
     }
 

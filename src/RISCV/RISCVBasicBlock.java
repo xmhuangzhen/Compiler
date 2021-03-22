@@ -11,7 +11,7 @@ public class RISCVBasicBlock {
     public IRBasicBlock thisIRBasicBlock;
     public ArrayList<RISCVInstruction> InstructionList;
     public RISCVInstruction HeadInst, TailInst;
-    //public RISCVBasicBlock nextBlock;
+    public RISCVBasicBlock nextBlock;
 
     public RISCVBasicBlock(IRBasicBlock tmpBlock,String tmpName){
         thisIRBasicBlock = tmpBlock;

@@ -1,7 +1,10 @@
 package RISCV.Inst;
 
 import RISCV.Operand.RISCVRegister;
+import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
+
+import java.util.ArrayList;
 
 public class RISCVBranchInst extends RISCVInstruction{
 
@@ -10,14 +13,18 @@ public class RISCVBranchInst extends RISCVInstruction{
     public boolean BranchUnsigned;
     public RISCVBasicBlock IfTrueBasicBlock,IfFalseBasicBlock;
 
+
     public RISCVBranchInst(RISCVCompareENUMType tmpType, boolean tmpUnsigned, RISCVRegister tmprs1,
                            RISCVRegister tmprs2, RISCVBasicBlock tmpIfTrue, RISCVBasicBlock tmpIfFalse){
+        super();
         CompareType = tmpType;
         BranchUnsigned = tmpUnsigned;
         rs1 = tmprs1;
         rs2 = tmprs2;
         IfTrueBasicBlock = tmpIfTrue;
         IfFalseBasicBlock = tmpIfFalse;
+        if(rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if(rs2 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs2);
     }
 
     @Override

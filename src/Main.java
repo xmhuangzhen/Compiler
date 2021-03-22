@@ -1,6 +1,8 @@
 import AST.RootNode;
+import Backend.ASMPrinter;
 import Backend.IRBuilder;
 import Backend.InstSelector;
+import Backend.NaiveRegAllocator;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import Parser.MxStarLexer;
@@ -14,12 +16,11 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 
 public class Main {
     public static void main(String[] args) throws Exception{
-
-//        InputStream input = System.in;
 
         InputStream input = null;
         if(args.length != 0)
@@ -50,7 +51,14 @@ public class Main {
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);
 
+            NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
+            regAlloc.run();
 
+
+            // ASM Print
+            PrintStream printStream = new PrintStream("output.s");
+            ASMPrinter asmPrinter = new ASMPrinter(regAlloc.curRISCVModule,printStream);
+            asmPrinter.run();
         } catch (error er) {
             System.err.println(er.toString());
             throw new RuntimeException();
