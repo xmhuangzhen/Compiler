@@ -1165,6 +1165,7 @@ public class IRBuilder implements ASTVisitor {
         tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,0));
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
         it.ExprResult = tmpResult;
+//        throw new RuntimeException(it.ExprText+","+it.val);
     }
 
     @Override
