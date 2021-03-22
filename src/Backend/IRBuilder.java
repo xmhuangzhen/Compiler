@@ -68,6 +68,7 @@ public class IRBuilder implements ASTVisitor {
                 FunctionType tmpFuncType = new FunctionType(new VoidType());
                 String tmpFuncName = tmpClassDefNode.className + "." + tmpClassDefNode.className;
                 IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
+                if(tmpClassDefNode.consDef == null) tmpIRFunction.IsBuiltIn = true;
                 currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
 
                 for (var tmpFunc : tmpClassDefNode.funcDefs) {
@@ -105,10 +106,12 @@ public class IRBuilder implements ASTVisitor {
         }
 
         //(3) declare global variables (declare a function "__init" to save the global variables)
-        FunctionType tmpFuncType = new FunctionType(new VoidType());
-        String tmpFuncName = "__init";
+    /*    FunctionType tmpFuncType = new FunctionType(new VoidType());
+        String tmpFuncName = "__init__";
         IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
         currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
+     */
+        IRFunction tmpIRFunction = currentModule.IRFunctionTable.get("__init__");
 
         currentFunction = tmpIRFunction;
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
@@ -221,7 +224,7 @@ public class IRBuilder implements ASTVisitor {
 
         if(it.funcName.equals("main")){
             Register tmpResult = new Register(new VoidType(),"call_init");
-            IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init");
+            IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init__");
             callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult,tmpFunc);
             currentBasicBlock.addBasicBlockInst(tmpCallInst);
         }
@@ -233,9 +236,13 @@ public class IRBuilder implements ASTVisitor {
         //(5) goto the last block
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
                 currentFunction.thisReturnBlock,null));
-        currentBasicBlock = currentFunction.thisReturnBlock;
-        currentFunction = null;
 
+        currentBasicBlock = currentFunction.thisReturnBlock;
+        currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock,
+                currentFunction.thisFunctionType,currentFunction.thisReturnValue));
+
+        currentFunction = null;
+        currentBasicBlock = null;
         InFunc = false;
     }
 

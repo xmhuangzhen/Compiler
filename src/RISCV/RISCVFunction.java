@@ -2,24 +2,28 @@ package RISCV;
 
 import IR.IRFunction;
 
-import java.util.ArrayList;
-
 public class RISCVFunction {
 
     public IRFunction thisIRFunc;
     public String FunctionName;
-    public RISCVBasicBlock EntranceBlock = null;
-    public ArrayList<RISCVBasicBlock> BasicBlockList;
+    public boolean IsBuiltIn;
+
+    public RISCVBasicBlock EntranceBlock = null, LastBlock = null;
 
     public RISCVFunction(IRFunction tmpFunc){
         thisIRFunc = tmpFunc;
         FunctionName = tmpFunc.thisFunctionName;
-        BasicBlockList = new ArrayList<>();
+        IsBuiltIn = tmpFunc.IsBuiltIn;
     }
 
     public void addBlock(RISCVBasicBlock tmpBlock){
-        BasicBlockList.add(tmpBlock);
-        if(EntranceBlock == null) EntranceBlock = tmpBlock;
+        if(EntranceBlock == null) {
+            EntranceBlock = tmpBlock;
+            LastBlock = tmpBlock;
+        } else {
+            LastBlock.nextBlock = tmpBlock;
+            LastBlock = tmpBlock;
+        }
     }
 
     @Override

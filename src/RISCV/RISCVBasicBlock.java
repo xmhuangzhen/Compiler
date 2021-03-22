@@ -16,7 +16,6 @@ public class RISCVBasicBlock {
     public RISCVBasicBlock(IRBasicBlock tmpBlock,String tmpName){
         thisIRBasicBlock = tmpBlock;
         BlockName = tmpName;
-        InstructionList = new ArrayList<>();
         HeadInst = null;
         TailInst = null;
     }
@@ -26,8 +25,8 @@ public class RISCVBasicBlock {
             HeadInst = tmpInst;
             TailInst = tmpInst;
         } else {
-            TailInst.nextInst = tmpInst;
             tmpInst.preInst = TailInst;
+            TailInst.nextInst = tmpInst;
             TailInst = tmpInst;
         }
     }

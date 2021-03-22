@@ -1,8 +1,5 @@
 import AST.RootNode;
-import Backend.ASMPrinter;
-import Backend.IRBuilder;
-import Backend.InstSelector;
-import Backend.NaiveRegAllocator;
+import Backend.*;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
 import Parser.MxStarLexer;
@@ -46,19 +43,20 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-//            new IRPrinter("IRPrinter_test").run(tmpIRBuilder.currentModule);
+          //  new IRPrinter("output.s").run(tmpIRBuilder.currentModule);
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);
 
+            //Register Allocate
             NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
             regAlloc.run();
-
 
             // ASM Print
             PrintStream printStream = new PrintStream("output.s");
             ASMPrinter asmPrinter = new ASMPrinter(regAlloc.curRISCVModule,printStream);
             asmPrinter.run();
+
         } catch (error er) {
             System.err.println(er.toString());
             throw new RuntimeException();

@@ -11,7 +11,6 @@ public interface IRVisitor {
     void visit(IRFunction it);
     void visit(IRBasicBlock it);
 
-    void visit(IRInstruction it);
     void visit(retInstruction it);
     void visit(brInstruction it);
     void visit(binaryOpInstruction it);

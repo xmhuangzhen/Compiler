@@ -12,6 +12,8 @@ import java.util.Map;
 public class IRFunction {
     public FunctionType thisFunctionType;
     public String thisFunctionName;
+    public boolean IsBuiltIn;
+
     public ArrayList<IRBasicBlock> thisFunctionBasicBlocks;
     public ArrayList<Parameter> thisFunctionParameters;
     public Map<String, Register> thisFunctionVariableTable;
@@ -22,9 +24,12 @@ public class IRFunction {
     public IRBasicBlock thisEntranceBlock;
     public IRBasicBlock thisReturnBlock;
 
+
     public IRFunction(FunctionType tmpFunctionType, String tmpFunctionName){
         thisFunctionType = tmpFunctionType;
         thisFunctionName = tmpFunctionName;
+        IsBuiltIn = false;
+
         thisFunctionBasicBlocks = new ArrayList<>();
         thisFunctionParameters = new ArrayList<>();
         thisFunctionVariableTable = new LinkedHashMap<>();

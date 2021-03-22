@@ -3,7 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.*;
 
-abstract public class IRInstruction {
+public abstract class IRInstruction {
     public IRBasicBlock thisBasicBlock;
     public IRInstruction preIRInstruction;
     public IRInstruction nextIRInstruction;
@@ -12,7 +12,5 @@ abstract public class IRInstruction {
         thisBasicBlock = tmpBasicBlock;
     }
 
-    public void accept(IRVisitor it){
-        it.visit(this);
-    }
+    abstract public void accept(IRVisitor it);
 }

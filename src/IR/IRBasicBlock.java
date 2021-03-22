@@ -13,7 +13,7 @@ public class IRBasicBlock {
     public IRFunction BasicBlockFunction;
     public IRBasicBlock prevBasicBlocks;
     public IRBasicBlock nextBasicBlocks;
-    public ArrayList<IRInstruction> BasicBlockInstructions;
+   // public ArrayList<IRInstruction> BasicBlockInstructions;
     public IRInstruction HeadInst;
     public IRInstruction TailInst;
 
@@ -22,7 +22,7 @@ public class IRBasicBlock {
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
         BasicBlockName = tmpName;
-        BasicBlockInstructions = new ArrayList<>();
+       // BasicBlockInstructions = new ArrayList<>();
         prevBasicBlocks = null;
         nextBasicBlocks = null;
         HeadInst = null;
@@ -31,13 +31,12 @@ public class IRBasicBlock {
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){
-        BasicBlockInstructions.add(tmpInst);
         if(HeadInst == null){
             HeadInst = tmpInst;
             TailInst = tmpInst;
         } else {
-            TailInst.nextIRInstruction = tmpInst;
             tmpInst.preIRInstruction = TailInst;
+            TailInst.nextIRInstruction = tmpInst;
             TailInst = tmpInst;
         }
     }

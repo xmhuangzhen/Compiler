@@ -37,6 +37,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new VoidType());
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"print");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str"));
         IRFunctionTable.put("print",tmpFunc);
 
@@ -44,6 +45,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new VoidType());
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"println");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str"));
         IRFunctionTable.put("println",tmpFunc);
 
@@ -51,6 +53,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new VoidType());
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"printInt");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"n"));
         IRFunctionTable.put("printInt",tmpFunc);
 
@@ -58,23 +61,27 @@ public class IRModule {
         tmpFuncType = new FunctionType(new VoidType());
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"printlnInt");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"n"));
         IRFunctionTable.put("printlnInt",tmpFunc);
 
         //函数：string getString();
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"getString");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("getString",tmpFunc);
 
         //函数：int getInt();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"getInt");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("getInt",tmpFunc);
 
         //函数：string toString(int i);
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"toString");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"i"));
         IRFunctionTable.put("toString",tmpFunc);
 
@@ -82,6 +89,7 @@ public class IRModule {
         //int length(); <StringIdentifier>.length();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_length");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("__string_length",tmpFunc);
 
         //函数：string substring(int left, int right); 使用：<StringIdentifier>.substring(left, right);
@@ -89,6 +97,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_substring");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"left"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"right"));
         IRFunctionTable.put("__string_substring",tmpFunc);
@@ -96,12 +105,14 @@ public class IRModule {
         //函数：int parseInt();  使用：<StringIdentifier>.parseInt();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_parseInt");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("__string_parseInt",tmpFunc);
 
         //函数：int ord(int pos); 使用：<StringIdentifier>.ord(pos);
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_ord");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"pos"));
         IRFunctionTable.put("__string_ord",tmpFunc);
 
@@ -109,12 +120,14 @@ public class IRModule {
         //<array>.size();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__array_size");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("__array_size",tmpFunc);
 
 
         //initialize the function"__init__" to store global variables
         tmpFuncType = new FunctionType(new VoidType());
         tmpFunc = new IRFunction(tmpFuncType,"__init__");
+        tmpFunc.IsBuiltIn = true;
         IRFunctionTable.put("__init__",tmpFunc);
 
         //+ of string type (str1+str2)
@@ -122,6 +135,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_add");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_add",tmpFunc);
@@ -131,6 +145,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_sgt");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_sgt",tmpFunc);
@@ -140,6 +155,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_slt");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_slt",tmpFunc);
@@ -149,6 +165,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_sge");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_sge",tmpFunc);
@@ -158,6 +175,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_sle");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_sle",tmpFunc);
@@ -167,6 +185,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_eq");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_eq",tmpFunc);
@@ -176,6 +195,7 @@ public class IRModule {
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"__string_ne");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
         IRFunctionTable.put("__string_ne",tmpFunc);
@@ -184,6 +204,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__malloc_foo");
+        tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"size"));
         IRFunctionTable.put("__malloc_foo",tmpFunc);
     }

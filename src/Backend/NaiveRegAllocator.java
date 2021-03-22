@@ -19,41 +19,40 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class NaiveRegAllocator{
+public class NaiveRegAllocator {
 
     public RISCVModule curRISCVModule;
     public HashMap<RISCVVirtualReg, RISCVGlobalReg> RegAllocMap;
     public static int StackCnt;
 
-    public NaiveRegAllocator(RISCVModule tmpModule){
+    public NaiveRegAllocator(RISCVModule tmpModule) {
         RegAllocMap = new LinkedHashMap<>();
         curRISCVModule = tmpModule;
         StackCnt = 0;
     }
 
-    public void run(){
-        for(var tmpFunc : curRISCVModule.RISCVFuncMap.values()){
-            for(int i = 0;i < tmpFunc.BasicBlockList.size();++i){
-                RISCVBasicBlock tmpBlock = tmpFunc.BasicBlockList.get(i);
-                for(RISCVInstruction tmpInst = tmpBlock.HeadInst;tmpInst != null;tmpInst = tmpInst.nextInst){
+    public void run() {
+        for (var tmpFunc : curRISCVModule.RISCVFuncMap.values())
+            if (!tmpFunc.IsBuiltIn) {
+                for (RISCVBasicBlock tmpBlock = tmpFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
+                    for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
+                        for (var tmpReg : tmpInst.UsedVirtualReg) {
+                            if (RegAllocMap.containsKey(tmpReg))
+                                tmpInst.addInstPre(tmpBlock, new RISCVlaInst(tmpReg, RegAllocMap.get(tmpReg)));
+                        }
 
-                    for(var tmpReg : tmpInst.UsedVirtualReg){
-                        if(RegAllocMap.containsKey(tmpReg))
-                            tmpInst.addInstPre(tmpBlock,new RISCVlaInst(tmpReg,RegAllocMap.get(tmpReg)));
-                    }
-
-                    for(var tmpReg : tmpInst.UsedVirtualReg) {
-                        RISCVGlobalReg tmpStoreReg;
-                        if (!RegAllocMap.containsKey(tmpReg)) {
-                            tmpStoreReg = new RISCVGlobalReg("stack_" + (StackCnt++));
-                            RegAllocMap.put(tmpReg, tmpStoreReg);
-                        } else tmpStoreReg = RegAllocMap.get(tmpReg);
-                        tmpInst.addInstNxt(tmpBlock, new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                                tmpStoreReg,tmpReg,new RISCVImm(0)));
-                        tmpInst = tmpInst.nextInst;
+                        for (var tmpReg : tmpInst.UsedVirtualReg) {
+                            RISCVGlobalReg tmpStoreReg;
+                            if (!RegAllocMap.containsKey(tmpReg)) {
+                                tmpStoreReg = new RISCVGlobalReg("stack_" + (StackCnt++));
+                                RegAllocMap.put(tmpReg, tmpStoreReg);
+                            } else tmpStoreReg = RegAllocMap.get(tmpReg);
+                            tmpInst.addInstNxt(tmpBlock, new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                    tmpStoreReg, tmpReg, new RISCVImm(0)));
+                            tmpInst = tmpInst.nextInst;
+                        }
                     }
                 }
             }
-        }
     }
 }

@@ -35,11 +35,12 @@ public class IRPrinter implements IRVisitor {
         outPrintWriter.println("");
 
         for(var tmpFuncName : it.IRFunctionTable.keySet())
-            outPrintWriter.println(it.IRFunctionTable.get(tmpFuncName).toString());
+            if(!it.IRFunctionTable.get(tmpFuncName).IsBuiltIn)
+                outPrintWriter.println(it.IRFunctionTable.get(tmpFuncName).toString());
         outPrintWriter.println("");
 
-        for(var tmpFuncName : it.IRFunctionTable.keySet()) {
-            it.IRFunctionTable.get(tmpFuncName).accept(this);
+        for(var tmpFunc : it.IRFunctionTable.values()) if(!tmpFunc.IsBuiltIn){
+            tmpFunc.accept(this);
             outPrintWriter.println("");
         }
     }
@@ -74,14 +75,17 @@ public class IRPrinter implements IRVisitor {
             curInst.accept(this);
     }
 
-    @Override
+/*    @Override
     public void visit(IRInstruction it) {
         outPrintWriter.println("    "+it.toString());
     }
 
+
+ */
     @Override
     public void visit(retInstruction it) {
         outPrintWriter.println("    "+it.toString());
+//        throw new RuntimeException("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     @Override
