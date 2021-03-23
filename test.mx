@@ -1,47 +1,47 @@
 /*
 Test Package: Sema_Local_Preview
 Test Target: Classes
-Author: 15' Lianming Zheng
+Author: 15' Bowen Tan
 Time: 2019-10-20
 Verdict: Success
 Origin Package: Semantic Extended
 */
+class AAA {
+    string str;
 
-A object;
+    AAA() {
+        str = "abcde";
+    }
+
+    void AAAprint() {
+        print(str);
+        print(toString(str.length()));
+    }
+};
+
+class BBB {
+    AAA a;
+
+    BBB() {
+        a.str = a.str + "1234567890";
+    }
+};
 
 int main() {
-    object.func1(2, 3);
+    int a;
+    int b = a + a * a % a;
 
-    object.set(0, 1)
-          .set(1, 0);
+    BBB[][] bb = new BBB[10][10];
 
-    object.copy(object.getThis())
-          .copy(object.getThis().getThis());
+    int i;
+    for (i = 1; i <= 10; i++) {
+        bool i = false;
+        if (i) {
+            print("a");
+        } else {
+            println("b");
+        }
+    }
 
-    return 0;
+    bb[5][5].a.AAAprint();
 }
-
-class A {
-    void func1(int x, int y) {
-//        func2(this.x*x, this.y*y);
-    }
-
-    void func2(int xx, int yy) {
-  //      func1(x*this.x, y*this.y);
-    }
-
-    A set(int xx, int yy) {
-        return set(x, y).set(this.x, this.y).set(xx, yy).getThis();
-    }
-
-    A copy(A other) {
-        // this = other;
-        return this;
-    }
-
-    A getThis() {
-        return getThis().getThis().getThis().getThis().copy(this);
-    }
-
-    int x; int y;
-};
