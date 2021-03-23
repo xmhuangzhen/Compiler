@@ -7,10 +7,12 @@ import IR.Instruction.bitwiseBinaryInstruction;
 import IR.Instruction.icmpInstruction;
 import IR.Operand.*;
 import IR.TypeSystem.ArrayType;
+import IR.TypeSystem.PointerType;
 import RISCV.Inst.RISCVInstruction;
 import RISCV.Inst.RISCVliInst;
 import RISCV.Operand.*;
 
+import java.awt.image.TileObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -112,6 +114,15 @@ public class RISCVModule {
                 return PhyRegList.get(i);
         }
         throw new RuntimeException("no such PhyReg name");
+    }
+
+    public RISCVGlobalReg getGlobalReg(IROperand tmpOperand){
+        if(GlobalRegMap.containsKey(tmpOperand)) return GlobalRegMap.get(tmpOperand);
+        if(tmpOperand instanceof GlobalVariables) {
+            addGlobalReg((GlobalVariables) tmpOperand);
+            return GlobalRegMap.get(tmpOperand);
+        }
+        else throw new RuntimeException(tmpOperand.toString()+","+tmpOperand.thisType.toString());
     }
 
     public RISCVBasicBlock getRISCVBasicBlock(IRBasicBlock tmpBlock){

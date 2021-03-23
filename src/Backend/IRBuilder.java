@@ -16,6 +16,7 @@ import IR.TypeSystem.*;
 import Util.classScope;
 import Util.globalScope;
 
+import java.sql.Struct;
 import java.util.Stack;
 
 public class IRBuilder implements ASTVisitor {
@@ -83,6 +84,11 @@ public class IRBuilder implements ASTVisitor {
                         tmpIRFunction.thisFunctionVariableTable.put(tmpPar.varname, new Register(
                                 new PointerType(currentModule.getIRType(tmpPar.typeNode)), tmpPar.varname));
                     }
+                    Parameter tmpClassPtr = new Parameter(tmpThisIRType,"this");
+                    tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
+                    tmpIRFunction.thisFunctionVariableTable.put("this",new Register(
+                            new PointerType(tmpThisIRType),"this"));
+                    tmpIRFunction.ClassPtr = tmpClassPtr;
                     currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
                 }
             }
@@ -848,16 +854,8 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(ThisExprNode it) {
         IRTypeSystem CurrentClassType = currentModule.getIRType(it.ExprType);
-        /*if(CurrentClassType != null){
-            StringBuilder tmpString = new StringBuilder();
-            tmpString.append(it.ExprType instanceof ClassTypeNode);
-            tmpString.append(",");
-            tmpString.append(CurrentClassType instanceof PointerType);
-            throw new RuntimeException(it.ExprType.Typename+","+CurrentClassType.toString()+","+tmpString.toString());
-        }*/
-        //CurrentClassType is already a PointerType
         if(CurrentClassType instanceof PointerType)
-            it.ExprResult = new Register(((PointerType) CurrentClassType).baseType,"this");
+            it.ExprResult = new Register(CurrentClassType,"this");
         else
             throw new RuntimeException();
     }
@@ -1066,31 +1064,28 @@ public class IRBuilder implements ASTVisitor {
                 }
 
                 if (tmpMemberIRType == null) {
-                    StringBuilder tmpString = new StringBuilder();
+/*                    StringBuilder tmpString = new StringBuilder();
                     tmpString.append("{" + it.Identifier + "}");
                     for (int i = 0; i < ((StructureType) tmpIRType).StructureMemberName.size(); ++i) {
                         tmpString.append("," + ((StructureType) tmpIRType).StructureMemberName.get(i));
-                    }
-                    throw new RuntimeException(tmpString.toString());
+                    }*/
+                    throw new RuntimeException();
                 }
 
                 //(3) do the getElementPtr inst
                 String RegisterName = "memacc_result";
                 Register tmpResult = new Register(new PointerType(tmpMemberIRType), RegisterName);
+/*                if(!(it.expr.ExprResult.thisType instanceof PointerType)){
+                    StringBuilder tmpString = new StringBuilder();
+                    tmpString.append(it.expr.ExprResult.thisType instanceof StructureType);
+                    throw new RuntimeException(tmpString.toString());
+                }
+  */
                 getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock, it.expr.ExprResult, tmpResult);
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, 0));
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, tmpMemberIndex));
                 currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
                 it.ExprResult = tmpResult;
-                /*
-                if(it.Identifier.equals("next")){
-                    StringBuilder tmpString = new StringBuilder();
-                    tmpString.append(it.ExprResult.thisType instanceof PointerType);
-                    tmpString.append(",");
-                    if(tmpMemberIRType instanceof PointerType)
-                    tmpString.append(((PointerType) tmpMemberIRType).baseType == null);
-                    throw new RuntimeException(tmpString.toString());
-                }*/
             }
         } else if (it.expr.ExprType.Typename.equals("string")) {
             String tmpName = "__string_" + it.Identifier;
