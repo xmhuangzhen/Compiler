@@ -1115,7 +1115,7 @@ public class IRBuilder implements ASTVisitor {
     public void visit(IdExprNode it) {
         //no Identifier in class
         //no !!! maybe in class
-        it.ExprResult = new Register(new PointerType( currentModule.getIRType(it.ExprType)), "Id_"+it.ExprText);
+        it.ExprResult = new Register(currentModule.getIRType(it.ExprType), "Id_"+it.ExprText);
         if(it.ExprResult.thisType == null){
             throw new RuntimeException("IdExpr "+it.ExprText);
         }

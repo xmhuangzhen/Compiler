@@ -257,7 +257,7 @@ public class InstSelector implements IRVisitor {
                             curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, tmpGetMemberOffset), curRISCVBasicBlock),
                             null));
 
-            } //else throw new RuntimeException(); ATTENTION!!!!!!!!!!!!!!!!!!
+            } else throw new RuntimeException(it.toString());// ATTENTION!!!!!!!!!!!!!!!!!!
         } else {//const string or maybe others?
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             //RISCVGlobalReg rs = curRISCVModule.GlobalRegMap.get(it.GetElementPtrPtr);
