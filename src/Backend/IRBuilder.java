@@ -449,7 +449,8 @@ public class IRBuilder implements ASTVisitor {
         currentBasicBlock = WhileBodyBlock;
         StackForBreak.push(WhileDestBlock);
         StackForContinue.push(WhileCondBlock);
-        it.stmt.accept(this);
+        if(it.stmt != null)
+            it.stmt.accept(this);
        // currentBasicBlock = WhileBodyBlock;/////////////////
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null,WhileCondBlock,null));
