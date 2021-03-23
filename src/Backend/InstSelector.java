@@ -262,8 +262,8 @@ public class InstSelector implements IRVisitor {
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             //RISCVGlobalReg rs = curRISCVModule.GlobalRegMap.get(it.GetElementPtrPtr);
             RISCVGlobalReg rs = curRISCVModule.getGlobalReg(it.GetElementPtrPtr);
-            if(rs == null) throw new RuntimeException();
-            curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,rs));
+            //if(rs == null) throw new RuntimeException(); ATTENTION-3
+            if(rs != null)curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,rs));
         }
     }
 

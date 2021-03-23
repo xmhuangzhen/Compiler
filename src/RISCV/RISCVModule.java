@@ -121,8 +121,8 @@ public class RISCVModule {
         if(tmpOperand instanceof GlobalVariables) {
             addGlobalReg((GlobalVariables) tmpOperand);
             return GlobalRegMap.get(tmpOperand);
-        }
-        else throw new RuntimeException(tmpOperand.toString()+","+tmpOperand.thisType.toString());
+        } else return null;
+//        else throw new RuntimeException(tmpOperand.toString()+","+tmpOperand.thisType.toString());ATTENTION-2
     }
 
     public RISCVBasicBlock getRISCVBasicBlock(IRBasicBlock tmpBlock){

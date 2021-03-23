@@ -328,7 +328,8 @@ public class IRBuilder implements ASTVisitor {
         //visit then
         currentFunction.addFunctionBasicBlock(currentBasicBlock);
         currentBasicBlock = IfThenBlock;
-        it.thenStmt.accept(this);
+        if(it.thenStmt != null)
+            it.thenStmt.accept(this);
         //////////currentBasicBlock = IfThenBlock;////////////////////
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null, IfDestBlock, null));
