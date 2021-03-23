@@ -43,6 +43,10 @@ public class InstSelector implements IRVisitor {
         }
         for (var tmpFunc : it.IRFunctionTable.values()) {
             curRISCVModule.addFunc(tmpFunc);
+            for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock; tmpBlock != null;
+                 tmpBlock = tmpBlock.nextBasicBlocks){
+                curRISCVModule.getRISCVBasicBlock(tmpBlock);
+            }
         }
         for (var tmpFunc : it.IRFunctionTable.values()) {
             if (!tmpFunc.IsBuiltIn) {
@@ -82,9 +86,6 @@ public class InstSelector implements IRVisitor {
             OffsetValue += 4;
         }
 
-        for (IRBasicBlock tmpBlock = it.thisEntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
-            curRISCVModule.getRISCVBasicBlock(tmpBlock);
-        }
 
         for (IRBasicBlock tmpBlock = it.thisEntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks)
             tmpBlock.accept(this);
@@ -118,7 +119,9 @@ public class InstSelector implements IRVisitor {
     @Override
     public void visit(brInstruction it) {
         if (it.brCond == null) {
-            curRISCVBasicBlock.addInstruction(new RISCVJumpInst(curRISCVModule.BasicBlockMap.get(it.brIfTrue)));
+            RISCVBasicBlock tmpJumptoBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
+            if(tmpJumptoBlock == null) throw new RuntimeException(it.toString());
+            curRISCVBasicBlock.addInstruction(new RISCVJumpInst(tmpJumptoBlock));
         } else {
             //todo (why need in here?)
         }
