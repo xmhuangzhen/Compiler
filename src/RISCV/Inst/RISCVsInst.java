@@ -38,7 +38,7 @@ public class RISCVsInst extends RISCVInstruction{
 
     @Override
     public String toString() {
-        StringBuilder tmpString = new StringBuilder("s"+WidthType.name()+" "+rd.toString()+","+rs1.toString());
+        StringBuilder tmpString = new StringBuilder("sw"+/*WidthType.name()+*/" "+rd.toString()+","+rs1.toString());
         if(offset.ImmVal != 0) tmpString.append("("+offset.toString()+")");
         return tmpString.toString();
     }
