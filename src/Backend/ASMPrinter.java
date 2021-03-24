@@ -38,7 +38,7 @@ public class ASMPrinter {
 
     public void runRISCVBasicBlock(RISCVBasicBlock thisBasicBlock) {
         if(thisBasicBlock.HeadInst != null) {
-            ASMPrintStream.println(thisBasicBlock.BlockName + ":");
+            ASMPrintStream.println("."+thisBasicBlock.BlockName + ":");
             for (RISCVInstruction tmpInst = thisBasicBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
                 ASMPrintStream.println("\t" + tmpInst.toString());
             }
