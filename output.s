@@ -98,7 +98,7 @@ main_entrance_block63:
 	sw s0,52(sp)
 	lw s0,52(sp)
 	lw s1,56(sp)
-	sw s0,s1
+	mv s1,s0
 	sw s0,52(sp)
 	lw s0,60(sp)
 	lw s1,64(sp)
@@ -106,19 +106,19 @@ main_entrance_block63:
 	sw s0,60(sp)
 	lw s0,60(sp)
 	lw s1,64(sp)
-	sw s0,s1
+	mv s1,s0
 	sw s0,60(sp)
 	lw s0,60(sp)
 	lw s1,68(sp)
-	sw s0,s1
+	mv s1,s0
 	sw s0,60(sp)
 	lw s0,72(sp)
 	lw s1,76(sp)
-	sw s0,s1
+	mv s1,s0
 	sw s0,72(sp)
 	lw s0,80(sp)
 	lw s1,84(sp)
-	sw s0,s1
+	mv s1,s0
 	sw s0,80(sp)
 	j main_last_block64
 main_last_block64:
