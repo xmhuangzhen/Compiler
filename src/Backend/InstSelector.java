@@ -111,10 +111,10 @@ public class InstSelector implements IRVisitor {
         if (it.returnValue != null) {
             RISCVRegister tmpRISCVReturnVal = curRISCVModule.getRISCVReg(it.returnValue, curRISCVBasicBlock);
             if (tmpRISCVReturnVal instanceof RISCVGlobalReg)
-                curRISCVBasicBlock.addInstruction(new RISCVlaInst(curRISCVModule.getPhyReg("a0"),
+                curRISCVBasicBlock.addInstruction(new RISCVlaInst(curRISCVModule.getPhyReg("ra"),
                         (RISCVGlobalReg) tmpRISCVReturnVal));
             else
-                curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a0"),
+                curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("ra"),
                         tmpRISCVReturnVal));
         }
 /*        curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
