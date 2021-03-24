@@ -32,12 +32,13 @@ public class ASMPrinter {
         ASMPrintStream.println("\t.p2align\t2");
         ASMPrintStream.println(thisFunc.FunctionName + ":");
         for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
-            runRISCVBasicBlock(tmpBlock);
+            runRISCVBasicBlock(tmpBlock,thisFunc);
         ASMPrintStream.println("# end function : "+thisFunc.FunctionName);
     }
 
-    public void runRISCVBasicBlock(RISCVBasicBlock thisBasicBlock) {
+    public void runRISCVBasicBlock(RISCVBasicBlock thisBasicBlock, RISCVFunction thisFunc) {
         if(thisBasicBlock.HeadInst != null) {
+            if(thisFunc.EntranceBlock == thisBasicBlock) ASMPrintStream.print("#");
             ASMPrintStream.println("."+thisBasicBlock.BlockName + ":");
             for (RISCVInstruction tmpInst = thisBasicBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
                 ASMPrintStream.println("\t" + tmpInst.toString());

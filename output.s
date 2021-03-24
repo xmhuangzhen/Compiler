@@ -2,7 +2,7 @@
 	.globl	__init__					# start function : __init__
 	.p2align	2
 __init__:
-.__init___entrance_block36:
+#.__init___entrance_block36:
 	addi sp,sp,-64
 	lw s0,0(sp)
 	mv s0,s0
@@ -51,7 +51,7 @@ __init__:
 	.globl	main					# start function : main
 	.p2align	2
 main:
-.main_entrance_block63:
+#.main_entrance_block63:
 	addi sp,sp,-96
 	lw s0,0(sp)
 	mv s0,s0
