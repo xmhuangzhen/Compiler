@@ -4,6 +4,7 @@ import RISCV.Operand.RISCVGlobalReg;
 import RISCV.Operand.RISCVImm;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVVirtualReg;
+import RISCV.RISCVModule;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,14 @@ public class RISCVLUIInst extends RISCVInstruction {
         globalReg = tmpGlobalReg;
         if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
     }
+
+    @Override
+    public void replaceReg(RISCVModule curModule) {
+        for(int i = 0;i < UsedVirtualReg.size();++i){
+            if(rd == UsedVirtualReg.get(i)) rd = curModule.getPhyReg("s"+i);
+        }
+    }
+
 
     @Override
     public String toString() {

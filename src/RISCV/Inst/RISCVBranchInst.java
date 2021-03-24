@@ -3,6 +3,7 @@ package RISCV.Inst;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
+import RISCV.RISCVModule;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,15 @@ public class RISCVBranchInst extends RISCVInstruction{
         if(rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
         if(rs2 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs2);
     }
+
+    @Override
+    public void replaceReg(RISCVModule curModule) {
+        for(int i = 0;i < UsedVirtualReg.size();++i){
+            if(rs1 == UsedVirtualReg.get(i)) rs1 = curModule.getPhyReg("s"+i);
+            if(rs2 == UsedVirtualReg.get(i)) rs2 = curModule.getPhyReg("s"+i);
+        }
+    }
+
 
     @Override
     public String toString() {

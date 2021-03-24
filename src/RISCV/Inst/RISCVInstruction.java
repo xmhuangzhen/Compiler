@@ -2,8 +2,10 @@ package RISCV.Inst;
 
 import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
+import RISCV.RISCVModule;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 abstract public class RISCVInstruction {
     public enum RISCVBinaryENUMType{
@@ -51,4 +53,6 @@ abstract public class RISCVInstruction {
             this.nextInst = tmpInst;
         }
     }
+
+    abstract public void replaceReg(RISCVModule curModule);
 }

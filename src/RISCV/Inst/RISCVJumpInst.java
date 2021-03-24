@@ -1,6 +1,7 @@
 package RISCV.Inst;
 
 import RISCV.RISCVBasicBlock;
+import RISCV.RISCVModule;
 
 public class RISCVJumpInst extends RISCVInstruction{
 
@@ -10,6 +11,11 @@ public class RISCVJumpInst extends RISCVInstruction{
         super();
         JumpToBlock = tmpBlock;
     }
+
+    @Override
+    public void replaceReg(RISCVModule curModule) {
+    }
+
 
     @Override
     public String toString() {

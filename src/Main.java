@@ -43,7 +43,7 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-        //    new IRPrinter("output.s").run(tmpIRBuilder.currentModule);
+//            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);
@@ -57,6 +57,7 @@ public class Main {
             PrintStream printStream = new PrintStream("output.s");
             ASMPrinter asmPrinter = new ASMPrinter(regAlloc.curRISCVModule,printStream);
             asmPrinter.run();
+
         } catch (error er) {
             System.err.println(er.toString());
             throw new RuntimeException();
