@@ -11,7 +11,7 @@ Output:
 ExitCode: 6
 InstLimit: -1
 Origin Package: Codegen Pretest-529
-*/
+
 
 int main() {
     int a = 5;
@@ -20,4 +20,7 @@ int main() {
     c = a++;
     b = c;
     return a;
+}*/
+int main(){
+return 0;
 }
