@@ -54,7 +54,12 @@ public class IRPrinter implements IRVisitor {
         while(curBasicBlock != null){
             curBasicBlock.accept(this);
             outPrintWriter.println("");
+/*            if(curBasicBlock.BasicBlockName.equals("abs_last_block")) {
+                System.out.println(curBasicBlock.nextBasicBlocks.BasicBlockName);
+                break;
+            }*/
             curBasicBlock = curBasicBlock.nextBasicBlocks;
+//            if(curBasicBlock.BasicBlockName.equals("abs_last_block")) break;
         }
 
         outPrintWriter.println("}");
@@ -75,13 +80,7 @@ public class IRPrinter implements IRVisitor {
             curInst.accept(this);
     }
 
-/*    @Override
-    public void visit(IRInstruction it) {
-        outPrintWriter.println("    "+it.toString());
-    }
 
-
- */
     @Override
     public void visit(retInstruction it) {
         outPrintWriter.println("    "+it.toString());

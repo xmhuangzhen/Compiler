@@ -48,60 +48,11 @@ __init___return_block38:
 	addi sp,sp,64
 	ret
 # end function : __init__
-	.global	A.A					# start function : A.A
+	.global	abs					# start function : abs
 	.p2align	2
-A.A:
-A.A_entrance_block63:
-	addi sp,sp,-64
-	la s0,0(sp)
-	mv s0,s0
-	sw s0,0(sp)
-	la s0,4(sp)
-	mv s0,s1
-	sw s0,4(sp)
-	la s0,8(sp)
-	mv s0,s2
-	sw s0,8(sp)
-	la s0,12(sp)
-	mv s0,s3
-	sw s0,12(sp)
-	la s0,16(sp)
-	mv s0,s4
-	sw s0,16(sp)
-	la s0,20(sp)
-	mv s0,s5
-	sw s0,20(sp)
-	la s0,24(sp)
-	mv s0,s6
-	sw s0,24(sp)
-	la s0,28(sp)
-	mv s0,s7
-	sw s0,28(sp)
-	la s0,32(sp)
-	mv s0,s8
-	sw s0,32(sp)
-	la s0,36(sp)
-	mv s0,s9
-	sw s0,36(sp)
-	la s0,40(sp)
-	mv s0,s10
-	sw s0,40(sp)
-	la s0,44(sp)
-	mv s0,s11
-	sw s0,44(sp)
-	la s0,48(sp)
-	mv s0,ra
-	sw s0,48(sp)
-	j A.A_return_block65
-A.A_return_block65:
-	addi sp,sp,64
-	ret
-# end function : A.A
-	.global	A.aabc					# start function : A.aabc
-	.p2align	2
-A.aabc:
-A.aabc_entrance_block66:
-	addi sp,sp,-80
+abs:
+abs_entrance_block63:
+	addi sp,sp,-96
 	la s0,0(sp)
 	mv s0,s0
 	sw s0,0(sp)
@@ -145,188 +96,48 @@ A.aabc_entrance_block66:
 	mv a0,s0
 	sw s0,52(sp)
 	la s0,56(sp)
-	mv a1,s0
+	li s0,0
 	sw s0,56(sp)
 	la s0,60(sp)
-	la s1,64(sp)
-	sb s0,s1
+	la s1,56(sp)
+	la s2,64(sp)
+	slt s0,s1,s2
 	sw s0,60(sp)
-	j A.aabc_last_block67
-A.aabc_last_block67:
-	j A.aabc_return_block68
-A.aabc_return_block68:
-	la s0,64(sp)
+if_then_block064:
+	la s0,68(sp)
+	la s1,72(sp)
+	sb s0,s1
+	sw s0,68(sp)
+	j abs_last_block66
+if_dest_block165:
+	la s0,76(sp)
+	li s0,1
+	sw s0,76(sp)
+	la s0,80(sp)
+	la s1,76(sp)
+	la s2,84(sp)
+	sub s0,s1,s2
+	sw s0,80(sp)
+	la s0,80(sp)
+	la s1,72(sp)
+	sb s0,s1
+	sw s0,80(sp)
+	j abs_last_block66
+abs_last_block66:
+	j if_dest_block165
+	j abs_return_block67
+abs_return_block67:
+	la s0,72(sp)
 	mv a0,s0
-	sw s0,64(sp)
-	addi sp,sp,80
+	sw s0,72(sp)
+	addi sp,sp,96
 	ret
-# end function : A.aabc
-	.global	B.B					# start function : B.B
-	.p2align	2
-B.B:
-B.B_entrance_block69:
-	addi sp,sp,-64
-	la s0,0(sp)
-	mv s0,s0
-	sw s0,0(sp)
-	la s0,4(sp)
-	mv s0,s1
-	sw s0,4(sp)
-	la s0,8(sp)
-	mv s0,s2
-	sw s0,8(sp)
-	la s0,12(sp)
-	mv s0,s3
-	sw s0,12(sp)
-	la s0,16(sp)
-	mv s0,s4
-	sw s0,16(sp)
-	la s0,20(sp)
-	mv s0,s5
-	sw s0,20(sp)
-	la s0,24(sp)
-	mv s0,s6
-	sw s0,24(sp)
-	la s0,28(sp)
-	mv s0,s7
-	sw s0,28(sp)
-	la s0,32(sp)
-	mv s0,s8
-	sw s0,32(sp)
-	la s0,36(sp)
-	mv s0,s9
-	sw s0,36(sp)
-	la s0,40(sp)
-	mv s0,s10
-	sw s0,40(sp)
-	la s0,44(sp)
-	mv s0,s11
-	sw s0,44(sp)
-	la s0,48(sp)
-	mv s0,ra
-	sw s0,48(sp)
-	j B.B_return_block71
-B.B_return_block71:
-	addi sp,sp,64
-	ret
-# end function : B.B
-	.global	B.D					# start function : B.D
-	.p2align	2
-B.D:
-B.D_entrance_block72:
-	addi sp,sp,-64
-	la s0,0(sp)
-	mv s0,s0
-	sw s0,0(sp)
-	la s0,4(sp)
-	mv s0,s1
-	sw s0,4(sp)
-	la s0,8(sp)
-	mv s0,s2
-	sw s0,8(sp)
-	la s0,12(sp)
-	mv s0,s3
-	sw s0,12(sp)
-	la s0,16(sp)
-	mv s0,s4
-	sw s0,16(sp)
-	la s0,20(sp)
-	mv s0,s5
-	sw s0,20(sp)
-	la s0,24(sp)
-	mv s0,s6
-	sw s0,24(sp)
-	la s0,28(sp)
-	mv s0,s7
-	sw s0,28(sp)
-	la s0,32(sp)
-	mv s0,s8
-	sw s0,32(sp)
-	la s0,36(sp)
-	mv s0,s9
-	sw s0,36(sp)
-	la s0,40(sp)
-	mv s0,s10
-	sw s0,40(sp)
-	la s0,44(sp)
-	mv s0,s11
-	sw s0,44(sp)
-	la s0,48(sp)
-	mv s0,ra
-	sw s0,48(sp)
-	la s0,52(sp)
-	mv a0,s0
-	sw s0,52(sp)
-	j B.D_return_block74
-B.D_return_block74:
-	la s0,56(sp)
-	mv a0,s0
-	sw s0,56(sp)
-	addi sp,sp,64
-	ret
-# end function : B.D
-	.global	B.t					# start function : B.t
-	.p2align	2
-B.t:
-B.t_entrance_block75:
-	addi sp,sp,-64
-	la s0,0(sp)
-	mv s0,s0
-	sw s0,0(sp)
-	la s0,4(sp)
-	mv s0,s1
-	sw s0,4(sp)
-	la s0,8(sp)
-	mv s0,s2
-	sw s0,8(sp)
-	la s0,12(sp)
-	mv s0,s3
-	sw s0,12(sp)
-	la s0,16(sp)
-	mv s0,s4
-	sw s0,16(sp)
-	la s0,20(sp)
-	mv s0,s5
-	sw s0,20(sp)
-	la s0,24(sp)
-	mv s0,s6
-	sw s0,24(sp)
-	la s0,28(sp)
-	mv s0,s7
-	sw s0,28(sp)
-	la s0,32(sp)
-	mv s0,s8
-	sw s0,32(sp)
-	la s0,36(sp)
-	mv s0,s9
-	sw s0,36(sp)
-	la s0,40(sp)
-	mv s0,s10
-	sw s0,40(sp)
-	la s0,44(sp)
-	mv s0,s11
-	sw s0,44(sp)
-	la s0,48(sp)
-	mv s0,ra
-	sw s0,48(sp)
-	la s0,52(sp)
-	mv a0,s0
-	sw s0,52(sp)
-	call B.D
-	mv a0,zero
-	j B.t_return_block77
-B.t_return_block77:
-	la s0,56(sp)
-	mv a0,s0
-	sw s0,56(sp)
-	addi sp,sp,64
-	ret
-# end function : B.t
+# end function : abs
 	.global	main					# start function : main
 	.p2align	2
 main:
-main_entrance_block81:
-	addi sp,sp,-144
+main_entrance_block68:
+	addi sp,sp,-64
 	la s0,0(sp)
 	mv s0,s0
 	sw s0,0(sp)
@@ -368,88 +179,19 @@ main_entrance_block81:
 	sw s0,48(sp)
 	call __init__
 	la s0,52(sp)
-	li s0,1
+	li s0,0
 	sw s0,52(sp)
-	la s0,56(sp)
-	la s1,52(sp)
-	addi s0,s1,-4
-	sw s0,56(sp)
-	la s0,60(sp)
+	la s0,52(sp)
 	la s1,56(sp)
-	addi s0,s1,4
-	sw s0,60(sp)
-	la s0,60(sp)
-	mv a0,s0
-	sw s0,60(sp)
-	call __malloc_foo
-	la s0,64(sp)
-	la s1,68(sp)
-	addi s0,s1,0
-	sw s0,64(sp)
-	la s0,72(sp)
-	li s0,1
-	sw s0,72(sp)
-	la s0,72(sp)
-	la s1,64(sp)
 	sb s0,s1
-	sw s0,72(sp)
-	la s0,64(sp)
-	la s1,76(sp)
-	sb s0,s1
-	sw s0,64(sp)
-	la s0,80(sp)
-	li s0,4
-	sw s0,80(sp)
-	la s0,84(sp)
-	la s1,80(sp)
-	addi s0,s1,-4
-	sw s0,84(sp)
-	la s0,88(sp)
-	la s1,84(sp)
-	addi s0,s1,4
-	sw s0,88(sp)
-	la s0,88(sp)
+	sw s0,52(sp)
+	j main_last_block69
+main_last_block69:
+	j main_return_block70
+main_return_block70:
+	la s0,56(sp)
 	mv a0,s0
-	sw s0,88(sp)
-	call __malloc_foo
-	la s0,92(sp)
-	la s1,96(sp)
-	addi s0,s1,0
-	sw s0,92(sp)
-	la s0,100(sp)
-	li s0,4
-	sw s0,100(sp)
-	la s0,100(sp)
-	la s1,92(sp)
-	sb s0,s1
-	sw s0,100(sp)
-	la s0,92(sp)
-	la s1,104(sp)
-	sb s0,s1
-	sw s0,92(sp)
-	call getInt
-	la s0,108(sp)
-	mv a0,s0
-	sw s0,108(sp)
-	call toString
-	la s0,112(sp)
-	la s1,116(sp)
-	sb s0,s1
-	sw s0,112(sp)
-	call __string_length
-	la s0,120(sp)
-	mv a0,s0
-	sw s0,120(sp)
-	call toString
-	la s0,124(sp)
-	mv a0,s0
-	sw s0,124(sp)
-	call println
-	j main_return_block83
-main_return_block83:
-	la s0,128(sp)
-	mv a0,s0
-	sw s0,128(sp)
-	addi sp,sp,144
+	sw s0,56(sp)
+	addi sp,sp,64
 	ret
 # end function : main

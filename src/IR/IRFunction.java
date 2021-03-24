@@ -38,9 +38,9 @@ public class IRFunction {
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
         thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
         thisEntranceBlock.nextBasicBlocks = thisLastBasicBlock;
+        thisLastBasicBlock.prevBasicBlocks = thisEntranceBlock;
         thisLastBasicBlock.nextBasicBlocks = thisReturnBlock;
         thisReturnBlock.prevBasicBlocks = thisLastBasicBlock;
-        thisLastBasicBlock.prevBasicBlocks = thisEntranceBlock;
     }
 
     public void addVariableinFunc(Register tmpVar){
