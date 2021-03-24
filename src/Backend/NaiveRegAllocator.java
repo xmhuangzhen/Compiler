@@ -65,7 +65,9 @@ public class NaiveRegAllocator {
                         null, new RISCVImm(-tmpFunc.RealStackSize())));
 
                 if(/*tmpFunc.LastBlock == null ||*/ tmpFunc.LastBlock.TailInst == null) {
-                System.out.println(tmpFunc.LastBlock.BlockName);
+//                System.out.println(tmpFunc.LastBlock.BlockName);
+//                    System.out.println(tmpFunc.LastBlock != null);
+  //              System.out.println(tmpFunc.EntranceBlock.HeadInst != null);
                     throw new RuntimeException(tmpFunc.FunctionName);
                 }
                 tmpFunc.LastBlock.TailInst.addInstPre(tmpFunc.LastBlock,

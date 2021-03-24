@@ -266,6 +266,7 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(constructorDefNode it) {
         //the same as the function def but doesn't have pars
+        InFunc = true;
         String tmpFuncName = currentClassName + "." + currentClassName;
 
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
@@ -274,9 +275,15 @@ public class IRBuilder implements ASTVisitor {
 
         for(var tmp : it.stmts) tmp.accept(this);
 
+        //(5) goto the last block
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
                 currentFunction.thisReturnBlock,null));
         currentBasicBlock = currentFunction.thisReturnBlock;
+        currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock, new VoidType(),null));
+
+        currentFunction = null;
+        currentBasicBlock = null;
+        InFunc = false;
     }
 
     @Override public void visit(FuncTypeNode it) { }
