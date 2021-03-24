@@ -203,10 +203,10 @@ public class IRModule {
         //malloc ( int size)
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
-        tmpFunc = new IRFunction(tmpFuncType,"__malloc_foo");
+        tmpFunc = new IRFunction(tmpFuncType,"malloc");
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"size"));
-        IRFunctionTable.put("__malloc_foo",tmpFunc);
+        IRFunctionTable.put("malloc",tmpFunc);
     }
 
     public IRTypeSystem getIRType(TypeNode tmpSemaTypeNode) {///???string--maybe correct

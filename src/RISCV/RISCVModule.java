@@ -28,7 +28,7 @@ public class RISCVModule {
     public HashMap<IROperand, RISCVVirtualReg> VirtualRegMap;
     public HashMap<IROperand, RISCVGlobalReg> GlobalRegMap;
     public HashMap<IRFunction, RISCVFunction> RISCVFuncMap;
-    public int VirtualRegCnt, BlockCnt;
+    public static int VirtualRegCnt, BlockCnt;
 
     public HashMap<IRBasicBlock, RISCVBasicBlock> BasicBlockMap;
 
@@ -127,7 +127,7 @@ public class RISCVModule {
 
     public RISCVBasicBlock getRISCVBasicBlock(IRBasicBlock tmpBlock){
         if(BasicBlockMap.containsKey(tmpBlock)) return BasicBlockMap.get(tmpBlock);
-        RISCVBasicBlock tmpRes = new RISCVBasicBlock(tmpBlock, tmpBlock.BasicBlockName+(BlockCnt++));
+        RISCVBasicBlock tmpRes = new RISCVBasicBlock(tmpBlock, /*tmpBlock.BasicBlockName+*/"LBB"+(BlockCnt++));
         BasicBlockMap.put(tmpBlock,tmpRes);
         return tmpRes;
     }

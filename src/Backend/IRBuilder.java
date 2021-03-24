@@ -744,8 +744,9 @@ public class IRBuilder implements ASTVisitor {
 
     public Register NewArrayMalloc(int cur_dim, IRTypeSystem cur_type, NewExprNode it){
         //(1) call malloc function
-        Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"call_malloc_func"+(RegNum++));
-        IRFunction tmpCallFunc = currentModule.IRFunctionTable.get("__malloc_foo");
+        Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
+                "call_malloc_func"+(RegNum++));
+        IRFunction tmpCallFunc = currentModule.IRFunctionTable.get("malloc");
         if(tmpCallFunc == null){ throw new RuntimeException(it.ExprText); }
         callInstruction tmpCallInst = new callInstruction(currentBasicBlock,tmpCallResult,tmpCallFunc);
         //CallSize2 = cur_dim -  cur_type.size + 4(the size of PointerType)
@@ -757,7 +758,8 @@ public class IRBuilder implements ASTVisitor {
                 tmpCallSize1,new IntegerConstant(IntegerType.IRBitWidth.i32,4),tmpCallSize2));
         tmpCallInst.CallParameters.add(tmpCallSize2);
         currentBasicBlock.addBasicBlockInst(tmpCallInst);
-        Register tmpCallCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"call_malloc_cast"+(RegNum++));
+        Register tmpCallCastResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
+                "call_malloc_cast"+(RegNum++));
         currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,tmpCallResult,
                 new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),tmpCallCastResult));
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,it.exprDim.get(cur_dim).ExprResult,tmpCallCastResult));//
@@ -820,8 +822,9 @@ public class IRBuilder implements ASTVisitor {
             it.ExprResult = tmpNewArrayResult;
         } else if(it.ExprType instanceof ClassTypeNode){
             //call malloc function
-            Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"Malloc_Result"+(RegNum++));
-            IRFunction tmpFunction = currentModule.IRFunctionTable.get("__malloc_foo");
+            Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),
+                    "Malloc_Result"+(RegNum++));
+            IRFunction tmpFunction = currentModule.IRFunctionTable.get("malloc");
             callInstruction tmpcallInst = new callInstruction(currentBasicBlock,tmpMallocResult,tmpFunction);
             tmpcallInst.CallParameters.add(
                     new IntegerConstant(IntegerType.IRBitWidth.i32,
