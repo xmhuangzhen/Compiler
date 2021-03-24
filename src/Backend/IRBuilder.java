@@ -266,6 +266,7 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(constructorDefNode it) {
         //the same as the function def but doesn't have pars
+        // and return type is VoidType
         InFunc = true;
         String tmpFuncName = currentClassName + "." + currentClassName;
 
