@@ -1,5 +1,7 @@
 package RISCV.Inst;
 
+import RISCV.Operand.RISCVPhyReg;
+import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVFunction;
 import RISCV.RISCVModule;
 
@@ -13,7 +15,7 @@ public class RISCVCallInst extends RISCVInstruction{
     }
 
     @Override
-    public void replaceReg(RISCVModule curModule) {
+    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
     }
 
     @Override

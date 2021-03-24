@@ -1,9 +1,6 @@
 package RISCV.Inst;
 
-import RISCV.Operand.RISCVGlobalReg;
-import RISCV.Operand.RISCVImm;
-import RISCV.Operand.RISCVRegister;
-import RISCV.Operand.RISCVVirtualReg;
+import RISCV.Operand.*;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
@@ -21,10 +18,8 @@ public class RISCVLUIInst extends RISCVInstruction {
     }
 
     @Override
-    public void replaceReg(RISCVModule curModule) {
-        for(int i = 0;i < UsedVirtualReg.size();++i){
-            if(rd == UsedVirtualReg.get(i)) rd = curModule.getPhyReg("s"+i);
-        }
+    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+        if(rd == reg1) rd = reg2;
     }
 
 

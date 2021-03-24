@@ -1,5 +1,6 @@
 package RISCV.Inst;
 
+import RISCV.Operand.RISCVPhyReg;
 import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVModule;
@@ -54,5 +55,5 @@ abstract public class RISCVInstruction {
         }
     }
 
-    abstract public void replaceReg(RISCVModule curModule);
+    abstract public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2);
 }

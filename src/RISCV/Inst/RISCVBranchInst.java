@@ -1,5 +1,6 @@
 package RISCV.Inst;
 
+import RISCV.Operand.RISCVPhyReg;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
@@ -29,11 +30,9 @@ public class RISCVBranchInst extends RISCVInstruction{
     }
 
     @Override
-    public void replaceReg(RISCVModule curModule) {
-        for(int i = 0;i < UsedVirtualReg.size();++i){
-            if(rs1 == UsedVirtualReg.get(i)) rs1 = curModule.getPhyReg("s"+i);
-            if(rs2 == UsedVirtualReg.get(i)) rs2 = curModule.getPhyReg("s"+i);
-        }
+    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+        if(rs1 == reg1) rs1 = reg2;
+        if(rs2 == reg1) rs2 = reg2;
     }
 
 
