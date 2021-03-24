@@ -28,7 +28,7 @@ public class ASMPrinter {
     }
 
     public void runRISCVFunction(RISCVFunction thisFunc) {
-        ASMPrintStream.println("\t.global\t" + thisFunc.FunctionName+"\t\t\t\t\t# start function : "+thisFunc.FunctionName);
+        ASMPrintStream.println("\t.globl\t" + thisFunc.FunctionName+"\t\t\t\t\t# start function : "+thisFunc.FunctionName);
         ASMPrintStream.println("\t.p2align\t2");
         ASMPrintStream.println(thisFunc.FunctionName + ":");
         for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)

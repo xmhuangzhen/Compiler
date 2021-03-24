@@ -1,8 +1,8 @@
 	.text
-	.global	__init__					# start function : __init__
+	.globl	__init__					# start function : __init__
 	.p2align	2
 __init__:
-__init___entrance_block36:
+.__init___entrance_block36:
 	addi sp,sp,-64
 	lw s0,0(sp)
 	mv s0,s0
@@ -44,14 +44,14 @@ __init___entrance_block36:
 	mv s0,ra
 	sw s0,48(sp)
 	j __init___return_block38
-__init___return_block38:
+.__init___return_block38:
 	addi sp,sp,64
 	ret
 # end function : __init__
-	.global	main					# start function : main
+	.globl	main					# start function : main
 	.p2align	2
 main:
-main_entrance_block63:
+.main_entrance_block63:
 	addi sp,sp,-96
 	lw s0,0(sp)
 	mv s0,s0
@@ -121,11 +121,11 @@ main_entrance_block63:
 	mv s1,s0
 	sw s0,80(sp)
 	j main_last_block64
-main_last_block64:
+.main_last_block64:
 	j main_return_block65
-main_return_block65:
+.main_return_block65:
 	lw s0,84(sp)
-	mv a0,s0
+	mv ra,s0
 	sw s0,84(sp)
 	addi sp,sp,96
 	ret
