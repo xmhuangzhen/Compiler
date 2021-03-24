@@ -249,8 +249,14 @@ public class IRBuilder implements ASTVisitor {
                 currentFunction.thisReturnBlock,null));
 
         currentBasicBlock = currentFunction.thisReturnBlock;
+        IRTypeSystem tmpType = new VoidType();
+        if(currentFunction.thisReturnValue != null) {
+            if (currentFunction.thisReturnValue.thisType instanceof PointerType)
+                tmpType = ((PointerType) currentFunction.thisReturnValue.thisType).baseType;
+            else throw new RuntimeException();
+        }
         currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock,
-                currentFunction.thisFunctionType,currentFunction.thisReturnValue));
+                tmpType,currentFunction.thisReturnValue));
 
         currentFunction = null;
         currentBasicBlock = null;

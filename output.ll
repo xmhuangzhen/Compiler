@@ -1,7 +1,20 @@
 
 
+define ReturnType : void
+Parameter :  @__init__()
 define ReturnType : i32
 Parameter :  @main()
+
+define ReturnType : void
+Parameter :  @__init__(){
+__init___entrance_block    br label %__init___return_block
+
+__init___last_block                                ; preds = %__init___entrance_block
+
+__init___return_block                              ; preds = %__init___last_block
+    ret void
+
+}
 
 define ReturnType : i32
 Parameter :  @main(){
@@ -18,8 +31,7 @@ main_last_block                                    ; preds = %main_entrance_bloc
     br label %main_return_block
 
 main_return_block                                  ; preds = %main_last_block
-    ret ReturnType : i32
-Parameter :  %mainreturn_value0
+    ret i32 %mainreturn_value0
 
 }
 

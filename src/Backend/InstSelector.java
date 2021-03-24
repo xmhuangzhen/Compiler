@@ -90,7 +90,6 @@ public class InstSelector implements IRVisitor {
                     new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }
-//System.out.println(curRISCVFunction.StackNum);
 
         for (IRBasicBlock tmpBlock = it.thisEntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks)
             tmpBlock.accept(this);
