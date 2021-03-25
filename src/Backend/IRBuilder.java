@@ -261,6 +261,7 @@ public class IRBuilder implements ASTVisitor {
         currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock,
                 tmpType, currentFunction.thisReturnValue));
 
+        IdAddrMap = IdAddrMap.ParentMap;
         currentFunction = null;
         currentBasicBlock = null;
         InFunc = false;
@@ -271,6 +272,7 @@ public class IRBuilder implements ASTVisitor {
         //the same as the function def but doesn't have pars
         // and return type is VoidType
         InFunc = true;
+        IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
         String tmpFuncName = currentClassName + "." + currentClassName;
 
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
@@ -288,6 +290,7 @@ public class IRBuilder implements ASTVisitor {
         currentFunction = null;
         currentBasicBlock = null;
         InFunc = false;
+        IdAddrMap = IdAddrMap.ParentMap;
     }
 
     @Override
