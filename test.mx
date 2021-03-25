@@ -1,4 +1,4 @@
-
+/*
 int main() {
     int a = 5;
     int b;
@@ -6,7 +6,7 @@ int main() {
     c = a++;
     b = c;
     return a;
-}
+}*/
 /*
 int main(){
     int a;
@@ -16,3 +16,19 @@ int main(){
     if(a == b) a = 6;
     return a;
 }*/
+/*
+Test Package: Sema_Local_Preview
+Test Target: codeforces
+Author: Pikachu
+Time: 2020-02-03
+Verdict: Success
+Origin Package: Codeforces 1A #52940143
+*/
+int n,m,a;
+int main(){
+    n = getInt();
+    m = getInt();
+    a = getInt();
+    print(toString((m+a-1)/a*((n+a-1)/a)));
+    return 0;
+}

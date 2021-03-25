@@ -1155,7 +1155,7 @@ public class IRBuilder implements ASTVisitor {
             it.ExprResult = tmpGlobal;
             }
         }
-        if(it.ExprResult == null) throw new RuntimeException();
+//        if(it.ExprResult == null) throw new RuntimeException(it.ExprText);
     }
 
     @Override
