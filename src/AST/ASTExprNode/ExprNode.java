@@ -9,7 +9,6 @@ public abstract class ExprNode extends ASTNode {
     public String ExprText;
     public TypeNode ExprType;
     public boolean IsLvalue;
-//    public IRBasicBlock thenBasicBlock, elseBasicBlock;
 
     public IROperand ExprResult;
 

@@ -55,7 +55,7 @@ LBB38:
 	.p2align	2
 main:
 #LBB63:
-	addi sp,sp,-64
+	addi sp,sp,-80
 	lw s0,0(sp)
 	mv s0,s0
 	sw s0,0(sp)
@@ -97,22 +97,48 @@ main:
 	sw s0,48(sp)
 	call __init__
 	lw s0,52(sp)
-	li s0,0
+	li s0,5
 	sw s0,52(sp)
 	lw s0,52(sp)
 	lw s1,56(sp)
 	mv s1,s0
 	sw s0,52(sp)
+	sw s1,56(sp)
+	lw s0,60(sp)
+	lw s1,56(sp)
+	addi s0,s1,1
+	sw s0,60(sp)
+	sw s1,56(sp)
+	lw s0,60(sp)
+	lw s1,56(sp)
+	mv s1,s0
+	sw s0,60(sp)
+	sw s1,56(sp)
+	lw s0,60(sp)
+	lw s1,64(sp)
+	mv s1,s0
+	sw s0,60(sp)
+	sw s1,64(sp)
+	lw s0,64(sp)
+	lw s1,68(sp)
+	mv s1,s0
+	sw s0,64(sp)
+	sw s1,68(sp)
+	lw s0,56(sp)
+	lw s1,72(sp)
+	mv s1,s0
+	sw s0,56(sp)
+	sw s1,72(sp)
 	j LBB64
 LBB64:
 	j LBB65
 LBB65:
-	lw s0,56(sp)
+	lw s0,72(sp)
 	mv a0,s0
-	sw s0,56(sp)
+	sw s0,72(sp)
 	lw s0,48(sp)
 	mv ra,s0
 	sw s0,48(sp)
-	addi sp,sp,64
+	addi sp,sp,80
 	ret
 # end function : main

@@ -1,17 +1,3 @@
-/*
-Test Package: Codegen
-Author: Admin
-Time: 2020-01-25
-Input:
-=== input ===
-=== end ===
-Output:
-=== output ===
-=== end ===
-ExitCode: 6
-InstLimit: -1
-Origin Package: Codegen Pretest-529
-
 
 int main() {
     int a = 5;
@@ -20,7 +6,13 @@ int main() {
     c = a++;
     b = c;
     return a;
-}*/
-int main(){
-return 0;
 }
+/*
+int main(){
+    int a;
+    a = 5;
+    int b;
+    b = 6
+    if(a == b) a = 6;
+    return a;
+}*/

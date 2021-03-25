@@ -35,6 +35,9 @@ public class RISCVlInst extends RISCVInstruction{
 
     @Override
     public String toString() {
+        if(rs1 instanceof RISCVPhyReg){
+            return "mv "+ rd.toString()+","+rs1.toString();
+        }
         return "l"+WidthType.name()+" "+rd.toString()+","+rs1.toString()+"("+offset+")";
     }
 }

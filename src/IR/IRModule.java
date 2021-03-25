@@ -20,7 +20,7 @@ public class IRModule {
     public Map<String, GlobalVariables> IRGlobalVarTable;
     public Map<String, GlobalVariables> IRConstStringTable;
     public Map<String, StructureType> IRClassTable;
-    public Map<String, Register> IRGlobbalRegisterTable;
+//    public Map<String, Register> IRGlobbalRegisterTable;
 
     public IRModule(){
         IRFunctionTable = new LinkedHashMap<>();
@@ -28,7 +28,7 @@ public class IRModule {
         IRGlobalVarTable = new LinkedHashMap<>();
         IRConstStringTable = new LinkedHashMap<>();
         IRClassTable = new LinkedHashMap<>();
-        IRGlobbalRegisterTable = new LinkedHashMap<>();
+  //      IRGlobbalRegisterTable = new LinkedHashMap<>();
 
         FunctionType tmpFuncType;
         IRFunction tmpFunc;
