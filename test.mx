@@ -1,34 +1,43 @@
 /*
-Test Package: Codegen
-Author: 14' Shichao Xu
-Time: 2020-01-25
-Input:
-=== input ===
-=== end ===
-Output:
-=== output ===
-1024
-=== end ===
-ExitCode: 0
-InstLimit: -1
-Origin Package: Codegen Pretest-533
+Test Package: Sema_Local_Preview
+Test Target: Symbol
+Author: 15' Nayun Xu
+Time: 2019-10-20
+Verdict: Success
+Origin Package: Semantic Extended
 */
-int qpow(int a,int p,int mod) {
-    int t = 1;
-    int y = a;
-    while(p>0){
-        if((p&1) == 1)t=t*y % mod;
-        y=y*y % mod;
-        p=p / 2;
-    }
-    return t;
-}
+class A{
+	A(){}
+	B x;
+	string abc;
+	int aabc(int abc) {
+		return abc;
+	}
+};
 
+class B {
+	B(){
 
+	}
+	void D() {
 
+	}
+	A x;
+	B y;
+	void t() {
+		this.D();
+	}
+};
 
+class f{
+
+};
 
 int main() {
-    println(toString(qpow(2,10,10000)));
-    return qpow(2,10,10000);
+	int [  ] ff = new int[1 ];
+	f g;
+	int [  ][  ][ ] fg = new int[4][ ][	];
+	string String;
+	String = toString(getInt());
+	println(toString(String.length()));
 }
