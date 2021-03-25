@@ -28,14 +28,12 @@ public class InstSelector implements IRVisitor {
     public RISCVModule curRISCVModule;
     public RISCVFunction curRISCVFunction;
     public RISCVBasicBlock curRISCVBasicBlock;
-    public RISCVVirtualReg curra;
 
     public InstSelector(IRModule tmpModule) {
         curIRModule = tmpModule;
         curRISCVModule = new RISCVModule();
         curRISCVFunction = null;
         curRISCVBasicBlock = null;
-        curra = null;
     }
 
     @Override
@@ -62,36 +60,21 @@ public class InstSelector implements IRVisitor {
         curRISCVFunction = curRISCVModule.RISCVFuncMap.get(it);
         curRISCVBasicBlock = curRISCVModule.getRISCVBasicBlock(it.thisEntranceBlock);
 
-/*        curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                curRISCVModule.getPhyReg("sp"),
-                curRISCVModule.getPhyReg("sp"),
-                null,new RISCVImm(-curRISCVFunction.RealStackSize()) ));
-  */
-        //(1) save reg
-        ArrayList<RISCVVirtualReg> calleeSaveReg;//s0-s11
-        calleeSaveReg = new ArrayList<>();
-        for (int i = 0; i < 12; ++i) {
-            RISCVVirtualReg tmpReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(tmpReg, curRISCVModule.getPhyReg("s" + i)));
-            calleeSaveReg.add(tmpReg);
-        }
-
-        //save ra
-        curra = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
-        curRISCVBasicBlock.addInstruction(new RISCVmvInst(curra,curRISCVModule.getPhyReg("ra")));
-
-        //(2) add para to PhyReg
+        //(1) add para to PhyReg
         for (int i = 0; i < Integer.min(8, it.thisFunctionParameters.size()); ++i) {//a0-a7
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a" + i),
-                    curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock)));
+            curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
+                    curRISCVModule.getPhyReg("a" + i),
+                    new RISCVImm(0)));
         }
+
         int OffsetValue = 0;
         for (int i = 8; i < it.thisFunctionParameters.size(); ++i) {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(
-                    curRISCVModule.getWidth(it.thisFunctionParameters.get(i)),
-                    curRISCVModule.getPhyReg("sp"),
+                    RISCVInstruction.RISCVWidthENUMType.w,
+                    new RISCVDirectStackReg("s0",OffsetValue),
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
-                    new RISCVImm(OffsetValue)));
+                    new RISCVImm(0)));
             OffsetValue += 4;
         }
 
@@ -121,12 +104,6 @@ public class InstSelector implements IRVisitor {
                 curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a0"),
                         tmpRISCVReturnVal));
         }
-/*        curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                curRISCVModule.getPhyReg("sp"),
-                curRISCVModule.getPhyReg("sp"),
-                null,new RISCVImm(curRISCVFunction.RealStackSize()) ));
-*/
-        curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("ra"),curra));
         curRISCVBasicBlock.addInstruction(new RISCVretInst());
     }
 
@@ -226,6 +203,7 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
                     val, addr, new RISCVImm(0)));
         }
+//        System.out.println("HERE-"+it.toString()+","+(it.StoreValue instanceof Parameter));
     }
 
     @Override
@@ -332,11 +310,14 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(callInstruction it) {
+
         //(1) save 1st-8th par to a0-a7
         for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
             RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a" + i), tmpReg));
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    tmpReg,curRISCVModule.getPhyReg("a" + i), new RISCVImm(0)));
         }
+
         //(2) save others to stack
         int OffsetValue = 0;
         for (int i = 8; i < it.CallParameters.size(); ++i) {
@@ -350,8 +331,10 @@ public class InstSelector implements IRVisitor {
         //(3) funccall
         curRISCVBasicBlock.addInstruction(new RISCVCallInst(curRISCVModule.RISCVFuncMap.get(it.CallFunction)));
         if (it.CallFunction.thisReturnValue != null) {
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a0"),
-                    curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock)));
+            curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock),
+                    curRISCVModule.getPhyReg("a0"),
+                    new RISCVImm(0)));
         }
     }
 

@@ -219,18 +219,15 @@ public class IRBuilder implements ASTVisitor {
             tmpFuncName = currentClassName + "." + it.funcName;
         }
 
-        //(2) visit par
-        for(var tmp:it.parDefs){
-            IRTypeSystem tmpIRType = currentModule.getIRType(tmp.typeNode);
-            Register tmpResult = new Register(new PointerType(tmpIRType), tmp.varname + (RegNum++));
-            IdAddrMap.AddrMap.put(tmp.varname, tmpResult);
-        }
-     //   for(var tmp : it.parDefs)
-        //          tmp.accept(this);
-
         //(3) IRFunctionNode has been created in the Program Unit Node, so just use it
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
         currentFunction = tmpIRFunction;
+
+        //(2) visit par
+        for(int i = 0;i < currentFunction.thisFunctionParameters.size();++i){
+            IdAddrMap.AddrMap.put(it.parDefs.get(i).varname, currentFunction.thisFunctionParameters.get(i));
+        }
+
 
         currentFunction.thisReturnValue = new Register(new PointerType(currentModule.getIRType(it.funcType)),
                 tmpFuncName + "return_value" + (RegNum++));
@@ -1135,7 +1132,7 @@ public class IRBuilder implements ASTVisitor {
         it.ExprResult = null;
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
-            Register tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
+            IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
             it.ExprResult = tmpVarAddr;
             //        Register tmpResult = new Register(tmpVarAddr.thisType, "Id_"+it.Identifier+(RegNum++));
             //      currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpResult,tmpVarAddr));

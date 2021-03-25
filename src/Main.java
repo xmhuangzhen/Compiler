@@ -57,7 +57,6 @@ public class Main {
             PrintStream printStream = new PrintStream("output.s");
             ASMPrinter asmPrinter = new ASMPrinter(regAlloc.curRISCVModule,printStream);
             asmPrinter.run();
-
         } catch (error er) {
             System.err.println(er.toString());
             throw new RuntimeException();

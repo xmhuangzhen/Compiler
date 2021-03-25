@@ -21,6 +21,6 @@ public class RISCVStackReg extends RISCVRegister{
         if(IsCallInst)
             return Integer.toString(4*Index+thisFunc.RealStackSize())+"(sp)";
         else
-            return 4*Index+"(sp)";
+            return -12-4*Index+"(s0)";
     }
 }

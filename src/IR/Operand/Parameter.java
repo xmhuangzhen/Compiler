@@ -5,7 +5,6 @@ import IR.TypeSystem.IRTypeSystem;
 
 public class Parameter extends IROperand{
     public String ParameterName;
-    public IRFunction ParameterFunction;
 
     public Parameter(IRTypeSystem tmpType, String tmpParameterName) {
         super(tmpType);

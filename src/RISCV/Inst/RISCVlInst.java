@@ -38,6 +38,9 @@ public class RISCVlInst extends RISCVInstruction{
         if(rs1 instanceof RISCVPhyReg){
             return "mv "+ rd.toString()+","+rs1.toString();
         }
-        return "l"+WidthType.name()+" "+rd.toString()+","+rs1.toString()+"("+offset+")";
+        StringBuilder tmpString = new StringBuilder();
+        tmpString.append("l"+WidthType.name()+" "+rd.toString()+","+rs1.toString());
+        if(offset.ImmVal != 0) tmpString.append("("+offset+")");
+        return tmpString.toString();
     }
 }
