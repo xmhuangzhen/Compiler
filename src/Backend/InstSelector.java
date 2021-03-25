@@ -137,7 +137,10 @@ public class InstSelector implements IRVisitor {
             if(tmpJumptoBlock == null) throw new RuntimeException(it.toString());
             curRISCVBasicBlock.addInstruction(new RISCVJumpInst(tmpJumptoBlock));
         } else {
-            //todo (why need in here?)
+            RISCVBasicBlock tmpIfTrueBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
+            RISCVBasicBlock tmpIfFalseBlock = curRISCVModule.getRISCVBasicBlock(it.brIfFalse);
+            RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond,curRISCVBasicBlock);
+            curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg,tmpIfTrueBlock,tmpIfFalseBlock));
         }
     }
 
