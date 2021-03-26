@@ -257,7 +257,7 @@ public class IRBuilder implements ASTVisitor {
             if (currentFunction.thisReturnValue.thisType instanceof PointerType)
                 tmpType = ((PointerType) currentFunction.thisReturnValue.thisType).baseType;
             else
-                tmpType = currentFunction.thisFunctionType.FuncReturnType;
+                tmpType = currentFunction.thisReturnValue.thisType;
         }
         currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock,
                 tmpType, currentFunction.thisReturnValue));
@@ -318,10 +318,11 @@ public class IRBuilder implements ASTVisitor {
     public void visit(returnStmtNode it) {
         if (it.value != null) {
             it.value.accept(this);
-            currentFunction.thisReturnValue = it.value.ExprResult;
-/*            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+//            currentFunction.thisReturnValue = it.value.ExprResult;
+            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     it.value.ExprResult, currentFunction.thisReturnValue));
-  */      }
+         //   currentFunction.thisReturnValue.thisType = it.value.ExprResult.thisType;
+        }
 
         //go to the basic block before ret instruction
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,

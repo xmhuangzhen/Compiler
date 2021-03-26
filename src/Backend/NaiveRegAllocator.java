@@ -34,7 +34,7 @@ public class NaiveRegAllocator {
 
                         RISCVInstruction thisInst = tmpInst;
 
-                       // System.out.println(thisInst.toString());
+                        //System.out.println(thisInst.toString());
 //                        System.out.print(tmpInst.UsedVirtualReg.size());
                         for (int i = 0; i < thisInst.UsedVirtualReg.size(); ++i) {
                             RISCVVirtualReg tmpReg = thisInst.UsedVirtualReg.get(i);

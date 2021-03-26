@@ -22,7 +22,7 @@ public class storeInstruction extends IRInstruction{
                     + " " + StoreValue.toString() + ", " + StorePointer.thisType.toString()
                     + " " + StorePointer.toString();
         }
-        else throw new RuntimeException(StorePointer.thisType.toString());
+        else throw new RuntimeException(StorePointer.thisType.toString()+","+StorePointer.toString());
     }
 
     public void accept(IRVisitor it){
