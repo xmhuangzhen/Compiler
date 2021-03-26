@@ -3,8 +3,6 @@
 define ReturnType : void
 Parameter :  @__init__()
 define ReturnType : i32
-Parameter : i32 i32 i32  @qpow(i32, i32, i32)
-define ReturnType : i32
 Parameter :  @main()
 
 define ReturnType : void
@@ -19,30 +17,22 @@ __init___return_block                              ; preds = %__init___last_bloc
 }
 
 define ReturnType : i32
-Parameter : i32 i32 i32  @qpow(i32, i32, i32){
-qpow_entrance_block    store i32 %a0, i32* %qpowreturn_value3
-    br label %qpow_last_block
-
-qpow_last_block                                    ; preds = %qpow_entrance_block
-    br label %qpow_return_block
-
-qpow_return_block                                  ; preds = %qpow_last_block
-    ret i32 %qpowreturn_value3
-
-}
-
-define ReturnType : i32
 Parameter :  @main(){
-main_entrance_block    %call_init5 = call void @__init__()
-    %funccal6 = call i32 @qpow(i32 2, i32 10, i32 10000)
-    store i32 %funccal6, i32* %mainreturn_value4
+main_entrance_block    %call_init1 = call void @__init__()
+    call_size_14 = mul i32 20, 4
+    call_size_25 = add i32 %call_size_14, 4
+    %call_malloc_func3 = call i8* @malloc(i32 %call_size_25)
+    store i32 20, i32* %call_malloc_func3
+    store i32* %call_malloc_func3, i32** %a2
+    %funccal7 = call i32 @__array_size()
+    store i32 %funccal7, i32* %mainreturn_value0
     br label %main_last_block
 
 main_last_block                                    ; preds = %main_entrance_block
     br label %main_return_block
 
 main_return_block                                  ; preds = %main_last_block
-    ret i32 %mainreturn_value4
+    ret i32 %mainreturn_value0
 
 }
 
