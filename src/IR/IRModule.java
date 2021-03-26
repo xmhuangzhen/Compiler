@@ -134,7 +134,7 @@ public class IRModule {
         //initialize the function"__init__" to store global variables
         tmpFuncType = new FunctionType(new VoidType());
         tmpFunc = new IRFunction(tmpFuncType,"__init__");
-        tmpFunc.IsBuiltIn = true;
+        tmpFunc.IsBuiltIn = false;
         IRFunctionTable.put("__init__",tmpFunc);
 
         //+ of string type (str1+str2)

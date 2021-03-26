@@ -234,14 +234,14 @@ public class IRBuilder implements ASTVisitor {
                 tmpFuncName + "return_value" + (RegNum++));
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
-/*
+
         if (it.funcName.equals("main")) {
             Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
             IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init__");
             callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunc);
             currentBasicBlock.addBasicBlockInst(tmpCallInst);
         }
-*/
+
 
         //(4) visit stmts
         for (var tmp : it.stmts)
