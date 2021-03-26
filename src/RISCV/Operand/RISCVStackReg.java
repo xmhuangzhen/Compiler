@@ -6,21 +6,21 @@ public class RISCVStackReg extends RISCVRegister{
 
     public int Index;
     public RISCVFunction thisFunc;
-    public boolean IsCallInst;
+//    public boolean IsCallInst;
 
-    public RISCVStackReg(RISCVFunction tmpFunc, boolean tmpIsCall) {
+    public RISCVStackReg(RISCVFunction tmpFunc/*, boolean tmpIsCall*/) {
         super("stack_"+ tmpFunc.StackNum);
         thisFunc = tmpFunc;
         Index = tmpFunc.StackNum;
         tmpFunc.StackNum++;
-        IsCallInst = tmpIsCall;
+//        IsCallInst = tmpIsCall;
     }
 
     @Override
     public String toString() {
-        if(IsCallInst)
-            return Integer.toString(4*Index+thisFunc.RealStackSize())+"(sp)";
-        else
+  //      if(IsCallInst)
+    //        return Integer.toString(4*Index+thisFunc.RealStackSize())+"(sp)";
+      //  else
             return -12-4*Index+"(s0)";
     }
 }

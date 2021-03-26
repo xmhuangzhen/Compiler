@@ -65,7 +65,7 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
                     curRISCVModule.getPhyReg("a" + i),
-                    new RISCVImm(0),null));
+                    new RISCVImm(0)));
         }
 
         int OffsetValue = 0;
@@ -74,7 +74,7 @@ public class InstSelector implements IRVisitor {
                     RISCVInstruction.RISCVWidthENUMType.w,
                     new RISCVDirectStackReg("s0",OffsetValue),
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
-                    new RISCVImm(0),null));
+                    new RISCVImm(0)));
             OffsetValue += 4;
         }
 
@@ -97,7 +97,10 @@ public class InstSelector implements IRVisitor {
     public void visit(retInstruction it) {
         if (it.returnValue != null) {
             RISCVRegister tmpRISCVReturnVal = curRISCVModule.getRISCVReg(it.returnValue, curRISCVBasicBlock);
-            if (tmpRISCVReturnVal instanceof RISCVGlobalReg) {
+            curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    curRISCVModule.getPhyReg("a0"),
+                    tmpRISCVReturnVal,new RISCVImm(0)));
+  /*          if (tmpRISCVReturnVal instanceof RISCVGlobalReg) {
                 RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
 
                 //lui t0,%hi(a)
@@ -114,7 +117,7 @@ public class InstSelector implements IRVisitor {
                 curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a0"),
                         tmpRISCVReturnVal));
             }
-        }
+*/        }
         curRISCVBasicBlock.addInstruction(new RISCVretInst());
     }
 
@@ -194,22 +197,21 @@ public class InstSelector implements IRVisitor {
     public void visit(loadInstruction it) {
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.LoadResult, curRISCVBasicBlock);
         RISCVRegister rs = curRISCVModule.getRISCVReg(it.LoadPointer, curRISCVBasicBlock);
-
-        if (rs instanceof RISCVGlobalReg) {
+        curRISCVBasicBlock.addInstruction(new RISCVlInst(curRISCVModule.getWidth(it.LoadResult),rd,rs,new RISCVImm(0)));
+/*        if (rs instanceof RISCVGlobalReg) {
             RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
             //lui t0,%hi(a)
             //lw t1,%lo(a)(t0)
             curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
                     (RISCVGlobalReg) rs, RISCVRelocationImm.RelocationENUMType.hi)));
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
-                    rd, null,
-                    new RISCVRelocationImm((RISCVGlobalReg) rs, RISCVRelocationImm.RelocationENUMType.lo),
-                    tmpAddrReg));
+                    rd, tmpAddrReg,
+                    new RISCVRelocationImm((RISCVGlobalReg) rs, RISCVRelocationImm.RelocationENUMType.lo)));
         } else {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(curRISCVModule.getWidth(it.LoadResult)
-                    , rd, rs, new RISCVImm(0),null));
+                    , rd, rs, new RISCVImm(0)));
         }
-    }
+  */  }
 
     @Override
     public void visit(storeInstruction it) {
@@ -221,7 +223,7 @@ public class InstSelector implements IRVisitor {
                     (RISCVGlobalReg) val, RISCVRelocationImm.RelocationENUMType.hi)));
 
             val = tmpValReg;
-        }*/
+        }
         if (addr instanceof RISCVGlobalReg) {
             RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
             curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
@@ -230,9 +232,9 @@ public class InstSelector implements IRVisitor {
                     val, tmpAddrReg,
                     new RISCVRelocationImm((RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.lo)));
         } else {
-            curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
+         */   curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
                     val, addr, new RISCVImm(0)));
-        }
+        //}
 //        System.out.println("HERE-"+it.toString()+","+(it.StoreValue instanceof Parameter));
     }
 
@@ -368,7 +370,7 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                     curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock),
                     curRISCVModule.getPhyReg("a0"),
-                    new RISCVImm(0),null));
+                    new RISCVImm(0)));
         }
     }
 

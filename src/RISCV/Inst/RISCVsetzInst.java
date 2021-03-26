@@ -19,12 +19,12 @@ public class RISCVsetzInst extends RISCVInstruction {
         CompType = tmpType;
         rd = tmprd;
         rs = tmprs;
-        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
-        if (rs instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rs instanceof RISCVVirtualReg)||(rs instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs);
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if(rd == reg1) rd = reg2;
         if(rs == reg1) rs = reg2;
     }

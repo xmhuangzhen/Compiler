@@ -16,7 +16,7 @@ public class RISCVCallInst extends RISCVInstruction{
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
     }
 
     @Override

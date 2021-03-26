@@ -25,7 +25,7 @@ abstract public class RISCVInstruction {
     }
 
     public RISCVInstruction nextInst, preInst;
-    public ArrayList<RISCVVirtualReg> UsedVirtualReg;
+    public ArrayList<RISCVRegister> UsedVirtualReg;
 
     public RISCVInstruction(){
         UsedVirtualReg = new ArrayList<>();
@@ -57,5 +57,5 @@ abstract public class RISCVInstruction {
         }
     }
 
-    abstract public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2);
+    abstract public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2);
 }

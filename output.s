@@ -8,18 +8,26 @@ main:
 	sw s0,72(sp)
 	addi s0,sp,80
 	lw t0,-12(s0)
-	lui t0,%hi(a)
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	addi t0,t2,1
 	sw t0,-12(s0)
-	lw t0,-16(s0)
-	lw t1,-12(s0)
-	lw t0,%lo(a)(t1)
-	sw t0,-16(s0)
-	sw t1,-12(s0)
-	lw t0,-16(s0)
-	lw t1,-20(s0)
-	mv t1,t0
-	sw t0,-16(s0)
-	sw t1,-20(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	lw t0,-12(s0)
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t2,t0
+	sw t0,-12(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	lui t0,%hi(a)
+	lw t1,%lo(a)(t0)
+	lw t2,-20(s0)
+	mv t2,t1
+	lui t0,%hi(a)
+	sw t1,%lo(a)(t0)
+	sw t2,-20(s0)
 	j LBB64
 LBB64:
 	j LBB65

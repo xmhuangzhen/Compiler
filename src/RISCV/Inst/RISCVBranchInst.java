@@ -36,13 +36,12 @@ public class RISCVBranchInst extends RISCVInstruction {
         rs1 = tmprs1;
         IfTrueBasicBlock = tmpIfTrue;
         IfFalseBasicBlock = tmpIfFalse;
-        if (rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if (rs1 == reg1) rs1 = reg2;
-//        if(rs2 == reg1) rs2 = reg2;
     }
 
 

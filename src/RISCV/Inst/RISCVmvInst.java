@@ -16,12 +16,12 @@ public class RISCVmvInst extends RISCVInstruction{
         super();
         rd = tmprd;
         rs1 = tmprs1;
-        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
-        if (rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if(rd == reg1) rd = reg2;
         if(rs1 == reg1) rs1 = reg2;
     }

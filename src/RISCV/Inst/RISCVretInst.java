@@ -12,7 +12,7 @@ public class RISCVretInst extends RISCVInstruction{
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
     }
 
     @Override

@@ -19,11 +19,11 @@ public class RISCVlaInst extends RISCVInstruction{
         super();
         rd = tmprd;
         addr = tmpaddr;
-        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
     }
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if(rd == reg1) rd = reg2;
     }
 

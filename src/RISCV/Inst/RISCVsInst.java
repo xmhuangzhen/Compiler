@@ -21,20 +21,20 @@ public class RISCVsInst extends RISCVInstruction {
         rd = tmprd;
         rs1 = tmprs1;
         offset = tmpoffset;
-        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
-        if (rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
     }
 
 
     @Override
-    public void replaceReg(RISCVVirtualReg reg1, RISCVPhyReg reg2) {
+    public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if (rd == reg1) rd = reg2;
         if (rs1 == reg1) rs1 = reg2;
     }
 
     @Override
     public String toString() {
-        if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg)) {
+        if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg) &&(!(offset instanceof  RISCVRelocationImm))) {
             return "mv " + rs1.toString() + "," + rd.toString();
         }
         StringBuilder tmpString = new StringBuilder();
