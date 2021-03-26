@@ -1,9 +1,6 @@
 package RISCV.Inst;
 
-import RISCV.Operand.RISCVImm;
-import RISCV.Operand.RISCVPhyReg;
-import RISCV.Operand.RISCVRegister;
-import RISCV.Operand.RISCVVirtualReg;
+import RISCV.Operand.*;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ public class RISCVliInst extends RISCVInstruction{
         super();
         rd = tmprd;
         imm = tmpimm;
-        if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
     }
 
     @Override

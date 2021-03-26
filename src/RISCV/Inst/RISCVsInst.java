@@ -1,9 +1,6 @@
 package RISCV.Inst;
 
-import RISCV.Operand.RISCVImm;
-import RISCV.Operand.RISCVPhyReg;
-import RISCV.Operand.RISCVRegister;
-import RISCV.Operand.RISCVVirtualReg;
+import RISCV.Operand.*;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
@@ -40,8 +37,13 @@ public class RISCVsInst extends RISCVInstruction {
         if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg)) {
             return "mv " + rs1.toString() + "," + rd.toString();
         }
-        StringBuilder tmpString = new StringBuilder("sw" +/*WidthType.name()+*/" " + rd.toString() + "," + rs1.toString());
-        if (offset.ImmVal != 0) tmpString.append("(" + offset.toString() + ")");
+        StringBuilder tmpString = new StringBuilder();
+        if(offset instanceof RISCVRelocationImm) {
+            tmpString.append("sw "+rd.toString()+","+offset.toString()+"("+rs1.toString()+")");
+        } else {
+            tmpString.append("sw " + rd.toString() + "," + rs1.toString());
+            if (offset.ImmVal != 0) tmpString.append("(" + offset.toString() + ")");
+        }
         return tmpString.toString();
     }
 }

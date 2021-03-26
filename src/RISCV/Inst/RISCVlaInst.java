@@ -19,7 +19,7 @@ public class RISCVlaInst extends RISCVInstruction{
         super();
         rd = tmprd;
         addr = tmpaddr;
-        if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
     }
 
     @Override

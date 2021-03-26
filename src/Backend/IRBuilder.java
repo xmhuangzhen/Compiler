@@ -117,6 +117,7 @@ public class IRBuilder implements ASTVisitor {
         }
 
         //(3) declare global variables (declare a function "__init" to save the global variables)
+
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get("__init__");
 
         currentFunction = tmpIRFunction;
@@ -233,12 +234,14 @@ public class IRBuilder implements ASTVisitor {
                 tmpFuncName + "return_value" + (RegNum++));
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
+/*
         if (it.funcName.equals("main")) {
             Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
             IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init__");
             callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunc);
             currentBasicBlock.addBasicBlockInst(tmpCallInst);
         }
+*/
 
         //(4) visit stmts
         for (var tmp : it.stmts)
@@ -253,7 +256,8 @@ public class IRBuilder implements ASTVisitor {
         if (currentFunction.thisReturnValue != null) {
             if (currentFunction.thisReturnValue.thisType instanceof PointerType)
                 tmpType = ((PointerType) currentFunction.thisReturnValue.thisType).baseType;
-            else throw new RuntimeException();
+            else
+                tmpType = currentFunction.thisFunctionType.FuncReturnType;
         }
         currentBasicBlock.addBasicBlockInst(new retInstruction(currentBasicBlock,
                 tmpType, currentFunction.thisReturnValue));
@@ -314,11 +318,12 @@ public class IRBuilder implements ASTVisitor {
     public void visit(returnStmtNode it) {
         if (it.value != null) {
             it.value.accept(this);
-            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+            currentFunction.thisReturnValue = it.value.ExprResult;
+/*            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     it.value.ExprResult, currentFunction.thisReturnValue));
-        }
+  */      }
+
         //go to the basic block before ret instruction
-//        System.out.println(it.value.ExprText+","+currentBasicBlock.BasicBlockName);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null, currentFunction.thisLastBasicBlock, null));
         currentBasicBlock = currentFunction.thisLastBasicBlock;
@@ -1126,10 +1131,6 @@ public class IRBuilder implements ASTVisitor {
             //local var
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
             it.ExprResult = tmpVarAddr;
-
-            //        Register tmpResult = new Register(tmpVarAddr.thisType, "Id_"+it.Identifier+(RegNum++));
-            //      currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpResult,tmpVarAddr));
-            //    it.ExprResult = tmpResult;
         }
         if (it.ExprResult == null && currentClassName != null) { //class member
             StructureType tmpClassType = currentModule.IRClassTable.get(currentClassName);
@@ -1153,22 +1154,15 @@ public class IRBuilder implements ASTVisitor {
                 currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
 
                 it.ExprResult = tmpGEPptr;
-//                Register tmpGEPLoadResult = new Register(new PointerType(tmpMemberIRType), "Id_GEP_Load" + (RegNum++));
-                //              currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock, tmpGEPLoadResult, tmpGEPResult));
-                //            it.ExprResult = tmpGEPLoadResult;
             }
         }
         if (it.ExprResult == null) {//global var
             GlobalVariables tmpGlobal = currentModule.IRGlobalVarTable.get(it.Identifier);
             if (tmpGlobal != null) {
-/*                Register tmpResult = new Register(new PointerType(tmpGlobal.thisType), "Id_Load" + (RegNum++));
-                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock, tmpResult, tmpGlobal));
-                it.ExprResult = tmpResult;
-*/
                 it.ExprResult = tmpGlobal;
             }
         }
-//        if(it.ExprResult == null) System.out.println(it.ExprText);
+
     }
 
     @Override

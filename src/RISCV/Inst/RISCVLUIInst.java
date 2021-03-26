@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class RISCVLUIInst extends RISCVInstruction {
 
     public RISCVRegister rd;
-    public RISCVImm globalReg;
+    public RISCVRelocationImm globalRelocationImm;
 
-    public RISCVLUIInst(RISCVRegister tmprd, RISCVImm tmpGlobalReg) {
+    public RISCVLUIInst(RISCVRegister tmprd, RISCVRelocationImm tmpRelocationImm) {
         super();
         rd = tmprd;
-        globalReg = tmpGlobalReg;
-        if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        globalRelocationImm = tmpRelocationImm;
+        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
     }
 
     @Override
@@ -25,6 +25,6 @@ public class RISCVLUIInst extends RISCVInstruction {
 
     @Override
     public String toString() {
-        return "lui " + rd.toString() + "," + globalReg.toString();
+        return "lui "+ rd.toString()+","+globalRelocationImm.toString();
     }
 }

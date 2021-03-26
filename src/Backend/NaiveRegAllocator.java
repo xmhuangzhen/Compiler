@@ -34,7 +34,7 @@ public class NaiveRegAllocator {
 
                         RISCVInstruction thisInst = tmpInst;
 
-//                        System.out.println(thisInst.toString());
+                       // System.out.println(thisInst.toString());
 //                        System.out.print(tmpInst.UsedVirtualReg.size());
                         for (int i = 0; i < thisInst.UsedVirtualReg.size(); ++i) {
                             RISCVVirtualReg tmpReg = thisInst.UsedVirtualReg.get(i);
@@ -129,13 +129,13 @@ public class NaiveRegAllocator {
                         new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                 curRISCVModule.getPhyReg("s0"),
                                 new RISCVDirectStackReg("sp", tmpFunc.RealStackSize() - 8),
-                                new RISCVImm(0)));
+                                new RISCVImm(0),null));
                 //lw ra,44(sp)
                 tmpInst.addInstPre(tmpFunc.LastBlock,
                         new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                 curRISCVModule.getPhyReg("ra"),
                                 new RISCVDirectStackReg("sp", tmpFunc.RealStackSize() - 4),
-                                new RISCVImm(0)));
+                                new RISCVImm(0),null));
                 //addi sp,sp,48
                 tmpInst.addInstPre(tmpFunc.LastBlock,
                         new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,

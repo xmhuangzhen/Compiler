@@ -1,9 +1,6 @@
 package RISCV.Inst;
 
-import RISCV.Operand.RISCVImm;
-import RISCV.Operand.RISCVPhyReg;
-import RISCV.Operand.RISCVRegister;
-import RISCV.Operand.RISCVVirtualReg;
+import RISCV.Operand.*;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
@@ -16,16 +13,16 @@ public class RISCVBinaryOpInst extends RISCVInstruction{
 
 
     public RISCVBinaryOpInst(RISCVBinaryENUMType tmpType, RISCVRegister tmprd, RISCVRegister tmprs1,
-                             RISCVRegister tmprs2, RISCVImm tmpimm){
+                             RISCVRegister tmprs2, RISCVImm tmpimm) {
         super();
         RISCVBinaryType = tmpType;
         rd = tmprd;
         rs1 = tmprs1;
         rs2 = tmprs2;
         imm = tmpimm;
-        if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
-        if(rs1 instanceof  RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
-        if(rs2 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs2);
+        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        if (rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if (rs2 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs2);
     }
 
     @Override

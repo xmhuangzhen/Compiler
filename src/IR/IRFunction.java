@@ -1,6 +1,7 @@
 package IR;
 
 import Backend.IRVisitor;
+import IR.Operand.IROperand;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.FunctionType;
@@ -19,7 +20,7 @@ public class IRFunction {
     public ArrayList<Parameter> thisFunctionParameters;
     public Map<String, Register> thisFunctionVariableTable;
 
-    public Register thisReturnValue;
+    public IROperand thisReturnValue;
     public IRBasicBlock thisLastBasicBlock;
 
     public IRBasicBlock thisEntranceBlock;

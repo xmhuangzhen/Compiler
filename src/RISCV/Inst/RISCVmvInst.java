@@ -1,5 +1,6 @@
 package RISCV.Inst;
 
+import RISCV.Operand.RISCVGlobalReg;
 import RISCV.Operand.RISCVPhyReg;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVVirtualReg;
@@ -15,8 +16,8 @@ public class RISCVmvInst extends RISCVInstruction{
         super();
         rd = tmprd;
         rs1 = tmprs1;
-        if(rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
-        if(rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
+        if (rd instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rd);
+        if (rs1 instanceof RISCVVirtualReg) UsedVirtualReg.add((RISCVVirtualReg) rs1);
     }
 
     @Override

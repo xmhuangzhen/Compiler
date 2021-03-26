@@ -1,5 +1,6 @@
 package RISCV.Inst;
 
+import RISCV.Operand.RISCVGlobalReg;
 import RISCV.Operand.RISCVPhyReg;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVVirtualReg;
