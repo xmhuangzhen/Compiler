@@ -30,6 +30,8 @@ public class RISCVlaInst extends RISCVInstruction{
 
     @Override
     public String toString() {
+        if(addr instanceof RISCVGlobalReg)
+            return "la "+rd.toString()+","+addr.toString();
         return "lw "+rd.toString()+","+addr.toString();
     }
 }

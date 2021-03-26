@@ -69,12 +69,14 @@ public class IRModule {
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFunc = new IRFunction(tmpFuncType,"getString");
         tmpFunc.IsBuiltIn = true;
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "getString_return_value");
         IRFunctionTable.put("getString",tmpFunc);
 
         //函数：int getInt();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"getInt");
         tmpFunc.IsBuiltIn = true;
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "getInt_return_value");
         IRFunctionTable.put("getInt",tmpFunc);
 
         //函数：string toString(int i);
@@ -83,6 +85,7 @@ public class IRModule {
         tmpFunc = new IRFunction(tmpFuncType,"toString");
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"i"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "tostring_return_value");
         IRFunctionTable.put("toString",tmpFunc);
 
         //----------------------string---------------------------
@@ -90,6 +93,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_length");
         tmpFunc.IsBuiltIn = true;
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_length"+"_return_value");
         IRFunctionTable.put("__string_length",tmpFunc);
 
         //函数：string substring(int left, int right); 使用：<StringIdentifier>.substring(left, right);
@@ -100,12 +104,14 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"left"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"right"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_substring"+"_return_value");
         IRFunctionTable.put("__string_substring",tmpFunc);
 
         //函数：int parseInt();  使用：<StringIdentifier>.parseInt();
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__string_parseInt");
         tmpFunc.IsBuiltIn = true;
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_parseInt"+"_return_value");
         IRFunctionTable.put("__string_parseInt",tmpFunc);
 
         //函数：int ord(int pos); 使用：<StringIdentifier>.ord(pos);
@@ -114,6 +120,7 @@ public class IRModule {
         tmpFunc = new IRFunction(tmpFuncType,"__string_ord");
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"pos"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_ord"+"_return_value");
         IRFunctionTable.put("__string_ord",tmpFunc);
 
 
@@ -121,6 +128,7 @@ public class IRModule {
         tmpFuncType = new FunctionType(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"__array_size");
         tmpFunc.IsBuiltIn = true;
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__array_size"+"_return_value");
         IRFunctionTable.put("__array_size",tmpFunc);
 
 
@@ -138,6 +146,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_add"+"_return_value");
         IRFunctionTable.put("__string_add",tmpFunc);
 
         //> of string type (str1>str2)
@@ -148,6 +157,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_sgt"+"_return_value");
         IRFunctionTable.put("__string_sgt",tmpFunc);
 
         //< of string type (str1<str2)
@@ -158,6 +168,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_slt"+"_return_value");
         IRFunctionTable.put("__string_slt",tmpFunc);
 
         //>= of string type (str1>=str2)
@@ -168,6 +179,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_sge"+"_return_value");
         IRFunctionTable.put("__string_sge",tmpFunc);
 
         //<= of string type (str1<=str2)
@@ -178,6 +190,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_sle"+"_return_value");
         IRFunctionTable.put("__string_sle",tmpFunc);
 
         //== of string type (str1==str2)
@@ -188,6 +201,7 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_eq"+"_return_value");
         IRFunctionTable.put("__string_eq",tmpFunc);
 
         //!= of string type (str1!=str2)
@@ -198,14 +212,16 @@ public class IRModule {
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str1"));
         tmpFunc.thisFunctionParameters.add(new Parameter(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),"str2"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "__string_ne"+"_return_value");
         IRFunctionTable.put("__string_ne",tmpFunc);
 
-        //malloc ( int size)
+        //byte* malloc(int size)
         tmpFuncType = new FunctionType(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)));
         tmpFuncType.FuncParameter.add(new IntegerType(IntegerType.IRBitWidth.i32));
         tmpFunc = new IRFunction(tmpFuncType,"malloc");
         tmpFunc.IsBuiltIn = true;
         tmpFunc.thisFunctionParameters.add(new Parameter(new IntegerType(IntegerType.IRBitWidth.i32),"size"));
+        tmpFunc.thisReturnValue = new Register(new PointerType(tmpFuncType), "malloc"+"_return_value");
         IRFunctionTable.put("malloc",tmpFunc);
     }
 
@@ -230,7 +246,8 @@ public class IRModule {
     }
 
     public GlobalVariables addConstString(String tmpString){
-        String RealString = tmpString;
+        int StringSize = tmpString.length();
+        String RealString = tmpString.substring(1,StringSize-1);
         RealString = RealString.replace("\\n","\n");
         RealString = RealString.replace("\\t","\t");
         RealString = RealString.replace("\\\\","\\");

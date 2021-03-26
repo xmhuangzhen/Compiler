@@ -23,6 +23,8 @@ public class ASMPrinter {
         for (var tmpFunc : curRISCVModule.RISCVFuncMap.values())
             if (!tmpFunc.IsBuiltIn)
                 runRISCVFunction(tmpFunc);
+
+        ASMPrintStream.println(".section	.sdata,\"aw\",@progbits");
         for (var tmpGlobalVar : curRISCVModule.GlobalRegMap.values())
             runGlobalVar(tmpGlobalVar);
     }
@@ -49,7 +51,7 @@ public class ASMPrinter {
     }
 
     public void runGlobalVar(RISCVGlobalReg thisGlobalReg) {
-        ASMPrintStream.println("\t.globl\t" + thisGlobalReg.RegisterName);
+//        ASMPrintStream.println("\t.globl\t" + thisGlobalReg.RegisterName);
         if (thisGlobalReg.isInt) ASMPrintStream.println("\t.p2align\t2");
 
         ASMPrintStream.println(thisGlobalReg.RegisterName + ":");
