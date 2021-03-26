@@ -318,10 +318,10 @@ public class IRBuilder implements ASTVisitor {
     public void visit(returnStmtNode it) {
         if (it.value != null) {
             it.value.accept(this);
-//            currentFunction.thisReturnValue = it.value.ExprResult;
+            Register tmpReg = new Register(currentModule.getIRType(it.value.ExprType), "value");
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
-                    it.value.ExprResult, currentFunction.thisReturnValue));
-         //   currentFunction.thisReturnValue.thisType = it.value.ExprResult.thisType;
+                    tmpReg, currentFunction.thisReturnValue));
         }
 
         //go to the basic block before ret instruction

@@ -215,6 +215,13 @@ public class InstSelector implements IRVisitor {
     public void visit(storeInstruction it) {
         RISCVRegister addr = curRISCVModule.getRISCVReg(it.StorePointer, curRISCVBasicBlock);
         RISCVRegister val = curRISCVModule.getRISCVReg(it.StoreValue, curRISCVBasicBlock);
+        /*if(val instanceof RISCVGlobalReg){
+            RISCVVirtualReg tmpValReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpValReg, new RISCVRelocationImm(
+                    (RISCVGlobalReg) val, RISCVRelocationImm.RelocationENUMType.hi)));
+
+            val = tmpValReg;
+        }*/
         if (addr instanceof RISCVGlobalReg) {
             RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
             curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
