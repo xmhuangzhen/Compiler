@@ -333,6 +333,9 @@ public class IRBuilder implements ASTVisitor {
             if(it.value.ExprResult != null)
             currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
                     currentFunction.thisReturnValue,it.value.ExprResult));
+            else {
+                throw new RuntimeException();
+            }
         }
 
         //go to the basic block before ret instruction
@@ -748,12 +751,11 @@ public class IRBuilder implements ASTVisitor {
 
             currentBasicBlock = AndandDestBlock;
             currentFunction.addFunctionBasicBlock(AndandDestBlock);
-            //  RegisterName = "Andand";
-            //  tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
-            //  phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
-            // tmpphiInst.PhiLabel.add(phiBlock1); tmpphiInst.PhiValue.add(new BooleanConstant(false));
-            // tmpphiInst.PhiLabel.add(phiBlock2); tmpphiInst.PhiValue.add(it.rhs.ExprResult);
-            // currentBasicBlock.addBasicBlockInst(tmpphiInst);
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"Andand_"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
+                    bitwiseBinaryInstruction.BitwiseBinaryOperandType.and,it.lhs.ExprResult,
+                    it.rhs.ExprResult,tmpResult));
+            it.ExprResult = tmpResult;
         } else if (it.op.equals("||")) {
             IRBasicBlock OrorBBlock = new IRBasicBlock(currentFunction, "oror_b_block" + (BlockNum++));
             IRBasicBlock OrorDestBlock = new IRBasicBlock(currentFunction, "oror_dest_block" + (BlockNum++));
@@ -775,12 +777,11 @@ public class IRBuilder implements ASTVisitor {
 
             currentBasicBlock = OrorDestBlock;
             currentFunction.addFunctionBasicBlock(OrorDestBlock);
-            // RegisterName = "Oror";
-            // tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),RegisterName);
-            // phiInstruction tmpphiInst = new phiInstruction(currentBasicBlock,tmpResult);
-            // tmpphiInst.PhiLabel.add(phiBlock1); tmpphiInst.PhiValue.add(new BooleanConstant(true));
-            // tmpphiInst.PhiLabel.add(phiBlock2); tmpphiInst.PhiValue.add(it.rhs.ExprResult);
-            // currentBasicBlock.addBasicBlockInst(tmpphiInst);
+            tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),"Oror_"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
+                    bitwiseBinaryInstruction.BitwiseBinaryOperandType.or,it.lhs.ExprResult,
+                    it.rhs.ExprResult,tmpResult));
+            it.ExprResult = tmpResult;
         } else {
             throw new RuntimeException();
         }

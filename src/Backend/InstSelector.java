@@ -196,8 +196,7 @@ public class InstSelector implements IRVisitor {
     public void visit(loadInstruction it) {
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.LoadResult, curRISCVBasicBlock);
         RISCVRegister rs = curRISCVModule.getRISCVReg(it.LoadPointer, curRISCVBasicBlock);
-        //System.out.println( );
-        if(it.LoadPointer != null && it.LoadResult.thisType.equals(it.LoadPointer.thisType)){
+        if(it.LoadResult.thisType.equals(it.LoadPointer.thisType)){
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
         } else {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(curRISCVModule.getWidth(it.LoadResult),
