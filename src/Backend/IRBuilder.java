@@ -227,7 +227,9 @@ public class IRBuilder implements ASTVisitor {
 
         //(2) visit par
         for(int i = 0;i < it.parDefs.size();++i){
-            IdAddrMap.AddrMap.put(it.parDefs.get(i).varname, currentFunction.thisFunctionParameters.get(i));
+            Parameter tmpPar = currentFunction.thisFunctionParameters.get(i);
+            Register tmpRegister = new Register(new PointerType(tmpPar.thisType),tmpPar.ParameterName);
+            IdAddrMap.AddrMap.put(tmpPar.ParameterName,tmpRegister);
         }
 
 
