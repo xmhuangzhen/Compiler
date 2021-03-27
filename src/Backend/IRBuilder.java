@@ -16,6 +16,7 @@ import IR.Operand.*;
 import IR.TypeSystem.*;
 import Util.classScope;
 import Util.globalScope;
+import com.sun.source.doctree.InlineTagTree;
 
 import java.sql.Struct;
 import java.util.Stack;
@@ -178,7 +179,13 @@ public class IRBuilder implements ASTVisitor {
             //local variables
             if (currentFunction != null) {
                 //in function//////////////////////////////////////////////////////////////
-                Register tmpResult = new Register(new PointerType(tmpIRType), it.varname + (RegNum++));
+
+                //System.out.println(currentModule.getIRType(it.typeNode).toString());
+                IRTypeSystem tmpType = null;
+                if(currentModule.getIRType(it.typeNode).equals(tmpIRType)) tmpType = tmpIRType;
+                else tmpType = new PointerType(tmpIRType);
+
+                Register tmpResult = new Register(tmpType/*new PointerType(tmpIRType)*/, it.varname + (RegNum++));
                 if (it.varexpr != null) {
                     it.varexpr.accept(this);
                     currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
@@ -510,8 +517,11 @@ public class IRBuilder implements ASTVisitor {
         it.lhs.accept(this);
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
+
+
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.rhs.ExprResult, it.lhs.ExprResult));
+
     }
 
     @Override
@@ -1169,7 +1179,16 @@ public class IRBuilder implements ASTVisitor {
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
-            it.ExprResult = tmpVarAddr;
+            IRTypeSystem tmpType = currentModule.getIRType(it.ExprType);
+            IRTypeSystem tmpPtype = new PointerType(tmpType);
+            if(tmpPtype.equals(tmpVarAddr.thisType)){
+                Register tmpResult = new Register(tmpType,"Id_load"+(RegNum++));
+                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                        tmpResult,tmpVarAddr));
+                it.ExprResult = tmpResult;
+            } else {
+                it.ExprResult = tmpVarAddr;
+            }
         }
         if (it.ExprResult == null && currentClassName != null) { //class member
             StructureType tmpClassType = currentModule.IRClassTable.get(currentClassName);

@@ -72,9 +72,9 @@ public class InstSelector implements IRVisitor {
         for (int i = 8; i < it.thisFunctionParameters.size(); ++i) {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(
                     RISCVInstruction.RISCVWidthENUMType.w,
-                    new RISCVDirectStackReg("s0",OffsetValue),
+                    curRISCVModule.getPhyReg("s0"),
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
-                    new RISCVImm(0)));
+                    new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }
 
@@ -232,8 +232,9 @@ public class InstSelector implements IRVisitor {
                     val, tmpAddrReg,
                     new RISCVRelocationImm((RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.lo)));
         } else {
-         */   curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
-                    val, addr, new RISCVImm(0)));
+         */
+        curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
+                val, addr, new RISCVImm(0)));
         //}
 //        System.out.println("HERE-"+it.toString()+","+(it.StoreValue instanceof Parameter));
     }
@@ -252,6 +253,7 @@ public class InstSelector implements IRVisitor {
                 if (ArrayIndex instanceof IntegerConstant) { // rd = baseReg + 4*val;
                     long val = ((IntegerConstant) ArrayIndex).value * 4;
                     if (val <= Max_Imm && val >= Min_Imm) {
+                        //System.out.println("HERE!"+","+val);
                         curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
                                 rd, baseReg, null, new RISCVImm((int) val)));
                   //      System.out.println(baseReg.RegisterName);

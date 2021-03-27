@@ -34,15 +34,18 @@ public class RISCVsInst extends RISCVInstruction {
 
     @Override
     public String toString() {
-        if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg) &&(!(offset instanceof  RISCVRelocationImm))) {
+        if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg) &&(!(offset instanceof  RISCVRelocationImm))
+            && offset.ImmVal == 0) {
             return "mv " + rs1.toString() + "," + rd.toString();
         }
         StringBuilder tmpString = new StringBuilder();
         if(offset instanceof RISCVRelocationImm) {
             tmpString.append("sw "+rd.toString()+","+offset.toString()+"("+rs1.toString()+")");
         } else {
+            /*
             tmpString.append("sw " + rd.toString() + "," + rs1.toString());
-            if (offset.ImmVal != 0) tmpString.append("(" + offset.toString() + ")");
+            if (offset.ImmVal != 0) tmpString.append("(" + offset.toString() + ")");*/
+            tmpString.append("sw "+ rd.toString()+","+offset.toString()+"("+rs1.toString()+")");
         }
         return tmpString.toString();
     }
