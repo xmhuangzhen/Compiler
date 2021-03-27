@@ -8,10 +8,10 @@ import java.util.ArrayList;
 public class RISCVsInst extends RISCVInstruction {
 
     public RISCVWidthENUMType WidthType;
-    public RISCVRegister rd, rs1;
+    public RISCVRegister rd, addr;
     public RISCVImm offset;
 
-    //save rd(value) to rs1+offset
+    //save rd(value) to addr+offset
 
 
     public RISCVsInst(RISCVWidthENUMType tmpType, RISCVRegister tmprd,
@@ -19,33 +19,33 @@ public class RISCVsInst extends RISCVInstruction {
         super();
         WidthType = tmpType;
         rd = tmprd;
-        rs1 = tmprs1;
+        addr = tmprs1;
         offset = tmpoffset;
         if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
-        if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
+        if ((addr instanceof RISCVVirtualReg)||(addr instanceof RISCVGlobalReg)) UsedVirtualReg.add(addr);
     }
 
 
     @Override
     public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
         if (rd == reg1) rd = reg2;
-        if (rs1 == reg1) rs1 = reg2;
+        if (addr == reg1) addr = reg2;
     }
 
     @Override
     public String toString() {
-        if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg) &&(!(offset instanceof  RISCVRelocationImm))
+        /*if ((rs1 instanceof RISCVPhyReg) && (rd instanceof RISCVPhyReg) &&(!(offset instanceof  RISCVRelocationImm))
             && offset.ImmVal == 0) {
             return "mv " + rs1.toString() + "," + rd.toString();
-        }
+        }*/
         StringBuilder tmpString = new StringBuilder();
         if(offset instanceof RISCVRelocationImm) {
-            tmpString.append("sw "+rd.toString()+","+offset.toString()+"("+rs1.toString()+")");
+            tmpString.append("sw "+rd.toString()+","+offset.toString()+"("+addr.toString()+")");
         } else {
             /*
             tmpString.append("sw " + rd.toString() + "," + rs1.toString());
             if (offset.ImmVal != 0) tmpString.append("(" + offset.toString() + ")");*/
-            tmpString.append("sw "+ rd.toString()+","+offset.toString()+"("+rs1.toString()+")");
+            tmpString.append("sw "+ rd.toString()+","+offset.toString()+"("+addr.toString()+")");
         }
         return tmpString.toString();
     }

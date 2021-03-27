@@ -53,7 +53,7 @@ main:
 	sw t0,-32(s0)
 	lw t0,-32(s0)
 	lw t1,-28(s0)
-	mv t1,t0
+	sw t0,0(t1)
 	sw t0,-32(s0)
 	sw t1,-28(s0)
 	lw t0,-36(s0)
@@ -61,11 +61,11 @@ main:
 	addi t0,t1,4
 	sw t0,-36(s0)
 	sw t1,-28(s0)
-	lw t0,-36(s0)
-	lw t1,-40(s0)
-	mv t1,t0
-	sw t0,-36(s0)
-	sw t1,-40(s0)
+	lw t0,-40(s0)
+	lw t1,-36(s0)
+	mv t0,t1
+	sw t0,-40(s0)
+	sw t1,-36(s0)
 	lw t0,-44(s0)
 	lw t1,-40(s0)
 	addi t0,t1,0
@@ -76,26 +76,46 @@ main:
 	sw t0,-48(s0)
 	lw t0,-48(s0)
 	lw t1,-44(s0)
-	mv t1,t0
+	sw t0,0(t1)
 	sw t0,-48(s0)
 	sw t1,-44(s0)
 	lw t0,-52(s0)
 	lw t1,-40(s0)
-	addi t0,t1,0
+	addi t0,t1,4
 	sw t0,-52(s0)
 	sw t1,-40(s0)
-	lw t0,-52(s0)
+	lw t0,-56(s0)
+	lw t1,-40(s0)
+	addi t0,t1,0
+	sw t0,-56(s0)
+	sw t1,-40(s0)
+	lw t0,-60(s0)
 	lw t1,-56(s0)
-	mv t1,t0
-	sw t0,-52(s0)
+	lw t0,0(t1)
+	sw t0,-60(s0)
 	sw t1,-56(s0)
+	lw t0,-60(s0)
+	lw t1,-52(s0)
+	sw t0,0(t1)
+	sw t0,-60(s0)
+	sw t1,-52(s0)
+	lw t0,-64(s0)
+	lw t1,-40(s0)
+	addi t0,t1,4
+	sw t0,-64(s0)
+	sw t1,-40(s0)
+	lw t0,-68(s0)
+	lw t1,-64(s0)
+	lw t0,0(t1)
+	sw t0,-68(s0)
+	sw t1,-64(s0)
 	j LBB64
 LBB64:
 	j LBB65
 LBB65:
-	lw t0,-56(s0)
+	lw t0,-68(s0)
 	mv a0,t0
-	sw t0,-56(s0)
+	sw t0,-68(s0)
 	lw s0,120(sp)
 	lw ra,124(sp)
 	addi sp,sp,128

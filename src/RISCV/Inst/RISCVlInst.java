@@ -31,10 +31,7 @@ public class RISCVlInst extends RISCVInstruction {
 
     @Override
     public String toString() {
-        if ((rd instanceof RISCVPhyReg) && (rs1 instanceof RISCVPhyReg) &&
-                (!(offset instanceof RISCVRelocationImm)) && offset.ImmVal == 0) {
-            return "mv " + rd.toString() + "," + rs1.toString();
-        }
+
         StringBuilder tmpString = new StringBuilder();
         if (offset instanceof RISCVRelocationImm) {
             tmpString.append("lw " + rd.toString() + "," + offset.toString() + "(" + rs1.toString() + ")");

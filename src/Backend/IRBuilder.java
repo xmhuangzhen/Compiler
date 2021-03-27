@@ -237,7 +237,7 @@ public class IRBuilder implements ASTVisitor {
         }
 
 
-        currentFunction.thisReturnValue = new Register(new PointerType(currentModule.getIRType(it.funcType)),
+        currentFunction.thisReturnValue = new Register(currentModule.getIRType(it.funcType),
                 tmpFuncName + "return_value" + (RegNum++));
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
@@ -327,8 +327,10 @@ public class IRBuilder implements ASTVisitor {
             it.value.accept(this);
             //Register tmpReg = new Register(currentModule.getIRType(it.value.ExprType), "value");
             //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
-            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
-                    it.value.ExprResult, currentFunction.thisReturnValue));
+           // currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+             //       currentFunction.thisReturnValue, it.value.ExprResult));
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                    currentFunction.thisReturnValue,it.value.ExprResult));
         }
 
         //go to the basic block before ret instruction
@@ -518,9 +520,17 @@ public class IRBuilder implements ASTVisitor {
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
 
-
-        currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
-                it.rhs.ExprResult, it.lhs.ExprResult));
+        if(it.rhs.ExprResult.NeedPtr){
+//            System.out.println(it.ExprText);
+            Register tmpReg = new Register(new PointerType(it.rhs.ExprResult.thisType),"Assign_ptr"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                    tmpReg,it.rhs.ExprResult));
+            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+                    tmpReg,it.lhs.ExprResult));
+        } else {
+            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+                    it.rhs.ExprResult, it.lhs.ExprResult));
+        }
 
     }
 
@@ -1263,5 +1273,6 @@ public class IRBuilder implements ASTVisitor {
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
 
         it.ExprResult = tmpResult;
+        it.ExprResult.NeedPtr = true;
     }
 }
