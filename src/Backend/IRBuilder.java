@@ -239,6 +239,7 @@ public class IRBuilder implements ASTVisitor {
 
         currentFunction.thisReturnValue = new Register(currentModule.getIRType(it.funcType),
                 tmpFuncName + "return_value" + (RegNum++));
+        currentFunction.thisReturnValue.thisType = currentModule.getIRType(it.funcType);
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
 
@@ -329,6 +330,7 @@ public class IRBuilder implements ASTVisitor {
             //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
            // currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
              //       currentFunction.thisReturnValue, it.value.ExprResult));
+            if(it.value.ExprResult != null)
             currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
                     currentFunction.thisReturnValue,it.value.ExprResult));
         }

@@ -3,28 +3,12 @@
 	.p2align	2
 __init__:
 #LBB36:
-	addi sp,sp,-80
-	sw ra,76(sp)
-	sw s0,72(sp)
-	addi s0,sp,80
-	j LBB38
-LBB38:
-	lw s0,72(sp)
-	lw ra,76(sp)
-	addi sp,sp,80
-	ret
-# end function : __init__
-	.globl	main					# start function : main
-	.p2align	2
-main:
-#LBB63:
-	addi sp,sp,-128
-	sw ra,124(sp)
-	sw s0,120(sp)
-	addi s0,sp,128
-	call __init__
+	addi sp,sp,-144
+	sw ra,140(sp)
+	sw s0,136(sp)
+	addi s0,sp,144
 	lw t0,-12(s0)
-	li t0,4
+	li t0,12000
 	sw t0,-12(s0)
 	lw t0,-16(s0)
 	li t0,4
@@ -49,7 +33,7 @@ main:
 	mv t0,a0
 	sw t0,-28(s0)
 	lw t0,-32(s0)
-	li t0,4
+	li t0,12000
 	sw t0,-32(s0)
 	lw t0,-32(s0)
 	lw t1,-28(s0)
@@ -61,64 +45,1232 @@ main:
 	addi t0,t1,4
 	sw t0,-36(s0)
 	sw t1,-28(s0)
-	lw t0,-40(s0)
-	lw t1,-36(s0)
-	mv t0,t1
-	sw t0,-40(s0)
-	sw t1,-36(s0)
+	lw t0,-36(s0)
+	lui t1,%hi(xlist)
+	lw t2,%lo(xlist)(t1)
+	sw t0,0(t2)
+	sw t0,-36(s0)
+	lui t1,%hi(xlist)
+	sw t2,%lo(xlist)(t1)
 	lw t0,-44(s0)
-	lw t1,-40(s0)
-	addi t0,t1,0
+	li t0,12000
 	sw t0,-44(s0)
-	sw t1,-40(s0)
 	lw t0,-48(s0)
-	li t0,100
+	li t0,4
 	sw t0,-48(s0)
-	lw t0,-48(s0)
-	lw t1,-44(s0)
-	sw t0,0(t1)
-	sw t0,-48(s0)
-	sw t1,-44(s0)
 	lw t0,-52(s0)
-	lw t1,-40(s0)
-	addi t0,t1,4
+	lw t1,-44(s0)
+	lw t2,-48(s0)
+	mul t0,t1,t2
 	sw t0,-52(s0)
-	sw t1,-40(s0)
+	sw t1,-44(s0)
+	sw t2,-48(s0)
 	lw t0,-56(s0)
-	lw t1,-40(s0)
-	addi t0,t1,0
-	sw t0,-56(s0)
-	sw t1,-40(s0)
-	lw t0,-60(s0)
-	lw t1,-56(s0)
-	lw t0,0(t1)
-	sw t0,-60(s0)
-	sw t1,-56(s0)
-	lw t0,-60(s0)
 	lw t1,-52(s0)
-	sw t0,0(t1)
-	sw t0,-60(s0)
-	sw t1,-52(s0)
-	lw t0,-64(s0)
-	lw t1,-40(s0)
 	addi t0,t1,4
+	sw t0,-56(s0)
+	sw t1,-52(s0)
+	lw t0,-56(s0)
+	mv a0,t0
+	sw t0,-56(s0)
+	call malloc
+	lw t0,-60(s0)
+	mv t0,a0
+	sw t0,-60(s0)
+	lw t0,-64(s0)
+	li t0,12000
 	sw t0,-64(s0)
-	sw t1,-40(s0)
+	lw t0,-64(s0)
+	lw t1,-60(s0)
+	sw t0,0(t1)
+	sw t0,-64(s0)
+	sw t1,-60(s0)
+	lw t0,-68(s0)
+	lw t1,-60(s0)
+	addi t0,t1,4
+	sw t0,-68(s0)
+	sw t1,-60(s0)
+	lw t0,-68(s0)
+	lui t1,%hi(ylist)
+	lw t2,%lo(ylist)(t1)
+	sw t0,0(t2)
+	sw t0,-68(s0)
+	lui t1,%hi(ylist)
+	sw t2,%lo(ylist)(t1)
+	j LBB38
+LBB38:
+	lw s0,136(sp)
+	lw ra,140(sp)
+	addi sp,sp,144
+	ret
+# end function : __init__
+	.globl	origin					# start function : origin
+	.p2align	2
+origin:
+#LBB63:
+	addi sp,sp,-192
+	sw ra,188(sp)
+	sw s0,184(sp)
+	addi s0,sp,192
+	lw t0,-12(s0)
+	mv t0,a0
+	sw t0,-12(s0)
+	lw t0,-16(s0)
+	li t0,4
+	sw t0,-16(s0)
+	lw t0,-20(s0)
+	lw t1,-12(s0)
+	lw t2,-16(s0)
+	mul t0,t1,t2
+	sw t0,-20(s0)
+	sw t1,-12(s0)
+	sw t2,-16(s0)
+	lw t0,-24(s0)
+	lw t1,-20(s0)
+	addi t0,t1,4
+	sw t0,-24(s0)
+	sw t1,-20(s0)
+	lw t0,-24(s0)
+	mv a0,t0
+	sw t0,-24(s0)
+	call malloc
+	lw t0,-28(s0)
+	mv t0,a0
+	sw t0,-28(s0)
+	lw t0,-12(s0)
+	lw t1,-28(s0)
+	sw t0,0(t1)
+	sw t0,-12(s0)
+	sw t1,-28(s0)
+	lw t0,-32(s0)
+	lw t1,-28(s0)
+	addi t0,t1,4
+	sw t0,-32(s0)
+	sw t1,-28(s0)
+	lw t0,-32(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	sw t0,0(t2)
+	sw t0,-32(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	lw t0,-40(s0)
+	li t0,0
+	sw t0,-40(s0)
+	lw t0,-40(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	sw t0,0(t2)
+	sw t0,-40(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+LBB64:
+	lw t0,-48(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	lw t3,-12(s0)
+	slt t0,t2,t3
+	sw t0,-48(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	sw t3,-12(s0)
+	lw t0,-48(s0)
+	bnez t0,LBB65
+	j LBB71
+	sw t0,-48(s0)
+LBB65:
+	lw t0,-52(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	slli t0,t2,2
+	sw t0,-52(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-56(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-52(s0)
+	add t0,t2,t3
+	sw t0,-56(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-52(s0)
+	lw t0,-60(s0)
+	li t0,4
+	sw t0,-60(s0)
+	lw t0,-64(s0)
+	lw t1,-12(s0)
+	lw t2,-60(s0)
+	mul t0,t1,t2
+	sw t0,-64(s0)
+	sw t1,-12(s0)
+	sw t2,-60(s0)
 	lw t0,-68(s0)
 	lw t1,-64(s0)
-	lw t0,0(t1)
+	addi t0,t1,4
 	sw t0,-68(s0)
 	sw t1,-64(s0)
-	j LBB64
-LBB64:
-	j LBB65
-LBB65:
 	lw t0,-68(s0)
 	mv a0,t0
 	sw t0,-68(s0)
-	lw s0,120(sp)
-	lw ra,124(sp)
-	addi sp,sp,128
+	call malloc
+	lw t0,-72(s0)
+	mv t0,a0
+	sw t0,-72(s0)
+	lw t0,-12(s0)
+	lw t1,-72(s0)
+	sw t0,0(t1)
+	sw t0,-12(s0)
+	sw t1,-72(s0)
+	lw t0,-76(s0)
+	lw t1,-72(s0)
+	addi t0,t1,4
+	sw t0,-76(s0)
+	sw t1,-72(s0)
+	lw t0,-76(s0)
+	lw t1,-56(s0)
+	sw t0,0(t1)
+	sw t0,-76(s0)
+	sw t1,-56(s0)
+	lw t0,-80(s0)
+	li t0,0
+	sw t0,-80(s0)
+	lw t0,-80(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	sw t0,0(t2)
+	sw t0,-80(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+LBB66:
+	lw t0,-88(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	lw t3,-12(s0)
+	slt t0,t2,t3
+	sw t0,-88(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	sw t3,-12(s0)
+	lw t0,-88(s0)
+	bnez t0,LBB67
+	j LBB69
+	sw t0,-88(s0)
+LBB67:
+	lw t0,-92(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	slli t0,t2,2
+	sw t0,-92(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-96(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-92(s0)
+	add t0,t2,t3
+	sw t0,-96(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-92(s0)
+	lw t0,-100(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	slli t0,t2,2
+	sw t0,-100(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lw t0,-104(s0)
+	lw t1,-96(s0)
+	lw t2,-100(s0)
+	add t0,t1,t2
+	sw t0,-104(s0)
+	sw t1,-96(s0)
+	sw t2,-100(s0)
+	lw t0,-108(s0)
+	li t0,0
+	sw t0,-108(s0)
+	lw t0,-108(s0)
+	lw t1,-104(s0)
+	sw t0,0(t1)
+	sw t0,-108(s0)
+	sw t1,-104(s0)
+	j LBB68
+LBB68:
+	lw t0,-112(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	addi t0,t2,1
+	sw t0,-112(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lw t0,-112(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	sw t0,0(t2)
+	sw t0,-112(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lw t0,-112(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	sw t0,0(t2)
+	sw t0,-112(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	j LBB66
+LBB69:
+	j LBB70
+LBB70:
+	lw t0,-116(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	addi t0,t2,1
+	sw t0,-116(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-116(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	sw t0,0(t2)
+	sw t0,-116(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-116(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	sw t0,0(t2)
+	sw t0,-116(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	j LBB64
+LBB71:
+	j LBB73
+LBB73:
+	lw t0,-120(s0)
+	mv a0,t0
+	sw t0,-120(s0)
+	lw s0,184(sp)
+	lw ra,188(sp)
+	addi sp,sp,192
+	ret
+# end function : origin
+	.globl	addList					# start function : addList
+	.p2align	2
+addList:
+#LBB74:
+	addi sp,sp,-192
+	sw ra,188(sp)
+	sw s0,184(sp)
+	addi s0,sp,192
+	lw t0,-12(s0)
+	mv t0,a0
+	sw t0,-12(s0)
+	lw t0,-16(s0)
+	mv t0,a1
+	sw t0,-16(s0)
+	lw t0,-20(s0)
+	lw t1,-12(s0)
+	slli t0,t1,2
+	sw t0,-20(s0)
+	sw t1,-12(s0)
+	lw t0,-24(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-20(s0)
+	add t0,t2,t3
+	sw t0,-24(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-20(s0)
+	lw t0,-28(s0)
+	lw t1,-16(s0)
+	slli t0,t1,2
+	sw t0,-28(s0)
+	sw t1,-16(s0)
+	lw t0,-32(s0)
+	lw t1,-24(s0)
+	lw t2,-28(s0)
+	add t0,t1,t2
+	sw t0,-32(s0)
+	sw t1,-24(s0)
+	sw t2,-28(s0)
+	lw t0,-36(s0)
+	li t0,-1
+	sw t0,-36(s0)
+	lw t0,-40(s0)
+	lw t1,-32(s0)
+	lw t2,-36(s0)
+	xor t0,t1,t2
+	sw t0,-40(s0)
+	sw t1,-32(s0)
+	sw t2,-36(s0)
+	lw t0,-44(s0)
+	lw t1,-40(s0)
+	seqz t0,t1
+	sw t0,-44(s0)
+	sw t1,-40(s0)
+	lw t0,-44(s0)
+	bnez t0,LBB75
+	j LBB80
+	sw t0,-44(s0)
+LBB75:
+	lw t0,-48(s0)
+	lui t1,%hi(tail)
+	lw t2,%lo(tail)(t1)
+	addi t0,t2,1
+	sw t0,-48(s0)
+	lui t1,%hi(tail)
+	sw t2,%lo(tail)(t1)
+	lw t0,-48(s0)
+	lui t1,%hi(tail)
+	lw t2,%lo(tail)(t1)
+	sw t0,0(t2)
+	sw t0,-48(s0)
+	lui t1,%hi(tail)
+	sw t2,%lo(tail)(t1)
+	lw t0,-56(s0)
+	lui t1,%hi(tail)
+	lw t2,%lo(tail)(t1)
+	slli t0,t2,2
+	sw t0,-56(s0)
+	lui t1,%hi(tail)
+	sw t2,%lo(tail)(t1)
+	lw t0,-60(s0)
+	lui t1,%hi(xlist)
+	lw t2,%lo(xlist)(t1)
+	lw t3,-56(s0)
+	add t0,t2,t3
+	sw t0,-60(s0)
+	lui t1,%hi(xlist)
+	sw t2,%lo(xlist)(t1)
+	sw t3,-56(s0)
+	lw t0,-12(s0)
+	lw t1,-60(s0)
+	sw t0,0(t1)
+	sw t0,-12(s0)
+	sw t1,-60(s0)
+	lw t0,-64(s0)
+	lui t1,%hi(tail)
+	lw t2,%lo(tail)(t1)
+	slli t0,t2,2
+	sw t0,-64(s0)
+	lui t1,%hi(tail)
+	sw t2,%lo(tail)(t1)
+	lw t0,-68(s0)
+	lui t1,%hi(ylist)
+	lw t2,%lo(ylist)(t1)
+	lw t3,-64(s0)
+	add t0,t2,t3
+	sw t0,-68(s0)
+	lui t1,%hi(ylist)
+	sw t2,%lo(ylist)(t1)
+	sw t3,-64(s0)
+	lw t0,-16(s0)
+	lw t1,-68(s0)
+	sw t0,0(t1)
+	sw t0,-16(s0)
+	sw t1,-68(s0)
+	lw t0,-72(s0)
+	lw t1,-12(s0)
+	slli t0,t1,2
+	sw t0,-72(s0)
+	sw t1,-12(s0)
+	lw t0,-76(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-72(s0)
+	add t0,t2,t3
+	sw t0,-76(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-72(s0)
+	lw t0,-80(s0)
+	lw t1,-16(s0)
+	slli t0,t1,2
+	sw t0,-80(s0)
+	sw t1,-16(s0)
+	lw t0,-84(s0)
+	lw t1,-76(s0)
+	lw t2,-80(s0)
+	add t0,t1,t2
+	sw t0,-84(s0)
+	sw t1,-76(s0)
+	sw t2,-80(s0)
+	lw t0,-88(s0)
+	lui t1,%hi(now)
+	lw t2,%lo(now)(t1)
+	addi t0,t2,1
+	sw t0,-88(s0)
+	lui t1,%hi(now)
+	sw t2,%lo(now)(t1)
+	lw t0,-88(s0)
+	lw t1,-84(s0)
+	sw t0,0(t1)
+	sw t0,-88(s0)
+	sw t1,-84(s0)
+	lw t0,-96(s0)
+	lw t1,-12(s0)
+	lui t2,%hi(targetx)
+	lw t3,%lo(targetx)(t2)
+	xor t0,t1,t3
+	sw t0,-96(s0)
+	sw t1,-12(s0)
+	lui t2,%hi(targetx)
+	sw t3,%lo(targetx)(t2)
+	lw t0,-104(s0)
+	lw t1,-96(s0)
+	seqz t0,t1
+	sw t0,-104(s0)
+	sw t1,-96(s0)
+	lw t0,-104(s0)
+	bnez t0,LBB76
+	j LBB77
+	sw t0,-104(s0)
+LBB76:
+	lw t0,-108(s0)
+	lw t1,-16(s0)
+	lui t2,%hi(targety)
+	lw t3,%lo(targety)(t2)
+	xor t0,t1,t3
+	sw t0,-108(s0)
+	sw t1,-16(s0)
+	lui t2,%hi(targety)
+	sw t3,%lo(targety)(t2)
+	lw t0,-116(s0)
+	lw t1,-108(s0)
+	seqz t0,t1
+	sw t0,-116(s0)
+	sw t1,-108(s0)
+	j LBB77
+LBB77:
+	j LBB78
+LBB78:
+	lw t0,-120(s0)
+	li t0,1
+	sw t0,-120(s0)
+	lw t0,-120(s0)
+	lui t1,%hi(ok)
+	lw t2,%lo(ok)(t1)
+	sw t0,0(t2)
+	sw t0,-120(s0)
+	lui t1,%hi(ok)
+	sw t2,%lo(ok)(t1)
+	j LBB79
+LBB79:
+	j LBB80
+LBB80:
+	j LBB82
+LBB82:
+	lw t0,-128(s0)
+	mv a0,t0
+	sw t0,-128(s0)
+	lw s0,184(sp)
+	lw ra,188(sp)
+	addi sp,sp,192
+	ret
+# end function : addList
+	.globl	main					# start function : main
+	.p2align	2
+main:
+#LBB83:
+	addi sp,sp,-368
+	sw ra,364(sp)
+	sw s0,360(sp)
+	addi s0,sp,368
+	call __init__
+	lw t0,-12(s0)
+	li t0,106
+	sw t0,-12(s0)
+	lw t0,-12(s0)
+	mv a0,t0
+	sw t0,-12(s0)
+	call origin
+	lw t0,-16(s0)
+	mv t0,a0
+	sw t0,-16(s0)
+	call getInt
+	lw t0,-20(s0)
+	mv t0,a0
+	sw t0,-20(s0)
+	lw t0,-20(s0)
+	lui t1,%hi(N)
+	lw t2,%lo(N)(t1)
+	sw t0,0(t2)
+	sw t0,-20(s0)
+	lui t1,%hi(N)
+	sw t2,%lo(N)(t1)
+	lw t0,-28(s0)
+	lui t1,%hi(N)
+	lw t2,%lo(N)(t1)
+	addi t0,t2,-1
+	sw t0,-28(s0)
+	lui t1,%hi(N)
+	sw t2,%lo(N)(t1)
+	lw t0,-28(s0)
+	lui t1,%hi(targetx)
+	lw t2,%lo(targetx)(t1)
+	sw t0,0(t2)
+	sw t0,-28(s0)
+	lui t1,%hi(targetx)
+	sw t2,%lo(targetx)(t1)
+	lw t0,-32(s0)
+	lui t1,%hi(N)
+	lw t2,%lo(N)(t1)
+	addi t0,t2,-1
+	sw t0,-32(s0)
+	lui t1,%hi(N)
+	sw t2,%lo(N)(t1)
+	lw t0,-32(s0)
+	lui t1,%hi(targety)
+	lw t2,%lo(targety)(t1)
+	sw t0,0(t2)
+	sw t0,-32(s0)
+	lui t1,%hi(targety)
+	sw t2,%lo(targety)(t1)
+	lw t0,-36(s0)
+	li t0,0
+	sw t0,-36(s0)
+	lw t0,-36(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	sw t0,0(t2)
+	sw t0,-36(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+LBB84:
+	lw t0,-40(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	lui t3,%hi(N)
+	lw t4,%lo(N)(t3)
+	slt t0,t2,t4
+	sw t0,-40(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lui t3,%hi(N)
+	sw t4,%lo(N)(t3)
+	lw t0,-40(s0)
+	bnez t0,LBB85
+	j LBB91
+	sw t0,-40(s0)
+LBB85:
+	lw t0,-44(s0)
+	li t0,0
+	sw t0,-44(s0)
+	lw t0,-44(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	sw t0,0(t2)
+	sw t0,-44(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+LBB86:
+	lw t0,-48(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	lui t3,%hi(N)
+	lw t4,%lo(N)(t3)
+	slt t0,t2,t4
+	sw t0,-48(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lui t3,%hi(N)
+	sw t4,%lo(N)(t3)
+	lw t0,-48(s0)
+	bnez t0,LBB87
+	j LBB89
+	sw t0,-48(s0)
+LBB87:
+	lw t0,-52(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	slli t0,t2,2
+	sw t0,-52(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-56(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-52(s0)
+	add t0,t2,t3
+	sw t0,-56(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-52(s0)
+	lw t0,-60(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	slli t0,t2,2
+	sw t0,-60(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lw t0,-64(s0)
+	lw t1,-56(s0)
+	lw t2,-60(s0)
+	add t0,t1,t2
+	sw t0,-64(s0)
+	sw t1,-56(s0)
+	sw t2,-60(s0)
+	lw t0,-68(s0)
+	li t0,-1
+	sw t0,-68(s0)
+	lw t0,-68(s0)
+	lw t1,-64(s0)
+	sw t0,0(t1)
+	sw t0,-68(s0)
+	sw t1,-64(s0)
+	j LBB88
+LBB88:
+	lw t0,-72(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	addi t0,t2,1
+	sw t0,-72(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	lw t0,-72(s0)
+	lui t1,%hi(j)
+	lw t2,%lo(j)(t1)
+	sw t0,0(t2)
+	sw t0,-72(s0)
+	lui t1,%hi(j)
+	sw t2,%lo(j)(t1)
+	j LBB86
+LBB89:
+	j LBB90
+LBB90:
+	lw t0,-76(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	addi t0,t2,1
+	sw t0,-76(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	lw t0,-76(s0)
+	lui t1,%hi(i)
+	lw t2,%lo(i)(t1)
+	sw t0,0(t2)
+	sw t0,-76(s0)
+	lui t1,%hi(i)
+	sw t2,%lo(i)(t1)
+	j LBB84
+LBB92:
+	lw t0,-80(s0)
+	lui t1,%hi(tail)
+	lw t2,%lo(tail)(t1)
+	lui t3,%hi(head)
+	lw t4,%lo(head)(t3)
+	slt t0,t2,t4
+	sw t0,-80(s0)
+	lui t1,%hi(tail)
+	sw t2,%lo(tail)(t1)
+	lui t3,%hi(head)
+	sw t4,%lo(head)(t3)
+	lw t0,-88(s0)
+	lw t1,-80(s0)
+	xori t0,t1,1
+	sw t0,-88(s0)
+	sw t1,-80(s0)
+	lw t0,-88(s0)
+	bnez t0,LBB93
+	j LBB96
+	sw t0,-88(s0)
+LBB93:
+	lw t0,-92(s0)
+	lui t1,%hi(head)
+	lw t2,%lo(head)(t1)
+	slli t0,t2,2
+	sw t0,-92(s0)
+	lui t1,%hi(head)
+	sw t2,%lo(head)(t1)
+	lw t0,-96(s0)
+	lui t1,%hi(xlist)
+	lw t2,%lo(xlist)(t1)
+	lw t3,-92(s0)
+	add t0,t2,t3
+	sw t0,-96(s0)
+	lui t1,%hi(xlist)
+	sw t2,%lo(xlist)(t1)
+	sw t3,-92(s0)
+	lw t0,-100(s0)
+	lw t1,-96(s0)
+	lw t0,0(t1)
+	sw t0,-100(s0)
+	sw t1,-96(s0)
+	lw t0,-100(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	sw t0,0(t2)
+	sw t0,-100(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-108(s0)
+	lui t1,%hi(head)
+	lw t2,%lo(head)(t1)
+	slli t0,t2,2
+	sw t0,-108(s0)
+	lui t1,%hi(head)
+	sw t2,%lo(head)(t1)
+	lw t0,-112(s0)
+	lui t1,%hi(ylist)
+	lw t2,%lo(ylist)(t1)
+	lw t3,-108(s0)
+	add t0,t2,t3
+	sw t0,-112(s0)
+	lui t1,%hi(ylist)
+	sw t2,%lo(ylist)(t1)
+	sw t3,-108(s0)
+	lw t0,-116(s0)
+	lw t1,-112(s0)
+	lw t0,0(t1)
+	sw t0,-116(s0)
+	sw t1,-112(s0)
+	lw t0,-116(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	sw t0,0(t2)
+	sw t0,-116(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-124(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	slli t0,t2,2
+	sw t0,-124(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-128(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-124(s0)
+	add t0,t2,t3
+	sw t0,-128(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-124(s0)
+	lw t0,-132(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	slli t0,t2,2
+	sw t0,-132(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-136(s0)
+	lw t1,-128(s0)
+	lw t2,-132(s0)
+	add t0,t1,t2
+	sw t0,-136(s0)
+	sw t1,-128(s0)
+	sw t2,-132(s0)
+	lw t0,-140(s0)
+	lw t1,-136(s0)
+	lw t0,0(t1)
+	sw t0,-140(s0)
+	sw t1,-136(s0)
+	lw t0,-140(s0)
+	lui t1,%hi(now)
+	lw t2,%lo(now)(t1)
+	sw t0,0(t2)
+	sw t0,-140(s0)
+	lui t1,%hi(now)
+	sw t2,%lo(now)(t1)
+	lw t0,-144(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,-1
+	sw t0,-144(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-148(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,-2
+	sw t0,-148(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-144(s0)
+	mv a0,t0
+	sw t0,-144(s0)
+	lw t0,-148(s0)
+	mv a1,t0
+	sw t0,-148(s0)
+	call addList
+	lw t0,-152(s0)
+	mv t0,a0
+	sw t0,-152(s0)
+	lw t0,-156(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,-1
+	sw t0,-156(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-160(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,2
+	sw t0,-160(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-156(s0)
+	mv a0,t0
+	sw t0,-156(s0)
+	lw t0,-160(s0)
+	mv a1,t0
+	sw t0,-160(s0)
+	call addList
+	lw t0,-164(s0)
+	mv t0,a0
+	sw t0,-164(s0)
+	lw t0,-168(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,1
+	sw t0,-168(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-172(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,-2
+	sw t0,-172(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-168(s0)
+	mv a0,t0
+	sw t0,-168(s0)
+	lw t0,-172(s0)
+	mv a1,t0
+	sw t0,-172(s0)
+	call addList
+	lw t0,-176(s0)
+	mv t0,a0
+	sw t0,-176(s0)
+	lw t0,-180(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,1
+	sw t0,-180(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-184(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,2
+	sw t0,-184(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-180(s0)
+	mv a0,t0
+	sw t0,-180(s0)
+	lw t0,-184(s0)
+	mv a1,t0
+	sw t0,-184(s0)
+	call addList
+	lw t0,-188(s0)
+	mv t0,a0
+	sw t0,-188(s0)
+	lw t0,-192(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,-2
+	sw t0,-192(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-196(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,-1
+	sw t0,-196(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-192(s0)
+	mv a0,t0
+	sw t0,-192(s0)
+	lw t0,-196(s0)
+	mv a1,t0
+	sw t0,-196(s0)
+	call addList
+	lw t0,-200(s0)
+	mv t0,a0
+	sw t0,-200(s0)
+	lw t0,-204(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,-2
+	sw t0,-204(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-208(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,1
+	sw t0,-208(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-204(s0)
+	mv a0,t0
+	sw t0,-204(s0)
+	lw t0,-208(s0)
+	mv a1,t0
+	sw t0,-208(s0)
+	call addList
+	lw t0,-212(s0)
+	mv t0,a0
+	sw t0,-212(s0)
+	lw t0,-216(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,2
+	sw t0,-216(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-220(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,-1
+	sw t0,-220(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-216(s0)
+	mv a0,t0
+	sw t0,-216(s0)
+	lw t0,-220(s0)
+	mv a1,t0
+	sw t0,-220(s0)
+	call addList
+	lw t0,-224(s0)
+	mv t0,a0
+	sw t0,-224(s0)
+	lw t0,-228(s0)
+	lui t1,%hi(x)
+	lw t2,%lo(x)(t1)
+	addi t0,t2,2
+	sw t0,-228(s0)
+	lui t1,%hi(x)
+	sw t2,%lo(x)(t1)
+	lw t0,-232(s0)
+	lui t1,%hi(y)
+	lw t2,%lo(y)(t1)
+	addi t0,t2,1
+	sw t0,-232(s0)
+	lui t1,%hi(y)
+	sw t2,%lo(y)(t1)
+	lw t0,-228(s0)
+	mv a0,t0
+	sw t0,-228(s0)
+	lw t0,-232(s0)
+	mv a1,t0
+	sw t0,-232(s0)
+	call addList
+	lw t0,-236(s0)
+	mv t0,a0
+	sw t0,-236(s0)
+	lw t0,-240(s0)
+	li t0,1
+	sw t0,-240(s0)
+	lw t0,-244(s0)
+	lui t1,%hi(ok)
+	lw t2,%lo(ok)(t1)
+	lw t3,-240(s0)
+	xor t0,t2,t3
+	sw t0,-244(s0)
+	lui t1,%hi(ok)
+	sw t2,%lo(ok)(t1)
+	sw t3,-240(s0)
+	lw t0,-248(s0)
+	lw t1,-244(s0)
+	seqz t0,t1
+	sw t0,-248(s0)
+	sw t1,-244(s0)
+	lw t0,-248(s0)
+	bnez t0,LBB94
+	j LBB95
+	sw t0,-248(s0)
+LBB94:
+	j LBB96
+	j LBB95
+LBB95:
+	lw t0,-252(s0)
+	lui t1,%hi(head)
+	lw t2,%lo(head)(t1)
+	addi t0,t2,1
+	sw t0,-252(s0)
+	lui t1,%hi(head)
+	sw t2,%lo(head)(t1)
+	lw t0,-252(s0)
+	lui t1,%hi(head)
+	lw t2,%lo(head)(t1)
+	sw t0,0(t2)
+	sw t0,-252(s0)
+	lui t1,%hi(head)
+	sw t2,%lo(head)(t1)
+	j LBB92
+LBB96:
+	lw t0,-256(s0)
+	li t0,1
+	sw t0,-256(s0)
+	lw t0,-260(s0)
+	lui t1,%hi(ok)
+	lw t2,%lo(ok)(t1)
+	lw t3,-256(s0)
+	xor t0,t2,t3
+	sw t0,-260(s0)
+	lui t1,%hi(ok)
+	sw t2,%lo(ok)(t1)
+	sw t3,-256(s0)
+	lw t0,-264(s0)
+	lw t1,-260(s0)
+	seqz t0,t1
+	sw t0,-264(s0)
+	sw t1,-260(s0)
+	lw t0,-264(s0)
+	bnez t0,LBB97
+	j LBB98
+	sw t0,-264(s0)
+LBB97:
+	lw t0,-268(s0)
+	lui t1,%hi(targetx)
+	lw t2,%lo(targetx)(t1)
+	slli t0,t2,2
+	sw t0,-268(s0)
+	lui t1,%hi(targetx)
+	sw t2,%lo(targetx)(t1)
+	lw t0,-272(s0)
+	lui t1,%hi(step)
+	lw t2,%lo(step)(t1)
+	lw t3,-268(s0)
+	add t0,t2,t3
+	sw t0,-272(s0)
+	lui t1,%hi(step)
+	sw t2,%lo(step)(t1)
+	sw t3,-268(s0)
+	lw t0,-276(s0)
+	lui t1,%hi(targety)
+	lw t2,%lo(targety)(t1)
+	slli t0,t2,2
+	sw t0,-276(s0)
+	lui t1,%hi(targety)
+	sw t2,%lo(targety)(t1)
+	lw t0,-280(s0)
+	lw t1,-272(s0)
+	lw t2,-276(s0)
+	add t0,t1,t2
+	sw t0,-280(s0)
+	sw t1,-272(s0)
+	sw t2,-276(s0)
+	lw t0,-280(s0)
+	mv a0,t0
+	sw t0,-280(s0)
+	call toString
+	lw t0,-284(s0)
+	mv t0,a0
+	sw t0,-284(s0)
+	lw t0,-284(s0)
+	mv a0,t0
+	sw t0,-284(s0)
+	call println
+	j LBB99
+LBB98:
+	lw t0,-288(s0)
+	lui t1,%hi(const_string_no0)
+	lw t2,%lo(const_string_no0)(t1)
+	mv t0,t2
+	sw t0,-288(s0)
+	lui t1,%hi(const_string_no0)
+	sw t2,%lo(const_string_no0)(t1)
+	lw t0,-288(s0)
+	mv a0,t0
+	sw t0,-288(s0)
+	call print
+	j LBB99
+LBB99:
+	lw t0,-296(s0)
+	li t0,0
+	sw t0,-296(s0)
+	lw t0,-300(s0)
+	lw t1,-296(s0)
+	mv t0,t1
+	sw t0,-300(s0)
+	sw t1,-296(s0)
+	j LBB100
+LBB100:
+	j LBB101
+LBB101:
+	lw t0,-300(s0)
+	mv a0,t0
+	sw t0,-300(s0)
+	lw s0,360(sp)
+	lw ra,364(sp)
+	addi sp,sp,368
 	ret
 # end function : main
 .section	.sdata,"aw",@progbits
+	.p2align	2
+N:
+	.word	0
+
+	.p2align	2
+head:
+	.word	0
+
+	.p2align	2
+startx:
+	.word	0
+
+	.p2align	2
+starty:
+	.word	0
+
+	.p2align	2
+targetx:
+	.word	0
+
+	.p2align	2
+targety:
+	.word	0
+
+	.p2align	2
+x:
+	.word	0
+
+	.p2align	2
+y:
+	.word	0
+
+	.p2align	2
+xlist:
+	.word	0
+
+	.p2align	2
+ylist:
+	.word	0
+
+	.p2align	2
+tail:
+	.word	0
+
+	.p2align	2
+ok:
+	.word	0
+
+	.p2align	2
+now:
+	.word	0
+
+	.p2align	2
+step:
+	.word	0
+
+	.p2align	2
+i:
+	.word	0
+
+	.p2align	2
+j:
+	.word	0
+
+const_string_no0:
+	.asciz	"no solution!\n "
+
