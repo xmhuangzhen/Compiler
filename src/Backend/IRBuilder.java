@@ -330,11 +330,9 @@ public class IRBuilder implements ASTVisitor {
             //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
            // currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
              //       currentFunction.thisReturnValue, it.value.ExprResult));
-            if(it.value.ExprResult != null)
-            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
-                    currentFunction.thisReturnValue,it.value.ExprResult));
-            else {
-                throw new RuntimeException();
+            if(it.value.ExprResult != null) {
+                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                        currentFunction.thisReturnValue, it.value.ExprResult));
             }
         }
 
@@ -1053,6 +1051,7 @@ public class IRBuilder implements ASTVisitor {
                 tmpGetElementPtr.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, -1));
                 currentBasicBlock.addBasicBlockInst(tmpGetElementPtr);
                 it.ExprResult = tmpResult;
+                it.ExprResult.NeedPtr = true;
 
 
             } else {
