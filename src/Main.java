@@ -43,7 +43,7 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-//            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);

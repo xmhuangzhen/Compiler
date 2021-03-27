@@ -34,7 +34,6 @@ public interface ASTVisitor {
 
     void visit(assignExprNode it);
     void visit(binaryExprNode it);
-    void visit(constExprNode it);
     void visit(NewExprNode it);
     void visit(ThisExprNode it);
     void visit(UnaryExprNode it);

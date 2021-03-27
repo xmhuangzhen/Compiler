@@ -276,7 +276,7 @@ public class ASTBuilder extends MxStarBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitNewtypearray(MxStarParser.NewtypearrayContext ctx) {
         TypeNode typeNode = (TypeNode) visit(ctx.nonarraytypedef());
-        NewExprNode node = new NewExprNode(ctx.expression().toString(),typeNode,new position(ctx));
+        NewExprNode node = new NewExprNode(ctx.getText(),typeNode,new position(ctx));
         int dimension = 0;
         for(var ch : ctx.children){
             if(ch.getText().equals("[")) dimension++;

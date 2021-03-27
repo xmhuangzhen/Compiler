@@ -1,4 +1,9 @@
-int[] a = new int [4];
-int main(){
-    return a.size();
+
+int main()
+{
+int[] a = new int[4];
+	a[0] = 100;
+//	a[0] = 1;
+//	println(toString(a[0]));
+    return a[0];
 }

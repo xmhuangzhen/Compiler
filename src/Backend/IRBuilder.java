@@ -16,6 +16,7 @@ import IR.Operand.*;
 import IR.TypeSystem.*;
 import Util.classScope;
 import Util.globalScope;
+import org.antlr.v4.runtime.atn.ATN;
 
 import java.sql.Struct;
 import java.util.Stack;
@@ -318,10 +319,12 @@ public class IRBuilder implements ASTVisitor {
     public void visit(returnStmtNode it) {
         if (it.value != null) {
             it.value.accept(this);
-            //Register tmpReg = new Register(currentModule.getIRType(it.value.ExprType), "value");
-            //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
-            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
-                    it.value.ExprResult, currentFunction.thisReturnValue));
+           // System.out.println(it.value.ExprResult.toString());
+            Register tmpReg = new Register(currentModule.getIRType(it.value.ExprType), "value"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpReg,it.value.ExprResult));
+            //currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+              //      it.value.ExprResult, currentFunction.thisReturnValue));
+            currentFunction.thisReturnValue = it.value.ExprResult;
         }
 
         //go to the basic block before ret instruction
@@ -510,6 +513,9 @@ public class IRBuilder implements ASTVisitor {
         it.lhs.accept(this);
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
+
+//        System.out.println(it.rhs.ExprResult.toString());
+
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.rhs.ExprResult, it.lhs.ExprResult));
     }
@@ -765,10 +771,6 @@ public class IRBuilder implements ASTVisitor {
         it.ExprResult = tmpResult;
     }
 
-    @Override
-    public void visit(constExprNode it) {
-    }
-
     public Register NewArrayMalloc(int cur_dim, IRTypeSystem cur_type, NewExprNode it) {
         //(1) malloc cur_dim
         Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
@@ -890,6 +892,8 @@ public class IRBuilder implements ASTVisitor {
                 it.exprDim.get(i).accept(this);
             Register tmpNewArrayResult = NewArrayMalloc(0, tmpIRType, it);
             it.ExprResult = tmpNewArrayResult;
+     //       System.out.println(it.ExprText.toString());
+//            System.out.println(tmpNewArrayResult.RegisterName);
         } else if (it.ExprType instanceof ClassTypeNode) {
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i8)),
@@ -1172,7 +1176,11 @@ public class IRBuilder implements ASTVisitor {
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
-            it.ExprResult = tmpVarAddr;
+            if(!(tmpVarAddr.thisType instanceof PointerType)) throw new RuntimeException();
+            IRTypeSystem tmpType = ((PointerType) tmpVarAddr.thisType).baseType;
+            Register tmpResult = new Register(tmpType,"Id_Load"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpResult,tmpVarAddr));
+            it.ExprResult = tmpResult;
         }
         if (it.ExprResult == null && currentClassName != null) { //class member
             StructureType tmpClassType = currentModule.IRClassTable.get(currentClassName);
@@ -1192,6 +1200,7 @@ public class IRBuilder implements ASTVisitor {
                 getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock,
                         tmpGEPptr, tmpGEPResult);
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, 0));
+//                tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,0));
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, tmpMemberIndex));
                 currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
 
@@ -1241,10 +1250,14 @@ public class IRBuilder implements ASTVisitor {
         it.arr.accept(this);
         it.index.accept(this);
 
+//        System.out.println(it.arr.ExprResult.thisType.toString());
         Register tmpResult = new Register(it.arr.ExprResult.thisType, "getElementPtr" + (RegNum++));
         getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock, it.arr.ExprResult, tmpResult);
+    //    tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,0));
         tmpgetElementPtrInst.GetElementPtrIdx.add(it.index.ExprResult);
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
+
+//        System.out.println(it.ExprText);
 
         it.ExprResult = tmpResult;
     }
