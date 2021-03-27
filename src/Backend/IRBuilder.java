@@ -791,6 +791,7 @@ public class IRBuilder implements ASTVisitor {
         //(1) malloc cur_dim
         Register tmpCallResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
                 "call_malloc_func" + (RegNum++));
+        tmpCallResult.NeedPtr = true;
         IRFunction tmpCallFunc = currentModule.IRFunctionTable.get("malloc");
         callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpCallResult, tmpCallFunc);
 
@@ -808,6 +809,7 @@ public class IRBuilder implements ASTVisitor {
 
         Register ArrayTrueAddr = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
                 "call_array_head"+(RegNum++));
+        ArrayTrueAddr.NeedPtr = true;
         getElementPtrInstruction tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,tmpCallResult,ArrayTrueAddr);
         tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
         currentBasicBlock.addBasicBlockInst(tmpGEPInst);
@@ -819,9 +821,11 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock DestBlock = new IRBasicBlock(currentFunction, "dest_block" + (BlockNum++));
 
             Register NowReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"Subarray_start_Reg"+(RegNum++));
+            NowReg.NeedPtr = true;
             currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,NowReg,ArrayTrueAddr));
 
             Register EndReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"SubArray_end_reg"+(RegNum++));
+            EndReg.NeedPtr = true;
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,ArrayTrueAddr,EndReg);
             tmpGEPInst.GetElementPtrIdx.add(it.exprDim.get(cur_dim).ExprResult);
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
@@ -838,9 +842,12 @@ public class IRBuilder implements ASTVisitor {
 
             currentBasicBlock = BodyBlock;
             currentFunction.addFunctionBasicBlock(BodyBlock);
-            /*Register tmpReg = */NewArrayMalloc(cur_dim+1,cur_type,it);
-            //currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,tmpReg,NowReg));
-            Register tmpReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"Incr_reg"+(RegNum++));
+            Register tmpReg = NewArrayMalloc(cur_dim+1,cur_type,it);
+            tmpReg.NeedPtr = true;
+            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,tmpReg,NowReg));
+
+            tmpReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),"Incr_reg"+(RegNum++));
+            tmpReg.NeedPtr = true;
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,NowReg,tmpReg);
             tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
@@ -941,8 +948,10 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(ThisExprNode it) {
         IRTypeSystem CurrentClassType = currentModule.getIRType(it.ExprType);
-        if (CurrentClassType instanceof PointerType)
+        if (CurrentClassType instanceof PointerType) {
             it.ExprResult = new Register(CurrentClassType, "this" + (RegNum++));
+            it.ExprResult.NeedPtr = true;
+        }
         else
             throw new RuntimeException();
     }
@@ -1047,11 +1056,11 @@ public class IRBuilder implements ASTVisitor {
 
                 //get the element ptr
                 Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "array_size" + (RegNum++));
+                tmpResult.NeedPtr = true;
                 getElementPtrInstruction tmpGetElementPtr = new getElementPtrInstruction(currentBasicBlock, tmpFuncResult, tmpResult);
                 tmpGetElementPtr.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, -1));
                 currentBasicBlock.addBasicBlockInst(tmpGetElementPtr);
                 it.ExprResult = tmpResult;
-                it.ExprResult.NeedPtr = true;
 
 
             } else {
@@ -1149,12 +1158,7 @@ public class IRBuilder implements ASTVisitor {
                 //(3) do the getElementPtr inst
                 String RegisterName = "memacc_result";
                 Register tmpResult = new Register(new PointerType(tmpMemberIRType), RegisterName + (RegNum++));
-/*                if(!(it.expr.ExprResult.thisType instanceof PointerType)){
-                    StringBuilder tmpString = new StringBuilder();
-                    tmpString.append(it.expr.ExprResult.thisType instanceof StructureType);
-                    throw new RuntimeException(tmpString.toString());
-                }
-  */
+                tmpResult.NeedPtr = true;
                 getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock, it.expr.ExprResult, tmpResult);
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, 0));
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, tmpMemberIndex));
@@ -1217,6 +1221,7 @@ public class IRBuilder implements ASTVisitor {
             if (tmpMemberIRType != null) {
                 Register tmpGEPptr = new Register(new PointerType(tmpClassType), "Id_GEP_ptr" + (RegNum++));
                 Register tmpGEPResult = new Register(new PointerType(tmpMemberIRType), "Id_GEP_" + (RegNum++));
+                tmpGEPResult.NeedPtr = true;
                 getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock,
                         tmpGEPptr, tmpGEPResult);
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, 0));
@@ -1270,11 +1275,11 @@ public class IRBuilder implements ASTVisitor {
         it.index.accept(this);
 
         Register tmpResult = new Register(it.arr.ExprResult.thisType, "getElementPtr" + (RegNum++));
+        tmpResult.NeedPtr = true;
         getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock, it.arr.ExprResult, tmpResult);
         tmpgetElementPtrInst.GetElementPtrIdx.add(it.index.ExprResult);
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
 
         it.ExprResult = tmpResult;
-        it.ExprResult.NeedPtr = true;
     }
 }
