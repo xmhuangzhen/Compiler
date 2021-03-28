@@ -1,46 +1,28 @@
 /*
 Test Package: Codegen
-Author: Maohao Jun
-Time: 2020-01-25
+Author: Pikachu
+Time: 2020-02-03
 Input:
 === input ===
+47
 === end ===
 Output:
 === output ===
-MR, the leading TA enjoys this work. XD
-Mars, the striking TA enjoys this work. XD
-Mars, the striking TA wants to give up!!!!!
+YES
 === end ===
 ExitCode: 0
 InstLimit: -1
-Origin Package: Codegen Pretest-542
+Origin Package: Codeforces 122A #61467904
 */
-
-
-class TA{
-	string state;
-	int anger;
-};
-int init_anger = 100;
-int work_anger = 10;
-void work(string st, TA ta)
-{
-	if (ta.anger <= 100) println(st + ", " + ta.state + " enjoys this work. XD");
-	else println(st + ", " + ta.state + " wants to give up!!!!!");
-	ta.anger = ta.anger + work_anger;
-}
+int n;
 int main()
 {
-	TA mr;
-	TA mars;
-	mr = new TA;
-	mr.state = "the leading TA";
-	mr.anger = 0;
-	mars = new TA;
-	mars.state = "the striking TA";
-	mars.anger = init_anger;
-	work("MR", mr);
-	work("Mars", mars);
-	work("Mars", mars);
-	return 0;
+    //int n;
+    //scanf("%d",&n);
+    n = getInt();
+    if((n%4==0)||(n%7==0)||(n%47==0)||(n%74==0)||(n%477==0))
+        print("YES");
+    else
+        print("NO");
+// printf((n%4==0)||(n%7==0)||(n%47==0)||(n%74==0)||(n%477==0) ? "YES" : "NO");
 }

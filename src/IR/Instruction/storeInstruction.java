@@ -24,8 +24,8 @@ public class storeInstruction extends IRInstruction{
                     + " " + StorePointer.toString();
         //    System.out.println(tmpString);
             return tmpString;
-        }
-        else throw new RuntimeException(StorePointer.thisType.toString()+","+StorePointer.toString());
+        }else return null;
+        //else throw new RuntimeException(StorePointer.thisType.toString()+","+StorePointer.toString());
     }
 
     public void accept(IRVisitor it){

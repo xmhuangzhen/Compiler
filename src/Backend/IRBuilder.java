@@ -733,7 +733,13 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock OrorDestBlock = new IRBasicBlock(currentFunction, "oror_dest_block" + (BlockNum++));
 
             it.lhs.accept(this);
-            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, it.lhs.ExprResult,
+            Register tmpCompareResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                    "lhs_compare_"+(RegNum++));
+            currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
+                    icmpInstruction.IcmpOperandENUM.eq,new IntegerType(IntegerType.IRBitWidth.i1),
+                    it.lhs.ExprResult,new IntegerConstant(IntegerType.IRBitWidth.i1,0),
+                    tmpCompareResult));
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, tmpCompareResult,
                     OrorBBlock, OrorDestBlock));
 
             currentBasicBlock = OrorBBlock;
