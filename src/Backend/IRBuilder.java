@@ -187,7 +187,6 @@ public class IRBuilder implements ASTVisitor {
 */
 
 //////////////////////////------------------------------------
-
             IdAddrMap.AddrMap.put(it.varname,tmpAddr);
             if(it.varexpr != null){
                 it.varexpr.accept(this);
@@ -208,8 +207,6 @@ public class IRBuilder implements ASTVisitor {
             tmp.accept(this);
         if (it.consDef != null)
             it.consDef.accept(this);
-       // System.out.println("Here-2-"+currentClassName);
-       // if(IdAddrMap == null) System.out.println("!!!"+currentClassName);
         IdAddrMap = IdAddrMap.ParentMap;
         currentClassName = null;
     }
@@ -488,28 +485,30 @@ public class IRBuilder implements ASTVisitor {
         IRBasicBlock WhileBodyBlock = new IRBasicBlock(currentFunction, "while_body_block" + (BlockNum++));
         IRBasicBlock WhileDestBlock = new IRBasicBlock(currentFunction, "while_dest_block" + (BlockNum++));
 
+        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
+                null,WhileCondBlock,null));
+
         //visit cond
         currentBasicBlock = WhileCondBlock;
-        IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
         currentFunction.addFunctionBasicBlock(WhileCondBlock);
         it.condExpr.accept(this);
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 it.condExpr.ExprResult, WhileBodyBlock, WhileDestBlock));
-        IdAddrMap = IdAddrMap.ParentMap;
 
         //visit body
         currentBasicBlock = WhileBodyBlock;
-        IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
         currentFunction.addFunctionBasicBlock(WhileBodyBlock);
-        StackForBreak.push(WhileDestBlock);
-        StackForContinue.push(WhileCondBlock);
-        if (it.stmt != null)
+        if (it.stmt != null) {
+            IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
+            StackForBreak.push(WhileDestBlock);
+            StackForContinue.push(WhileCondBlock);
             it.stmt.accept(this);
-        currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
-                null, WhileCondBlock, null));
-        StackForBreak.pop();
-        StackForContinue.pop();
-        IdAddrMap = IdAddrMap.ParentMap;
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
+                    null, WhileCondBlock, null));
+            StackForBreak.pop();
+            StackForContinue.pop();
+            IdAddrMap = IdAddrMap.ParentMap;
+        }
 
         currentBasicBlock = WhileDestBlock;
         currentFunction.addFunctionBasicBlock(WhileDestBlock);
@@ -780,7 +779,7 @@ public class IRBuilder implements ASTVisitor {
         Register tmpCallSize1 = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "call_size_1" + (RegNum++));
         Register tmpCallSize2 = new Register(new IntegerType(IntegerType.IRBitWidth.i32), "call_size_2" + (RegNum++));
         currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock, binaryOpInstruction.BinaryOperandENUM.mul,
-                it.exprDim.get(cur_dim).ExprResult, new IntegerConstant(IntegerType.IRBitWidth.i32, cur_type.getTypeSize()), tmpCallSize1));
+                it.exprDim.get(cur_dim).ExprResult, new IntegerConstant(IntegerType.IRBitWidth.i32, 4/*cur_type.getTypeSize()*/), tmpCallSize1));
         currentBasicBlock.addBasicBlockInst(new binaryOpInstruction(currentBasicBlock, binaryOpInstruction.BinaryOperandENUM.add,
                 tmpCallSize1, new IntegerConstant(IntegerType.IRBitWidth.i32, 4), tmpCallSize2));
 
@@ -1116,8 +1115,10 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(IdExprNode it) {
+  //      System.out.print(it.ExprText+":");
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
+//            System.out.print(IdAddrMap.AddrMap.containsKey(it.Identifier));
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
             /*if(tmpVarAddr instanceof Parameter){
                 System.out.println("HERE"+it.ExprText);
@@ -1174,6 +1175,7 @@ public class IRBuilder implements ASTVisitor {
                 it.ExprResult = tmpReg;
             }
         }
+//        System.out.println("");
 
     }
 
