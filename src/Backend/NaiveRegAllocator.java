@@ -73,7 +73,7 @@ public class NaiveRegAllocator {
                                 thisInst.replaceReg(tmpReg, (RISCVPhyReg) tmpStoreReg);
 
                             }
-                        //    System.out.print("["+tmpReg.toString()+","+tmpStoreReg.toString()+"]");
+                    //        System.out.println("["+tmpReg.toString()+","+tmpStoreReg.toString()+"]");
                         }
                        // System.out.println("");
 

@@ -76,6 +76,7 @@ public class RISCVModule {
         } else if (tmpIROperand instanceof Parameter || tmpIROperand instanceof Register) {
             if (VirtualRegMap.containsKey(tmpIROperand)) return VirtualRegMap.get(tmpIROperand);
             RISCVVirtualReg tmpRISCVRegister = new RISCVVirtualReg(VirtualRegCnt++);
+            //System.out.println(tmpIROperand.toString()+","+tmpRISCVRegister.RegisterName);
             VirtualRegMap.put(tmpIROperand, tmpRISCVRegister);
             return tmpRISCVRegister;
         } else

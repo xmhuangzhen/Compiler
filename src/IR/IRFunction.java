@@ -14,7 +14,6 @@ public class IRFunction {
     public FunctionType thisFunctionType;
     public String thisFunctionName;
     public boolean IsBuiltIn;
-    public Parameter ClassPtr;
 
     public ArrayList<IRBasicBlock> thisFunctionBasicBlocks;
     public ArrayList<Parameter> thisFunctionParameters;
