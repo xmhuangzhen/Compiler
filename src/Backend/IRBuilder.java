@@ -75,6 +75,11 @@ public class IRBuilder implements ASTVisitor {
                 String tmpFuncName = tmpClassDefNode.className + "." + tmpClassDefNode.className;
                 IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
                 if (tmpClassDefNode.consDef == null) tmpIRFunction.IsBuiltIn = true;
+                else {
+                    Parameter tmpClassPtr = new Parameter(tmpThisIRType, "this");
+                    tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
+                    tmpIRFunction.ClassPtr = tmpClassPtr;
+                }
                 currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
 
                 for (var tmpFunc : tmpClassDefNode.funcDefs) {
@@ -295,6 +300,9 @@ public class IRBuilder implements ASTVisitor {
         IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncName);
         currentFunction = tmpIRFunction;
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
+
+        if(currentClassName != null)
+            IdAddrMap.AddrMap.put("this", currentFunction.ClassPtr);
 
         for (var tmp : it.stmts) tmp.accept(this);
 
@@ -881,6 +889,7 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(ThisExprNode it) {
+//        System.out.println("HERE");
         it.ExprResult = IdAddrMap.GetIdExprAddr("this");
     }
 
@@ -1004,7 +1013,7 @@ public class IRBuilder implements ASTVisitor {
                 tmpFuncNameInString = currentClassName + "." + ((IdExprNode) it.funcName).Identifier;
             }
             IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
-              if (tmpIRFunction == null)
+            if (tmpIRFunction == null)
                 tmpIRFunction = currentModule.IRFunctionTable.get(((IdExprNode) it.funcName).Identifier);
             if (tmpIRFunction == null) throw new RuntimeException();
 
@@ -1072,6 +1081,10 @@ public class IRBuilder implements ASTVisitor {
                 if (tmpMemberIRType == null) throw new RuntimeException();
 
                 //(3) do the getElementPtr inst
+
+/*                if(it.expr.ExprResult == null){
+                    System.out.println(it.ExprText);
+                }*/
                 String RegisterName = "memacc_result";
                 Register tmpResult = new Register(new PointerType(tmpMemberIRType),
                         RegisterName + (RegNum++));
@@ -1181,7 +1194,8 @@ public class IRBuilder implements ASTVisitor {
         it.index.accept(this);
 
         Register tmpResult = new Register(it.arr.ExprResult.thisType, "getElementPtr" + (RegNum++));
-        getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock, it.arr.ExprResult, tmpResult);
+        getElementPtrInstruction tmpgetElementPtrInst = new getElementPtrInstruction(currentBasicBlock,
+                it.arr.ExprResult, tmpResult);
         tmpgetElementPtrInst.GetElementPtrIdx.add(it.index.ExprResult);
         currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
 
