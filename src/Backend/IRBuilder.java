@@ -425,6 +425,8 @@ public class IRBuilder implements ASTVisitor {
 
         //visit condition
         if (it.condExpr != null) {
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
+                    ForCondBlock,null));
             currentBasicBlock = ForCondBlock;
             IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
             currentFunction.addFunctionBasicBlock(ForCondBlock);

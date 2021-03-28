@@ -100,6 +100,7 @@ main:
 	mv t0,t1
 	sw t0,-68(s0)
 	sw t1,-72(s0)
+	j LBB64
 LBB64:
 	lw t0,-76(s0)
 	lw t1,-68(s0)
@@ -195,6 +196,7 @@ LBB67:
 	mv t0,t1
 	sw t0,-68(s0)
 	sw t1,-128(s0)
+	j LBB68
 LBB68:
 	lw t0,-132(s0)
 	lw t1,-68(s0)
