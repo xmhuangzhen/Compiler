@@ -14,6 +14,7 @@ public class RISCVFunction {
     public String FunctionName;
     public boolean IsBuiltIn;
     public int StackNum;
+    public int StackCounting;
     public Map<RISCVRegister, RISCVAddrImm> GEPAddrMap;
 
     public RISCVBasicBlock EntranceBlock = null, LastBlock = null;
@@ -23,6 +24,7 @@ public class RISCVFunction {
         FunctionName = tmpFunc.thisFunctionName;
         IsBuiltIn = tmpFunc.IsBuiltIn;
         StackNum = 0;
+        StackCounting = 0;
         GEPAddrMap = new LinkedHashMap<>();
     }
 
@@ -37,7 +39,7 @@ public class RISCVFunction {
     }
 
     public int RealStackSize(){
-        return 4*StackNum + (16-(4*StackNum%16))+4*16;
+        return 4*StackCounting + (16-(4*StackCounting%16))+4*16;
     }
 
     @Override
