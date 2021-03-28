@@ -277,7 +277,7 @@ public class IRBuilder implements ASTVisitor {
 
         currentBasicBlock = currentFunction.thisReturnBlock;
         IRTypeSystem tmpType = new VoidType();
-        if (currentFunction.thisReturnValue != null) {
+        if (currentFunction.thisReturnValue != null) {//only for IRPrinter use
             if (currentFunction.thisReturnValue.thisType instanceof PointerType)
                 tmpType = ((PointerType) currentFunction.thisReturnValue.thisType).baseType;
             else
@@ -345,6 +345,7 @@ public class IRBuilder implements ASTVisitor {
     public void visit(returnStmtNode it) {
         if (it.value != null) {
             it.value.accept(this);
+//            System.out.println(it.value.ExprResult.thisType+","+it.value.ExprResult.NeedPtr);
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                     it.value.ExprResult,currentFunction.thisReturnValue));
         }
@@ -792,7 +793,7 @@ public class IRBuilder implements ASTVisitor {
         currentBasicBlock.addBasicBlockInst(tmpCallInst);
 
         //store size at first
-        tmpCallResult.NeedPtr = true;
+        //tmpCallResult.NeedPtr = true;
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.exprDim.get(cur_dim).ExprResult,tmpCallResult));
 
@@ -1002,7 +1003,7 @@ public class IRBuilder implements ASTVisitor {
                 IROperand tmpFuncResult = ((MemberAccExprNode) it.funcName).expr.ExprResult;
 
                 //get the element ptr
-                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),
+                Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
                         "array_size" + (RegNum++));
                 getElementPtrInstruction tmpGetElementPtr = new getElementPtrInstruction(currentBasicBlock,
                         tmpFuncResult, tmpResult);
@@ -1214,7 +1215,9 @@ public class IRBuilder implements ASTVisitor {
             throw new RuntimeException(it.ExprText+","+it.arr.ExprResult.thisType.toString());
         Register tmpLoadResult = new Register(((PointerType) it.arr.ExprResult.thisType).baseType,
                 "GEP_Load"+(RegNum++));
+        tmpResult.NeedPtr = true;
         currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpLoadResult,tmpResult));
         it.ExprResult = tmpLoadResult;
+        //System.out.println(it.ExprText+","+tmpResult.thisType+","+tmpLoadResult.thisType);
     }
 }

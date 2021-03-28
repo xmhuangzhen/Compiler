@@ -200,7 +200,10 @@ public class InstSelector implements IRVisitor {
             RISCVAddrImm tmpAddrImm = curRISCVFunction.GEPAddrMap.get(rd);
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                     rd, tmpAddrImm.baseReg, tmpAddrImm));
-        } else {
+        } else if(it.LoadPointer.NeedPtr) {
+            curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    rd,rs,new RISCVAddrImm(rs,0)));
+        } else{
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
         }
 /*        if(it.LoadResult.thisType.equals(it.LoadPointer.thisType)){
