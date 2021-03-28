@@ -794,12 +794,16 @@ public class IRBuilder implements ASTVisitor {
                 it.exprDim.get(cur_dim).ExprResult,tmpCallResult));
 
         //get the first element
-        Register ArrayTrueAddr = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
+        Register ArrayTrueAddrtmp = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
                 "call_array_head"+(RegNum++));
         getElementPtrInstruction tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,
-                tmpCallResult,ArrayTrueAddr);
+                tmpCallResult,ArrayTrueAddrtmp);
         tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
         currentBasicBlock.addBasicBlockInst(tmpGEPInst);
+
+        Register ArrayTrueAddr = new Register(cur_type,"call_array_head_cast_"+(RegNum++));
+        currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,ArrayTrueAddrtmp,
+                cur_type,ArrayTrueAddr));
 
         //(2) Malloc by recursion, it likes a loop
         if (cur_dim < it.exprDim.size() - 1) {
@@ -807,14 +811,12 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock BodyBlock = new IRBasicBlock(currentFunction, "body_block" + (BlockNum++));
             IRBasicBlock DestBlock = new IRBasicBlock(currentFunction, "dest_block" + (BlockNum++));
 
-            Register NowReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
-                    "Subarray_start_Reg"+(RegNum++));
+            Register NowReg = new Register(cur_type, "Subarray_start_Reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock, tmpCallResult,NowReg);
             tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
 
-            Register EndReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
-                    "SubArray_end_reg"+(RegNum++));
+            Register EndReg = new Register(cur_type, "SubArray_end_reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,ArrayTrueAddr,EndReg);
             tmpGEPInst.GetElementPtrIdx.add(it.exprDim.get(cur_dim).ExprResult);
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
@@ -827,8 +829,7 @@ public class IRBuilder implements ASTVisitor {
             Register CondResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
                     "Subarray_Cond_"+(RegNum++));
             icmpInstruction CondInst = new icmpInstruction(currentBasicBlock,
-                    icmpInstruction.IcmpOperandENUM.sle,
-                    new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),NowReg,EndReg,CondResult);
+                    icmpInstruction.IcmpOperandENUM.sle,cur_type,NowReg,EndReg,CondResult);
             currentBasicBlock.addBasicBlockInst(CondInst);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,CondResult,BodyBlock,DestBlock));
 
@@ -838,8 +839,7 @@ public class IRBuilder implements ASTVisitor {
             Register tmpReg = NewArrayMalloc(cur_dim+1,((PointerType) cur_type).baseType,it);
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,tmpReg,NowReg));
 
-            tmpReg = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
-                    "Incr_reg"+(RegNum++));
+            tmpReg = new Register(cur_type, "Incr_reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,NowReg,tmpReg);
             tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
@@ -856,6 +856,7 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(NewExprNode it) {
+
         if (it.ExprType instanceof ArrayTypeNode) {
             IRTypeSystem tmpIRType = currentModule.getIRType(((ArrayTypeNode) it.ExprType).baseType);
             for (int i = 0; i < ((ArrayTypeNode) it.ExprType).dimension; ++i)
@@ -863,6 +864,7 @@ public class IRBuilder implements ASTVisitor {
             for (int i = 0; i < it.exprDim.size(); ++i)
                 it.exprDim.get(i).accept(this);
             it.ExprResult = NewArrayMalloc(0, tmpIRType, it);
+//            System.out.println(it.ExprText+","+it.ExprResult.toString()+","+it.ExprResult.thisType);
         } else if (it.ExprType instanceof ClassTypeNode) {
             //call malloc function
             Register tmpMallocResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
@@ -1201,7 +1203,8 @@ public class IRBuilder implements ASTVisitor {
 
         it.ExprLResult = tmpResult;
 
-        if(!(it.arr.ExprResult.thisType instanceof PointerType)) throw new RuntimeException();
+        if(!(it.arr.ExprResult.thisType instanceof PointerType))
+            throw new RuntimeException(it.ExprText+","+it.arr.ExprResult.thisType.toString());
         Register tmpLoadResult = new Register(((PointerType) it.arr.ExprResult.thisType).baseType,
                 "GEP_Load"+(RegNum++));
         currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpLoadResult,tmpResult));
