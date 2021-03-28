@@ -33,8 +33,8 @@ public class RISCVlInst extends RISCVInstruction {
     public String toString() {
 
         StringBuilder tmpString = new StringBuilder();
-        if (offset instanceof RISCVRelocationImm) {
-            tmpString.append("lw " + rd.toString() + "," + offset.toString() + "(" + rs1.toString() + ")");
+        if (offset instanceof RISCVAddrImm) {
+            tmpString.append("lw " + rd.toString() + "," + offset.ImmVal+"("+rs1.toString()+")");
         } else {
             tmpString.append("lw " + rd.toString() + "," + offset.toString() + "(" + rs1.toString() + ")");
         }

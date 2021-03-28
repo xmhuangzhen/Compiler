@@ -9,7 +9,7 @@ public class RISCVStackReg extends RISCVRegister{
     public RISCVRegister baseReg;
     public RISCVImm Offset;
 
-    public RISCVStackReg(RISCVFunction tmpFunc,RISCVRegister tmpbaseReg/*, boolean tmpIsCall*/) {
+    public RISCVStackReg(RISCVFunction tmpFunc,RISCVRegister tmpbaseReg) {
         super("stack_"+ tmpFunc.StackNum);
         thisFunc = tmpFunc;
         Index = tmpFunc.StackNum;

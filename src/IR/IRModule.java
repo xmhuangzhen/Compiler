@@ -258,7 +258,7 @@ public class IRModule {
             IRTypeSystem tmpIRType = new ArrayType(new IntegerType(IntegerType.IRBitWidth.i8),RealString.length());
             GlobalVariables tmpGlobalVariables = new GlobalVariables(
                     tmpIRType, "const_string_no"+IRConstStringTable.size());
-            tmpGlobalVariables.VariablesInitExpr = new StringConstant(tmpIRType,RealString);
+            tmpGlobalVariables.InitExpr = new StringConstant(tmpIRType,RealString);
             IRConstStringTable.put(RealString,tmpGlobalVariables);
             IRGlobalVarTable.put("const_string_no"+IRConstStringTable.size(),tmpGlobalVariables);
             return tmpGlobalVariables;

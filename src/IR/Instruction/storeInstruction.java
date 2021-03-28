@@ -17,10 +17,13 @@ public class storeInstruction extends IRInstruction{
 
     @Override
     public String toString() {
+        //System.out.println("Here");
         if(StorePointer.thisType instanceof PointerType) {
-            return "store " + ((PointerType) StorePointer.thisType).baseType.toString()
+            String tmpString = "store " + ((PointerType) StorePointer.thisType).baseType.toString()
                     + " " + StoreValue.toString() + ", " + StorePointer.thisType.toString()
                     + " " + StorePointer.toString();
+        //    System.out.println(tmpString);
+            return tmpString;
         }
         else throw new RuntimeException(StorePointer.thisType.toString()+","+StorePointer.toString());
     }

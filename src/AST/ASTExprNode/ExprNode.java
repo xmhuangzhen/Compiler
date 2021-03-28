@@ -11,6 +11,7 @@ public abstract class ExprNode extends ASTNode {
     public boolean IsLvalue;
 
     public IROperand ExprResult;
+    public IROperand ExprLResult;
 
     public ExprNode(String text, TypeNode type, position pos) {
         super(pos);
@@ -18,5 +19,6 @@ public abstract class ExprNode extends ASTNode {
         this.ExprType = type;
         this.IsLvalue = false;
         this.ExprResult = null;
+        this.ExprLResult = null;
     }
 }

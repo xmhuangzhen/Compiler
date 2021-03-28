@@ -18,7 +18,6 @@ public class IRFunction {
 
     public ArrayList<IRBasicBlock> thisFunctionBasicBlocks;
     public ArrayList<Parameter> thisFunctionParameters;
-    public Map<String, Register> thisFunctionVariableTable;
 
     public IROperand thisReturnValue;
     public IRBasicBlock thisLastBasicBlock;
@@ -34,7 +33,7 @@ public class IRFunction {
 
         thisFunctionBasicBlocks = new ArrayList<>();
         thisFunctionParameters = new ArrayList<>();
-        thisFunctionVariableTable = new LinkedHashMap<>();
+     //   thisFunctionVariableTable = new LinkedHashMap<>();
         thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
         thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
@@ -43,11 +42,11 @@ public class IRFunction {
         thisLastBasicBlock.nextBasicBlocks = thisReturnBlock;
         thisReturnBlock.prevBasicBlocks = thisLastBasicBlock;
     }
-
+/*
     public void addVariableinFunc(Register tmpVar){
         thisFunctionVariableTable.put(tmpVar.RegisterName,tmpVar);
     }
-
+*/
     public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){
         //always add before the LastBlock
         IRBasicBlock tmpPreBlock = thisLastBasicBlock.prevBasicBlocks;

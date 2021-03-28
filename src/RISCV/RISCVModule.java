@@ -143,7 +143,7 @@ public class RISCVModule {
         RISCVGlobalReg tmpGlobalReg = new RISCVGlobalReg(varName);
 
         //set init
-        IROperand initExpr = tmpGlobalVar.VariablesInitExpr;
+        IROperand initExpr = tmpGlobalVar.InitExpr;
         if (initExpr instanceof IntegerConstant) {
             tmpGlobalReg.isInt = true;
             tmpGlobalReg.ValInt = (int) ((IntegerConstant) initExpr).value;

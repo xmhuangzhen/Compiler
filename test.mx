@@ -1,16 +1,7 @@
-int age;
-	void solveAge(){
-		int i;
-		int j;
-		int k;
-		for(i = 1; i < 100; i++)
-			for(j = i + 1; j < 100; j++)
-				for(k = j + 1; k < 100; k++)
-					if((i - i + i + j - j + j + k - k + k) * (100 * i + 10 * j + k) % 1926 == 0)
-					age = (i - i + i + j - j + j + k - k + k) * (100 * i + 10 * j + k);
-	}
 int main(){
-	solveAge();
-	if(age > 10000)println("eternal!");
-    return age;
+    int[] a = new int [4];
+    a[1] = 1;
+    println(toString(a[1]));
+//    int a = 1;
+    return a[1];
 }
