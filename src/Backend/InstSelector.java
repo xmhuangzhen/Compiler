@@ -226,6 +226,11 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(storeInstruction it) {
+        if(it.StorePointer == null){
+            System.out.println(it.StoreValue instanceof Register);
+            if(it.StoreValue instanceof Register)
+                System.out.println(((Register) it.StoreValue).RegisterName);
+        }
         RISCVRegister addr = curRISCVModule.getRISCVReg(it.StorePointer, curRISCVBasicBlock);
         RISCVRegister val = curRISCVModule.getRISCVReg(it.StoreValue, curRISCVBasicBlock);
         if (curRISCVFunction.GEPAddrMap.containsKey(addr)) {

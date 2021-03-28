@@ -18,133 +18,193 @@ LBB38:
 	.p2align	2
 main:
 #LBB63:
-	addi sp,sp,-160
-	sw ra,156(sp)
-	sw s0,152(sp)
-	addi s0,sp,160
+	addi sp,sp,-176
+	sw ra,172(sp)
+	sw s0,168(sp)
+	addi s0,sp,176
 	call __init__
 	lw t0,-12(s0)
-	li t0,4
+	lui t1,%hi(n)
+	lw t2,%lo(n)(t1)
+	mv t0,t2
 	sw t0,-12(s0)
-	lw t0,-16(s0)
-	li t0,4
-	sw t0,-16(s0)
+	lui t1,%hi(n)
+	sw t2,%lo(n)(t1)
+	call getInt
 	lw t0,-20(s0)
-	lw t1,-12(s0)
-	lw t2,-16(s0)
-	mul t0,t1,t2
+	mv t0,a0
 	sw t0,-20(s0)
-	sw t1,-12(s0)
-	sw t2,-16(s0)
+	lui t0,%hi(n)
+	lw t1,%lo(n)(t0)
+	lw t2,-20(s0)
+	mv t1,t2
+	lui t0,%hi(n)
+	sw t1,%lo(n)(t0)
+	sw t2,-20(s0)
 	lw t0,-24(s0)
-	lw t1,-20(s0)
-	addi t0,t1,4
+	lui t1,%hi(m)
+	lw t2,%lo(m)(t1)
+	mv t0,t2
 	sw t0,-24(s0)
-	sw t1,-20(s0)
-	lw t0,-24(s0)
-	mv a0,t0
-	sw t0,-24(s0)
-	call malloc
-	lw t0,-28(s0)
+	lui t1,%hi(m)
+	sw t2,%lo(m)(t1)
+	call getInt
+	lw t0,-32(s0)
 	mv t0,a0
-	sw t0,-28(s0)
-	lw t0,-32(s0)
-	li t0,4
 	sw t0,-32(s0)
-	lw t0,-32(s0)
-	lw t1,-28(s0)
-	sw t0,0(t1)
-	sw t0,-32(s0)
-	sw t1,-28(s0)
+	lui t0,%hi(m)
+	lw t1,%lo(m)(t0)
+	lw t2,-32(s0)
+	mv t1,t2
+	lui t0,%hi(m)
+	sw t1,%lo(m)(t0)
+	sw t2,-32(s0)
 	lw t0,-36(s0)
-	lw t1,-28(s0)
-	addi t0,t1,4
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t0,t2
 	sw t0,-36(s0)
-	sw t1,-28(s0)
-	lw t0,-40(s0)
-	lw t1,-36(s0)
-	mv t0,t1
-	sw t0,-40(s0)
-	sw t1,-36(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	call getInt
 	lw t0,-44(s0)
-	lw t1,-40(s0)
-	mv t0,t1
-	sw t0,-44(s0)
-	sw t1,-40(s0)
-	lw t0,-48(s0)
-	lw t1,-44(s0)
-	addi t0,t1,4
-	sw t0,-48(s0)
-	sw t1,-44(s0)
-	lw t0,-52(s0)
-	lw t1,-48(s0)
-	mv t0,t1
-	sw t0,-52(s0)
-	sw t1,-48(s0)
-	lw t0,-56(s0)
-	li t0,1
-	sw t0,-56(s0)
-	lw t0,-56(s0)
-	lw t1,-44(s0)
-	sw t0,4(t1)
-	sw t0,-56(s0)
-	sw t1,-44(s0)
-	lw t0,-60(s0)
-	lw t1,-40(s0)
-	mv t0,t1
-	sw t0,-60(s0)
-	sw t1,-40(s0)
-	lw t0,-64(s0)
-	lw t1,-60(s0)
-	addi t0,t1,4
-	sw t0,-64(s0)
-	sw t1,-60(s0)
-	lw t0,-68(s0)
-	lw t1,-64(s0)
-	mv t0,t1
-	sw t0,-68(s0)
-	sw t1,-64(s0)
-	lw t0,-68(s0)
-	mv a0,t0
-	sw t0,-68(s0)
-	call toString
-	lw t0,-72(s0)
 	mv t0,a0
-	sw t0,-72(s0)
+	sw t0,-44(s0)
+	lui t0,%hi(a)
+	lw t1,%lo(a)(t0)
+	lw t2,-44(s0)
+	mv t1,t2
+	lui t0,%hi(a)
+	sw t1,%lo(a)(t0)
+	sw t2,-44(s0)
+	lw t0,-48(s0)
+	lui t1,%hi(m)
+	lw t2,%lo(m)(t1)
+	mv t0,t2
+	sw t0,-48(s0)
+	lui t1,%hi(m)
+	sw t2,%lo(m)(t1)
+	lw t0,-52(s0)
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t0,t2
+	sw t0,-52(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	lw t0,-56(s0)
+	lw t1,-48(s0)
+	lw t2,-52(s0)
+	add t0,t1,t2
+	sw t0,-56(s0)
+	sw t1,-48(s0)
+	sw t2,-52(s0)
+	lw t0,-60(s0)
+	lw t1,-56(s0)
+	addi t0,t1,-1
+	sw t0,-60(s0)
+	sw t1,-56(s0)
+	lw t0,-64(s0)
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t0,t2
+	sw t0,-64(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	lw t0,-68(s0)
+	lw t1,-60(s0)
+	lw t2,-64(s0)
+	div t0,t1,t2
+	sw t0,-68(s0)
+	sw t1,-60(s0)
+	sw t2,-64(s0)
 	lw t0,-72(s0)
-	mv a0,t0
+	lui t1,%hi(n)
+	lw t2,%lo(n)(t1)
+	mv t0,t2
 	sw t0,-72(s0)
-	call println
+	lui t1,%hi(n)
+	sw t2,%lo(n)(t1)
 	lw t0,-76(s0)
-	lw t1,-40(s0)
-	mv t0,t1
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t0,t2
 	sw t0,-76(s0)
-	sw t1,-40(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
 	lw t0,-80(s0)
-	lw t1,-76(s0)
-	addi t0,t1,4
+	lw t1,-72(s0)
+	lw t2,-76(s0)
+	add t0,t1,t2
 	sw t0,-80(s0)
-	sw t1,-76(s0)
+	sw t1,-72(s0)
+	sw t2,-76(s0)
 	lw t0,-84(s0)
 	lw t1,-80(s0)
-	mv t0,t1
+	addi t0,t1,-1
 	sw t0,-84(s0)
 	sw t1,-80(s0)
 	lw t0,-88(s0)
-	lw t1,-84(s0)
-	mv t0,t1
+	lui t1,%hi(a)
+	lw t2,%lo(a)(t1)
+	mv t0,t2
 	sw t0,-88(s0)
+	lui t1,%hi(a)
+	sw t2,%lo(a)(t1)
+	lw t0,-92(s0)
+	lw t1,-84(s0)
+	lw t2,-88(s0)
+	div t0,t1,t2
+	sw t0,-92(s0)
 	sw t1,-84(s0)
+	sw t2,-88(s0)
+	lw t0,-96(s0)
+	lw t1,-68(s0)
+	lw t2,-92(s0)
+	mul t0,t1,t2
+	sw t0,-96(s0)
+	sw t1,-68(s0)
+	sw t2,-92(s0)
+	lw t0,-96(s0)
+	mv a0,t0
+	sw t0,-96(s0)
+	call toString
+	lw t0,-100(s0)
+	mv t0,a0
+	sw t0,-100(s0)
+	lw t0,-100(s0)
+	mv a0,t0
+	sw t0,-100(s0)
+	call print
+	lw t0,-104(s0)
+	li t0,0
+	sw t0,-104(s0)
+	lw t0,-108(s0)
+	lw t1,-104(s0)
+	mv t0,t1
+	sw t0,-108(s0)
+	sw t1,-104(s0)
 	j LBB64
 LBB64:
 	j LBB65
 LBB65:
-	lw t0,-88(s0)
+	lw t0,-108(s0)
 	mv a0,t0
-	sw t0,-88(s0)
-	lw s0,152(sp)
-	lw ra,156(sp)
-	addi sp,sp,160
+	sw t0,-108(s0)
+	lw s0,168(sp)
+	lw ra,172(sp)
+	addi sp,sp,176
 	ret
 # end function : main
 .section	.sdata,"aw",@progbits
+	.p2align	2
+n:
+	.word	0
+
+	.p2align	2
+m:
+	.word	0
+
+	.p2align	2
+a:
+	.word	0
+
