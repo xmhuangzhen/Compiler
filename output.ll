@@ -1,5 +1,4 @@
 
-@a
 @const_string_no0
 
 define ReturnType : void
@@ -9,14 +8,7 @@ Parameter :  @main()
 
 define ReturnType : void
 Parameter :  @__init__(){
-__init___entrance_block    call_size_10 = mul i32 4, 4
-    call_size_21 = add i32 %call_size_10, 4
-    %call_malloc_func2 = call i8* @malloc(i32 %call_size_21)
-    store i32 4, i32* %call_malloc_func2
-    %call_array_head3 = getelementptr i32, i32* %call_malloc_func2, i32 1
-    call_array_head_cast_4 = bitcast i32* %call_array_head3 to i32*
-    store i32 %call_array_head_cast_4, i32* @a
-    br label %__init___return_block
+__init___entrance_block    br label %__init___return_block
 
 __init___last_block                                ; preds = %__init___entrance_block
 
@@ -27,116 +19,155 @@ __init___return_block                              ; preds = %__init___last_bloc
 
 define ReturnType : i32
 Parameter :  @main(){
-main_entrance_block    %call_init6 = call void @__init__()
-    %a8 = load i32*, i32* @a
-    %array_size9 = getelementptr i32, i32* %a8, i32 -1
-    call_size_110 = mul i32 %array_size9, 4
-    call_size_211 = add i32 %call_size_110, 4
-    %call_malloc_func12 = call i8* @malloc(i32 %call_size_211)
-    store i32 %array_size9, i32* %call_malloc_func12
-    %call_array_head13 = getelementptr i32, i32* %call_malloc_func12, i32 1
-    call_array_head_cast_14 = bitcast i32* %call_array_head13 to i32*
-    store i32* %call_array_head_cast_14, i32** %b7
-    %Id_load16 = load i32, i32* %i15
-    store i32 0, i32* %i15
+main_entrance_block    %call_init1 = call void @__init__()
+    call_size_13 = mul i32 4, 4
+    call_size_24 = add i32 %call_size_13, 4
+    %call_malloc_func5 = call i8* @malloc(i32 %call_size_24)
+    store i32 4, i32* %call_malloc_func5
+    %call_array_head6 = getelementptr i32, i32* %call_malloc_func5, i32 1
+    call_array_head_cast_7 = bitcast i32* %call_array_head6 to i32*
+    store i32* %call_array_head_cast_7, i32** %a2
+    %Id_load9 = load i32*, i32** %a2
+    %array_size10 = getelementptr i32, i32* %Id_load9, i32 -1
+    %array_size_load11 = load i32, i32* %array_size10
+    call_size_112 = mul i32 %array_size_load11, 4
+    call_size_213 = add i32 %call_size_112, 4
+    %call_malloc_func14 = call i8* @malloc(i32 %call_size_213)
+    store i32 %array_size_load11, i32* %call_malloc_func14
+    %call_array_head15 = getelementptr i32, i32* %call_malloc_func14, i32 1
+    call_array_head_cast_16 = bitcast i32* %call_array_head15 to i32*
+    store i32* %call_array_head_cast_16, i32** %b8
+    %Id_load18 = load i32, i32* %i17
+    store i32 0, i32* %i17
 
 for_cond_block0                                    ; preds = %main_entrance_block
-    %Id_load17 = load i32, i32* %i15
-    %a18 = load i32*, i32* @a
-    %array_size19 = getelementptr i32, i32* %a18, i32 -1
-    %slt20 = icmp slt i32 %Id_load17, %array_size19
-    br i1 %slt20, label %for_body_block2, label %for_dest_block3
+    %Id_load19 = load i32, i32* %i17
+    %Id_load20 = load i32*, i32** %a2
+    %array_size21 = getelementptr i32, i32* %Id_load20, i32 -1
+    %array_size_load22 = load i32, i32* %array_size21
+    %slt23 = icmp slt i32 %Id_load19, %array_size_load22
+    br i1 %slt23, label %for_body_block2, label %for_dest_block3
 
 for_body_block2                                    ; preds = %for_cond_block0
-    %a21 = load i32*, i32* @a
-    %Id_load22 = load i32, i32* %i15
-    %getElementPtr23 = getelementptr i32, i32* %a21, i32 %Id_load22
-    %GEP_Load24 = load i32, i32* %getElementPtr23
-    store i32 0, i32* %getElementPtr23
-    %Id_load25 = load i32*, i32** %b7
-    %Id_load26 = load i32, i32* %i15
-    %getElementPtr27 = getelementptr i32, i32* %Id_load25, i32 %Id_load26
-    %GEP_Load28 = load i32, i32* %getElementPtr27
-    %funccal29 = call i32 @getInt()
-    store i32 %funccal29, i32* %getElementPtr27
+    %Id_load24 = load i32*, i32** %a2
+    %Id_load25 = load i32, i32* %i17
+    %getElementPtr26 = getelementptr i32, i32* %Id_load24, i32 %Id_load25
+    %GEP_Load27 = load i32, i32* %getElementPtr26
+    store i32 0, i32* %getElementPtr26
+    %Id_load28 = load i32*, i32** %b8
+    %Id_load29 = load i32, i32* %i17
+    %getElementPtr30 = getelementptr i32, i32* %Id_load28, i32 %Id_load29
+    %GEP_Load31 = load i32, i32* %getElementPtr30
+    store i32 2, i32* %getElementPtr30
     br label %for_step_block1
 
 for_step_block1                                    ; preds = %for_body_block2
-    %Id_load30 = load i32, i32* %i15
-    SelfAdd31 = add i32 %Id_load30, 1
-    store i32 %SelfAdd31, i32* %i15
+    %Id_load32 = load i32, i32* %i17
+    SelfAdd33 = add i32 %Id_load32, 1
+    store i32 %SelfAdd33, i32* %i17
     br label %for_cond_block0
 
 for_dest_block3                                    ; preds = %for_step_block1
-    %Id_load32 = load i32, i32* %i15
-    store i32 0, i32* %i15
+    %Id_load34 = load i32, i32* %i17
+    store i32 0, i32* %i17
 
 for_cond_block4                                    ; preds = %for_dest_block3
-    %Id_load33 = load i32, i32* %i15
-    %a34 = load i32*, i32* @a
-    %array_size35 = getelementptr i32, i32* %a34, i32 -1
-    %slt36 = icmp slt i32 %Id_load33, %array_size35
-    br i1 %slt36, label %for_body_block6, label %for_dest_block7
+    %Id_load35 = load i32, i32* %i17
+    %Id_load36 = load i32*, i32** %a2
+    %array_size37 = getelementptr i32, i32* %Id_load36, i32 -1
+    %array_size_load38 = load i32, i32* %array_size37
+    %slt39 = icmp slt i32 %Id_load35, %array_size_load38
+    br i1 %slt39, label %for_body_block6, label %for_dest_block7
 
 for_body_block6                                    ; preds = %for_cond_block4
-    %a37 = load i32*, i32* @a
-    %Id_load38 = load i32, i32* %i15
-    %getElementPtr39 = getelementptr i32, i32* %a37, i32 %Id_load38
-    %GEP_Load40 = load i32, i32* %getElementPtr39
-    %funccal41 = call i8* @toString(i32 %GEP_Load40)
-    %funccal42 = call void @print(ReturnType : i8*
-Parameter : i32  %funccal41)
+    %Id_load40 = load i32*, i32** %a2
+    %Id_load41 = load i32, i32* %i17
+    %getElementPtr42 = getelementptr i32, i32* %Id_load40, i32 %Id_load41
+    %GEP_Load43 = load i32, i32* %getElementPtr42
+    %funccal44 = call i8* @toString(i32 %GEP_Load43)
+    %funccal45 = call void @print(ReturnType : i8*
+Parameter : i32  %funccal44)
     br label %for_step_block5
 
 for_step_block5                                    ; preds = %for_body_block6
-    %Id_load43 = load i32, i32* %i15
-    SelfAdd44 = add i32 %Id_load43, 1
-    store i32 %SelfAdd44, i32* %i15
+    %Id_load46 = load i32, i32* %i17
+    SelfAdd47 = add i32 %Id_load46, 1
+    store i32 %SelfAdd47, i32* %i17
     br label %for_cond_block4
 
 for_dest_block7                                    ; preds = %for_step_block5
-    %StringConst45 = getelementptr [1 x i8], [1 x i8]* @const_string_no0, i32 0, i32 0
-    %funccal46 = call void @println(i8* %StringConst45)
-    %a47 = load i32*, i32* @a
-    %Id_load48 = load i32*, i32** %b7
-    store i32 %Id_load48, i32* @a
-    %Id_load49 = load i32, i32* %i15
-    store i32 0, i32* %i15
+    %StringConst48 = getelementptr [1 x i8], [1 x i8]* @const_string_no0, i32 0, i32 0
+    %funccal49 = call void @println(i8* %StringConst48)
+    %Id_load50 = load i32, i32* %i17
+    store i32 0, i32* %i17
 
 for_cond_block8                                    ; preds = %for_dest_block7
-    %Id_load50 = load i32, i32* %i15
-    %a51 = load i32*, i32* @a
-    %array_size52 = getelementptr i32, i32* %a51, i32 -1
-    %slt53 = icmp slt i32 %Id_load50, %array_size52
-    br i1 %slt53, label %for_body_block10, label %for_dest_block11
+    %Id_load51 = load i32, i32* %i17
+    %Id_load52 = load i32*, i32** %a2
+    %array_size53 = getelementptr i32, i32* %Id_load52, i32 -1
+    %array_size_load54 = load i32, i32* %array_size53
+    %slt55 = icmp slt i32 %Id_load51, %array_size_load54
+    br i1 %slt55, label %for_body_block10, label %for_dest_block11
 
 for_body_block10                                   ; preds = %for_cond_block8
-    %a54 = load i32*, i32* @a
-    %Id_load55 = load i32, i32* %i15
-    %getElementPtr56 = getelementptr i32, i32* %a54, i32 %Id_load55
-    %GEP_Load57 = load i32, i32* %getElementPtr56
-    %funccal58 = call i8* @toString(i32 %GEP_Load57)
-    %funccal59 = call void @print(ReturnType : i8*
-Parameter : i32  %funccal58)
+    %Id_load56 = load i32*, i32** %b8
+    %Id_load57 = load i32, i32* %i17
+    %getElementPtr58 = getelementptr i32, i32* %Id_load56, i32 %Id_load57
+    %GEP_Load59 = load i32, i32* %getElementPtr58
+    %funccal60 = call i8* @toString(i32 %GEP_Load59)
+    %funccal61 = call void @print(ReturnType : i8*
+Parameter : i32  %funccal60)
     br label %for_step_block9
 
 for_step_block9                                    ; preds = %for_body_block10
-    %Id_load60 = load i32, i32* %i15
-    SelfAdd61 = add i32 %Id_load60, 1
-    store i32 %SelfAdd61, i32* %i15
+    %Id_load62 = load i32, i32* %i17
+    SelfAdd63 = add i32 %Id_load62, 1
+    store i32 %SelfAdd63, i32* %i17
     br label %for_cond_block8
 
 for_dest_block11                                   ; preds = %for_step_block9
-    %a62 = load i32*, i32* @a
-    %array_size63 = getelementptr i32, i32* %a62, i32 -1
-    store i32 %array_size63, i32* %mainreturn_value5
+    %Id_load64 = load i32*, i32** %a2
+    %Id_load65 = load i32*, i32** %b8
+    store i32* %Id_load65, i32** %a2
+    %Id_load66 = load i32, i32* %i17
+    store i32 0, i32* %i17
+
+for_cond_block12                                   ; preds = %for_dest_block11
+    %Id_load67 = load i32, i32* %i17
+    %Id_load68 = load i32*, i32** %a2
+    %array_size69 = getelementptr i32, i32* %Id_load68, i32 -1
+    %array_size_load70 = load i32, i32* %array_size69
+    %slt71 = icmp slt i32 %Id_load67, %array_size_load70
+    br i1 %slt71, label %for_body_block14, label %for_dest_block15
+
+for_body_block14                                   ; preds = %for_cond_block12
+    %Id_load72 = load i32*, i32** %a2
+    %Id_load73 = load i32, i32* %i17
+    %getElementPtr74 = getelementptr i32, i32* %Id_load72, i32 %Id_load73
+    %GEP_Load75 = load i32, i32* %getElementPtr74
+    %funccal76 = call i8* @toString(i32 %GEP_Load75)
+    %funccal77 = call void @print(ReturnType : i8*
+Parameter : i32  %funccal76)
+    br label %for_step_block13
+
+for_step_block13                                   ; preds = %for_body_block14
+    %Id_load78 = load i32, i32* %i17
+    SelfAdd79 = add i32 %Id_load78, 1
+    store i32 %SelfAdd79, i32* %i17
+    br label %for_cond_block12
+
+for_dest_block15                                   ; preds = %for_step_block13
+    %Id_load80 = load i32*, i32** %a2
+    %array_size81 = getelementptr i32, i32* %Id_load80, i32 -1
+    %array_size_load82 = load i32, i32* %array_size81
+    store i32 %array_size_load82, i32* %mainreturn_value0
     br label %main_last_block
 
-main_last_block                                    ; preds = %for_dest_block11
+main_last_block                                    ; preds = %for_dest_block15
     br label %main_return_block
 
 main_return_block                                  ; preds = %main_last_block
-    ret i32 %mainreturn_value5
+    ret i32 %mainreturn_value0
 
 }
 

@@ -30,11 +30,12 @@ public class NaiveRegAllocator {
         for (var tmpFunc : curRISCVModule.RISCVFuncMap.values())
             if (!tmpFunc.IsBuiltIn) {
                 for (RISCVBasicBlock tmpBlock = tmpFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
+            //        System.out.println("---------"+tmpBlock.BlockName);
                     for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
 
                         RISCVInstruction thisInst = tmpInst;
 
-              //          System.out.println(thisInst.toString());
+          //              System.out.println(thisInst.toString());
 //                        System.out.print(tmpInst.UsedVirtualReg.size());
                         int NumOfPhyReg = 0;
                         for (int i = 0; i < thisInst.UsedVirtualReg.size(); ++i) {
@@ -70,8 +71,11 @@ public class NaiveRegAllocator {
                                 } else throw new RuntimeException();
                             } else {
                                 thisInst.replaceReg(tmpReg, (RISCVPhyReg) tmpStoreReg);
+
                             }
+                        //    System.out.print("["+tmpReg.toString()+","+tmpStoreReg.toString()+"]");
                         }
+                       // System.out.println("");
 
 //                        System.out.println(thisInst.toString());
                         NumOfPhyReg = 0;

@@ -18,4 +18,8 @@ public class RISCVStackReg extends RISCVRegister{
         Offset = new RISCVImm(-12-4*Index);
     }
 
+    @Override
+    public String toString() {
+        return Offset.toString()+"("+baseReg.toString()+")";
+    }
 }

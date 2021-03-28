@@ -141,4 +141,9 @@ public class IRPrinter implements IRVisitor {
     public void visit(bitcastInstruction it) {
         outPrintWriter.println("    "+it.toString());
     }
+
+    @Override
+    public void visit(moveInstruction it) {
+        outPrintWriter.println("    "+it.toString());
+    }
 }

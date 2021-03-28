@@ -276,6 +276,13 @@ public class InstSelector implements IRVisitor {
     }
 
     @Override
+    public void visit(moveInstruction it) {
+        RISCVRegister rd = curRISCVModule.getRISCVReg(it.rd,curRISCVBasicBlock);
+        RISCVRegister rs = curRISCVModule.getRISCVReg(it.rs,curRISCVBasicBlock);
+        curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
+    }
+
+    @Override
     public void visit(getElementPtrInstruction it) {
 
         if(it.GetElementPtrPtr.thisType instanceof PointerType) {
@@ -295,6 +302,7 @@ public class InstSelector implements IRVisitor {
                                 rd, baseReg,
                                 curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, val), curRISCVBasicBlock),
                                 null));
+             //       System.out.println("Here!"+it.toString()+rd.RegisterName);
                     curRISCVFunction.GEPAddrMap.put(rd,new RISCVAddrImm(baseReg,(int)val));
                 } else { // rd = baseReg + Index * 4
                     RISCVRegister IndexReg = curRISCVModule.getRISCVReg(it.GetElementPtrIdx.get(0), curRISCVBasicBlock);

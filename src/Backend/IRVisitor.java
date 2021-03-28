@@ -23,4 +23,5 @@ public interface IRVisitor {
     void visit(phiInstruction it);
     void visit(callInstruction it);
     void visit(bitcastInstruction it);
+    void visit(moveInstruction it);
 }

@@ -793,7 +793,7 @@ public class IRBuilder implements ASTVisitor {
         currentBasicBlock.addBasicBlockInst(tmpCallInst);
 
         //store size at first
-        //tmpCallResult.NeedPtr = true;
+        tmpCallResult.NeedPtr = true;
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.exprDim.get(cur_dim).ExprResult,tmpCallResult));
 
@@ -1005,11 +1005,17 @@ public class IRBuilder implements ASTVisitor {
                 //get the element ptr
                 Register tmpResult = new Register(new PointerType(new IntegerType(IntegerType.IRBitWidth.i32)),
                         "array_size" + (RegNum++));
+                tmpResult.NeedPtr = true;
                 getElementPtrInstruction tmpGetElementPtr = new getElementPtrInstruction(currentBasicBlock,
                         tmpFuncResult, tmpResult);
                 tmpGetElementPtr.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, -1));
                 currentBasicBlock.addBasicBlockInst(tmpGetElementPtr);
-                it.ExprResult = tmpResult;
+
+                Register tmpLoadResult = new Register(new IntegerType(IntegerType.IRBitWidth.i32),
+                        "array_size_load"+(RegNum++));
+                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                        tmpLoadResult,tmpResult));
+                it.ExprResult = tmpLoadResult;
             } else {
                 throw new RuntimeException(it.ExprType.Typename);
             }

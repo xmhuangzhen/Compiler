@@ -20,25 +20,29 @@ Origin Package: Codegen Pretest-531
 */
 //input: 1 2 3 4
 
-int[] a = new int[4];
 int main()
 {
+    int[] a = new int[4];
     int[] b = new int[a.size()];
 	int i;
     for (i = 0; i < a.size(); i++)
 	{
 		a[i] = 0;
-		b[i] = getInt();
+		b[i] = 2;
 	}
 	for (i = 0; i < a.size(); i++)
 	{
 		print(toString(a[i]));
 	}
 	println("");
+	for (i = 0; i < a.size(); i++)
+	{
+		print(toString(b[i]));
+	}
 	a=b;
 	for (i = 0; i < a.size(); i++)
 	{
 		print(toString(a[i]));
 	}
-    return a.size();
+   return a.size();
 }
