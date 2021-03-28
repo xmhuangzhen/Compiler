@@ -76,7 +76,7 @@ public class IRBuilder implements ASTVisitor {
                 IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
                 if (tmpClassDefNode.consDef == null) tmpIRFunction.IsBuiltIn = true;
                 else {
-                    Parameter tmpClassPtr = new Parameter(tmpThisIRType, "this");
+                    Parameter tmpClassPtr = new Parameter(new PointerType(tmpThisIRType), "this");
                     tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
                     tmpIRFunction.ClassPtr = tmpClassPtr;
                 }
@@ -90,9 +90,10 @@ public class IRBuilder implements ASTVisitor {
                     tmpFuncName = tmpClassDefNode.className + "." + tmpFunc.funcName;
                     tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
                     for (var tmpPar : tmpFunc.parDefs) {
-                        tmpIRFunction.thisFunctionParameters.add(new Parameter(currentModule.getIRType(tmpPar.typeNode), tmpPar.varname));
+                        tmpIRFunction.thisFunctionParameters.add(new Parameter(
+                                new PointerType(currentModule.getIRType(tmpPar.typeNode)), tmpPar.varname));
                     }
-                    Parameter tmpClassPtr = new Parameter(tmpThisIRType, "this");
+                    Parameter tmpClassPtr = new Parameter(new PointerType(tmpThisIRType), "this");
                     tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
                     tmpIRFunction.ClassPtr = tmpClassPtr;
                     currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
@@ -109,7 +110,9 @@ public class IRBuilder implements ASTVisitor {
                 String tmpFuncName = tmpFuncDefNode.funcName;
                 IRFunction tmpIRFunction = new IRFunction(tmpFuncType, tmpFuncName);
                 for (var tmpPar : tmpFuncDefNode.parDefs) {
-                    tmpIRFunction.thisFunctionParameters.add(new Parameter(currentModule.getIRType(tmpPar.typeNode), tmpPar.varname));
+                    tmpIRFunction.thisFunctionParameters.add(
+                            new Parameter(
+                                    new PointerType(currentModule.getIRType(tmpPar.typeNode)), tmpPar.varname));
                 }
                 currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
             }
@@ -1109,6 +1112,10 @@ public class IRBuilder implements ASTVisitor {
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
+            /*if(tmpVarAddr instanceof Parameter){
+                System.out.println("HERE"+it.ExprText);
+            }*/
+//            System.out.println("Here-"+it.ExprText+","+tmpVarAddr.thisType);
             if(tmpVarAddr.thisType instanceof PointerType) {
                 IRTypeSystem tmpType = ((PointerType) tmpVarAddr.thisType).baseType;
 
