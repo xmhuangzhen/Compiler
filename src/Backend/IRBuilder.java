@@ -276,9 +276,12 @@ public class IRBuilder implements ASTVisitor {
         currentFunction = tmpIRFunction;
         currentBasicBlock = tmpIRFunction.thisEntranceBlock;
 
-        if(it.parDefs.size() != 1) throw new RuntimeException();
-        for(int i = 0;i < it.parDefs.size();++i){
-            IdAddrMap.AddrMap.put("this", currentFunction.thisFunctionParameters.get(i));
+        if(currentFunction.thisFunctionParameters.size() != 1)
+            throw new RuntimeException(Integer.toString(currentFunction.thisFunctionParameters.size()));
+        for(int i = 0;i < currentFunction.thisFunctionParameters.size();++i){
+            IdAddrMap.AddrMap.put(currentFunction.thisFunctionParameters.get(i).ParameterName,
+                    currentFunction.thisFunctionParameters.get(i));
+//            System.out.println(currentFunction.thisFunctionParameters.get(i).ParameterName);
         }
 
         for (var tmp : it.stmts) tmp.accept(this);
