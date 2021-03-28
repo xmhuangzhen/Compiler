@@ -1004,8 +1004,8 @@ public class IRBuilder implements ASTVisitor {
                 tmpFuncNameInString = currentClassName + "." + ((IdExprNode) it.funcName).Identifier;
             }
             IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
-            //  if (tmpIRFunction == null)
-            //    tmpIRFunction = currentModule.IRFunctionTable.get(((IdExprNode) it.funcName).Identifier);
+              if (tmpIRFunction == null)
+                tmpIRFunction = currentModule.IRFunctionTable.get(((IdExprNode) it.funcName).Identifier);
             if (tmpIRFunction == null) throw new RuntimeException();
 
             IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
