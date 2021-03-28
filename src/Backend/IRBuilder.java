@@ -969,8 +969,8 @@ public class IRBuilder implements ASTVisitor {
                     Register tmpResult = null;
                     if (!tmpFuncIRType.equals("void"))
                         tmpResult = new Register(tmpFuncIRType, "funccal" + (RegNum++));
-                  //  System.out.println("Here-1");
                     callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
+                    tmpCallInst.CallParameters.add(((MemberAccExprNode) it.funcName).expr.ExprResult);
                     for (var tmp : it.pars)
                         tmpCallInst.CallParameters.add(tmp.ExprResult);
                     currentBasicBlock.addBasicBlockInst(tmpCallInst);

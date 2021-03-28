@@ -1,43 +1,46 @@
 /*
-Test Package: Sema_Local_Preview
-Test Target: Symbol
-Author: 15' Nayun Xu
-Time: 2019-10-20
-Verdict: Success
-Origin Package: Semantic Extended
+Test Package: Codegen
+Author: Maohao Jun
+Time: 2020-01-25
+Input:
+=== input ===
+=== end ===
+Output:
+=== output ===
+MR, the leading TA enjoys this work. XD
+Mars, the striking TA enjoys this work. XD
+Mars, the striking TA wants to give up!!!!!
+=== end ===
+ExitCode: 0
+InstLimit: -1
+Origin Package: Codegen Pretest-542
 */
-class A{
-	A(){}
-	B x;
-	string abc;
-	int aabc(int abc) {
-		return abc;
-	}
+
+
+class TA{
+	string state;
+	int anger;
 };
-
-class B {
-	B(){
-		
-	}
-	void D() {
-
-	}
-	A x;
-	B y;
-	void t() {
-		this.D();
-	}
-};
-
-class f{
-	
-};
-
-int main() {
-	int [  ] ff = new int[1 ];
-	f g;
-	int [  ][  ][ ] fg = new int[4][ ][	];
-	string String;
-	String = toString(getInt());
-	println(toString(String.length()));
+int init_anger = 100;
+int work_anger = 10;
+void work(string st, TA ta)
+{
+	if (ta.anger <= 100) println(st + ", " + ta.state + " enjoys this work. XD");
+	else println(st + ", " + ta.state + " wants to give up!!!!!");
+	ta.anger = ta.anger + work_anger;
+}
+int main()
+{
+	TA mr;
+	TA mars;
+	mr = new TA;
+	mr.state = "the leading TA";
+	mr.anger = 0;
+	mars = new TA;
+	mars.state = "the striking TA";
+	mars.anger = init_anger;
+	work("MR", mr);
+	work("Mars", mars);
+	work("Mars", mars);
+	return 0;
 }

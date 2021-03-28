@@ -251,7 +251,7 @@ public class IRModule {
         RealString = RealString.replace("\\t","\t");
         RealString = RealString.replace("\\\\","\\");
         RealString = RealString.replace("\\\"","\"");
-        RealString = RealString + "\0";
+        //RealString = RealString + "\0";
         if(IRConstStringTable.containsKey(RealString))
             return IRConstStringTable.get(RealString);
         else{
