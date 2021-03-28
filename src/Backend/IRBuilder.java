@@ -193,20 +193,23 @@ public class IRBuilder implements ASTVisitor {
     public void visit(classDefNode it) {
         currentClassName = it.className;
         IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
+     //   System.out.println("Here"+currentClassName);
         for (var tmp : it.varDefs)
             tmp.accept(this);
         for (var tmp : it.funcDefs)
             tmp.accept(this);
         if (it.consDef != null)
             it.consDef.accept(this);
-        currentClassName = null;
+       // System.out.println("Here-2-"+currentClassName);
+       // if(IdAddrMap == null) System.out.println("!!!"+currentClassName);
         IdAddrMap = IdAddrMap.ParentMap;
+        currentClassName = null;
     }
 
     @Override
     public void visit(funcDefNode it) {
         InFunc = true;
-        IdAddrMap = new IRIdExprAddrMap(null);
+        IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
 
         //(1) generate function name
         String tmpFuncName;
