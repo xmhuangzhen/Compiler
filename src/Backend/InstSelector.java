@@ -288,7 +288,12 @@ public class InstSelector implements IRVisitor {
     @Override
     public void visit(getElementPtrInstruction it) {
 
-        if(it.GetElementPtrPtr.thisType instanceof PointerType) {
+        if(it.GetElementPtrPtr instanceof GlobalVariables){
+            RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
+            curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,
+                    curRISCVModule.GlobalRegMap.get(it.GetElementPtrPtr)));
+        }
+        else if(it.GetElementPtrPtr.thisType instanceof PointerType) {
             RISCVRegister baseReg = curRISCVModule.getRISCVReg(it.GetElementPtrPtr, curRISCVBasicBlock);
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             if (it.GetElementPtrIdx.size() == 1) {
@@ -333,6 +338,7 @@ public class InstSelector implements IRVisitor {
                  //   System.out.println(baseReg.RegisterName+","+rd.RegisterName);
                     curRISCVFunction.GEPAddrMap.put(rd,new RISCVAddrImm(baseReg,(int)tmpGetMemberOffset));
                 } else {
+                  //  System.out.println("HERE!"+tmpGetMemberOffset+baseReg.RegisterName);
                     if (tmpGetMemberOffset <= Max_Imm && tmpGetMemberOffset >= Min_Imm)
                         curRISCVBasicBlock.addInstruction(
                                 new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
