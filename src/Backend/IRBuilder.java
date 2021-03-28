@@ -1091,14 +1091,15 @@ public class IRBuilder implements ASTVisitor {
         if (IdAddrMap != null && IdAddrMap.CheckIdExprAddr(it.Identifier)) {
             //local var
             IROperand tmpVarAddr = IdAddrMap.GetIdExprAddr(it.Identifier);
-            if(!(tmpVarAddr.thisType instanceof PointerType))throw new RuntimeException();
-            IRTypeSystem tmpType = ((PointerType) tmpVarAddr.thisType).baseType;
+            if(tmpVarAddr.thisType instanceof PointerType) {
+                IRTypeSystem tmpType = ((PointerType) tmpVarAddr.thisType).baseType;
 
-            Register tmpResult = new Register(tmpType, "Id_load" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
-                    tmpResult, tmpVarAddr));
-            it.ExprResult = tmpResult;
-            it.ExprLResult = tmpVarAddr;
+                Register tmpResult = new Register(tmpType, "Id_load" + (RegNum++));
+                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                        tmpResult, tmpVarAddr));
+                it.ExprResult = tmpResult;
+                it.ExprLResult = tmpVarAddr;
+            }
         }
         if (it.ExprResult == null && currentClassName != null) { //class member
             StructureType tmpClassType = currentModule.IRClassTable.get(currentClassName);
