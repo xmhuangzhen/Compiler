@@ -158,6 +158,7 @@ public class RISCVModule {
             tmpGlobalReg.isInt = true;
             tmpGlobalReg.ValInt = 0;
         }
+//        System.out.println(varName);
         GlobalRegMap.put(tmpGlobalVar, tmpGlobalReg);
     }
 

@@ -684,8 +684,11 @@ public class IRBuilder implements ASTVisitor {
                 if (it.rhs.ExprType.Typename.equals("null")) {
                     it.ExprResult = new BooleanConstant(true);
                 } else {
+                    it.ExprResult = new BooleanConstant(false);
                     //todo
                 }
+            } else if(it.rhs.ExprType.Typename.equals("null")){
+                it.ExprResult = new BooleanConstant(false);
             }
         } else if (it.op.equals("!=")) {
             RegisterName = "ne";
@@ -710,8 +713,11 @@ public class IRBuilder implements ASTVisitor {
                 if (it.rhs.ExprType.Typename.equals("null")) {
                     it.ExprResult = new BooleanConstant(false);
                 } else {
+                    it.ExprResult = new BooleanConstant(true);
                     //todo
                 }
+            } else if(it.rhs.ExprType.Typename.equals("null")){
+                it.ExprResult = new BooleanConstant(true);
             }
         } else if (it.op.equals("&&")) { // a && b
             IRBasicBlock AndandBBlock = new IRBasicBlock(currentFunction, "andand_b_block" + (BlockNum++));
@@ -1100,13 +1106,14 @@ public class IRBuilder implements ASTVisitor {
 
                 //(3) do the getElementPtr inst
 
-/*                if(it.expr.ExprResult == null){
-                    System.out.println(it.ExprText);
-                }*/
+//                System.out.println();
                 String RegisterName = "memacc_result";
                 Register tmpResult = new Register(new PointerType(tmpMemberIRType),
                         RegisterName + (RegNum++));
- //               tmpResult.NeedPtr = true;
+                if(tmpMemberIRType instanceof PointerType){
+                  //  System.out.println(it.ExprText);
+                    tmpResult.NeedPtr = true;
+                }
                 getElementPtrInstruction tmpgetElementPtrInst =
                         new getElementPtrInstruction(currentBasicBlock, it.expr.ExprResult, tmpResult);
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, 0));

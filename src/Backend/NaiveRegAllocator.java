@@ -63,12 +63,16 @@ public class NaiveRegAllocator {
                 int UpperSize = RealSize / 2 - (RealSize / 2) % 4;
                 int DownSize = RealSize - UpperSize;
 
+//                System.out.println("#####################"+tmpFunc.FunctionName);
 
                 for (RISCVBasicBlock tmpBlock = tmpFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
+
+  //                  System.out.println("--------------"+ tmpBlock.BlockName+ "-----------------");
                     for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
 
                         RISCVInstruction thisInst = tmpInst;
 
+                      //  System.out.println(thisInst.toString());
                         int NumOfPhyReg = 0;
                         for (int i = 0; i < thisInst.UsedVirtualReg.size(); ++i) {
                             RISCVRegister tmpReg = thisInst.UsedVirtualReg.get(i);
@@ -109,6 +113,7 @@ public class NaiveRegAllocator {
                             } else {
                                 thisInst.replaceReg(tmpReg, (RISCVPhyReg) tmpStoreReg);
                             }
+                //            System.out.println("["+tmpReg.RegisterName+","+((RISCVStackReg) tmpStoreReg).Offset+"]");
                         }
 
                         NumOfPhyReg = 0;

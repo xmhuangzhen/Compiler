@@ -287,8 +287,9 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(getElementPtrInstruction it) {
-
+    //    System.out.println(it.toString());
         if(it.GetElementPtrPtr instanceof GlobalVariables){
+//            System.out.println("CONST!STRING!"+it.toString());
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,
                     curRISCVModule.GlobalRegMap.get(it.GetElementPtrPtr)));
@@ -300,13 +301,16 @@ public class InstSelector implements IRVisitor {
                 //array
                 IROperand ArrayIndex = it.GetElementPtrIdx.get(0);
                 if (ArrayIndex instanceof IntegerConstant) { // rd = baseReg + 4*val;
+                //    System.out.println(it.toString());
                     long val = ((IntegerConstant) ArrayIndex).value * 4;
                     if (val <= Max_Imm && val >= Min_Imm) {
-                        curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                        curRISCVBasicBlock.addInstruction(
+                                new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
                                 rd, baseReg, null, new RISCVImm((int) val)));
                     }
                     else
-                        curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                        curRISCVBasicBlock.addInstruction(
+                                new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
                                 rd, baseReg,
                                 curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, val), curRISCVBasicBlock),
                                 null));
