@@ -1397,274 +1397,296 @@ vector.copy:
 	mv s1,sp
 	sw ra,-4(sp)
 	sw s0,-8(sp)
-	addi sp,sp,-136
+	addi sp,sp,-144
 	mv s0,sp
-	addi sp,sp,-136
-	lw t0,124(s0)
+	addi sp,sp,-144
+	lw t0,132(s0)
 	mv t0,a0
-	sw t0,124(s0)
-	lw t0,120(s0)
+	sw t0,132(s0)
+	lw t0,128(s0)
 	mv t0,a1
+	sw t0,128(s0)
+	lw t0,124(s0)
+	la t0,const_string_no3
+	sw t0,124(s0)
+	lw t0,124(s0)
+	mv a0,t0
+	sw t0,124(s0)
+	call println
+	lw t0,120(s0)
+	lw t1,128(s0)
+	mv t0,t1
 	sw t0,120(s0)
 	lw t0,116(s0)
-	lw t1,120(s0)
-	mv t0,t1
-	sw t0,116(s0)
-	j LBB92
-LBB92:
-	lw t0,112(s0)
 	li t0,0
+	sw t0,116(s0)
+	lw t0,112(s0)
+	lw t1,120(s0)
+	lw t2,116(s0)
+	xor t0,t1,t2
 	sw t0,112(s0)
 	lw t0,108(s0)
 	lw t1,112(s0)
-	mv t0,t1
+	seqz t0,t1
 	sw t0,108(s0)
+	lw t0,108(s0)
+	bnez t0,LBB92
+	j LBB93
+	sw t0,108(s0)
+LBB92:
+	lw t0,104(s0)
+	li t0,0
+	sw t0,104(s0)
+	lw t0,100(s0)
+	lw t1,104(s0)
+	mv t0,t1
+	sw t0,100(s0)
 	j LBB101
 	j LBB93
 LBB93:
-	lw t0,104(s0)
-	lw t1,120(s0)
-	mv t0,t1
-	sw t0,104(s0)
-	lw t0,104(s0)
-	mv a0,t0
-	sw t0,104(s0)
-	call vector.getDim
-	lw t0,100(s0)
-	mv t0,a0
-	sw t0,100(s0)
 	lw t0,96(s0)
-	li t0,0
-	sw t0,96(s0)
-	lw t0,92(s0)
-	lw t1,100(s0)
-	lw t2,96(s0)
-	xor t0,t1,t2
-	sw t0,92(s0)
-	lw t0,88(s0)
-	lw t1,92(s0)
-	seqz t0,t1
-	sw t0,88(s0)
-	lw t0,88(s0)
-	bnez t0,LBB94
-	j LBB95
-	sw t0,88(s0)
-LBB94:
-	lw t0,84(s0)
 	la t0,const_string_no3
-	sw t0,84(s0)
-	lw t0,84(s0)
+	sw t0,96(s0)
+	lw t0,96(s0)
 	mv a0,t0
-	sw t0,84(s0)
+	sw t0,96(s0)
 	call println
-	lw t0,80(s0)
-	lw t1,124(s0)
+	lw t0,92(s0)
+	lw t1,128(s0)
 	mv t0,t1
+	sw t0,92(s0)
+	lw t0,92(s0)
+	mv a0,t0
+	sw t0,92(s0)
+	call vector.getDim
+	lw t0,88(s0)
+	mv t0,a0
+	sw t0,88(s0)
+	lw t0,84(s0)
+	li t0,0
+	sw t0,84(s0)
+	lw t0,80(s0)
+	lw t1,88(s0)
+	lw t2,84(s0)
+	xor t0,t1,t2
 	sw t0,80(s0)
 	lw t0,76(s0)
 	lw t1,80(s0)
-	addi t0,t1,0
+	seqz t0,t1
 	sw t0,76(s0)
+	lw t0,76(s0)
+	bnez t0,LBB94
+	j LBB95
+	sw t0,76(s0)
+LBB94:
 	lw t0,72(s0)
-	lw t1,76(s0)
-	lw t0,0(t1)
+	lw t1,132(s0)
+	mv t0,t1
 	sw t0,72(s0)
 	lw t0,68(s0)
-	li t0,0
+	lw t1,72(s0)
+	addi t0,t1,0
 	sw t0,68(s0)
-	lw t0,68(s0)
-	lw t1,76(s0)
-	sw t0,0(t1)
-	sw t0,68(s0)
-	j LBB100
-LBB95:
 	lw t0,64(s0)
-	lw t1,124(s0)
-	mv t0,t1
+	lw t1,68(s0)
+	lw t0,0(t1)
 	sw t0,64(s0)
 	lw t0,60(s0)
-	lw t1,64(s0)
-	addi t0,t1,0
+	li t0,0
 	sw t0,60(s0)
+	lw t0,60(s0)
+	lw t1,68(s0)
+	sw t0,0(t1)
+	sw t0,60(s0)
+	j LBB100
+LBB95:
 	lw t0,56(s0)
-	lw t1,60(s0)
-	lw t0,0(t1)
+	lw t1,132(s0)
+	mv t0,t1
 	sw t0,56(s0)
 	lw t0,52(s0)
-	lw t1,120(s0)
-	mv t0,t1
+	lw t1,56(s0)
+	addi t0,t1,0
 	sw t0,52(s0)
-	lw t0,52(s0)
-	mv a0,t0
-	sw t0,52(s0)
-	call vector.getDim
 	lw t0,48(s0)
-	mv t0,a0
+	lw t1,52(s0)
+	lw t0,0(t1)
 	sw t0,48(s0)
 	lw t0,44(s0)
-	li t0,4
+	lw t1,128(s0)
+	mv t0,t1
 	sw t0,44(s0)
+	lw t0,44(s0)
+	mv a0,t0
+	sw t0,44(s0)
+	call vector.getDim
 	lw t0,40(s0)
-	lw t1,48(s0)
-	lw t2,44(s0)
-	mul t0,t1,t2
+	mv t0,a0
 	sw t0,40(s0)
 	lw t0,36(s0)
-	lw t1,40(s0)
-	addi t0,t1,4
+	li t0,4
 	sw t0,36(s0)
-	lw t0,36(s0)
-	mv a0,t0
-	sw t0,36(s0)
-	call malloc
 	lw t0,32(s0)
-	mv t0,a0
+	lw t1,40(s0)
+	lw t2,36(s0)
+	mul t0,t1,t2
 	sw t0,32(s0)
-	lw t0,48(s0)
-	lw t1,32(s0)
-	sw t0,0(t1)
-	sw t0,48(s0)
 	lw t0,28(s0)
 	lw t1,32(s0)
 	addi t0,t1,4
 	sw t0,28(s0)
+	lw t0,28(s0)
+	mv a0,t0
+	sw t0,28(s0)
+	call malloc
 	lw t0,24(s0)
-	lw t1,28(s0)
-	addi t0,t1,0
+	mv t0,a0
 	sw t0,24(s0)
-	lw t0,24(s0)
-	lw t1,60(s0)
+	lw t0,40(s0)
+	lw t1,24(s0)
 	sw t0,0(t1)
-	sw t0,24(s0)
+	sw t0,40(s0)
 	lw t0,20(s0)
-	lw t1,16(s0)
-	mv t0,t1
+	lw t1,24(s0)
+	addi t0,t1,4
 	sw t0,20(s0)
-	lw t0,12(s0)
-	li t0,0
-	sw t0,12(s0)
 	lw t0,16(s0)
-	lw t1,12(s0)
-	mv t0,t1
+	lw t1,20(s0)
+	addi t0,t1,0
 	sw t0,16(s0)
-	j LBB96
-LBB96:
+	lw t0,16(s0)
+	lw t1,52(s0)
+	sw t0,0(t1)
+	sw t0,16(s0)
+	lw t0,12(s0)
+	lw t1,8(s0)
+	mv t0,t1
+	sw t0,12(s0)
+	lw t0,4(s0)
+	li t0,0
+	sw t0,4(s0)
 	lw t0,8(s0)
-	lw t1,16(s0)
+	lw t1,4(s0)
 	mv t0,t1
 	sw t0,8(s0)
-	lw t0,124(s0)
-	mv a0,t0
-	sw t0,124(s0)
-	call vector.getDim
-	lw t0,4(s0)
-	mv t0,a0
-	sw t0,4(s0)
+	j LBB96
+LBB96:
 	lw t0,0(s0)
 	lw t1,8(s0)
-	lw t2,4(s0)
-	slt t0,t1,t2
-	sw t0,0(s0)
-	lw t0,0(s0)
-	bnez t0,LBB97
-	j LBB99
-	sw t0,0(s0)
-LBB97:
-	lw t0,-4(s0)
-	lw t1,124(s0)
 	mv t0,t1
+	sw t0,0(s0)
+	lw t0,132(s0)
+	mv a0,t0
+	sw t0,132(s0)
+	call vector.getDim
+	lw t0,-4(s0)
+	mv t0,a0
 	sw t0,-4(s0)
 	lw t0,-8(s0)
-	lw t1,-4(s0)
-	addi t0,t1,0
+	lw t1,0(s0)
+	lw t2,-4(s0)
+	slt t0,t1,t2
 	sw t0,-8(s0)
+	lw t0,-8(s0)
+	bnez t0,LBB97
+	j LBB99
+	sw t0,-8(s0)
+LBB97:
 	lw t0,-12(s0)
-	lw t1,-8(s0)
-	lw t0,0(t1)
+	lw t1,132(s0)
+	mv t0,t1
 	sw t0,-12(s0)
 	lw t0,-16(s0)
-	lw t1,16(s0)
-	mv t0,t1
+	lw t1,-12(s0)
+	addi t0,t1,0
 	sw t0,-16(s0)
 	lw t0,-20(s0)
 	lw t1,-16(s0)
-	slli t0,t1,2
+	lw t0,0(t1)
 	sw t0,-20(s0)
 	lw t0,-24(s0)
-	lw t1,-12(s0)
-	lw t2,-20(s0)
-	add t0,t1,t2
+	lw t1,8(s0)
+	mv t0,t1
 	sw t0,-24(s0)
 	lw t0,-28(s0)
 	lw t1,-24(s0)
-	lw t0,0(t1)
+	slli t0,t1,2
 	sw t0,-28(s0)
 	lw t0,-32(s0)
-	lw t1,120(s0)
-	mv t0,t1
+	lw t1,-20(s0)
+	lw t2,-28(s0)
+	add t0,t1,t2
 	sw t0,-32(s0)
 	lw t0,-36(s0)
 	lw t1,-32(s0)
-	addi t0,t1,0
+	lw t0,0(t1)
 	sw t0,-36(s0)
 	lw t0,-40(s0)
-	lw t1,-36(s0)
-	lw t0,0(t1)
+	lw t1,128(s0)
+	mv t0,t1
 	sw t0,-40(s0)
 	lw t0,-44(s0)
-	lw t1,16(s0)
-	mv t0,t1
+	lw t1,-40(s0)
+	addi t0,t1,0
 	sw t0,-44(s0)
 	lw t0,-48(s0)
 	lw t1,-44(s0)
-	slli t0,t1,2
+	lw t0,0(t1)
 	sw t0,-48(s0)
 	lw t0,-52(s0)
-	lw t1,-40(s0)
-	lw t2,-48(s0)
-	add t0,t1,t2
+	lw t1,8(s0)
+	mv t0,t1
 	sw t0,-52(s0)
 	lw t0,-56(s0)
 	lw t1,-52(s0)
-	lw t0,0(t1)
+	slli t0,t1,2
 	sw t0,-56(s0)
-	lw t0,-56(s0)
-	lw t1,-24(s0)
-	sw t0,0(t1)
-	sw t0,-56(s0)
-	j LBB98
-LBB98:
 	lw t0,-60(s0)
-	lw t1,16(s0)
-	mv t0,t1
+	lw t1,-48(s0)
+	lw t2,-56(s0)
+	add t0,t1,t2
 	sw t0,-60(s0)
 	lw t0,-64(s0)
 	lw t1,-60(s0)
-	addi t0,t1,1
+	lw t0,0(t1)
 	sw t0,-64(s0)
-	lw t0,16(s0)
-	lw t1,-64(s0)
+	lw t0,-64(s0)
+	lw t1,-32(s0)
+	sw t0,0(t1)
+	sw t0,-64(s0)
+	j LBB98
+LBB98:
+	lw t0,-68(s0)
+	lw t1,8(s0)
 	mv t0,t1
-	sw t0,16(s0)
+	sw t0,-68(s0)
+	lw t0,-72(s0)
+	lw t1,-68(s0)
+	addi t0,t1,1
+	sw t0,-72(s0)
+	lw t0,8(s0)
+	lw t1,-72(s0)
+	mv t0,t1
+	sw t0,8(s0)
 	j LBB96
 LBB99:
 	j LBB100
 LBB100:
-	lw t0,-68(s0)
+	lw t0,-76(s0)
 	li t0,1
-	sw t0,-68(s0)
-	lw t0,108(s0)
-	lw t1,-68(s0)
+	sw t0,-76(s0)
+	lw t0,100(s0)
+	lw t1,-76(s0)
 	mv t0,t1
-	sw t0,108(s0)
+	sw t0,100(s0)
 	j LBB101
 	j LBB101
 LBB101:
-	lw t0,108(s0)
+	lw t0,100(s0)
 	mv a0,t0
-	sw t0,108(s0)
-	addi sp,sp,136
-	addi sp,sp,136
+	sw t0,100(s0)
+	addi sp,sp,144
+	addi sp,sp,144
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
@@ -1676,413 +1698,443 @@ main:
 	mv s1,sp
 	sw ra,-4(sp)
 	sw s0,-8(sp)
-	addi sp,sp,-176
+	addi sp,sp,-184
 	mv s0,sp
-	addi sp,sp,-176
+	addi sp,sp,-184
 	call __init__
-	lw t0,164(s0)
+	lw t0,172(s0)
 	li t0,4
-	sw t0,164(s0)
-	lw t0,164(s0)
+	sw t0,172(s0)
+	lw t0,172(s0)
 	mv a0,t0
-	sw t0,164(s0)
+	sw t0,172(s0)
 	call malloc
-	lw t0,160(s0)
+	lw t0,168(s0)
 	mv t0,a0
+	sw t0,168(s0)
+	lw t0,164(s0)
+	lw t1,168(s0)
+	addi t0,t1,0
+	sw t0,164(s0)
+	lw t0,160(s0)
+	lw t1,164(s0)
+	mv t0,t1
 	sw t0,160(s0)
 	lw t0,156(s0)
-	lw t1,160(s0)
-	addi t0,t1,0
+	li t0,10
 	sw t0,156(s0)
 	lw t0,152(s0)
-	lw t1,156(s0)
-	mv t0,t1
+	li t0,4
 	sw t0,152(s0)
 	lw t0,148(s0)
-	li t0,10
+	lw t1,156(s0)
+	lw t2,152(s0)
+	mul t0,t1,t2
 	sw t0,148(s0)
 	lw t0,144(s0)
-	li t0,4
-	sw t0,144(s0)
-	lw t0,140(s0)
 	lw t1,148(s0)
-	lw t2,144(s0)
-	mul t0,t1,t2
+	addi t0,t1,4
+	sw t0,144(s0)
+	lw t0,144(s0)
+	mv a0,t0
+	sw t0,144(s0)
+	call malloc
+	lw t0,140(s0)
+	mv t0,a0
 	sw t0,140(s0)
 	lw t0,136(s0)
-	lw t1,140(s0)
-	addi t0,t1,4
+	li t0,10
 	sw t0,136(s0)
 	lw t0,136(s0)
-	mv a0,t0
+	lw t1,140(s0)
+	sw t0,0(t1)
 	sw t0,136(s0)
-	call malloc
 	lw t0,132(s0)
-	mv t0,a0
+	lw t1,140(s0)
+	addi t0,t1,4
 	sw t0,132(s0)
 	lw t0,128(s0)
-	li t0,10
-	sw t0,128(s0)
-	lw t0,128(s0)
 	lw t1,132(s0)
-	sw t0,0(t1)
+	addi t0,t1,0
 	sw t0,128(s0)
 	lw t0,124(s0)
-	lw t1,132(s0)
-	addi t0,t1,4
+	lw t1,128(s0)
+	mv t0,t1
 	sw t0,124(s0)
 	lw t0,120(s0)
-	lw t1,124(s0)
-	addi t0,t1,0
-	sw t0,120(s0)
-	lw t0,116(s0)
-	lw t1,120(s0)
-	mv t0,t1
-	sw t0,116(s0)
-	lw t0,112(s0)
-	lw t1,108(s0)
-	mv t0,t1
-	sw t0,112(s0)
-	lw t0,104(s0)
-	li t0,0
-	sw t0,104(s0)
-	lw t0,108(s0)
-	lw t1,104(s0)
-	mv t0,t1
-	sw t0,108(s0)
-	j LBB103
-LBB103:
-	lw t0,100(s0)
-	lw t1,108(s0)
-	mv t0,t1
-	sw t0,100(s0)
-	lw t0,96(s0)
-	li t0,10
-	sw t0,96(s0)
-	lw t0,92(s0)
-	lw t1,100(s0)
-	lw t2,96(s0)
-	slt t0,t1,t2
-	sw t0,92(s0)
-	lw t0,92(s0)
-	bnez t0,LBB104
-	j LBB106
-	sw t0,92(s0)
-LBB104:
-	lw t0,88(s0)
 	lw t1,116(s0)
 	mv t0,t1
+	sw t0,120(s0)
+	lw t0,112(s0)
+	li t0,0
+	sw t0,112(s0)
+	lw t0,116(s0)
+	lw t1,112(s0)
+	mv t0,t1
+	sw t0,116(s0)
+	j LBB103
+LBB103:
+	lw t0,108(s0)
+	lw t1,116(s0)
+	mv t0,t1
+	sw t0,108(s0)
+	lw t0,104(s0)
+	li t0,10
+	sw t0,104(s0)
+	lw t0,100(s0)
+	lw t1,108(s0)
+	lw t2,104(s0)
+	slt t0,t1,t2
+	sw t0,100(s0)
+	lw t0,100(s0)
+	bnez t0,LBB104
+	j LBB106
+	sw t0,100(s0)
+LBB104:
+	lw t0,96(s0)
+	lw t1,124(s0)
+	mv t0,t1
+	sw t0,96(s0)
+	lw t0,92(s0)
+	lw t1,116(s0)
+	mv t0,t1
+	sw t0,92(s0)
+	lw t0,88(s0)
+	lw t1,92(s0)
+	slli t0,t1,2
 	sw t0,88(s0)
 	lw t0,84(s0)
-	lw t1,108(s0)
-	mv t0,t1
+	lw t1,96(s0)
+	lw t2,88(s0)
+	add t0,t1,t2
 	sw t0,84(s0)
 	lw t0,80(s0)
 	lw t1,84(s0)
-	slli t0,t1,2
+	lw t0,0(t1)
 	sw t0,80(s0)
 	lw t0,76(s0)
-	lw t1,88(s0)
-	lw t2,80(s0)
-	add t0,t1,t2
+	lw t1,116(s0)
+	mv t0,t1
 	sw t0,76(s0)
 	lw t0,72(s0)
-	lw t1,76(s0)
-	lw t0,0(t1)
+	li t0,9
 	sw t0,72(s0)
 	lw t0,68(s0)
-	lw t1,108(s0)
-	mv t0,t1
+	lw t1,72(s0)
+	lw t2,76(s0)
+	sub t0,t1,t2
 	sw t0,68(s0)
+	lw t0,68(s0)
+	lw t1,84(s0)
+	sw t0,0(t1)
+	sw t0,68(s0)
+	j LBB105
+LBB105:
 	lw t0,64(s0)
-	li t0,9
+	lw t1,116(s0)
+	mv t0,t1
 	sw t0,64(s0)
 	lw t0,60(s0)
 	lw t1,64(s0)
-	lw t2,68(s0)
-	sub t0,t1,t2
+	addi t0,t1,1
 	sw t0,60(s0)
-	lw t0,60(s0)
-	lw t1,76(s0)
-	sw t0,0(t1)
-	sw t0,60(s0)
-	j LBB105
-LBB105:
+	lw t0,116(s0)
+	lw t1,60(s0)
+	mv t0,t1
+	sw t0,116(s0)
+	j LBB103
+LBB106:
 	lw t0,56(s0)
-	lw t1,108(s0)
+	lw t1,160(s0)
 	mv t0,t1
 	sw t0,56(s0)
 	lw t0,52(s0)
-	lw t1,56(s0)
-	addi t0,t1,1
+	lw t1,124(s0)
+	mv t0,t1
 	sw t0,52(s0)
-	lw t0,108(s0)
-	lw t1,52(s0)
-	mv t0,t1
-	sw t0,108(s0)
-	j LBB103
-LBB106:
-	lw t0,48(s0)
-	lw t1,152(s0)
-	mv t0,t1
-	sw t0,48(s0)
-	lw t0,44(s0)
-	lw t1,116(s0)
-	mv t0,t1
-	sw t0,44(s0)
-	lw t0,48(s0)
+	lw t0,56(s0)
 	mv a0,t0
-	sw t0,48(s0)
-	lw t0,44(s0)
+	sw t0,56(s0)
+	lw t0,52(s0)
 	mv a1,t0
-	sw t0,44(s0)
+	sw t0,52(s0)
 	call vector.init
-	lw t0,40(s0)
+	lw t0,48(s0)
 	mv t0,a0
-	sw t0,40(s0)
-	lw t0,36(s0)
+	sw t0,48(s0)
+	lw t0,44(s0)
 	la t0,const_string_no4
+	sw t0,44(s0)
+	lw t0,44(s0)
+	mv a0,t0
+	sw t0,44(s0)
+	call print
+	lw t0,40(s0)
+	lw t1,160(s0)
+	mv t0,t1
+	sw t0,40(s0)
+	lw t0,40(s0)
+	mv a0,t0
+	sw t0,40(s0)
+	call vector.tostring
+	lw t0,36(s0)
+	mv t0,a0
 	sw t0,36(s0)
 	lw t0,36(s0)
 	mv a0,t0
 	sw t0,36(s0)
-	call print
-	lw t0,32(s0)
-	lw t1,152(s0)
-	mv t0,t1
-	sw t0,32(s0)
-	lw t0,32(s0)
-	mv a0,t0
-	sw t0,32(s0)
-	call vector.tostring
-	lw t0,28(s0)
-	mv t0,a0
-	sw t0,28(s0)
-	lw t0,28(s0)
-	mv a0,t0
-	sw t0,28(s0)
 	call println
-	lw t0,24(s0)
+	lw t0,32(s0)
 	li t0,4
-	sw t0,24(s0)
-	lw t0,24(s0)
+	sw t0,32(s0)
+	lw t0,32(s0)
 	mv a0,t0
-	sw t0,24(s0)
+	sw t0,32(s0)
 	call malloc
-	lw t0,20(s0)
+	lw t0,28(s0)
 	mv t0,a0
+	sw t0,28(s0)
+	lw t0,24(s0)
+	lw t1,28(s0)
+	addi t0,t1,0
+	sw t0,24(s0)
+	lw t0,20(s0)
+	lw t1,24(s0)
+	mv t0,t1
 	sw t0,20(s0)
 	lw t0,16(s0)
 	lw t1,20(s0)
-	addi t0,t1,0
+	mv t0,t1
 	sw t0,16(s0)
 	lw t0,12(s0)
-	lw t1,16(s0)
+	lw t1,160(s0)
 	mv t0,t1
 	sw t0,12(s0)
-	lw t0,8(s0)
-	lw t1,12(s0)
-	mv t0,t1
-	sw t0,8(s0)
-	lw t0,4(s0)
-	lw t1,152(s0)
-	mv t0,t1
-	sw t0,4(s0)
-	lw t0,8(s0)
+	lw t0,16(s0)
 	mv a0,t0
+	sw t0,16(s0)
+	lw t0,12(s0)
+	mv a1,t0
+	sw t0,12(s0)
+	call vector.copy
+	lw t0,8(s0)
+	mv t0,a0
 	sw t0,8(s0)
 	lw t0,4(s0)
-	mv a1,t0
+	lw t1,20(s0)
+	mv t0,t1
 	sw t0,4(s0)
-	call vector.copy
+	lw t0,4(s0)
+	mv a0,t0
+	sw t0,4(s0)
 	lw t0,0(s0)
-	mv t0,a0
+	li t0,3
+	sw t0,0(s0)
+	lw t0,0(s0)
+	mv a1,t0
 	sw t0,0(s0)
 	lw t0,-4(s0)
-	lw t1,12(s0)
-	mv t0,t1
+	li t0,817
 	sw t0,-4(s0)
 	lw t0,-4(s0)
-	mv a0,t0
-	sw t0,-4(s0)
-	lw t0,-8(s0)
-	li t0,3
-	sw t0,-8(s0)
-	lw t0,-8(s0)
-	mv a1,t0
-	sw t0,-8(s0)
-	lw t0,-12(s0)
-	li t0,817
-	sw t0,-12(s0)
-	lw t0,-12(s0)
 	mv a2,t0
-	sw t0,-12(s0)
+	sw t0,-4(s0)
 	call vector.set
-	lw t0,-16(s0)
+	lw t0,-8(s0)
 	mv t0,a0
-	sw t0,-16(s0)
-	lw t0,-16(s0)
+	sw t0,-8(s0)
+	lw t0,-8(s0)
 	bnez t0,LBB107
 	j LBB108
-	sw t0,-16(s0)
+	sw t0,-8(s0)
 LBB107:
-	lw t0,-20(s0)
+	lw t0,-12(s0)
 	la t0,const_string_no5
-	sw t0,-20(s0)
-	lw t0,-20(s0)
+	sw t0,-12(s0)
+	lw t0,-12(s0)
 	mv a0,t0
-	sw t0,-20(s0)
+	sw t0,-12(s0)
 	call println
 	j LBB108
 LBB108:
-	lw t0,-24(s0)
+	lw t0,-16(s0)
 	la t0,const_string_no6
+	sw t0,-16(s0)
+	lw t0,-16(s0)
+	mv a0,t0
+	sw t0,-16(s0)
+	call print
+	lw t0,-20(s0)
+	lw t1,20(s0)
+	mv t0,t1
+	sw t0,-20(s0)
+	lw t0,-20(s0)
+	mv a0,t0
+	sw t0,-20(s0)
+	call vector.tostring
+	lw t0,-24(s0)
+	mv t0,a0
 	sw t0,-24(s0)
 	lw t0,-24(s0)
 	mv a0,t0
 	sw t0,-24(s0)
-	call print
-	lw t0,-28(s0)
-	lw t1,12(s0)
-	mv t0,t1
-	sw t0,-28(s0)
-	lw t0,-28(s0)
-	mv a0,t0
-	sw t0,-28(s0)
-	call vector.tostring
-	lw t0,-32(s0)
-	mv t0,a0
-	sw t0,-32(s0)
-	lw t0,-32(s0)
-	mv a0,t0
-	sw t0,-32(s0)
 	call println
-	lw t0,-36(s0)
+	lw t0,-28(s0)
 	la t0,const_string_no7
-	sw t0,-36(s0)
+	sw t0,-28(s0)
+	lw t0,-28(s0)
+	mv a0,t0
+	sw t0,-28(s0)
+	call print
+	lw t0,-32(s0)
+	lw t1,160(s0)
+	mv t0,t1
+	sw t0,-32(s0)
 	lw t0,-36(s0)
-	mv a0,t0
+	lw t1,20(s0)
+	mv t0,t1
 	sw t0,-36(s0)
-	call print
-	lw t0,-40(s0)
-	lw t1,152(s0)
-	mv t0,t1
-	sw t0,-40(s0)
-	lw t0,-44(s0)
-	lw t1,12(s0)
-	mv t0,t1
-	sw t0,-44(s0)
-	lw t0,-40(s0)
+	lw t0,-32(s0)
 	mv a0,t0
-	sw t0,-40(s0)
-	lw t0,-44(s0)
+	sw t0,-32(s0)
+	lw t0,-36(s0)
 	mv a1,t0
-	sw t0,-44(s0)
+	sw t0,-36(s0)
 	call vector.add
-	lw t0,-48(s0)
+	lw t0,-40(s0)
 	mv t0,a0
-	sw t0,-48(s0)
-	lw t0,-48(s0)
+	sw t0,-40(s0)
+	lw t0,-40(s0)
 	mv a0,t0
-	sw t0,-48(s0)
+	sw t0,-40(s0)
 	call vector.tostring
-	lw t0,-52(s0)
+	lw t0,-44(s0)
 	mv t0,a0
-	sw t0,-52(s0)
-	lw t0,-52(s0)
+	sw t0,-44(s0)
+	lw t0,-44(s0)
 	mv a0,t0
-	sw t0,-52(s0)
+	sw t0,-44(s0)
 	call println
-	lw t0,-56(s0)
+	lw t0,-48(s0)
 	la t0,const_string_no8
-	sw t0,-56(s0)
+	sw t0,-48(s0)
+	lw t0,-48(s0)
+	mv a0,t0
+	sw t0,-48(s0)
+	call print
+	lw t0,-52(s0)
+	lw t1,160(s0)
+	mv t0,t1
+	sw t0,-52(s0)
 	lw t0,-56(s0)
-	mv a0,t0
+	lw t1,20(s0)
+	mv t0,t1
 	sw t0,-56(s0)
-	call print
-	lw t0,-60(s0)
-	lw t1,152(s0)
-	mv t0,t1
-	sw t0,-60(s0)
-	lw t0,-64(s0)
-	lw t1,12(s0)
-	mv t0,t1
-	sw t0,-64(s0)
-	lw t0,-60(s0)
+	lw t0,-52(s0)
 	mv a0,t0
-	sw t0,-60(s0)
-	lw t0,-64(s0)
+	sw t0,-52(s0)
+	lw t0,-56(s0)
 	mv a1,t0
-	sw t0,-64(s0)
+	sw t0,-56(s0)
 	call vector.dot
-	lw t0,-68(s0)
+	lw t0,-60(s0)
 	mv t0,a0
-	sw t0,-68(s0)
-	lw t0,-68(s0)
+	sw t0,-60(s0)
+	lw t0,-60(s0)
 	mv a0,t0
-	sw t0,-68(s0)
+	sw t0,-60(s0)
 	call toString
-	lw t0,-72(s0)
+	lw t0,-64(s0)
 	mv t0,a0
+	sw t0,-64(s0)
+	lw t0,-64(s0)
+	mv a0,t0
+	sw t0,-64(s0)
+	call println
+	lw t0,-68(s0)
+	la t0,const_string_no9
+	sw t0,-68(s0)
+	lw t0,-68(s0)
+	mv a0,t0
+	sw t0,-68(s0)
+	call print
+	lw t0,-72(s0)
+	li t0,4
 	sw t0,-72(s0)
 	lw t0,-72(s0)
 	mv a0,t0
 	sw t0,-72(s0)
-	call println
+	call malloc
 	lw t0,-76(s0)
-	la t0,const_string_no9
+	mv t0,a0
 	sw t0,-76(s0)
-	lw t0,-76(s0)
-	mv a0,t0
-	sw t0,-76(s0)
-	call print
 	lw t0,-80(s0)
-	lw t1,12(s0)
-	mv t0,t1
+	lw t1,-76(s0)
+	addi t0,t1,0
 	sw t0,-80(s0)
 	lw t0,-84(s0)
-	li t0,3
+	lw t1,-80(s0)
+	mv t0,t1
 	sw t0,-84(s0)
 	lw t0,-88(s0)
 	lw t1,-84(s0)
-	slli t0,t1,1
-	sw t0,-88(s0)
-	lw t0,-80(s0)
-	mv a0,t0
-	sw t0,-80(s0)
-	lw t0,-88(s0)
-	mv a1,t0
-	sw t0,-88(s0)
-	call vector.scalarInPlaceMultiply
-	lw t0,-92(s0)
-	mv t0,a0
-	sw t0,-92(s0)
-	lw t0,-92(s0)
-	mv a0,t0
-	sw t0,-92(s0)
-	call vector.tostring
-	lw t0,-96(s0)
-	mv t0,a0
-	sw t0,-96(s0)
-	lw t0,-96(s0)
-	mv a0,t0
-	sw t0,-96(s0)
-	call println
-	lw t0,-100(s0)
-	li t0,0
-	sw t0,-100(s0)
-	lw t0,-104(s0)
-	lw t1,-100(s0)
 	mv t0,t1
+	sw t0,-88(s0)
+	lw t0,-92(s0)
+	lw t1,20(s0)
+	mv t0,t1
+	sw t0,-92(s0)
+	lw t0,-96(s0)
+	li t0,1
+	sw t0,-96(s0)
+	lw t0,-100(s0)
+	lw t1,-96(s0)
+	slli t0,t1,3
+	sw t0,-100(s0)
+	lw t0,-92(s0)
+	mv a0,t0
+	sw t0,-92(s0)
+	lw t0,-100(s0)
+	mv a1,t0
+	sw t0,-100(s0)
+	call vector.scalarInPlaceMultiply
+	lw t0,-104(s0)
+	mv t0,a0
 	sw t0,-104(s0)
+	lw t0,-84(s0)
+	lw t1,-104(s0)
+	mv t0,t1
+	sw t0,-84(s0)
+	lw t0,-108(s0)
+	lw t1,-84(s0)
+	mv t0,t1
+	sw t0,-108(s0)
+	lw t0,-108(s0)
+	mv a0,t0
+	sw t0,-108(s0)
+	call vector.tostring
+	lw t0,-112(s0)
+	mv t0,a0
+	sw t0,-112(s0)
+	lw t0,-112(s0)
+	mv a0,t0
+	sw t0,-112(s0)
+	call println
+	lw t0,-116(s0)
+	li t0,0
+	sw t0,-116(s0)
+	lw t0,-120(s0)
+	lw t1,-116(s0)
+	mv t0,t1
+	sw t0,-120(s0)
 	j LBB109
 	j LBB109
 LBB109:
-	lw t0,-104(s0)
+	lw t0,-120(s0)
 	mv a0,t0
-	sw t0,-104(s0)
-	addi sp,sp,176
-	addi sp,sp,176
+	sw t0,-120(s0)
+	addi sp,sp,184
+	addi sp,sp,184
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
@@ -2098,7 +2150,7 @@ const_string_no2:
 	.asciz	" )"
 
 const_string_no3:
-	.asciz	"Here-1"
+	.asciz	"HERE"
 
 const_string_no4:
 	.asciz	"vector x: "

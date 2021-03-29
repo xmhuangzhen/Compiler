@@ -164,27 +164,18 @@ public class InstSelector implements IRVisitor {
         RISCVImm imm = null;
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.bitwiseBinaryResult, curRISCVBasicBlock);
 
-        if (it.bitwiseBinaryOp1 instanceof BooleanConstant) {
-            rs1 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp2, curRISCVBasicBlock);
-            imm = new RISCVImm(((BooleanConstant) it.bitwiseBinaryOp1).value ? 1 : 0);
-        } else if ((it.bitwiseBinaryOp1 instanceof IntegerConstant) && ((IntegerConstant) it.bitwiseBinaryOp1).value <= Max_Imm &&
-                ((IntegerConstant) it.bitwiseBinaryOp1).value >= Min_Imm) {
-            rs1 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp2, curRISCVBasicBlock);
-            imm = new RISCVImm((int) ((IntegerConstant) it.bitwiseBinaryOp1).value);
-        } else {
-            rs1 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp1, curRISCVBasicBlock);
-            if (it.bitwiseBinaryOp2 instanceof BooleanConstant)
-                imm = new RISCVImm(((BooleanConstant) it.bitwiseBinaryOp2).value ? 1 : 0);
-            else if ((it.bitwiseBinaryOp2 instanceof IntegerConstant) && ((IntegerConstant) it.bitwiseBinaryOp2).value <= Max_Imm &&
-                    ((IntegerConstant) it.bitwiseBinaryOp2).value >= Min_Imm)
-                imm = new RISCVImm((int) ((IntegerConstant) it.bitwiseBinaryOp2).value);
-            else
-                rs2 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp2, curRISCVBasicBlock);
-        }
+        rs1 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp1, curRISCVBasicBlock);
+        if (it.bitwiseBinaryOp2 instanceof BooleanConstant)
+            imm = new RISCVImm(((BooleanConstant) it.bitwiseBinaryOp2).value ? 1 : 0);
+        else if ((it.bitwiseBinaryOp2 instanceof IntegerConstant) &&
+                ((IntegerConstant) it.bitwiseBinaryOp2).value <= Max_Imm &&
+                ((IntegerConstant) it.bitwiseBinaryOp2).value >= Min_Imm)
+            imm = new RISCVImm((int) ((IntegerConstant) it.bitwiseBinaryOp2).value);
+        else
+            rs2 = curRISCVModule.getRISCVReg(it.bitwiseBinaryOp2, curRISCVBasicBlock);
         curRISCVBasicBlock.addInstruction(new RISCVBinaryOpInst(
                 curRISCVModule.getRISCVBinaryENUMTypeFromIRBitwiseENUMType(it.bitwiseBinaryOperandType),
-                rd, rs1, rs2, imm
-        ));
+                rd, rs1, rs2, imm));
     }
 
     @Override

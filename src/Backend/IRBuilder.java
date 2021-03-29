@@ -684,12 +684,22 @@ public class IRBuilder implements ASTVisitor {
                 if (it.rhs.ExprType.Typename.equals("null")) {
                     it.ExprResult = new BooleanConstant(true);
                 } else {
-                    it.ExprResult = new BooleanConstant(false);
-                    //todo
+                    tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                            RegisterName+(RegNum++));
+                    currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
+                            icmpInstruction.IcmpOperandENUM.eq,
+                            currentModule.getIRType(it.lhs.ExprType),
+                            it.lhs.ExprResult, it.rhs.ExprResult,tmpResult));
+                    it.ExprResult = tmpResult;
                 }
             } else if(it.rhs.ExprType.Typename.equals("null")){
-               // System.out.println("HERE!!!"+it.ExprText);
-                it.ExprResult = new BooleanConstant(false);
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                        RegisterName+(RegNum++));
+                currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
+                        icmpInstruction.IcmpOperandENUM.eq,
+                        currentModule.getIRType(it.lhs.ExprType),
+                        it.lhs.ExprResult, it.rhs.ExprResult,tmpResult));
+                it.ExprResult = tmpResult;
             }
         } else if (it.op.equals("!=")) {
             RegisterName = "ne";
@@ -714,11 +724,22 @@ public class IRBuilder implements ASTVisitor {
                 if (it.rhs.ExprType.Typename.equals("null")) {
                     it.ExprResult = new BooleanConstant(false);
                 } else {
-                    it.ExprResult = new BooleanConstant(true);
-                    //todo
+                    tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                            RegisterName+(RegNum++));
+                    currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
+                            icmpInstruction.IcmpOperandENUM.ne,
+                            currentModule.getIRType(it.lhs.ExprType),
+                            it.lhs.ExprResult, it.rhs.ExprResult,tmpResult));
+                    it.ExprResult = tmpResult;
                 }
             } else if(it.rhs.ExprType.Typename.equals("null")){
-                it.ExprResult = new BooleanConstant(true);
+                tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                        RegisterName+(RegNum++));
+                currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
+                        icmpInstruction.IcmpOperandENUM.ne,
+                        currentModule.getIRType(it.lhs.ExprType),
+                        it.lhs.ExprResult, it.rhs.ExprResult,tmpResult));
+                it.ExprResult = tmpResult;
             }
         } else if (it.op.equals("&&")) { // a && b
             IRBasicBlock AndandBBlock = new IRBasicBlock(currentFunction, "andand_b_block" + (BlockNum++));
