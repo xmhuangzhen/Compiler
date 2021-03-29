@@ -416,9 +416,13 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                     it.condExpr.ExprResult, ForBodyBlock, ForDestBlock));
             IdAddrMap = IdAddrMap.ParentMap;
+        } else {
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
+                    null,ForBodyBlock,null));
         }
 
         //visit body
+
         currentBasicBlock = ForBodyBlock;
         IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
         currentFunction.addFunctionBasicBlock(ForBodyBlock);
