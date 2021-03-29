@@ -40,28 +40,11 @@ public class NaiveRegAllocator {
                         }
                     }
                 }
-            }
-
-        for (var tmpFunc : curRISCVModule.RISCVFuncMap.values())
-            if (!tmpFunc.IsBuiltIn) {
-
-                for (RISCVBasicBlock tmpBlock = tmpFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
-                    for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
-                        for (int i = 0; i < tmpInst.UsedVirtualReg.size(); ++i) {
-                            RISCVRegister tmpReg = tmpInst.UsedVirtualReg.get(i);
-                            if (!RegCountSet.contains(tmpReg)) {
-                                tmpFunc.StackCounting++;
-                                RegCountSet.add(tmpReg);
-                            }
-                        }
-                    }
-                }
-
 
 
                 int RealSize = tmpFunc.RealStackSize();
-                int UpperSize = RealSize / 2 - (RealSize / 2) % 4;
-                int DownSize = RealSize - UpperSize;
+                int SegNum = RealSize/2048 + 1;
+//                SegSize.replace(SegNum,0);
 
 //                System.out.println("#####################"+tmpFunc.FunctionName);
 
@@ -78,21 +61,21 @@ public class NaiveRegAllocator {
                             RISCVRegister tmpReg = thisInst.UsedVirtualReg.get(i);
                             RISCVRegister tmpStoreReg;
                             if (!RegAllocMap.containsKey(tmpReg)) {
+                                int OffsetOfSp = 4*(SegNum+1+tmpFunc.StackNum+1);
+                                int SegNumberOfThis = OffsetOfSp/2048;
                                 tmpStoreReg = new RISCVStackReg(tmpFunc,
-                                        curRISCVModule.getPhyReg("s0"),
-                                        UpperSize);
+                                        curRISCVModule.getPhyReg("s"+SegNumberOfThis),
+                                        1024-OffsetOfSp%2048);
                                 RegAllocMap.put(tmpReg, tmpStoreReg);
                             } else tmpStoreReg = RegAllocMap.get(tmpReg);
 
                             if (tmpStoreReg instanceof RISCVStackReg) {
                                 if (tmpReg instanceof RISCVVirtualReg) {
-                               //     if(tmpReg.NeedLoad) {
                                         thisInst.addInstPre(tmpBlock,
                                                 new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                                         curRISCVModule.getPhyReg("t" + NumOfPhyReg),
                                                         ((RISCVStackReg) tmpStoreReg).baseReg,
                                                         ((RISCVStackReg) tmpStoreReg).Offset));
-                                 //   }
                                     thisInst.replaceReg(tmpReg, curRISCVModule.getPhyReg("t" + NumOfPhyReg));
                                     NumOfPhyReg++;
                                 } else if (tmpReg instanceof RISCVGlobalReg) {//global reg
@@ -122,14 +105,12 @@ public class NaiveRegAllocator {
                             RISCVRegister tmpStoreReg = RegAllocMap.get(tmpReg);
                             if (tmpStoreReg instanceof RISCVStackReg) {
                                 if (tmpReg instanceof RISCVVirtualReg) {
-                                //    if(!tmpReg.NeedLoad) {
-                                        tmpInst.addInstNxt(tmpBlock,
-                                                new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                                                        curRISCVModule.getPhyReg("t" + NumOfPhyReg),
-                                                        ((RISCVStackReg) tmpStoreReg).baseReg,
-                                                        ((RISCVStackReg) tmpStoreReg).Offset));
-                                        tmpInst = tmpInst.nextInst;
-                                  //  }
+                                    tmpInst.addInstNxt(tmpBlock,
+                                            new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                                    curRISCVModule.getPhyReg("t" + NumOfPhyReg),
+                                                    ((RISCVStackReg) tmpStoreReg).baseReg,
+                                                    ((RISCVStackReg) tmpStoreReg).Offset));
+                                    tmpInst = tmpInst.nextInst;
                                     NumOfPhyReg++;
                                 } else if (tmpReg instanceof RISCVGlobalReg) {//global reg
                                     //lui t0,%hi(a)
@@ -159,7 +140,6 @@ public class NaiveRegAllocator {
 
                 //////////////////////////////////////////////////////////////
                 if (tmpFunc.EntranceBlock == null) throw new RuntimeException();
-                // mv s1,sp
                 // sw ra,-4(sp)
                 // sw s0,-8(sp)
                 // addi sp,sp,-UpperSize
@@ -167,62 +147,70 @@ public class NaiveRegAllocator {
                 // addi sp,sp,-DownSize
 
                 RISCVInstruction tmpInst = tmpFunc.EntranceBlock.HeadInst;
-                RISCVInstruction tmpInst0 = new RISCVmvInst(
-                        curRISCVModule.getPhyReg("s1"),
-                        curRISCVModule.getPhyReg("sp"));
                 RISCVInstruction tmpInst1 = new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                         curRISCVModule.getPhyReg("ra"),
                         curRISCVModule.getPhyReg("sp"),
                         new RISCVImm(-4));
-                RISCVInstruction tmpInst2 = new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                        curRISCVModule.getPhyReg("s0"),
-                        curRISCVModule.getPhyReg("sp"),
-                        new RISCVImm(-8));
-                RISCVInstruction tmpInst3 = new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                        curRISCVModule.getPhyReg("sp"),
-                        curRISCVModule.getPhyReg("sp"),
-                        null, new RISCVImm(-UpperSize));
-                RISCVInstruction tmpInst4 = new RISCVmvInst(curRISCVModule.getPhyReg("s0"),
-                        curRISCVModule.getPhyReg("sp"));
-                RISCVInstruction tmpInst5 = new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                        curRISCVModule.getPhyReg("sp"),
-                        curRISCVModule.getPhyReg("sp"),
-                        null, new RISCVImm(-DownSize));
-
-
                 if (tmpInst == null) {
-                    tmpFunc.EntranceBlock.HeadInst = tmpInst0;
+                    tmpFunc.EntranceBlock.HeadInst = tmpInst1;
                 } else {
-                    tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst0);
+                    tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst1);
                 }
-                tmpInst0.addInstNxt(tmpFunc.EntranceBlock, tmpInst1);
-                tmpInst1.addInstNxt(tmpFunc.EntranceBlock, tmpInst2);
-                tmpInst2.addInstNxt(tmpFunc.EntranceBlock, tmpInst3);
-                tmpInst3.addInstNxt(tmpFunc.EntranceBlock, tmpInst4);
-                tmpInst4.addInstNxt(tmpFunc.EntranceBlock, tmpInst5);
+                tmpInst = tmpInst1;
+                for(int i = 0;i < SegNum;++i){
+                    tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+                            new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                            curRISCVModule.getPhyReg("s"+i),
+                            curRISCVModule.getPhyReg("sp"),
+                            new RISCVImm(-8-4*i)));
+                    tmpInst = tmpInst.nextInst;
+                }
+
+                for(int i = 0;i < SegNum;++i){
+                    tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+                        new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                        curRISCVModule.getPhyReg("sp"),
+                        curRISCVModule.getPhyReg("sp"),
+                        null, new RISCVImm(-1024)));
+                    tmpInst= tmpInst.nextInst;
+                    tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+                            new RISCVmvInst(curRISCVModule.getPhyReg("s"+i),
+                                    curRISCVModule.getPhyReg("sp")));
+                    tmpInst= tmpInst.nextInst;
+                    tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+                            new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                                    curRISCVModule.getPhyReg("sp"),
+                                    curRISCVModule.getPhyReg("sp"),
+                                    null, new RISCVImm(-1024)));
+                    tmpInst= tmpInst.nextInst;
+                }
 
                 if (tmpFunc.LastBlock.TailInst == null) {
                     throw new RuntimeException(tmpFunc.FunctionName);
                 }
 
                 tmpInst = tmpFunc.LastBlock.TailInst;
-                //addi sp,sp,48
-                tmpInst.addInstPre(tmpFunc.LastBlock,
-                        new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                curRISCVModule.getPhyReg("sp"),
-                                curRISCVModule.getPhyReg("sp"),
-                                null, new RISCVImm(DownSize)));
-                tmpInst.addInstPre(tmpFunc.LastBlock,
-                        new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                curRISCVModule.getPhyReg("sp"),
-                                curRISCVModule.getPhyReg("sp"),
-                                null, new RISCVImm(UpperSize)));
-                //lw s0,-8(sp)
-                tmpInst.addInstPre(tmpFunc.LastBlock,
-                        new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
-                                curRISCVModule.getPhyReg("s0"),
-                                curRISCVModule.getPhyReg("sp"),
-                                new RISCVImm(-8)));
+                for(int i = 0;i < SegNum;++i){
+                    tmpInst.addInstPre(tmpFunc.LastBlock,
+                            new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                                    curRISCVModule.getPhyReg("sp"),
+                                    curRISCVModule.getPhyReg("sp"),
+                                    null, new RISCVImm(1024)));
+                    tmpInst.addInstPre(tmpFunc.LastBlock,
+                            new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
+                                    curRISCVModule.getPhyReg("sp"),
+                                    curRISCVModule.getPhyReg("sp"),
+                                    null, new RISCVImm(1024)));
+                }
+
+                for(int i = 0;i < SegNum;++i){
+                    tmpInst.addInstPre(tmpFunc.LastBlock,
+                            new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                    curRISCVModule.getPhyReg("s"+i),
+                                    curRISCVModule.getPhyReg("sp"),
+                                    new RISCVImm(-8-4*i)));
+                }
+
                 //lw ra,-4(sp)
                 tmpInst.addInstPre(tmpFunc.LastBlock,
                         new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,

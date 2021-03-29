@@ -15,7 +15,7 @@ public class RISCVStackReg extends RISCVRegister{
         Index = tmpFunc.StackNum;
         tmpFunc.StackNum++;
         baseReg = tmpbaseReg;
-        Offset = new RISCVImm(-12-4*Index+modified);
+        Offset = new RISCVImm(modified);
     }
 
     @Override
