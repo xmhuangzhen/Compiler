@@ -96,6 +96,11 @@ public class IRBuilder implements ASTVisitor {
                     Parameter tmpClassPtr = new Parameter(new PointerType(tmpThisIRType), "this");
                     tmpClassPtr.NeedPtr = true;
                     tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
+
+    //                if(tmpClassPtr.thisType instanceof PointerType){
+      //                  System.out.println(((PointerType) tmpClassPtr.thisType).baseType.toString());
+        //            }
+                    //                    System.out.println(tmpClassPtr.thisType.);
                     for (var tmpPar : tmpFunc.parDefs) {
                         tmpIRFunction.thisFunctionParameters.add(new Parameter(
                                 new PointerType(currentModule.getIRType(tmpPar.typeNode)), tmpPar.varname));
@@ -231,8 +236,10 @@ public class IRBuilder implements ASTVisitor {
         /////////////////////////////////////////////-----------------------------
 
 
+//        System.out.println(it.funcName+","+it.funcType.Typename+(it.funcType instanceof ClassTypeNode));
         currentFunction.thisReturnValue = new Register(new PointerType(currentModule.getIRType(it.funcType)),
                 tmpFuncName + "return_value" + (RegNum++));
+ //       System.out.println(currentFunction.thisFunctionName+","+currentFunction.thisReturnValue.thisType);
 
         if (it.funcName.equals("main")) {
             Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
@@ -325,12 +332,22 @@ public class IRBuilder implements ASTVisitor {
         if (it.value != null) {
             it.value.accept(this);
 //            System.out.println(it.value.ExprResult.thisType+","+it.value.ExprResult.NeedPtr);
-            currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
-                    it.value.ExprResult,currentFunction.thisReturnValue));
+           // System.out.println(it.value.ExprResult.thisType+","+it.value.ExprResult.NeedPtr);
+            //currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
+                   // it.value.ExprResult,currentFunction.thisReturnValue));
+            if(it.value.ExprResult.thisType instanceof PointerType){
+                if(((PointerType) it.value.ExprResult.thisType).baseType instanceof StructureType){
+                  //  if(it.value instanceof ThisExprNode)
+                    //   currentFunction.thisReturnValue.NeedPtr = true;
+                }
+       //         System.out.println(currentFunction.thisFunctionName+","+it.value.ExprResult.thisType);
+            }
+           // currentFunction.thisReturnValue.NeedPtr = it.value.ExprResult.NeedPtr;
+            currentBasicBlock.addBasicBlockInst( new moveInstruction(currentBasicBlock,
+                    currentFunction.thisReturnValue,it.value.ExprResult));
         }
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                 null, currentFunction.thisReturnBlock, null));
- //       currentBasicBlock = currentFunction.thisLastBasicBlock;
     }
 
     @Override
@@ -519,6 +536,7 @@ public class IRBuilder implements ASTVisitor {
         it.lhs.accept(this);
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
+//        System.out.println(it.ExprText+","+it.rhs.ExprResult.NeedPtr);
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.rhs.ExprResult, it.lhs.ExprLResult));
     }
@@ -926,9 +944,11 @@ public class IRBuilder implements ASTVisitor {
         IROperand tmpClassPtr = IdAddrMap.GetIdExprAddr("this");
         if(!(tmpClassPtr instanceof Parameter && tmpClassPtr.thisType instanceof PointerType))
             throw new RuntimeException();
-        Register tmpResult = new Register(((PointerType) tmpClassPtr.thisType).baseType
-                , "CastToResult"+(RegNum++));
-        currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpResult,tmpClassPtr));
+        Register tmpResult = new Register(tmpClassPtr.thisType, "CastToResult"+(RegNum++));
+        tmpResult.NeedPtr = true;
+     //   System.out.println(it.ExprText+","+currentFunction.thisFunctionName);
+        //System.out.println(tmpResult.thisType.toString());
+        currentBasicBlock.addBasicBlockInst(new moveInstruction(currentBasicBlock,tmpResult,tmpClassPtr));
         it.ExprResult = tmpResult;
     }
 
@@ -1006,6 +1026,8 @@ public class IRBuilder implements ASTVisitor {
                     IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
                     IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
                     Register tmpResult = null;
+
+
                     if (!tmpFuncIRType.equals("void"))
                         tmpResult = new Register(tmpFuncIRType, "funccal" + (RegNum++));
                     callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
@@ -1122,6 +1144,7 @@ public class IRBuilder implements ASTVisitor {
         if (tmpIRType == null || !(tmpIRType instanceof PointerType)) throw new RuntimeException();
 
         tmpIRType = ((PointerType) tmpIRType).baseType;
+
         if (tmpIRType instanceof StructureType) {
             String tmpName = ((StructureType) tmpIRType).StructureName + "." + it.Identifier;
             if (currentModule.IRFunctionTable.containsKey(tmpName)) {// it is function
@@ -1139,12 +1162,13 @@ public class IRBuilder implements ASTVisitor {
 
                 //(3) do the getElementPtr inst
 
-//                System.out.println();
                 String RegisterName = "memacc_result";
                 Register tmpResult = new Register(new PointerType(tmpMemberIRType),
                         RegisterName + (RegNum++));
-                if(tmpMemberIRType instanceof PointerType)
+                if(tmpMemberIRType instanceof PointerType) {
+                //System.out.println(tmpMemberIRType+","+tmpName);
                     tmpResult.NeedPtr = true;
+                }
 
                 getElementPtrInstruction tmpgetElementPtrInst =
                         new getElementPtrInstruction(currentBasicBlock, it.expr.ExprResult, tmpResult);
@@ -1152,6 +1176,8 @@ public class IRBuilder implements ASTVisitor {
                 tmpgetElementPtrInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32, tmpMemberIndex));
                 currentBasicBlock.addBasicBlockInst(tmpgetElementPtrInst);
                 it.ExprLResult = tmpResult;
+                if(tmpMemberIRType instanceof PointerType)
+                    it.ExprLResult.NeedPtr = true;
 
                 Register tmpLoadResult = new Register(tmpMemberIRType,RegisterName+(RegNum++));
                 currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,tmpLoadResult,tmpResult));

@@ -40,6 +40,6 @@ public class StructureType extends IRTypeSystem{
 
     @Override
     public String toString() {
-        return "%"+StructureName;
+        return StructureName;
     }
 }

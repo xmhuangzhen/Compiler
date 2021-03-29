@@ -67,7 +67,7 @@ public class NaiveRegAllocator {
 
                 for (RISCVBasicBlock tmpBlock = tmpFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
 
-  //                  System.out.println("--------------"+ tmpBlock.BlockName+ "-----------------");
+             //       System.out.println("--------------"+ tmpBlock.BlockName+ "-----------------");
                     for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
 
                         RISCVInstruction thisInst = tmpInst;

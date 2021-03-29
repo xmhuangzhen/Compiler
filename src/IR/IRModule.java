@@ -234,8 +234,9 @@ public class IRModule {
         if (tmpSemaTypeNode instanceof ClassTypeNode) {
             if(tmpSemaTypeNode.Typename.equals("string"))
                 return new PointerType(new IntegerType(IntegerType.IRBitWidth.i8));
-            //return new PointerType(IRTypeTable.get(((ClassTypeNode) tmpSemaTypeNode).ClassName));
-            return new PointerType(IRClassTable.get(((ClassTypeNode) tmpSemaTypeNode).ClassName));
+            String tmpName = ((ClassTypeNode) tmpSemaTypeNode).ClassName;
+            StructureType tmpbaseType = IRClassTable.get(tmpName);
+            return new PointerType(tmpbaseType);
         }
         if (tmpSemaTypeNode instanceof NonArrayTypeNode) {
             if (tmpSemaTypeNode.Typename.equals("int")) return new IntegerType(IntegerType.IRBitWidth.i32);
