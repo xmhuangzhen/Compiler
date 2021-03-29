@@ -84,6 +84,7 @@ class vector{
 			temp = temp + toString(data[0]);
 		}
 		int i;
+		println(toString(getDim()));
 		for (i = 1; i < getDim(); ++i) {
 			temp = temp + ", " + toString(data[i]);
 		}
@@ -94,6 +95,7 @@ class vector{
 	bool copy(vector rhs){
 		if (rhs == null) return false;
 		if (rhs.getDim() == 0) {
+		    println("Here-1");
 			data = null;
 		} else {
 			data = new int[rhs.getDim()];

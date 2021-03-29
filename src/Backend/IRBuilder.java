@@ -688,6 +688,7 @@ public class IRBuilder implements ASTVisitor {
                     //todo
                 }
             } else if(it.rhs.ExprType.Typename.equals("null")){
+               // System.out.println("HERE!!!"+it.ExprText);
                 it.ExprResult = new BooleanConstant(false);
             }
         } else if (it.op.equals("!=")) {
@@ -1036,9 +1037,13 @@ public class IRBuilder implements ASTVisitor {
             if (currentClassName != null && !currentClassName.isEmpty()) {
                 tmpFuncNameInString = currentClassName + "." + ((IdExprNode) it.funcName).Identifier;
             }
+            boolean IsClassFunction = true;
             IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
-            if (tmpIRFunction == null)
+            if (tmpIRFunction == null) {
+                IsClassFunction = false;
+//                System.out.println(((IdExprNode) it.funcName).Identifier);
                 tmpIRFunction = currentModule.IRFunctionTable.get(((IdExprNode) it.funcName).Identifier);
+            }
             if (tmpIRFunction == null) throw new RuntimeException();
 
             IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
@@ -1047,6 +1052,13 @@ public class IRBuilder implements ASTVisitor {
                 tmpResult = new Register(tmpFuncIRType, "funccal" + (RegNum++));
 
             callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
+            if(currentClassName!= null && IsClassFunction) {
+//                System.out.println("HERE" + ((IdExprNode) it.funcName).Identifier);
+                if(currentFunction == null || !IdAddrMap.CheckIdExprAddr("this"))
+                    throw new RuntimeException();
+                IROperand tmpThisOperand = IdAddrMap.GetIdExprAddr("this");
+                tmpCallInst.CallParameters.add(tmpThisOperand);
+            }
             for (var tmp : it.pars)
                 tmpCallInst.CallParameters.add(tmp.ExprResult);
             currentBasicBlock.addBasicBlockInst(tmpCallInst);

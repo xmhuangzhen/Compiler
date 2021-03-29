@@ -360,6 +360,9 @@ LBB57:
 	lw t1,72(s0)
 	mv t0,t1
 	sw t0,60(s0)
+	lw t0,84(s0)
+	mv a0,t0
+	sw t0,84(s0)
 	call vector.getDim
 	lw t0,56(s0)
 	mv t0,a0
@@ -551,6 +554,9 @@ LBB64:
 	lw t1,48(s0)
 	mv t0,t1
 	sw t0,40(s0)
+	lw t0,92(s0)
+	mv a0,t0
+	sw t0,92(s0)
 	call vector.getDim
 	lw t0,36(s0)
 	mv t0,a0
@@ -680,6 +686,9 @@ vector.add:
 	lw t0,144(s0)
 	mv t0,a1
 	sw t0,144(s0)
+	lw t0,148(s0)
+	mv a0,t0
+	sw t0,148(s0)
 	call vector.getDim
 	lw t0,140(s0)
 	mv t0,a0
@@ -721,6 +730,9 @@ vector.add:
 	j LBB71
 	sw t0,112(s0)
 LBB70:
+	lw t0,148(s0)
+	mv a0,t0
+	sw t0,148(s0)
 	call vector.getDim
 	lw t0,108(s0)
 	mv t0,a0
@@ -789,6 +801,9 @@ LBB73:
 	lw t1,60(s0)
 	lw t0,0(t1)
 	sw t0,56(s0)
+	lw t0,148(s0)
+	mv a0,t0
+	sw t0,148(s0)
 	call vector.getDim
 	lw t0,52(s0)
 	mv t0,a0
@@ -845,6 +860,9 @@ LBB74:
 	lw t1,20(s0)
 	mv t0,t1
 	sw t0,12(s0)
+	lw t0,148(s0)
+	mv a0,t0
+	sw t0,148(s0)
 	call vector.getDim
 	lw t0,8(s0)
 	mv t0,a0
@@ -1010,6 +1028,9 @@ vector.set:
 	lw t0,52(s0)
 	mv t0,a2
 	sw t0,52(s0)
+	lw t0,60(s0)
+	mv a0,t0
+	sw t0,60(s0)
 	call vector.getDim
 	lw t0,48(s0)
 	mv t0,a0
@@ -1101,87 +1122,108 @@ vector.tostring:
 	mv s1,sp
 	sw ra,-4(sp)
 	sw s0,-8(sp)
-	addi sp,sp,-120
+	addi sp,sp,-128
 	mv s0,sp
-	addi sp,sp,-120
-	lw t0,108(s0)
+	addi sp,sp,-128
+	lw t0,116(s0)
 	mv t0,a0
-	sw t0,108(s0)
-	lw t0,104(s0)
+	sw t0,116(s0)
+	lw t0,112(s0)
 	la t0,const_string_no0
+	sw t0,112(s0)
+	lw t0,108(s0)
+	lw t1,112(s0)
+	mv t0,t1
+	sw t0,108(s0)
+	lw t0,116(s0)
+	mv a0,t0
+	sw t0,116(s0)
+	call vector.getDim
+	lw t0,104(s0)
+	mv t0,a0
 	sw t0,104(s0)
 	lw t0,100(s0)
-	lw t1,104(s0)
-	mv t0,t1
-	sw t0,100(s0)
-	call vector.getDim
-	lw t0,96(s0)
-	mv t0,a0
-	sw t0,96(s0)
-	lw t0,92(s0)
 	li t0,0
-	sw t0,92(s0)
-	lw t0,88(s0)
-	lw t1,92(s0)
-	lw t2,96(s0)
+	sw t0,100(s0)
+	lw t0,96(s0)
+	lw t1,100(s0)
+	lw t2,104(s0)
 	slt t0,t1,t2
-	sw t0,88(s0)
-	lw t0,88(s0)
+	sw t0,96(s0)
+	lw t0,96(s0)
 	bnez t0,LBB84
 	j LBB85
-	sw t0,88(s0)
+	sw t0,96(s0)
 LBB84:
+	lw t0,92(s0)
+	lw t1,108(s0)
+	mv t0,t1
+	sw t0,92(s0)
+	lw t0,88(s0)
+	lw t1,108(s0)
+	mv t0,t1
+	sw t0,88(s0)
 	lw t0,84(s0)
-	lw t1,100(s0)
+	lw t1,116(s0)
 	mv t0,t1
 	sw t0,84(s0)
 	lw t0,80(s0)
-	lw t1,100(s0)
-	mv t0,t1
+	lw t1,84(s0)
+	addi t0,t1,0
 	sw t0,80(s0)
 	lw t0,76(s0)
-	lw t1,108(s0)
-	mv t0,t1
+	lw t1,80(s0)
+	lw t0,0(t1)
 	sw t0,76(s0)
 	lw t0,72(s0)
 	lw t1,76(s0)
 	addi t0,t1,0
 	sw t0,72(s0)
 	lw t0,68(s0)
-	lw t1,72(s0)
+	lw t1,76(s0)
 	lw t0,0(t1)
 	sw t0,68(s0)
-	lw t0,64(s0)
-	lw t1,68(s0)
-	addi t0,t1,0
-	sw t0,64(s0)
-	lw t0,60(s0)
-	lw t1,68(s0)
-	lw t0,0(t1)
-	sw t0,60(s0)
-	lw t0,60(s0)
+	lw t0,68(s0)
 	mv a0,t0
-	sw t0,60(s0)
+	sw t0,68(s0)
 	call toString
+	lw t0,64(s0)
+	mv t0,a0
+	sw t0,64(s0)
+	lw t0,88(s0)
+	mv a0,t0
+	sw t0,88(s0)
+	lw t0,64(s0)
+	mv a1,t0
+	sw t0,64(s0)
+	call __string_add
+	lw t0,60(s0)
+	mv t0,a0
+	sw t0,60(s0)
+	lw t0,108(s0)
+	lw t1,60(s0)
+	mv t0,t1
+	sw t0,108(s0)
+	j LBB85
+LBB85:
+	lw t0,116(s0)
+	mv a0,t0
+	sw t0,116(s0)
+	call vector.getDim
 	lw t0,56(s0)
 	mv t0,a0
 	sw t0,56(s0)
-	lw t0,80(s0)
-	mv a0,t0
-	sw t0,80(s0)
 	lw t0,56(s0)
-	mv a1,t0
+	mv a0,t0
 	sw t0,56(s0)
-	call __string_add
+	call toString
 	lw t0,52(s0)
 	mv t0,a0
 	sw t0,52(s0)
-	lw t0,100(s0)
-	lw t1,52(s0)
-	mv t0,t1
-	sw t0,100(s0)
-	j LBB85
-LBB85:
+	lw t0,52(s0)
+	mv a0,t0
+	sw t0,52(s0)
+	call println
 	lw t0,48(s0)
 	lw t1,44(s0)
 	mv t0,t1
@@ -1199,6 +1241,9 @@ LBB86:
 	lw t1,44(s0)
 	mv t0,t1
 	sw t0,36(s0)
+	lw t0,116(s0)
+	mv a0,t0
+	sw t0,116(s0)
 	call vector.getDim
 	lw t0,32(s0)
 	mv t0,a0
@@ -1214,11 +1259,11 @@ LBB86:
 	sw t0,28(s0)
 LBB87:
 	lw t0,24(s0)
-	lw t1,100(s0)
+	lw t1,108(s0)
 	mv t0,t1
 	sw t0,24(s0)
 	lw t0,20(s0)
-	lw t1,100(s0)
+	lw t1,108(s0)
 	mv t0,t1
 	sw t0,20(s0)
 	lw t0,16(s0)
@@ -1235,7 +1280,7 @@ LBB87:
 	mv t0,a0
 	sw t0,12(s0)
 	lw t0,8(s0)
-	lw t1,108(s0)
+	lw t1,116(s0)
 	mv t0,t1
 	sw t0,8(s0)
 	lw t0,4(s0)
@@ -1280,10 +1325,10 @@ LBB87:
 	lw t0,-24(s0)
 	mv t0,a0
 	sw t0,-24(s0)
-	lw t0,100(s0)
+	lw t0,108(s0)
 	lw t1,-24(s0)
 	mv t0,t1
-	sw t0,100(s0)
+	sw t0,108(s0)
 	j LBB88
 LBB88:
 	lw t0,-28(s0)
@@ -1301,11 +1346,11 @@ LBB88:
 	j LBB86
 LBB89:
 	lw t0,-36(s0)
-	lw t1,100(s0)
+	lw t1,108(s0)
 	mv t0,t1
 	sw t0,-36(s0)
 	lw t0,-40(s0)
-	lw t1,100(s0)
+	lw t1,108(s0)
 	mv t0,t1
 	sw t0,-40(s0)
 	lw t0,-44(s0)
@@ -1321,12 +1366,12 @@ LBB89:
 	lw t0,-48(s0)
 	mv t0,a0
 	sw t0,-48(s0)
-	lw t0,100(s0)
+	lw t0,108(s0)
 	lw t1,-48(s0)
 	mv t0,t1
-	sw t0,100(s0)
+	sw t0,108(s0)
 	lw t0,-52(s0)
-	lw t1,100(s0)
+	lw t1,108(s0)
 	mv t0,t1
 	sw t0,-52(s0)
 	lw t0,-56(s0)
@@ -1339,8 +1384,8 @@ LBB90:
 	lw t0,-56(s0)
 	mv a0,t0
 	sw t0,-56(s0)
-	addi sp,sp,120
-	addi sp,sp,120
+	addi sp,sp,128
+	addi sp,sp,128
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
@@ -1406,200 +1451,210 @@ LBB93:
 	sw t0,88(s0)
 LBB94:
 	lw t0,84(s0)
+	la t0,const_string_no3
+	sw t0,84(s0)
+	lw t0,84(s0)
+	mv a0,t0
+	sw t0,84(s0)
+	call println
+	lw t0,80(s0)
 	lw t1,124(s0)
 	mv t0,t1
-	sw t0,84(s0)
-	lw t0,80(s0)
-	lw t1,84(s0)
-	addi t0,t1,0
 	sw t0,80(s0)
 	lw t0,76(s0)
 	lw t1,80(s0)
-	lw t0,0(t1)
+	addi t0,t1,0
 	sw t0,76(s0)
 	lw t0,72(s0)
+	lw t1,76(s0)
+	lw t0,0(t1)
+	sw t0,72(s0)
+	lw t0,68(s0)
 	li t0,0
-	sw t0,72(s0)
-	lw t0,72(s0)
-	lw t1,80(s0)
+	sw t0,68(s0)
+	lw t0,68(s0)
+	lw t1,76(s0)
 	sw t0,0(t1)
-	sw t0,72(s0)
+	sw t0,68(s0)
 	j LBB100
 LBB95:
-	lw t0,68(s0)
+	lw t0,64(s0)
 	lw t1,124(s0)
 	mv t0,t1
-	sw t0,68(s0)
-	lw t0,64(s0)
-	lw t1,68(s0)
-	addi t0,t1,0
 	sw t0,64(s0)
 	lw t0,60(s0)
 	lw t1,64(s0)
-	lw t0,0(t1)
+	addi t0,t1,0
 	sw t0,60(s0)
 	lw t0,56(s0)
+	lw t1,60(s0)
+	lw t0,0(t1)
+	sw t0,56(s0)
+	lw t0,52(s0)
 	lw t1,120(s0)
 	mv t0,t1
-	sw t0,56(s0)
-	lw t0,56(s0)
-	mv a0,t0
-	sw t0,56(s0)
-	call vector.getDim
-	lw t0,52(s0)
-	mv t0,a0
 	sw t0,52(s0)
+	lw t0,52(s0)
+	mv a0,t0
+	sw t0,52(s0)
+	call vector.getDim
 	lw t0,48(s0)
-	li t0,4
+	mv t0,a0
 	sw t0,48(s0)
 	lw t0,44(s0)
-	lw t1,52(s0)
-	lw t2,48(s0)
-	mul t0,t1,t2
+	li t0,4
 	sw t0,44(s0)
 	lw t0,40(s0)
-	lw t1,44(s0)
-	addi t0,t1,4
+	lw t1,48(s0)
+	lw t2,44(s0)
+	mul t0,t1,t2
 	sw t0,40(s0)
-	lw t0,40(s0)
-	mv a0,t0
-	sw t0,40(s0)
-	call malloc
 	lw t0,36(s0)
-	mv t0,a0
-	sw t0,36(s0)
-	lw t0,52(s0)
-	lw t1,36(s0)
-	sw t0,0(t1)
-	sw t0,52(s0)
-	lw t0,32(s0)
-	lw t1,36(s0)
+	lw t1,40(s0)
 	addi t0,t1,4
+	sw t0,36(s0)
+	lw t0,36(s0)
+	mv a0,t0
+	sw t0,36(s0)
+	call malloc
+	lw t0,32(s0)
+	mv t0,a0
 	sw t0,32(s0)
+	lw t0,48(s0)
+	lw t1,32(s0)
+	sw t0,0(t1)
+	sw t0,48(s0)
 	lw t0,28(s0)
 	lw t1,32(s0)
-	addi t0,t1,0
-	sw t0,28(s0)
-	lw t0,28(s0)
-	lw t1,64(s0)
-	sw t0,0(t1)
+	addi t0,t1,4
 	sw t0,28(s0)
 	lw t0,24(s0)
-	lw t1,20(s0)
-	mv t0,t1
+	lw t1,28(s0)
+	addi t0,t1,0
 	sw t0,24(s0)
-	lw t0,16(s0)
-	li t0,0
-	sw t0,16(s0)
+	lw t0,24(s0)
+	lw t1,60(s0)
+	sw t0,0(t1)
+	sw t0,24(s0)
 	lw t0,20(s0)
 	lw t1,16(s0)
 	mv t0,t1
 	sw t0,20(s0)
+	lw t0,12(s0)
+	li t0,0
+	sw t0,12(s0)
+	lw t0,16(s0)
+	lw t1,12(s0)
+	mv t0,t1
+	sw t0,16(s0)
 	j LBB96
 LBB96:
-	lw t0,12(s0)
-	lw t1,20(s0)
-	mv t0,t1
-	sw t0,12(s0)
-	call vector.getDim
 	lw t0,8(s0)
-	mv t0,a0
+	lw t1,16(s0)
+	mv t0,t1
 	sw t0,8(s0)
+	lw t0,124(s0)
+	mv a0,t0
+	sw t0,124(s0)
+	call vector.getDim
 	lw t0,4(s0)
-	lw t1,12(s0)
-	lw t2,8(s0)
-	slt t0,t1,t2
+	mv t0,a0
 	sw t0,4(s0)
-	lw t0,4(s0)
+	lw t0,0(s0)
+	lw t1,8(s0)
+	lw t2,4(s0)
+	slt t0,t1,t2
+	sw t0,0(s0)
+	lw t0,0(s0)
 	bnez t0,LBB97
 	j LBB99
-	sw t0,4(s0)
+	sw t0,0(s0)
 LBB97:
-	lw t0,0(s0)
+	lw t0,-4(s0)
 	lw t1,124(s0)
 	mv t0,t1
-	sw t0,0(s0)
-	lw t0,-4(s0)
-	lw t1,0(s0)
-	addi t0,t1,0
 	sw t0,-4(s0)
 	lw t0,-8(s0)
 	lw t1,-4(s0)
-	lw t0,0(t1)
+	addi t0,t1,0
 	sw t0,-8(s0)
 	lw t0,-12(s0)
-	lw t1,20(s0)
-	mv t0,t1
+	lw t1,-8(s0)
+	lw t0,0(t1)
 	sw t0,-12(s0)
 	lw t0,-16(s0)
-	lw t1,-12(s0)
-	slli t0,t1,2
+	lw t1,16(s0)
+	mv t0,t1
 	sw t0,-16(s0)
 	lw t0,-20(s0)
-	lw t1,-8(s0)
-	lw t2,-16(s0)
-	add t0,t1,t2
+	lw t1,-16(s0)
+	slli t0,t1,2
 	sw t0,-20(s0)
 	lw t0,-24(s0)
-	lw t1,-20(s0)
-	lw t0,0(t1)
+	lw t1,-12(s0)
+	lw t2,-20(s0)
+	add t0,t1,t2
 	sw t0,-24(s0)
 	lw t0,-28(s0)
-	lw t1,120(s0)
-	mv t0,t1
+	lw t1,-24(s0)
+	lw t0,0(t1)
 	sw t0,-28(s0)
 	lw t0,-32(s0)
-	lw t1,-28(s0)
-	addi t0,t1,0
+	lw t1,120(s0)
+	mv t0,t1
 	sw t0,-32(s0)
 	lw t0,-36(s0)
 	lw t1,-32(s0)
-	lw t0,0(t1)
+	addi t0,t1,0
 	sw t0,-36(s0)
 	lw t0,-40(s0)
-	lw t1,20(s0)
-	mv t0,t1
+	lw t1,-36(s0)
+	lw t0,0(t1)
 	sw t0,-40(s0)
 	lw t0,-44(s0)
-	lw t1,-40(s0)
-	slli t0,t1,2
+	lw t1,16(s0)
+	mv t0,t1
 	sw t0,-44(s0)
 	lw t0,-48(s0)
-	lw t1,-36(s0)
-	lw t2,-44(s0)
-	add t0,t1,t2
+	lw t1,-44(s0)
+	slli t0,t1,2
 	sw t0,-48(s0)
 	lw t0,-52(s0)
-	lw t1,-48(s0)
+	lw t1,-40(s0)
+	lw t2,-48(s0)
+	add t0,t1,t2
+	sw t0,-52(s0)
+	lw t0,-56(s0)
+	lw t1,-52(s0)
 	lw t0,0(t1)
-	sw t0,-52(s0)
-	lw t0,-52(s0)
-	lw t1,-20(s0)
+	sw t0,-56(s0)
+	lw t0,-56(s0)
+	lw t1,-24(s0)
 	sw t0,0(t1)
-	sw t0,-52(s0)
+	sw t0,-56(s0)
 	j LBB98
 LBB98:
-	lw t0,-56(s0)
-	lw t1,20(s0)
-	mv t0,t1
-	sw t0,-56(s0)
 	lw t0,-60(s0)
-	lw t1,-56(s0)
-	addi t0,t1,1
-	sw t0,-60(s0)
-	lw t0,20(s0)
-	lw t1,-60(s0)
+	lw t1,16(s0)
 	mv t0,t1
-	sw t0,20(s0)
+	sw t0,-60(s0)
+	lw t0,-64(s0)
+	lw t1,-60(s0)
+	addi t0,t1,1
+	sw t0,-64(s0)
+	lw t0,16(s0)
+	lw t1,-64(s0)
+	mv t0,t1
+	sw t0,16(s0)
 	j LBB96
 LBB99:
 	j LBB100
 LBB100:
-	lw t0,-64(s0)
+	lw t0,-68(s0)
 	li t0,1
-	sw t0,-64(s0)
+	sw t0,-68(s0)
 	lw t0,108(s0)
-	lw t1,-64(s0)
+	lw t1,-68(s0)
 	mv t0,t1
 	sw t0,108(s0)
 	j LBB101
@@ -1786,7 +1841,7 @@ LBB106:
 	mv t0,a0
 	sw t0,40(s0)
 	lw t0,36(s0)
-	la t0,const_string_no3
+	la t0,const_string_no4
 	sw t0,36(s0)
 	lw t0,36(s0)
 	mv a0,t0
@@ -1872,7 +1927,7 @@ LBB106:
 	sw t0,-16(s0)
 LBB107:
 	lw t0,-20(s0)
-	la t0,const_string_no4
+	la t0,const_string_no5
 	sw t0,-20(s0)
 	lw t0,-20(s0)
 	mv a0,t0
@@ -1881,7 +1936,7 @@ LBB107:
 	j LBB108
 LBB108:
 	lw t0,-24(s0)
-	la t0,const_string_no5
+	la t0,const_string_no6
 	sw t0,-24(s0)
 	lw t0,-24(s0)
 	mv a0,t0
@@ -1903,7 +1958,7 @@ LBB108:
 	sw t0,-32(s0)
 	call println
 	lw t0,-36(s0)
-	la t0,const_string_no6
+	la t0,const_string_no7
 	sw t0,-36(s0)
 	lw t0,-36(s0)
 	mv a0,t0
@@ -1939,7 +1994,7 @@ LBB108:
 	sw t0,-52(s0)
 	call println
 	lw t0,-56(s0)
-	la t0,const_string_no7
+	la t0,const_string_no8
 	sw t0,-56(s0)
 	lw t0,-56(s0)
 	mv a0,t0
@@ -1975,7 +2030,7 @@ LBB108:
 	sw t0,-72(s0)
 	call println
 	lw t0,-76(s0)
-	la t0,const_string_no8
+	la t0,const_string_no9
 	sw t0,-76(s0)
 	lw t0,-76(s0)
 	mv a0,t0
@@ -2043,20 +2098,23 @@ const_string_no2:
 	.asciz	" )"
 
 const_string_no3:
-	.asciz	"vector x: "
+	.asciz	"Here-1"
 
 const_string_no4:
-	.asciz	"excited!"
+	.asciz	"vector x: "
 
 const_string_no5:
-	.asciz	"vector y: "
+	.asciz	"excited!"
 
 const_string_no6:
-	.asciz	"x + y: "
+	.asciz	"vector y: "
 
 const_string_no7:
-	.asciz	"x * y: "
+	.asciz	"x + y: "
 
 const_string_no8:
+	.asciz	"x * y: "
+
+const_string_no9:
 	.asciz	"(1 << 3) * y: "
 
