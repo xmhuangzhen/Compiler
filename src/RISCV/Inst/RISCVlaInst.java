@@ -15,7 +15,9 @@ public class RISCVlaInst extends RISCVInstruction{
         super();
         rd = tmprd;
         addr = tmpaddr;
-        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) {
+            UsedVirtualReg.add(rd);
+        }
     }
 
     @Override

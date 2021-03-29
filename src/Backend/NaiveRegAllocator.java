@@ -79,13 +79,16 @@ public class NaiveRegAllocator {
                                         UpperSize);
                                 RegAllocMap.put(tmpReg, tmpStoreReg);
                             } else tmpStoreReg = RegAllocMap.get(tmpReg);
+
                             if (tmpStoreReg instanceof RISCVStackReg) {
                                 if (tmpReg instanceof RISCVVirtualReg) {
-                                    thisInst.addInstPre(tmpBlock,
-                                            new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
-                                                    curRISCVModule.getPhyReg("t" + NumOfPhyReg),
-                                                    ((RISCVStackReg) tmpStoreReg).baseReg,
-                                                    ((RISCVStackReg) tmpStoreReg).Offset));
+                               //     if(tmpReg.NeedLoad) {
+                                        thisInst.addInstPre(tmpBlock,
+                                                new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                                        curRISCVModule.getPhyReg("t" + NumOfPhyReg),
+                                                        ((RISCVStackReg) tmpStoreReg).baseReg,
+                                                        ((RISCVStackReg) tmpStoreReg).Offset));
+                                 //   }
                                     thisInst.replaceReg(tmpReg, curRISCVModule.getPhyReg("t" + NumOfPhyReg));
                                     NumOfPhyReg++;
                                 } else if (tmpReg instanceof RISCVGlobalReg) {//global reg
@@ -109,17 +112,19 @@ public class NaiveRegAllocator {
                         }
 
                         NumOfPhyReg = 0;
-                        for (int i = 0; i < thisInst.UsedVirtualReg.size(); ++i) {
+                        for (int i = 0; i < Integer.min(1,thisInst.UsedVirtualReg.size()); ++i) {
                             RISCVRegister tmpReg = thisInst.UsedVirtualReg.get(i);
                             RISCVRegister tmpStoreReg = RegAllocMap.get(tmpReg);
                             if (tmpStoreReg instanceof RISCVStackReg) {
                                 if (tmpReg instanceof RISCVVirtualReg) {
-                                    tmpInst.addInstNxt(tmpBlock,
-                                            new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                                                    curRISCVModule.getPhyReg("t" + NumOfPhyReg),
-                                                    ((RISCVStackReg) tmpStoreReg).baseReg,
-                                                    ((RISCVStackReg) tmpStoreReg).Offset));
-                                    tmpInst = tmpInst.nextInst;
+                                //    if(!tmpReg.NeedLoad) {
+                                        tmpInst.addInstNxt(tmpBlock,
+                                                new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                                        curRISCVModule.getPhyReg("t" + NumOfPhyReg),
+                                                        ((RISCVStackReg) tmpStoreReg).baseReg,
+                                                        ((RISCVStackReg) tmpStoreReg).Offset));
+                                        tmpInst = tmpInst.nextInst;
+                                  //  }
                                     NumOfPhyReg++;
                                 } else if (tmpReg instanceof RISCVGlobalReg) {//global reg
                                     //lui t0,%hi(a)

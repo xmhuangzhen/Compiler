@@ -16,7 +16,10 @@ public class RISCVmvInst extends RISCVInstruction{
         super();
         rd = tmprd;
         rs1 = tmprs1;
-        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) {
+            rd.NeedLoad = false;
+            UsedVirtualReg.add(rd);
+        }
         if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
     }
 

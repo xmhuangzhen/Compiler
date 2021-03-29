@@ -19,7 +19,10 @@ public class RISCVsetzInst extends RISCVInstruction {
         CompType = tmpType;
         rd = tmprd;
         rs = tmprs;
-        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
+        if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) {
+            rd.NeedLoad =false;
+            UsedVirtualReg.add(rd);
+        }
         if ((rs instanceof RISCVVirtualReg)||(rs instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs);
     }
 
