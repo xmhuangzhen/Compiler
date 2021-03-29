@@ -19,7 +19,7 @@ public class IRFunction {
     public ArrayList<Parameter> thisFunctionParameters;
 
     public IROperand thisReturnValue;
-    public IRBasicBlock thisLastBasicBlock;
+//    public IRBasicBlock thisLastBasicBlock;
 
     public IRBasicBlock thisEntranceBlock;
     public IRBasicBlock thisReturnBlock;
@@ -35,11 +35,9 @@ public class IRFunction {
      //   thisFunctionVariableTable = new LinkedHashMap<>();
         thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
-        thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
-        thisEntranceBlock.nextBasicBlocks = thisLastBasicBlock;
-        thisLastBasicBlock.prevBasicBlocks = thisEntranceBlock;
-        thisLastBasicBlock.nextBasicBlocks = thisReturnBlock;
-        thisReturnBlock.prevBasicBlocks = thisLastBasicBlock;
+  //      thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
+        thisEntranceBlock.nextBasicBlocks = thisReturnBlock;
+        thisReturnBlock.prevBasicBlocks = thisEntranceBlock;
     }
 /*
     public void addVariableinFunc(Register tmpVar){
@@ -47,12 +45,12 @@ public class IRFunction {
     }
 */
     public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){
-        //always add before the LastBlock
-        IRBasicBlock tmpPreBlock = thisLastBasicBlock.prevBasicBlocks;
+        //always add before the ReturnBlock
+        IRBasicBlock tmpPreBlock = thisReturnBlock.prevBasicBlocks;
         tmpBasicBlock.prevBasicBlocks = tmpPreBlock;
-        tmpBasicBlock.nextBasicBlocks = thisLastBasicBlock;
+        tmpBasicBlock.nextBasicBlocks = thisReturnBlock;
         tmpPreBlock.nextBasicBlocks = tmpBasicBlock;
-        thisLastBasicBlock.prevBasicBlocks = tmpBasicBlock;
+        thisReturnBlock.prevBasicBlocks = tmpBasicBlock;
     }
 
     public void accept(IRVisitor it){

@@ -329,8 +329,8 @@ public class IRBuilder implements ASTVisitor {
                     it.value.ExprResult,currentFunction.thisReturnValue));
         }
         currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
-                null, currentFunction.thisLastBasicBlock, null));
-        currentBasicBlock = currentFunction.thisLastBasicBlock;
+                null, currentFunction.thisReturnBlock, null));
+ //       currentBasicBlock = currentFunction.thisLastBasicBlock;
     }
 
     @Override
