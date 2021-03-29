@@ -71,8 +71,8 @@ public class InstSelector implements IRVisitor {
         for (int i = 8; i < it.thisFunctionParameters.size(); ++i) {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(
                     RISCVInstruction.RISCVWidthENUMType.w,
-                    curRISCVModule.getPhyReg("s0"),
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
+                    curRISCVModule.getPhyReg("s1"),
                     new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }

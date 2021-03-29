@@ -149,6 +149,7 @@ public class NaiveRegAllocator {
 
                 //////////////////////////////////////////////////////////////
                 if (tmpFunc.EntranceBlock == null) throw new RuntimeException();
+                // mv s1,sp
                 // sw ra,-4(sp)
                 // sw s0,-8(sp)
                 // addi sp,sp,-UpperSize
@@ -156,6 +157,9 @@ public class NaiveRegAllocator {
                 // addi sp,sp,-DownSize
 
                 RISCVInstruction tmpInst = tmpFunc.EntranceBlock.HeadInst;
+                RISCVInstruction tmpInst0 = new RISCVmvInst(
+                        curRISCVModule.getPhyReg("s1"),
+                        curRISCVModule.getPhyReg("sp"));
                 RISCVInstruction tmpInst1 = new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                         curRISCVModule.getPhyReg("ra"),
                         curRISCVModule.getPhyReg("sp"),
@@ -177,10 +181,11 @@ public class NaiveRegAllocator {
 
 
                 if (tmpInst == null) {
-                    tmpFunc.EntranceBlock.HeadInst = tmpInst1;
+                    tmpFunc.EntranceBlock.HeadInst = tmpInst0;
                 } else {
-                    tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst1);
+                    tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst0);
                 }
+                tmpInst0.addInstNxt(tmpFunc.EntranceBlock, tmpInst1);
                 tmpInst1.addInstNxt(tmpFunc.EntranceBlock, tmpInst2);
                 tmpInst2.addInstNxt(tmpFunc.EntranceBlock, tmpInst3);
                 tmpInst3.addInstNxt(tmpFunc.EntranceBlock, tmpInst4);
