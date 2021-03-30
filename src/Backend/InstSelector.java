@@ -238,16 +238,18 @@ public class InstSelector implements IRVisitor {
                     val,addr,new RISCVAddrImm(addr,0)));
         } else*/
 
-        if(it.StorePointer.NeedPtr) {
-            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                    val,addr,new RISCVAddrImm(addr,0)));
-        } else
         if (curRISCVFunction.GEPAddrMap.containsKey(addr)) {
             RISCVAddrImm tmpAddrImm = curRISCVFunction.GEPAddrMap.get(addr);
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                     val, tmpAddrImm.baseReg, tmpAddrImm));
 //            System.out.println(tmpAddrImm.baseReg.RegisterName);
+        } else
+        if(it.StorePointer.NeedPtr) {
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    val,addr,new RISCVAddrImm(addr,0)));
         }
+
+
         else {
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(addr, val));
         }
@@ -316,7 +318,8 @@ public class InstSelector implements IRVisitor {
                                 curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, val), curRISCVBasicBlock),
                                 null));
              //       System.out.println("Here!"+it.toString()+rd.RegisterName);
-                    curRISCVFunction.GEPAddrMap.put(rd,new RISCVAddrImm(baseReg,(int)val));
+
+//                    curRISCVFunction.GEPAddrMap.put(rd,new RISCVAddrImm(baseReg,(int)val));
                 } else { // rd = baseReg + Index * 4
                     if(!(ArrayIndex instanceof Register|| ArrayIndex instanceof Parameter))
                         throw new RuntimeException();

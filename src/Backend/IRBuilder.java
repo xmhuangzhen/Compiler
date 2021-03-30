@@ -884,7 +884,7 @@ public class IRBuilder implements ASTVisitor {
             //to be debugged
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,SubArrayTrueAddr,NowReg));
             //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,NowReg,tmpReg));
-
+            //NowReg.NeedPtr = false;
 
             Register tmpReg = new Register(cur_type, "Incr_reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,NowReg,tmpReg);
