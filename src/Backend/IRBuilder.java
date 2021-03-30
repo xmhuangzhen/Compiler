@@ -536,7 +536,6 @@ public class IRBuilder implements ASTVisitor {
         it.lhs.accept(this);
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
-//        System.out.println(it.ExprText+","+it.rhs.ExprResult.NeedPtr);
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.rhs.ExprResult, it.lhs.ExprLResult));
     }
@@ -887,7 +886,9 @@ public class IRBuilder implements ASTVisitor {
             tmpGEPInst.GetElementPtrIdx.add(new IntegerConstant(IntegerType.IRBitWidth.i32,1));
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
 
-            NowReg = tmpReg;
+            currentBasicBlock.addBasicBlockInst(new moveInstruction(currentBasicBlock,
+                    NowReg,tmpReg));
+//            NowReg = tmpReg;
 
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,CondBlock,null));
 
@@ -919,7 +920,6 @@ public class IRBuilder implements ASTVisitor {
 
             Register tmpCastResult = new Register(currentModule.getIRType(it.ExprType),
                     "Malloc_Cast_Result_"+(RegNum++));
-//            System.out.println(tmpCastResult.thisType+","+currentModule.getIRType(it.ExprType));
             currentBasicBlock.addBasicBlockInst(new bitcastInstruction(currentBasicBlock,
                     tmpMallocResult, currentModule.getIRType(it.ExprType), tmpCastResult));
             it.ExprResult = tmpCastResult;
