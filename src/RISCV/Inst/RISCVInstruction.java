@@ -18,7 +18,7 @@ abstract public class RISCVInstruction {
         and,or,xor
     }
     public enum RISCVWidthENUMType{
-        b,h,w
+        b,w
     }
     public enum RISCVCompareENUMType{
         eq,ne,lt,le,gt,ge

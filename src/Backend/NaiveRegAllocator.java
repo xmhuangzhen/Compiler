@@ -71,11 +71,13 @@ public class NaiveRegAllocator {
 
                             if (tmpStoreReg instanceof RISCVStackReg) {
                                 if (tmpReg instanceof RISCVVirtualReg) {
+                                    if (tmpReg.NeedLoad || i != 0) {
                                         thisInst.addInstPre(tmpBlock,
                                                 new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                                         curRISCVModule.getPhyReg("t" + NumOfPhyReg),
                                                         ((RISCVStackReg) tmpStoreReg).baseReg,
                                                         ((RISCVStackReg) tmpStoreReg).Offset));
+                                    }
                                     thisInst.replaceReg(tmpReg, curRISCVModule.getPhyReg("t" + NumOfPhyReg));
                                     NumOfPhyReg++;
                                 } else if (tmpReg instanceof RISCVGlobalReg) {//global reg

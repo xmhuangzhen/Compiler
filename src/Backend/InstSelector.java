@@ -230,15 +230,25 @@ public class InstSelector implements IRVisitor {
         }*/
         RISCVRegister addr = curRISCVModule.getRISCVReg(it.StorePointer, curRISCVBasicBlock);
         RISCVRegister val = curRISCVModule.getRISCVReg(it.StoreValue, curRISCVBasicBlock);
+       /* if (it.StorePointer.NeedPtr) {
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    val,addr,new RISCVAddrImm(addr,0)));
+        }*/ /* else if(it.StoreValue.NeedPtr){
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    val,addr,new RISCVAddrImm(addr,0)));
+        } else*/
+
+        if(it.StorePointer.NeedPtr) {
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                    val,addr,new RISCVAddrImm(addr,0)));
+        } else
         if (curRISCVFunction.GEPAddrMap.containsKey(addr)) {
             RISCVAddrImm tmpAddrImm = curRISCVFunction.GEPAddrMap.get(addr);
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                     val, tmpAddrImm.baseReg, tmpAddrImm));
 //            System.out.println(tmpAddrImm.baseReg.RegisterName);
-        } else if (it.StorePointer.NeedPtr) {
-            curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                    val,addr,new RISCVAddrImm(addr,0)));
-        } else {
+        }
+        else {
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(addr, val));
         }
         /*if(val instanceof RISCVGlobalReg){
