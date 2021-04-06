@@ -16,9 +16,9 @@ LBB25:
 	lw ra,-4(sp)
 	ret
 # end function : __init__
-	.globl	Cat.greet					# start function : Cat.greet
+	.globl	B.B					# start function : B.B
 	.p2align	2
-Cat.greet:
+B.B:
 #LBB44:
 	sw ra,-4(sp)
 	sw s0,-8(sp)
@@ -28,27 +28,18 @@ Cat.greet:
 	lw t0,1012(s0)
 	mv t0,a0
 	sw t0,1012(s0)
-	lw t0,1008(s0)
-	la t0,const_string_no0
-	sw t0,1008(s0)
-	lw t0,1008(s0)
-	mv a0,t0
-	sw t0,1008(s0)
-	call println
+	j LBB45
 	j LBB45
 LBB45:
-	lw t0,1004(s0)
-	mv a0,t0
-	sw t0,1004(s0)
 	addi sp,sp,1024
 	addi sp,sp,1024
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
-# end function : Cat.greet
-	.globl	Lamb.greet					# start function : Lamb.greet
+# end function : B.B
+	.globl	C.func					# start function : C.func
 	.p2align	2
-Lamb.greet:
+C.func:
 #LBB48:
 	sw ra,-4(sp)
 	sw s0,-8(sp)
@@ -59,12 +50,13 @@ Lamb.greet:
 	mv t0,a0
 	sw t0,1012(s0)
 	lw t0,1008(s0)
-	la t0,const_string_no1
+	li t0,93
 	sw t0,1008(s0)
-	lw t0,1008(s0)
-	mv a0,t0
-	sw t0,1008(s0)
-	call println
+	lw t0,1004(s0)
+	lw t1,1008(s0)
+	mv t0,t1
+	sw t0,1004(s0)
+	j LBB49
 	j LBB49
 LBB49:
 	lw t0,1004(s0)
@@ -75,80 +67,31 @@ LBB49:
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
-# end function : Lamb.greet
-	.globl	Animals.Animals					# start function : Animals.Animals
+# end function : C.func
+	.globl	main					# start function : main
 	.p2align	2
-Animals.Animals:
+main:
 #LBB50:
 	sw ra,-4(sp)
 	sw s0,-8(sp)
 	addi sp,sp,-1024
 	mv s0,sp
 	addi sp,sp,-1024
-	lw t0,1012(s0)
-	mv t0,a0
-	sw t0,1012(s0)
-	lw t0,1008(s0)
-	lw t1,1012(s0)
-	mv t0,t1
-	sw t0,1008(s0)
-	lw t0,1004(s0)
-	lw t1,1008(s0)
-	addi t0,t1,0
-	sw t0,1004(s0)
-	lw t0,1000(s0)
-	li t0,0
-	sw t0,1000(s0)
-	lw t0,1000(s0)
-	mv a0,t0
-	sw t0,1000(s0)
-	call malloc
-	lw t0,996(s0)
-	mv t0,a0
-	sw t0,996(s0)
-	lw t0,992(s0)
-	lw t1,996(s0)
-	addi t0,t1,0
-	sw t0,992(s0)
-	lw t0,992(s0)
-	lw t1,1004(s0)
-	sw t0,0(t1)
-	lw t0,988(s0)
-	lw t1,1012(s0)
-	mv t0,t1
-	sw t0,988(s0)
-	lw t0,984(s0)
-	lw t1,988(s0)
-	addi t0,t1,4
-	sw t0,984(s0)
-	lw t0,980(s0)
-	li t0,0
-	sw t0,980(s0)
-	lw t0,980(s0)
-	mv a0,t0
-	sw t0,980(s0)
-	call malloc
-	lw t0,976(s0)
-	mv t0,a0
-	sw t0,976(s0)
-	lw t0,972(s0)
-	lw t1,976(s0)
-	addi t0,t1,0
-	sw t0,972(s0)
-	lw t0,972(s0)
-	lw t1,984(s0)
-	sw t0,0(t1)
+	call __init__
 	j LBB51
 LBB51:
+	lw t0,1012(s0)
+	mv a0,t0
+	sw t0,1012(s0)
 	addi sp,sp,1024
 	addi sp,sp,1024
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
-# end function : Animals.Animals
-	.globl	Animals.greet					# start function : Animals.greet
+# end function : main
+	.globl	func					# start function : func
 	.p2align	2
-Animals.greet:
+func:
 #LBB52:
 	sw ra,-4(sp)
 	sw s0,-8(sp)
@@ -156,141 +99,65 @@ Animals.greet:
 	mv s0,sp
 	addi sp,sp,-1024
 	lw t0,1012(s0)
-	mv t0,a0
+	li t0,0
 	sw t0,1012(s0)
-	lw t0,1008(s0)
-	lw t1,1012(s0)
-	mv t0,t1
-	sw t0,1008(s0)
-	lw t0,1004(s0)
-	lw t1,1008(s0)
-	addi t0,t1,0
-	sw t0,1004(s0)
-	lw t0,1000(s0)
-	mv a0,t0
-	sw t0,1000(s0)
-	call Cat.greet
-	lw t0,996(s0)
-	mv t0,a0
-	sw t0,996(s0)
-	lw t0,992(s0)
-	lw t1,1012(s0)
-	mv t0,t1
-	sw t0,992(s0)
-	lw t0,988(s0)
-	lw t1,992(s0)
-	addi t0,t1,4
-	sw t0,988(s0)
-	lw t0,984(s0)
-	mv a0,t0
-	sw t0,984(s0)
-	call Lamb.greet
-	lw t0,980(s0)
-	mv t0,a0
-	sw t0,980(s0)
+	lw t0,1012(s0)
+	bnez t0,LBB60
 	j LBB53
+	sw t0,1012(s0)
 LBB53:
-	lw t0,976(s0)
-	mv a0,t0
-	sw t0,976(s0)
-	addi sp,sp,1024
-	addi sp,sp,1024
-	lw s0,-8(sp)
-	lw ra,-4(sp)
-	ret
-# end function : Animals.greet
-	.globl	main					# start function : main
-	.p2align	2
-main:
-#LBB54:
-	sw ra,-4(sp)
-	sw s0,-8(sp)
-	addi sp,sp,-1024
-	mv s0,sp
-	addi sp,sp,-1024
-	call __init__
-	lw t0,1012(s0)
-	li t0,0
-	sw t0,1012(s0)
-	lw t0,1012(s0)
-	mv a0,t0
-	sw t0,1012(s0)
-	call malloc
+	j LBB54
+LBB54:
 	lw t0,1008(s0)
-	mv t0,a0
+	li t0,1
 	sw t0,1008(s0)
+	lw t0,1008(s0)
+	bnez t0,LBB55
+	j LBB56
+	sw t0,1008(s0)
+LBB56:
+	j LBB57
+LBB57:
+	j LBB57
+LBB58:
+	j LBB59
+	li %8,10
+	li %9,4
+	mul %7,%8,%9
+	addi %10,%7,4
+	mv a0,%10
+	call malloc
+	mv %11,a0
+	li %12,10
+	sw %12,0(%11)
+	addi %13,%11,4
+	addi %14,%13,0
+	li %15,0
+	mv a0,%15
+	call malloc
+	mv %16,a0
+	addi %17,%16,0
+	mv a0,%17
+	call C.func
+	mv %18,a0
+	li %19,0
+	mv a0,%19
+	call malloc
+	mv %20,a0
+	addi %21,%20,0
+	mv a0,%21
+	call C.func
+	mv %22,a0
+	add %23,%18,%22
+	j LBB59
+LBB59:
 	lw t0,1004(s0)
-	lw t1,1008(s0)
-	addi t0,t1,0
+	mv a0,t0
 	sw t0,1004(s0)
-	lw t0,1000(s0)
-	li t0,0
-	sw t0,1000(s0)
-	lw t0,1000(s0)
-	mv a0,t0
-	sw t0,1000(s0)
-	call malloc
-	lw t0,996(s0)
-	mv t0,a0
-	sw t0,996(s0)
-	lw t0,992(s0)
-	lw t1,996(s0)
-	addi t0,t1,0
-	sw t0,992(s0)
-	lw t0,988(s0)
-	li t0,8
-	sw t0,988(s0)
-	lw t0,988(s0)
-	mv a0,t0
-	sw t0,988(s0)
-	call malloc
-	lw t0,984(s0)
-	mv t0,a0
-	sw t0,984(s0)
-	lw t0,980(s0)
-	lw t1,984(s0)
-	addi t0,t1,0
-	sw t0,980(s0)
-	lw t0,980(s0)
-	mv a0,t0
-	sw t0,980(s0)
-	call Animals.Animals
-	lw t0,976(s0)
-	lw t1,980(s0)
-	addi t0,t1,0
-	sw t0,976(s0)
-	lw t0,1004(s0)
-	lw t1,976(s0)
-	sw t0,0(t1)
-	lw t0,972(s0)
-	lw t1,980(s0)
-	addi t0,t1,4
-	sw t0,972(s0)
-	lw t0,992(s0)
-	lw t1,972(s0)
-	sw t0,0(t1)
-	lw t0,968(s0)
-	mv a0,t0
-	sw t0,968(s0)
-	call Animals.greet
-	lw t0,964(s0)
-	mv t0,a0
-	sw t0,964(s0)
-	j LBB55
-LBB55:
-	lw t0,960(s0)
-	mv a0,t0
-	sw t0,960(s0)
 	addi sp,sp,1024
 	addi sp,sp,1024
 	lw s0,-8(sp)
 	lw ra,-4(sp)
 	ret
-# end function : main
+# end function : func
 .section	.sdata,"aw",@progbits
-const_string_no0:
-	.asciz	"MIAOMIAOMIAO"
-
-const_string_no1:
-	.asciz	"MIEMIEMIE"
-

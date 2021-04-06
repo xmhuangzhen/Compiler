@@ -110,19 +110,22 @@ public class SSAConstructor extends Pass {
     }
 
     void VariableRenaming(IRBasicBlock curBlock, IRBasicBlock preBlock) {
+        if(!PhiInstMap.containsKey(curBlock)) return;
+
         //define phi Inst
-        for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
-            phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
-            tmpPhiInst.PhiLabel.add(preBlock);
-            if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
-                    ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
-                //    System.out.println("1"+tmpPhiInst.PhiResult.RegisterName+","+tmpAllocInst.AllocaType.toString());
-                tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
-            } else {
-                // System.out.println("2"+tmpPhiInst.PhiResult.RegisterName);
-                tmpPhiInst.PhiValue.add(ReachingDefMap.get(preBlock).get(tmpAllocInst));
+            for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
+                phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
+                tmpPhiInst.PhiLabel.add(preBlock);
+                if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
+                        ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
+                    //    System.out.println("1"+tmpPhiInst.PhiResult.RegisterName+","+tmpAllocInst.AllocaType.toString());
+                    tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
+                } else {
+                    // System.out.println("2"+tmpPhiInst.PhiResult.RegisterName);
+                    tmpPhiInst.PhiValue.add(ReachingDefMap.get(preBlock).get(tmpAllocInst));
+                }
             }
-        }
+
 
         if (preBlock != null) {
             for (allocaInstruction tmpAllocInst : curFunction.allocaInstTable) {
