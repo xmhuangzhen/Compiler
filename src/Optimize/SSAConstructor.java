@@ -5,6 +5,7 @@ import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.IROperand;
+import IR.Operand.NullConstant;
 import IR.Operand.Register;
 
 import java.util.*;
@@ -68,7 +69,7 @@ public class SSAConstructor extends Pass {
                         for (IRBasicBlock BlockY : BlockX.DominanceFrontier) {
                             if (!BlockF.contains(BlockY)) {
                                 String VarName = tmpAllocaInst.AllocaResult.RegisterName.split("|")[0];
-                                Register tmpPhiResult = new Register(tmpAllocaInst.AllocaType, VarName+(RegNum++));
+                                Register tmpPhiResult = new Register(tmpAllocaInst.AllocaType, VarName + (RegNum++));
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
 
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
@@ -102,7 +103,7 @@ public class SSAConstructor extends Pass {
                 }
 
                 Visited = new LinkedHashSet<>();
-                VariableRenaming(tmpFunc.thisEntranceBlock,null);
+                VariableRenaming(tmpFunc.thisEntranceBlock, null);
             }
 
         return false;
@@ -110,28 +111,28 @@ public class SSAConstructor extends Pass {
 
     void VariableRenaming(IRBasicBlock curBlock, IRBasicBlock preBlock) {
         //define phi Inst
-        for(allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()){
+        for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
             phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
             tmpPhiInst.PhiLabel.add(preBlock);
-            if(!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
-            ReachingDefMap.get(preBlock).get(tmpAllocInst) == null){
-            //    System.out.println("1"+tmpPhiInst.PhiResult.RegisterName+","+tmpAllocInst.AllocaType.toString());
+            if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
+                    ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
+                //    System.out.println("1"+tmpPhiInst.PhiResult.RegisterName+","+tmpAllocInst.AllocaType.toString());
                 tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
             } else {
-               // System.out.println("2"+tmpPhiInst.PhiResult.RegisterName);
+                // System.out.println("2"+tmpPhiInst.PhiResult.RegisterName);
                 tmpPhiInst.PhiValue.add(ReachingDefMap.get(preBlock).get(tmpAllocInst));
             }
         }
 
-        if(preBlock != null){
-            for(allocaInstruction tmpAllocInst: curFunction.allocaInstTable){
-                if(!PhiInstMap.get(curBlock).containsKey(tmpAllocInst))
+        if (preBlock != null) {
+            for (allocaInstruction tmpAllocInst : curFunction.allocaInstTable) {
+                if (!PhiInstMap.get(curBlock).containsKey(tmpAllocInst))
                     ReachingDefMap.get(curBlock).put(tmpAllocInst,
                             ReachingDefMap.get(preBlock).get(tmpAllocInst));
             }
         }
 
-        if(Visited.contains(curBlock)) return;
+        if (Visited.contains(curBlock)) return;
         Visited.add(curBlock);
 
         for (allocaInstruction tmpAllocaInst : PhiInstMap.get(curBlock).keySet()) {
@@ -140,19 +141,23 @@ public class SSAConstructor extends Pass {
 
         for (IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;
              tmpInst = tmpInst.nextIRInstruction) {
-            if (tmpInst instanceof loadInstruction && UseAlloca.containsKey(tmpInst)) {
+            if (tmpInst instanceof loadInstruction && UseAlloca.containsKey(tmpInst)
+                    && ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)) != null) {
+//                System.out.println(tmpInst+","+
+                //                      (ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)) == null));
                 ((loadInstruction) tmpInst).LoadResult.ReplaceRegisterUse(
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
             } else if (tmpInst instanceof moveInstruction &&
                     ((moveInstruction) tmpInst).rd instanceof Register
-                    && UseAlloca.containsKey(tmpInst)) {
+                    && UseAlloca.containsKey(tmpInst)
+                    && ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)) != null) {
                 ((moveInstruction) tmpInst).rd.ReplaceRegisterUse(
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
             } else if (tmpInst instanceof storeInstruction && DefAlloca.containsKey(tmpInst)) {
                 allocaInstruction tmpAllocInst = DefAlloca.get(tmpInst);
-                if(!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst))
+                if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst))
                     ReachingDefMap.get(curBlock).put(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
                 else
                     ReachingDefMap.get(curBlock).replace(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
@@ -160,10 +165,10 @@ public class SSAConstructor extends Pass {
             }
         }
 
-        for(IRBasicBlock sucBasicBlock : curBlock.DominatorTreeSuccessor)
+        for (IRBasicBlock sucBasicBlock : curBlock.DominatorTreeSuccessor)
             VariableRenaming(sucBasicBlock, curBlock);
 
-        for(IRInstruction tmpPhiInst : PhiInstMap.get(curBlock).values())
+        for (IRInstruction tmpPhiInst : PhiInstMap.get(curBlock).values())
             curBlock.addBasicBlockInstAtFront(tmpPhiInst);
     }
 }
