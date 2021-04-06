@@ -19,7 +19,7 @@ public class callInstruction extends IRInstruction{
         CallFunction = tmpFunction;
         CallResult = tmpResult;
         CallParameters = new ArrayList<>();
-        CallResult.Defs = this;
+        if(CallResult != null) CallResult.Defs = this;
     }
 
     @Override

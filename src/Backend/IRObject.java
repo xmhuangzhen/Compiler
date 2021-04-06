@@ -26,7 +26,8 @@ abstract public class IRObject {
 
 
     public void ReplaceRegisterUse(IROperand tmpObject){
-        for(IRInstruction tmpInst : use.keySet()){
+        Map<IRInstruction, Integer> tmpUse = new LinkedHashMap<>(use);
+        for(IRInstruction tmpInst : tmpUse.keySet()){
             tmpInst.replaceUse((IROperand) this, tmpObject);
         }
         use.clear();
