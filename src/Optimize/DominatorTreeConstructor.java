@@ -4,6 +4,7 @@ import IR.IRBasicBlock;
 import IR.IRModule;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 //using Lengauer-Tarjan algorithm
 public class DominatorTreeConstructor extends Pass {
@@ -53,15 +54,16 @@ public class DominatorTreeConstructor extends Pass {
                     BlockW.DominatorTreeSemiDominator.DominatorTreeBucket.add(BlockW);
                     Link(BlockW.DominatorTreeFather, BlockW);
 
-                    for (IRBasicBlock BlockV : BlockW.DominatorTreeFather.DominatorTreeBucket) {
+                    HashSet<IRBasicBlock> tmpBucket =
+                            new LinkedHashSet<>(BlockW.DominatorTreeFather.DominatorTreeBucket);
+                    for (IRBasicBlock BlockV : tmpBucket) {
+                        BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
                         IRBasicBlock BlockU = Eval(BlockV);
                         if (BlockU.DominatorTreeSemiDominator.DFN < BlockV.DominatorTreeSemiDominator.DFN)
                             BlockV.DominatorTreeImmediateDominator = BlockU;
                         else
                             BlockV.DominatorTreeImmediateDominator = BlockW.DominatorTreeFather;
                     }
-
-                    BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
                 }
 
                 for (int i = 2; i <= tmpFunc.DFNcurNumber; ++i) {

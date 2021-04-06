@@ -44,7 +44,8 @@ public class SSADestructor extends Pass {
                         PhiInstLists.add((phiInstruction) tmpInst);
 
                 if (!PhiInstLists.isEmpty()) {
-                    for (IRBasicBlock preBlock : curBlock.DominatorTreePredecessor) {
+                    ArrayList<IRBasicBlock> tmpPredecessor = new ArrayList<>(curBlock.DominatorTreePredecessor);
+                    for (IRBasicBlock preBlock : tmpPredecessor) {
                         parallelCopyInstruction PC_i;
                         if (preBlock.DominatorTreeSuccessor.size() > 1) {
                             //Line 6
@@ -88,6 +89,7 @@ public class SSADestructor extends Pass {
 
                     //Line 11-15
                     for (var tmpPhiInst : PhiInstLists) {
+                     //   System.out.println(tmpPhiInst.toString());
                         for (int i = 0; i < tmpPhiInst.PhiLabel.size(); ++i) {
                             IRBasicBlock B_i = tmpPhiInst.PhiLabel.get(i);
                             IROperand a_i = tmpPhiInst.PhiValue.get(i);
@@ -119,17 +121,22 @@ public class SSADestructor extends Pass {
                     break;
                 }
             if(pcopy == null) continue;
+            /*for(var tmpInst : pcopy.PCMoveInst){
+                System.out.println(tmpInst.toString());
+            }
+            System.out.println("------");
+*/
 
             //Line 2
             ArrayList<moveInstruction> seq = new ArrayList<>();
 
             while(!pcopy.PCMoveInst.isEmpty()){
-                //get (moveInst1)b<-a && (moveInst2)c<-b then b<-a go first
                 moveInstruction tmpMoveInst = null;
                 for(var moveInst1 : pcopy.PCMoveInst) {
+                    tmpMoveInst = moveInst1;
                     for (var moveInst2 : pcopy.PCMoveInst)
-                        if (moveInst1.rd.equals(moveInst2.rs)) {
-                            tmpMoveInst = moveInst1;
+                        if (moveInst1.rd == (moveInst2.rs)) {
+                            tmpMoveInst = null;
                             break;
                         }
                     if (tmpMoveInst != null) break;

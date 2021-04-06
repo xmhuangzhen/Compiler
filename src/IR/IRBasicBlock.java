@@ -79,7 +79,8 @@ public class IRBasicBlock {
     public void addBasicBlockInstPreInst(IRInstruction NxtInst, IRInstruction tmpInst){
         tmpInst.preIRInstruction = NxtInst.preIRInstruction;
         tmpInst.nextIRInstruction = NxtInst;
-        NxtInst.preIRInstruction.nextIRInstruction = tmpInst;
+        if(NxtInst.preIRInstruction != null)
+            NxtInst.preIRInstruction.nextIRInstruction = tmpInst;
         NxtInst.preIRInstruction = tmpInst;
     }
 

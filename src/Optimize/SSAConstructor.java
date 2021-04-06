@@ -10,9 +10,6 @@ import IR.Operand.Register;
 import java.util.*;
 
 public class SSAConstructor extends Pass {
-    public SSAConstructor(IRModule tmpModule) {
-        super(tmpModule);
-    }
 
     public HashMap<IRInstruction, allocaInstruction> UseAlloca;// move or load
     public HashMap<IRInstruction, allocaInstruction> DefAlloca;//store
@@ -20,6 +17,13 @@ public class SSAConstructor extends Pass {
     public HashMap<IRBasicBlock, HashMap<allocaInstruction, IROperand>> ReachingDefMap;
     public HashSet<IRBasicBlock> Visited;
     public IRFunction curFunction;
+    public Integer RegNum;
+
+    public SSAConstructor(IRModule tmpModule) {
+        super(tmpModule);
+        RegNum = 0;
+    }
+
 
     @Override
     public boolean run() {
@@ -64,8 +68,9 @@ public class SSAConstructor extends Pass {
                         for (IRBasicBlock BlockY : BlockX.DominanceFrontier) {
                             if (!BlockF.contains(BlockY)) {
                                 String VarName = tmpAllocaInst.AllocaResult.RegisterName.split("|")[0];
-                                Register tmpPhiResult = new Register(tmpAllocaInst.AllocaType, VarName);
+                                Register tmpPhiResult = new Register(tmpAllocaInst.AllocaType, VarName+(RegNum++));
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
+
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
 
                                 BlockF.add(BlockY);
@@ -108,9 +113,12 @@ public class SSAConstructor extends Pass {
         for(allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()){
             phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
             tmpPhiInst.PhiLabel.add(preBlock);
-            if(!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst)){
-                tmpPhiInst.PhiValue.add(null);/////////////////////to be debugged
+            if(!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
+            ReachingDefMap.get(preBlock).get(tmpAllocInst) == null){
+            //    System.out.println("1"+tmpPhiInst.PhiResult.RegisterName+","+tmpAllocInst.AllocaType.toString());
+                tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
             } else {
+               // System.out.println("2"+tmpPhiInst.PhiResult.RegisterName);
                 tmpPhiInst.PhiValue.add(ReachingDefMap.get(preBlock).get(tmpAllocInst));
             }
         }

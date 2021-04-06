@@ -12,6 +12,7 @@ public class moveInstruction extends IRInstruction{
         super(tmpBasicBlock);
         rd = tmprd;
         rs = tmprs;
+        if(rs != null)
         rs.AddRegisterUseInInstruction(this);
         rd.Defs = this;
     }
