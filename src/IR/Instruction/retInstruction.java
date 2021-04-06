@@ -15,6 +15,17 @@ public class retInstruction extends IRInstruction {
         super(tmpBasicBlock);
         returnType = tmpType;
         returnValue = tmpValue;
+        if (returnValue != null)
+            returnValue.AddRegisterUseInInstruction(this);
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(returnValue == originObject){
+            returnValue.DeleteRegisterUseInInstruction(this);
+            returnValue = newObject;
+            returnValue.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

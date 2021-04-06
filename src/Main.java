@@ -2,6 +2,7 @@ import AST.RootNode;
 import Backend.*;
 import Frontend.ASTBuilder;
 import Frontend.SemanticChecker;
+import Optimize.*;
 import Parser.MxStarLexer;
 import Parser.MxStarParser;
 import Util.MxStarErrorListener;
@@ -44,6 +45,28 @@ public class Main {
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
        //     new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+
+            //--------Opt Start------
+            //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
+            CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
+            tmpCFGConstructor.run();
+            DominatorTreeConstructor tmpDominatorTreeConstructor =
+                    new DominatorTreeConstructor(tmpCFGConstructor.curIRModule);
+            tmpDominatorTreeConstructor.run();
+            DominanceFrontierConstructor tmpDominanceFrontierConstructor =
+                    new DominanceFrontierConstructor(tmpDominatorTreeConstructor.curIRModule);
+            tmpDominanceFrontierConstructor.run();
+            SSAConstructor tmpSSAConstructor =
+                    new SSAConstructor(tmpDominanceFrontierConstructor.curIRModule);
+            tmpSSAConstructor.run();
+
+
+
+            //(n) Destruct SSA
+            SSADestructor tmpSSADestructor =
+                    new SSADestructor(tmpSSAConstructor.curIRModule);
+            tmpSSADestructor.run();
+            //--------Opt End------
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);

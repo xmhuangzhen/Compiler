@@ -12,8 +12,18 @@ public class moveInstruction extends IRInstruction{
         super(tmpBasicBlock);
         rd = tmprd;
         rs = tmprs;
+        rs.AddRegisterUseInInstruction(this);
+        rd.Defs = this;
     }
 
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(originObject == rs){
+            rs.DeleteRegisterUseInInstruction(this);
+            rs = newObject;
+            rs.AddRegisterUseInInstruction(this);
+        }
+    }
 
     @Override
     public String toString() {

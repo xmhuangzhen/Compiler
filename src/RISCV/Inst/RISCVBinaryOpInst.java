@@ -21,7 +21,7 @@ public class RISCVBinaryOpInst extends RISCVInstruction{
         rs2 = tmprs2;
         imm = tmpimm;
         if ((rd instanceof RISCVVirtualReg)||(rd instanceof RISCVGlobalReg)) {
-           // if(rd instanceof RISCVVirtualReg) rd.NeedLoad = false;
+         //   if(rd instanceof RISCVVirtualReg) rd.NeedLoad = false;
             UsedVirtualReg.add(rd);
         }
         if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);

@@ -6,6 +6,8 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class phiInstruction extends IRInstruction{
     public Register PhiResult;
@@ -17,6 +19,22 @@ public class phiInstruction extends IRInstruction{
         PhiResult = tmpResult;
         PhiValue = new ArrayList<>();
         PhiLabel = new ArrayList<>();
+        PhiResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+
+    }
+
+    //for SSA Destructor use
+    public void replaceBlock(IRBasicBlock originBlock, IRBasicBlock newBlock){
+        for(int i = 0;i < PhiLabel.size();++i){
+            IRBasicBlock tmpLabel = PhiLabel.get(i);
+            if(tmpLabel == originBlock){
+                PhiLabel.set(i,newBlock);
+            }
+        }
     }
 
     @Override

@@ -13,6 +13,22 @@ public class storeInstruction extends IRInstruction{
         super(tmpBasicBlock);
         StoreValue = tmpValue;
         StorePointer = tmpPointer;
+        StoreValue.AddRegisterUseInInstruction(this);
+        StorePointer.AddRegisterUseInInstruction(this);
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(StoreValue == originObject){
+            StoreValue.DeleteRegisterUseInInstruction(this);
+            StoreValue = newObject;
+            StoreValue.AddRegisterUseInInstruction(this);
+        }
+        if(StorePointer == originObject){
+            StorePointer.DeleteRegisterUseInInstruction(this);
+            StorePointer = newObject;
+            StorePointer.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

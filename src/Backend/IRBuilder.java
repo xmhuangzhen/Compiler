@@ -14,11 +14,8 @@ import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.*;
 import IR.TypeSystem.*;
-import Util.classScope;
 import Util.globalScope;
-import com.sun.source.doctree.InlineTagTree;
 
-import java.sql.Struct;
 import java.util.Stack;
 
 public class IRBuilder implements ASTVisitor {
@@ -186,8 +183,16 @@ public class IRBuilder implements ASTVisitor {
             currentModule.IRGlobalVarTable.put(it.varname, tmpResult);
         } else if(IdAddrMap != null) {
             //local variables
-            Register tmpAddr =new Register(new PointerType(tmpIRType),it.varname+(RegNum++));
-            if(!IdAddrMap.AddrMap.containsKey(it.varname)) IdAddrMap.AddrMap.put(it.varname,tmpAddr);
+            Register tmpAddr =new Register(new PointerType(tmpIRType),it.varname+"|addr"+(RegNum++));
+            if(!IdAddrMap.AddrMap.containsKey(it.varname)) {
+                IdAddrMap.AddrMap.put(it.varname,tmpAddr);
+
+                allocaInstruction tmpAllocaInst =
+                        new allocaInstruction(currentBasicBlock,
+                                tmpAddr,new PointerType(tmpIRType));
+                currentBasicBlock.addBasicBlockInst(tmpAllocaInst);
+                currentFunction.allocaInstTable.add(tmpAllocaInst);
+            }
             if(it.varexpr != null){
                 it.varexpr.accept(this);
                 currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
@@ -879,12 +884,8 @@ public class IRBuilder implements ASTVisitor {
             currentFunction.addFunctionBasicBlock(BodyBlock);
             if(!(cur_type instanceof PointerType)) throw new RuntimeException();
             Register SubArrayTrueAddr = NewArrayMalloc(cur_dim+1,((PointerType) cur_type).baseType,it);
-            //SubArrayTrueAddr.NeedPtr = true;
             NowReg.NeedPtr = true;
-            //to be debugged
             currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,SubArrayTrueAddr,NowReg));
-            //currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,NowReg,tmpReg));
-            //NowReg.NeedPtr = false;
 
             Register tmpReg = new Register(cur_type, "Incr_reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,NowReg,tmpReg);

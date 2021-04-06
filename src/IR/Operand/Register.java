@@ -1,5 +1,6 @@
 package IR.Operand;
 
+import IR.Instruction.IRInstruction;
 import IR.TypeSystem.IRTypeSystem;
 
 public class Register extends IROperand{

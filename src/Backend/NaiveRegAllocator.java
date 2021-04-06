@@ -102,7 +102,10 @@ public class NaiveRegAllocator {
                         }
 
                         NumOfPhyReg = 0;
-                        for (int i = 0; i < Integer.min(1,thisInst.UsedVirtualReg.size()); ++i) {
+                        int tmpSize = Integer.min(1,thisInst.UsedVirtualReg.size());
+                        if(thisInst instanceof RISCVsInst) tmpSize = 0;
+                        if(thisInst instanceof RISCVJumpInst) break;
+                        for (int i = 0; i < tmpSize; ++i) {
                             RISCVRegister tmpReg = thisInst.UsedVirtualReg.get(i);
                             RISCVRegister tmpStoreReg = RegAllocMap.get(tmpReg);
                             if (tmpStoreReg instanceof RISCVStackReg) {

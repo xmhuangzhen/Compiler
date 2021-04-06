@@ -21,6 +21,23 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryOp1 = tmpOp1;
         BinaryOp2 = tmpOp2;
         BinaryResult = tmpResult;
+        BinaryOp1.AddRegisterUseInInstruction(this);
+        BinaryOp2.AddRegisterUseInInstruction(this);
+        BinaryResult.Defs=this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(originObject == BinaryOp1){
+            BinaryOp1.DeleteRegisterUseInInstruction(this);
+            BinaryOp1 = newObject;
+            BinaryOp1.AddRegisterUseInInstruction(this);
+        }
+        if(originObject == BinaryOp2){
+            BinaryOp2.DeleteRegisterUseInInstruction(this);
+            BinaryOp2 = newObject;
+            BinaryOp2.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

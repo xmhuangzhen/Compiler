@@ -17,6 +17,17 @@ public class bitcastInstruction extends IRInstruction{
         bitcastOperand = tmpOperand;
         bitcastType2 = tmpType2;
         bitcastResult = tmpResult;
+        bitcastOperand.AddRegisterUseInInstruction(this);
+        bitcastResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(originObject == bitcastOperand){
+            bitcastOperand.DeleteRegisterUseInInstruction(this);
+            bitcastOperand = newObject;
+            bitcastOperand.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

@@ -20,6 +20,17 @@ public class getElementPtrInstruction extends IRInstruction{
         GetElementPtrPtr = tmpPtr;
         GetElementPtrResult = tmpResult;
         GetElementPtrIdx = new ArrayList<>();
+        GetElementPtrPtr.AddRegisterUseInInstruction(this);
+        GetElementPtrResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(GetElementPtrPtr == originObject){
+            GetElementPtrPtr.DeleteRegisterUseInInstruction(this);
+            GetElementPtrPtr = newObject;
+            GetElementPtrPtr.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

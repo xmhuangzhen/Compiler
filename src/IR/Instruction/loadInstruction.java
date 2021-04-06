@@ -3,15 +3,27 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 
 public class loadInstruction extends IRInstruction{
-    public IROperand LoadResult;
+    public Register LoadResult;
     public IROperand LoadPointer;
 
-    public loadInstruction(IRBasicBlock tmpBasicBlock, IROperand tmpResult, IROperand tmpPointer) {
+    public loadInstruction(IRBasicBlock tmpBasicBlock, Register tmpResult, IROperand tmpPointer) {
         super(tmpBasicBlock);
         LoadResult = tmpResult;
         LoadPointer = tmpPointer;
+        LoadPointer.AddRegisterUseInInstruction(this);
+        LoadResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(LoadPointer == originObject){
+            LoadPointer.DeleteRegisterUseInInstruction(this);
+            LoadPointer = newObject;
+            LoadPointer.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

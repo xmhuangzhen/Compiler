@@ -25,6 +25,23 @@ public class icmpInstruction extends IRInstruction{
         IcmpType = tmpType;
         IcmpOp1 = tmpOp1;
         IcmpOp2 = tmpOp2;
+        IcmpOp1.AddRegisterUseInInstruction(this);
+        IcmpOp2.AddRegisterUseInInstruction(this);
+        IcmpResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if (originObject == IcmpOp1) {
+            IcmpOp1.DeleteRegisterUseInInstruction(this);
+            IcmpOp1 = newObject;
+            IcmpOp1.AddRegisterUseInInstruction(this);
+        }
+        if (originObject == IcmpOp2) {
+            IcmpOp2.DeleteRegisterUseInInstruction(this);
+            IcmpOp2 = newObject;
+            IcmpOp2.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

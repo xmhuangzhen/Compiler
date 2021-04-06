@@ -1,14 +1,13 @@
 package IR;
 
 import Backend.IRVisitor;
+import IR.Instruction.allocaInstruction;
 import IR.Operand.IROperand;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.FunctionType;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class IRFunction {
     public FunctionType thisFunctionType;
@@ -19,11 +18,16 @@ public class IRFunction {
     public ArrayList<Parameter> thisFunctionParameters;
 
     public IROperand thisReturnValue;
-//    public IRBasicBlock thisLastBasicBlock;
 
     public IRBasicBlock thisEntranceBlock;
     public IRBasicBlock thisReturnBlock;
 
+    //for Dominator Tree
+    public ArrayList<IRBasicBlock> DFSOrder;
+    public int DFNcurNumber;
+
+    //for SSA Constructor
+    public HashSet<allocaInstruction> allocaInstTable;
 
     public IRFunction(FunctionType tmpFunctionType, String tmpFunctionName){
         thisFunctionType = tmpFunctionType;
@@ -32,18 +36,17 @@ public class IRFunction {
 
         thisFunctionBasicBlocks = new ArrayList<>();
         thisFunctionParameters = new ArrayList<>();
-     //   thisFunctionVariableTable = new LinkedHashMap<>();
         thisEntranceBlock = new IRBasicBlock(this,tmpFunctionName+"_entrance_block");
         thisReturnBlock = new IRBasicBlock(this,tmpFunctionName+"_return_block");
-  //      thisLastBasicBlock = new IRBasicBlock(this,tmpFunctionName+"_last_block");
         thisEntranceBlock.nextBasicBlocks = thisReturnBlock;
         thisReturnBlock.prevBasicBlocks = thisEntranceBlock;
+
+        DFSOrder = new ArrayList<>();
+        DFNcurNumber = 0;
+
+        allocaInstTable = new LinkedHashSet<>();
     }
-/*
-    public void addVariableinFunc(Register tmpVar){
-        thisFunctionVariableTable.put(tmpVar.RegisterName,tmpVar);
-    }
-*/
+
     public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){
         //always add before the ReturnBlock
         IRBasicBlock tmpPreBlock = thisReturnBlock.prevBasicBlocks;
@@ -53,9 +56,17 @@ public class IRFunction {
         thisReturnBlock.prevBasicBlocks = tmpBasicBlock;
     }
 
+    //for SSA Destructor use
+    public void addFunctionBasicBlockAfterBlock(IRBasicBlock preBlock, IRBasicBlock tmpBasicBlock){
+        tmpBasicBlock.prevBasicBlocks = preBlock;
+        tmpBasicBlock.nextBasicBlocks = preBlock.nextBasicBlocks;
+        preBlock.nextBasicBlocks.prevBasicBlocks = tmpBasicBlock;
+        preBlock.nextBasicBlocks = tmpBasicBlock;
+    }
+
     public void accept(IRVisitor it){
         it.visit(this);
-    }//for IRPrinter
+    }
 
     //for IRPrinter use
     @Override
@@ -69,5 +80,25 @@ public class IRFunction {
         }
         tmpString.append(")");
         return tmpString.toString();
+    }
+
+    //for Dominator Tree Use
+    public void CalculateDFSOrder() {
+        CFGDFS(thisEntranceBlock);
+    }
+
+    public void CFGDFS(IRBasicBlock curBlock){
+        ++DFNcurNumber;
+        curBlock.DFN = DFNcurNumber;
+        curBlock.DominatorTreeSemiDominator = curBlock;
+        curBlock.DominatorTreeLabel = curBlock;
+        curBlock.DominatorTreeAncestor = null;
+        DFSOrder.add(curBlock);
+        for(var nextBlock : curBlock.DominatorTreeSuccessor){
+            if(nextBlock.DFN == 0){
+                nextBlock.DominatorTreeFather = curBlock;
+                CFGDFS(nextBlock);
+            }
+        }
     }
 }

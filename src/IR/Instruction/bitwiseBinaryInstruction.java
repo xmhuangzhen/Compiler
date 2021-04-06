@@ -21,6 +21,23 @@ public class bitwiseBinaryInstruction extends IRInstruction{
         bitwiseBinaryOp1 = tmpOp1;
         bitwiseBinaryOp2 = tmpOp2;
         bitwiseBinaryResult = tmpResult;
+        bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
+        bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
+        bitwiseBinaryResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(originObject == bitwiseBinaryOp1){
+            bitwiseBinaryOp1.DeleteRegisterUseInInstruction(this);
+            bitwiseBinaryOp1 = newObject;
+            bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
+        }
+        if(originObject == bitwiseBinaryOp2){
+            bitwiseBinaryOp2.DeleteRegisterUseInInstruction(this);
+            bitwiseBinaryOp2 = newObject;
+            bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
+        }
     }
 
     @Override

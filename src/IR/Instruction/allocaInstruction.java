@@ -1,7 +1,9 @@
 package IR.Instruction;
 
+import Backend.IRObject;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
+import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
@@ -13,7 +15,13 @@ public class allocaInstruction extends IRInstruction{
         super(tmpBasicBlock);
         AllocaResult = tmpResult;
         AllocaType = tmpType;
+        AllocaResult.AddRegisterUseInInstruction(this);
     }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newOperand) {
+    }
+
 
     @Override
     public String toString() {

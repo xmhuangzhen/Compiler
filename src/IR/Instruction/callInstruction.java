@@ -19,6 +19,12 @@ public class callInstruction extends IRInstruction{
         CallFunction = tmpFunction;
         CallResult = tmpResult;
         CallParameters = new ArrayList<>();
+        CallResult.Defs = this;
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+
     }
 
     @Override

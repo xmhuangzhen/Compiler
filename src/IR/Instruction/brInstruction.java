@@ -15,6 +15,26 @@ public class brInstruction extends IRInstruction{
         brCond = tmpbrCond;
         brIfTrue = tmpbrIfTrue;
         brIfFalse = tmpbrIfFalse;
+        if(brCond != null)
+            brCond.AddRegisterUseInInstruction(this);
+    }
+
+    @Override
+    public void replaceUse(IROperand originObject, IROperand newObject) {
+        if(brCond == originObject){
+            brCond.DeleteRegisterUseInInstruction(this);
+            brCond = newObject;
+            brCond.AddRegisterUseInInstruction(this);
+        }
+    }
+
+    public void replaceBlock(IRBasicBlock originBlock, IRBasicBlock newBlock) {
+        if (brIfTrue == originBlock) {
+            brIfTrue = newBlock;
+        }
+        if (brIfFalse == originBlock) {
+            brIfFalse = newBlock;
+        }
     }
 
     @Override

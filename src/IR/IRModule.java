@@ -16,19 +16,15 @@ import java.util.Map;
 
 public class IRModule {
     public Map<String, IRFunction> IRFunctionTable;
-    //public Map<String, IRTypeSystem> IRTypeTable;
     public Map<String, GlobalVariables> IRGlobalVarTable;
     public Map<String, GlobalVariables> IRConstStringTable;
     public Map<String, StructureType> IRClassTable;
-//    public Map<String, Register> IRGlobbalRegisterTable;
 
     public IRModule(){
         IRFunctionTable = new LinkedHashMap<>();
-       // IRTypeTable = new LinkedHashMap<>();
         IRGlobalVarTable = new LinkedHashMap<>();
         IRConstStringTable = new LinkedHashMap<>();
         IRClassTable = new LinkedHashMap<>();
-  //      IRGlobbalRegisterTable = new LinkedHashMap<>();
 
         FunctionType tmpFuncType;
         IRFunction tmpFunc;
