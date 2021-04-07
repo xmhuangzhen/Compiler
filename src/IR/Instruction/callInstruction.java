@@ -24,7 +24,12 @@ public class callInstruction extends IRInstruction{
 
     @Override
     public void replaceUse(IROperand originObject, IROperand newObject) {
-
+        for(int i = 0;i < CallParameters.size();++i)
+            if(CallParameters.get(i) == originObject){
+                CallParameters.get(i).DeleteRegisterUseInInstruction(this);
+                CallParameters.set(i,newObject);
+                CallParameters.get(i).AddRegisterUseInInstruction(this);
+            }
     }
 
     @Override

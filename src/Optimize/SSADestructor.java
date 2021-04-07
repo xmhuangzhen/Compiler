@@ -15,6 +15,7 @@ public class SSADestructor extends Pass {
 
     public IRFunction curFunction;
     public Integer RegNum = 0;
+    public Integer BlockNum = 0;
 
     public SSADestructor(IRModule tmpModule) {
         super(tmpModule);
@@ -50,7 +51,7 @@ public class SSADestructor extends Pass {
                         if (preBlock.CFGSuccessor.size() > 1) {
                             //Line 6
                             IRBasicBlock BlockBPrime = new IRBasicBlock(curFunction,
-                                    preBlock.BasicBlockName + "Prime");
+                                    preBlock.BasicBlockName + "Prime"+(BlockNum++));
                             PC_i = new parallelCopyInstruction(BlockBPrime);
 
                             //Line 7

@@ -5,6 +5,9 @@ import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.IRInstruction;
 import IR.Instruction.brInstruction;
+import IR.Instruction.callInstruction;
+import IR.Instruction.getElementPtrInstruction;
+import IR.Operand.Register;
 
 public class CFGConstructor extends Pass {
 
@@ -32,6 +35,24 @@ public class CFGConstructor extends Pass {
         }
     }
 
+    public void preInitializeCall() {
+        for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
+             tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            for(IRInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
+            tmpInst = tmpInst.nextIRInstruction){
+                if(tmpInst instanceof callInstruction){
+                    for(var tmp : ((callInstruction) tmpInst).CallParameters){
+                        if(tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
+                    }
+                } else if(tmpInst instanceof getElementPtrInstruction){
+                    for(var tmp : ((getElementPtrInstruction) tmpInst).GetElementPtrIdx)
+                        if(tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
+                }
+            }
+        }
+    }
+
     @Override
     public boolean run() {
         for (var tmpIRFunc : curIRModule.IRFunctionTable.values())
@@ -39,6 +60,7 @@ public class CFGConstructor extends Pass {
 
                 curFunc = tmpIRFunc;
                 preSetBranch();
+                preInitializeCall();
 
                 for (IRBasicBlock tmpIRBasicBlock = tmpIRFunc.thisEntranceBlock;
                      tmpIRBasicBlock != null;

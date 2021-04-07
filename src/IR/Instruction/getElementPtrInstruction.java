@@ -32,6 +32,12 @@ public class getElementPtrInstruction extends IRInstruction{
             GetElementPtrPtr = newObject;
             GetElementPtrPtr.AddRegisterUseInInstruction(this);
         }
+        for(int i = 0;i < GetElementPtrIdx.size();++i)
+            if(GetElementPtrIdx.get(i) == originObject){
+                GetElementPtrIdx.get(i).DeleteRegisterUseInInstruction(this);
+                GetElementPtrIdx.set(i,newObject);
+                GetElementPtrIdx.get(i).AddRegisterUseInInstruction(this);
+            }
     }
 
     @Override
