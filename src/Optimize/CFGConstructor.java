@@ -58,6 +58,8 @@ public class CFGConstructor extends Pass {
                         }
                     }
                 }
+
+                tmpIRFunc.CalculateDFSOrder();
             }
         return false;
     }

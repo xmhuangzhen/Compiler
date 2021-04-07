@@ -8,6 +8,7 @@ import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.FunctionType;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class IRFunction {
@@ -24,6 +25,8 @@ public class IRFunction {
     public IRBasicBlock thisReturnBlock;
 
     //for Dominator Tree
+    public ArrayList<IRBasicBlock> DomDFSOrder;
+
     public ArrayList<IRBasicBlock> DFSOrder;
     public int DFNcurNumber;
 
@@ -44,6 +47,7 @@ public class IRFunction {
 
         DFSOrder = new ArrayList<>();
         DFNcurNumber = 0;
+        DomDFSOrder = new ArrayList<>();
 
         allocaInstTable = new LinkedHashSet<>();
     }
@@ -85,6 +89,16 @@ public class IRFunction {
 
     //for Dominator Tree Use
     public void CalculateDFSOrder() {
+        DFNcurNumber = 0;
+        DFSOrder.clear();
+        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            tmpBlock.DominatorTreeSemiDominator = null;
+            tmpBlock.DFN = 0;
+            tmpBlock.DominatorTreeLabel = null;
+            tmpBlock.DominatorTreeAncestor = null;
+            tmpBlock.DominatorTreeFather = null;
+        }
         CFGDFS(thisEntranceBlock);
     }
 
@@ -115,7 +129,7 @@ public class IRFunction {
         if(curBlock == thisEntranceBlock) thisEntranceBlock = curBlock.nextBasicBlocks;
         else
             curBlock.prevBasicBlocks.nextBasicBlocks = curBlock.nextBasicBlocks;
-        
+
         curBlock.nextBasicBlocks.prevBasicBlocks = curBlock.prevBasicBlocks;
 
         for(var tmpPreBlock : curBlock.CFGPredecessor)
