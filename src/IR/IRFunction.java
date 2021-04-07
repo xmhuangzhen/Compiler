@@ -105,13 +105,17 @@ public class IRFunction {
 
     //for CFG simplification
     public void removeBasicBlock(IRBasicBlock curBlock) {
+        if(curBlock == thisReturnBlock) return;
+
         for (IRInstruction tmpInst = curBlock.HeadInst;
              tmpInst != null; tmpInst = tmpInst.nextIRInstruction) {
             curBlock.removeInst(tmpInst);
         }
 
-        if(curBlock == thisEntranceBlock) thisEntranceBlock = curBlock;
-        else curBlock.prevBasicBlocks.nextBasicBlocks = curBlock.nextBasicBlocks;
+        if(curBlock == thisEntranceBlock) thisEntranceBlock = curBlock.nextBasicBlocks;
+        else
+            curBlock.prevBasicBlocks.nextBasicBlocks = curBlock.nextBasicBlocks;
+        
         curBlock.nextBasicBlocks.prevBasicBlocks = curBlock.prevBasicBlocks;
 
         for(var tmpPreBlock : curBlock.CFGPredecessor)

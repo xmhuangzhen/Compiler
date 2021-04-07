@@ -145,8 +145,6 @@ public class SSAConstructor extends Pass {
              tmpInst = tmpInst.nextIRInstruction) {
             if (tmpInst instanceof loadInstruction && UseAlloca.containsKey(tmpInst)
                     && ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)) != null) {
-//                System.out.println(tmpInst+","+
-                //                      (ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)) == null));
                 ((loadInstruction) tmpInst).LoadResult.ReplaceRegisterUse(
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);

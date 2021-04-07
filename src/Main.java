@@ -50,10 +50,9 @@ public class Main {
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
-          /*  CFGSimplification tmpCFGSimp =
+            CFGSimplification tmpCFGSimp =
                     new CFGSimplification(tmpCFGConstructor.curIRModule);
             tmpCFGSimp.run();
-            */
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(tmpCFGConstructor.curIRModule);
             tmpDominatorTreeConstructor.run();
