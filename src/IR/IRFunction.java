@@ -1,6 +1,7 @@
 package IR;
 
 import Backend.IRVisitor;
+import IR.Instruction.IRInstruction;
 import IR.Instruction.allocaInstruction;
 import IR.Operand.IROperand;
 import IR.Operand.Parameter;
@@ -94,11 +95,28 @@ public class IRFunction {
         curBlock.DominatorTreeLabel = curBlock;
         curBlock.DominatorTreeAncestor = null;
         DFSOrder.add(curBlock);
-        for(var nextBlock : curBlock.DominatorTreeSuccessor){
+        for(var nextBlock : curBlock.CFGSuccessor){
             if(nextBlock.DFN == 0){
                 nextBlock.DominatorTreeFather = curBlock;
                 CFGDFS(nextBlock);
             }
         }
+    }
+
+    //for CFG simplification
+    public void removeBasicBlock(IRBasicBlock curBlock) {
+        for (IRInstruction tmpInst = curBlock.HeadInst;
+             tmpInst != null; tmpInst = tmpInst.nextIRInstruction) {
+            curBlock.removeInst(tmpInst);
+        }
+
+        if(curBlock == thisEntranceBlock) thisEntranceBlock = curBlock;
+        else curBlock.prevBasicBlocks.nextBasicBlocks = curBlock.nextBasicBlocks;
+        curBlock.nextBasicBlocks.prevBasicBlocks = curBlock.prevBasicBlocks;
+
+        for(var tmpPreBlock : curBlock.CFGPredecessor)
+            tmpPreBlock.CFGSuccessor.remove(curBlock);
+        for (var tmpNxtBlock : curBlock.CFGSuccessor)
+            tmpNxtBlock.CFGPredecessor.remove(curBlock);
     }
 }

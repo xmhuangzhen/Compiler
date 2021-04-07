@@ -35,7 +35,7 @@ public class SSADestructor extends Pass {
     public void CriticalEdgeSpltting() {
         for (int cur_dfn = 1; cur_dfn <= curFunction.DFNcurNumber; ++cur_dfn) {
             IRBasicBlock curBlock = curFunction.DFSOrder.get(cur_dfn - 1);
-            if (curBlock.DominatorTreePredecessor.size() > 0) {
+            if (curBlock.CFGPredecessor.size() > 0) {
 
                 HashSet<phiInstruction> PhiInstLists = new LinkedHashSet<>();
                 for (IRInstruction tmpInst = curBlock.HeadInst;
@@ -44,10 +44,10 @@ public class SSADestructor extends Pass {
                         PhiInstLists.add((phiInstruction) tmpInst);
 
                 if (!PhiInstLists.isEmpty()) {
-                    ArrayList<IRBasicBlock> tmpPredecessor = new ArrayList<>(curBlock.DominatorTreePredecessor);
+                    ArrayList<IRBasicBlock> tmpPredecessor = new ArrayList<>(curBlock.CFGPredecessor);
                     for (IRBasicBlock preBlock : tmpPredecessor) {
                         parallelCopyInstruction PC_i;
-                        if (preBlock.DominatorTreeSuccessor.size() > 1) {
+                        if (preBlock.CFGSuccessor.size() > 1) {
                             //Line 6
                             IRBasicBlock BlockBPrime = new IRBasicBlock(curFunction,
                                     preBlock.BasicBlockName + "Prime");
@@ -65,12 +65,12 @@ public class SSADestructor extends Pass {
                             BlockBPrime.addBasicBlockInst(brInstFromBPrimetocur);
 
                             //change CFG
-                            preBlock.DominatorTreeSuccessor.remove(curBlock);
-                            preBlock.DominatorTreeSuccessor.add(BlockBPrime);
-                            BlockBPrime.DominatorTreeSuccessor.add(curBlock);
-                            BlockBPrime.DominatorTreePredecessor.add(preBlock);
-                            curBlock.DominatorTreePredecessor.remove(preBlock);
-                            curBlock.DominatorTreePredecessor.add(BlockBPrime);
+                            preBlock.CFGSuccessor.remove(curBlock);
+                            preBlock.CFGSuccessor.add(BlockBPrime);
+                            BlockBPrime.CFGSuccessor.add(curBlock);
+                            BlockBPrime.CFGPredecessor.add(preBlock);
+                            curBlock.CFGPredecessor.remove(preBlock);
+                            curBlock.CFGPredecessor.add(BlockBPrime);
 
                             //addBlock
                             for (phiInstruction tmpPhiInst : PhiInstLists)

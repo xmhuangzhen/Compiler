@@ -16,7 +16,7 @@ public class DominanceFrontierConstructor extends Pass {
                      curBlock != null;
                      curBlock = curBlock.nextBasicBlocks)
                     if (curBlock.DFN != 0) {
-                        for (IRBasicBlock BlockPre : curBlock.DominatorTreePredecessor) {
+                        for (IRBasicBlock BlockPre : curBlock.CFGPredecessor) {
                             for (IRBasicBlock BlockW = BlockPre;
                                  !curBlock.StrictDominator.contains(BlockW);
                                  BlockW = BlockW.DominatorTreeImmediateDominator) {

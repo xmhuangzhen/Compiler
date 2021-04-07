@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 import IR.TypeSystem.VoidType;
 
@@ -15,7 +16,7 @@ public class retInstruction extends IRInstruction {
         super(tmpBasicBlock);
         returnType = tmpType;
         returnValue = tmpValue;
-        if (returnValue != null)
+        if (returnValue != null && returnValue instanceof Register)
             returnValue.AddRegisterUseInInstruction(this);
     }
 

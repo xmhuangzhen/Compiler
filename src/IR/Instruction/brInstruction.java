@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 
 public class brInstruction extends IRInstruction{
     public IROperand brCond;
@@ -15,7 +16,7 @@ public class brInstruction extends IRInstruction{
         brCond = tmpbrCond;
         brIfTrue = tmpbrIfTrue;
         brIfFalse = tmpbrIfFalse;
-        if(brCond != null)
+        if (brCond != null && brCond instanceof Register)
             brCond.AddRegisterUseInInstruction(this);
     }
 

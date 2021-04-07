@@ -37,6 +37,16 @@ public class phiInstruction extends IRInstruction{
         }
     }
 
+    //for CFG Simplification use
+    public void removeBlock(IRBasicBlock tmpBlock){
+        for(int i = 0;i < PhiLabel.size();++i){
+            if(PhiLabel.get(i) == tmpBlock){
+                PhiLabel.remove(i);
+                PhiValue.remove(i);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         //<result> = phi [fast-math-flags] <ty> [ <val0>, <label0>], ...

@@ -13,7 +13,8 @@ public class loadInstruction extends IRInstruction{
         super(tmpBasicBlock);
         LoadResult = tmpResult;
         LoadPointer = tmpPointer;
-        LoadPointer.AddRegisterUseInInstruction(this);
+        if (LoadPointer instanceof Register)
+            LoadPointer.AddRegisterUseInInstruction(this);
         LoadResult.Defs = this;
     }
 

@@ -20,7 +20,8 @@ public class getElementPtrInstruction extends IRInstruction{
         GetElementPtrPtr = tmpPtr;
         GetElementPtrResult = tmpResult;
         GetElementPtrIdx = new ArrayList<>();
-        GetElementPtrPtr.AddRegisterUseInInstruction(this);
+        if (GetElementPtrPtr instanceof Register)
+            GetElementPtrPtr.AddRegisterUseInInstruction(this);
         GetElementPtrResult.Defs = this;
     }
 

@@ -25,8 +25,10 @@ public class icmpInstruction extends IRInstruction{
         IcmpType = tmpType;
         IcmpOp1 = tmpOp1;
         IcmpOp2 = tmpOp2;
-        IcmpOp1.AddRegisterUseInInstruction(this);
-        IcmpOp2.AddRegisterUseInInstruction(this);
+        if (IcmpOp1 instanceof Register)
+            IcmpOp1.AddRegisterUseInInstruction(this);
+        if (IcmpOp2 instanceof Register)
+            IcmpOp2.AddRegisterUseInInstruction(this);
         IcmpResult.Defs = this;
     }
 

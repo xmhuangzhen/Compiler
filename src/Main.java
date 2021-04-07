@@ -50,6 +50,10 @@ public class Main {
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
+          /*  CFGSimplification tmpCFGSimp =
+                    new CFGSimplification(tmpCFGConstructor.curIRModule);
+            tmpCFGSimp.run();
+            */
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(tmpCFGConstructor.curIRModule);
             tmpDominatorTreeConstructor.run();
@@ -67,6 +71,7 @@ public class Main {
                     new SSADestructor(tmpSSAConstructor.curIRModule);
             tmpSSADestructor.run();
             //--------Opt End------
+//            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);

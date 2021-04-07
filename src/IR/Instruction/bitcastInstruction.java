@@ -17,7 +17,8 @@ public class bitcastInstruction extends IRInstruction{
         bitcastOperand = tmpOperand;
         bitcastType2 = tmpType2;
         bitcastResult = tmpResult;
-        bitcastOperand.AddRegisterUseInInstruction(this);
+        if (bitcastOperand instanceof Register)
+            bitcastOperand.AddRegisterUseInInstruction(this);
         bitcastResult.Defs = this;
     }
 

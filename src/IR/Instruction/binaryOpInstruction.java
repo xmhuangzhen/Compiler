@@ -21,9 +21,11 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryOp1 = tmpOp1;
         BinaryOp2 = tmpOp2;
         BinaryResult = tmpResult;
-        BinaryOp1.AddRegisterUseInInstruction(this);
-        BinaryOp2.AddRegisterUseInInstruction(this);
-        BinaryResult.Defs=this;
+        if (BinaryOp1 instanceof Register)
+            BinaryOp1.AddRegisterUseInInstruction(this);
+        if (BinaryOp2 instanceof Register)
+            BinaryOp2.AddRegisterUseInInstruction(this);
+        BinaryResult.Defs = this;
     }
 
     @Override

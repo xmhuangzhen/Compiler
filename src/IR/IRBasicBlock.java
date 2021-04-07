@@ -2,6 +2,7 @@ package IR;
 
 import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
+import IR.Instruction.phiInstruction;
 import IR.Operand.IROperand;
 
 import java.lang.reflect.Array;
@@ -18,10 +19,12 @@ public class IRBasicBlock {
 
     public Map<String, IROperand> IRRegisterTable;
 
-    //for Dominator Tree Use
-    public ArrayList<IRBasicBlock> DominatorTreeSuccessor;
-    public ArrayList<IRBasicBlock> DominatorTreePredecessor;
+    //for CFG use
+    public ArrayList<IRBasicBlock> CFGSuccessor;
+    public ArrayList<IRBasicBlock> CFGPredecessor;
     public int DFN;//0 -- no visit
+
+    //for Dominator Tree Use
     public IRBasicBlock DominatorTreeFather;
     public IRBasicBlock DominatorTreeImmediateDominator, DominatorTreeSemiDominator;
     public IRBasicBlock DominatorTreeLabel, DominatorTreeAncestor;
@@ -40,8 +43,8 @@ public class IRBasicBlock {
         TailInst = null;
         IRRegisterTable = new LinkedHashMap<>();
 
-        DominatorTreeSuccessor = new ArrayList<>();
-        DominatorTreePredecessor = new ArrayList<>();
+        CFGPredecessor = new ArrayList<>();
+        CFGSuccessor = new ArrayList<>();
         DFN = 0;
         DominatorTreeFather = null;
         DominatorTreeImmediateDominator = null;
@@ -101,6 +104,12 @@ public class IRBasicBlock {
             TailInst = tmpInst.preIRInstruction;
         else
             tmpInst.nextIRInstruction.preIRInstruction = tmpInst.preIRInstruction;
+    }
+
+    public void removePhiInstBlock(IRBasicBlock tmpBlock){
+        if(HeadInst instanceof phiInstruction){
+            ((phiInstruction) HeadInst).removeBlock(tmpBlock);
+        }
     }
 
     public void accept(IRVisitor it){

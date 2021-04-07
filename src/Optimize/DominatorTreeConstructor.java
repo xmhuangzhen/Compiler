@@ -45,7 +45,7 @@ public class DominatorTreeConstructor extends Pass {
                 //(2) get semi dominator
                 for (int i = tmpFunc.DFNcurNumber; i > 1; --i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
-                    for (IRBasicBlock BlockV : BlockW.DominatorTreePredecessor) {
+                    for (IRBasicBlock BlockV : BlockW.CFGPredecessor) {
                         IRBasicBlock BlockU = Eval(BlockV);
                         if (BlockU.DominatorTreeSemiDominator.DFN < BlockW.DominatorTreeSemiDominator.DFN) {
                             BlockW.DominatorTreeSemiDominator = BlockU.DominatorTreeSemiDominator;

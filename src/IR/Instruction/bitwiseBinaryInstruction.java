@@ -21,8 +21,10 @@ public class bitwiseBinaryInstruction extends IRInstruction{
         bitwiseBinaryOp1 = tmpOp1;
         bitwiseBinaryOp2 = tmpOp2;
         bitwiseBinaryResult = tmpResult;
-        bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
-        bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
+        if (bitwiseBinaryOp1 instanceof Register)
+            bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
+        if (bitwiseBinaryOp2 instanceof Register)
+            bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
         bitwiseBinaryResult.Defs = this;
     }
 

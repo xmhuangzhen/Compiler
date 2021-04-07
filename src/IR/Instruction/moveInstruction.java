@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 
 public class moveInstruction extends IRInstruction{
     public IROperand rd,rs;
@@ -12,8 +13,8 @@ public class moveInstruction extends IRInstruction{
         super(tmpBasicBlock);
         rd = tmprd;
         rs = tmprs;
-        if(rs != null)
-        rs.AddRegisterUseInInstruction(this);
+        if (rs != null && rs instanceof Register)
+            rs.AddRegisterUseInInstruction(this);
         rd.Defs = this;
     }
 

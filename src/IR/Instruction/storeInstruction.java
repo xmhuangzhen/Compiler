@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
 public class storeInstruction extends IRInstruction{
@@ -13,8 +14,10 @@ public class storeInstruction extends IRInstruction{
         super(tmpBasicBlock);
         StoreValue = tmpValue;
         StorePointer = tmpPointer;
-        StoreValue.AddRegisterUseInInstruction(this);
-        StorePointer.AddRegisterUseInInstruction(this);
+        if (StoreValue instanceof Register)
+            StoreValue.AddRegisterUseInInstruction(this);
+        if (StorePointer instanceof Register)
+            StorePointer.AddRegisterUseInInstruction(this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package Backend;
 
 import IR.Instruction.IRInstruction;
 import IR.Operand.IROperand;
+import IR.Operand.Register;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
