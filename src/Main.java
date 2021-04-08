@@ -65,12 +65,14 @@ public class Main {
 
 
 
+
             //(n) Destruct SSA
             SSADestructor tmpSSADestructor =
                     new SSADestructor(tmpSSAConstructor.curIRModule);
             tmpSSADestructor.run();
             //--------Opt End------
-//            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+      //      new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);

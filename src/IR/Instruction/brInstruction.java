@@ -25,6 +25,7 @@ public class brInstruction extends IRInstruction{
         if(brCond == originObject){
             brCond.DeleteRegisterUseInInstruction(this);
             brCond = newObject;
+            brCond.NeedPtr = originObject.NeedPtr;
             brCond.AddRegisterUseInInstruction(this);
         }
     }

@@ -25,6 +25,7 @@ public class retInstruction extends IRInstruction {
         if(returnValue == originObject){
             returnValue.DeleteRegisterUseInInstruction(this);
             returnValue = newObject;
+            returnValue.NeedPtr = originObject.NeedPtr;
             returnValue.AddRegisterUseInInstruction(this);
         }
     }

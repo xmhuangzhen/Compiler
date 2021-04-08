@@ -23,6 +23,7 @@ public class loadInstruction extends IRInstruction{
         if(LoadPointer == originObject){
             LoadPointer.DeleteRegisterUseInInstruction(this);
             LoadPointer = newObject;
+            LoadPointer.NeedPtr = originObject.NeedPtr;
             LoadPointer.AddRegisterUseInInstruction(this);
         }
     }

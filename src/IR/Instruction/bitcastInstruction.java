@@ -27,6 +27,7 @@ public class bitcastInstruction extends IRInstruction{
         if(originObject == bitcastOperand){
             bitcastOperand.DeleteRegisterUseInInstruction(this);
             bitcastOperand = newObject;
+            bitcastOperand.NeedPtr = originObject.NeedPtr;
             bitcastOperand.AddRegisterUseInInstruction(this);
         }
     }

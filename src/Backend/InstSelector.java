@@ -185,6 +185,7 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(loadInstruction it) {
+      //  System.out.println(it.toString());
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.LoadResult, curRISCVBasicBlock);
         RISCVRegister rs = curRISCVModule.getRISCVReg(it.LoadPointer, curRISCVBasicBlock);
         if(curRISCVFunction.GEPAddrMap.containsKey(rs)){
@@ -290,7 +291,7 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(getElementPtrInstruction it) {
-    //    System.out.println(it.toString());
+   //     System.out.println(it.toString());
         if(it.GetElementPtrPtr instanceof GlobalVariables){
 //            System.out.println("CONST!STRING!"+it.toString());
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);

@@ -33,11 +33,13 @@ public class binaryOpInstruction extends IRInstruction{
         if(originObject == BinaryOp1){
             BinaryOp1.DeleteRegisterUseInInstruction(this);
             BinaryOp1 = newObject;
+            BinaryOp1.NeedPtr = originObject.NeedPtr;
             BinaryOp1.AddRegisterUseInInstruction(this);
         }
         if(originObject == BinaryOp2){
             BinaryOp2.DeleteRegisterUseInInstruction(this);
             BinaryOp2 = newObject;
+            BinaryOp2.NeedPtr = originObject.NeedPtr;
             BinaryOp2.AddRegisterUseInInstruction(this);
         }
     }

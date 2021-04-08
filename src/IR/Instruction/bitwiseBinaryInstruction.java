@@ -33,11 +33,13 @@ public class bitwiseBinaryInstruction extends IRInstruction{
         if(originObject == bitwiseBinaryOp1){
             bitwiseBinaryOp1.DeleteRegisterUseInInstruction(this);
             bitwiseBinaryOp1 = newObject;
+            bitwiseBinaryOp1.NeedPtr = originObject.NeedPtr;
             bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
         }
         if(originObject == bitwiseBinaryOp2){
             bitwiseBinaryOp2.DeleteRegisterUseInInstruction(this);
             bitwiseBinaryOp2 = newObject;
+            bitwiseBinaryOp2.NeedPtr = originObject.NeedPtr;
             bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
         }
     }

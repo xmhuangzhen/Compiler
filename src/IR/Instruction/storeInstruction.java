@@ -25,11 +25,13 @@ public class storeInstruction extends IRInstruction{
         if(StoreValue == originObject){
             StoreValue.DeleteRegisterUseInInstruction(this);
             StoreValue = newObject;
+            StoreValue.NeedPtr = originObject.NeedPtr;
             StoreValue.AddRegisterUseInInstruction(this);
         }
         if(StorePointer == originObject){
             StorePointer.DeleteRegisterUseInInstruction(this);
             StorePointer = newObject;
+            StorePointer.NeedPtr = originObject.NeedPtr;
             StorePointer.AddRegisterUseInInstruction(this);
         }
     }

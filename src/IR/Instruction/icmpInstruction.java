@@ -37,11 +37,13 @@ public class icmpInstruction extends IRInstruction{
         if (originObject == IcmpOp1) {
             IcmpOp1.DeleteRegisterUseInInstruction(this);
             IcmpOp1 = newObject;
+            IcmpOp1.NeedPtr = originObject.NeedPtr;
             IcmpOp1.AddRegisterUseInInstruction(this);
         }
         if (originObject == IcmpOp2) {
             IcmpOp2.DeleteRegisterUseInInstruction(this);
             IcmpOp2 = newObject;
+            IcmpOp2.NeedPtr = originObject.NeedPtr;
             IcmpOp2.AddRegisterUseInInstruction(this);
         }
     }

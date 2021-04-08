@@ -27,6 +27,7 @@ public class callInstruction extends IRInstruction{
         for(int i = 0;i < CallParameters.size();++i)
             if(CallParameters.get(i) == originObject){
                 CallParameters.get(i).DeleteRegisterUseInInstruction(this);
+                newObject.NeedPtr = originObject.NeedPtr;
                 CallParameters.set(i,newObject);
                 CallParameters.get(i).AddRegisterUseInInstruction(this);
             }

@@ -7,6 +7,7 @@ import IR.Instruction.*;
 import IR.Operand.IROperand;
 import IR.Operand.NullConstant;
 import IR.Operand.Register;
+import IR.TypeSystem.PointerType;
 
 import java.util.*;
 
@@ -69,7 +70,10 @@ public class SSAConstructor extends Pass {
                         for (IRBasicBlock BlockY : BlockX.DominanceFrontier) {
                             if (!BlockF.contains(BlockY)) {
                                 String VarName = tmpAllocaInst.AllocaResult.RegisterName.split("|")[0];
-                                Register tmpPhiResult = new Register(tmpAllocaInst.AllocaType, VarName + (RegNum++));
+                                if(!(tmpAllocaInst.AllocaType instanceof PointerType)) continue;
+                                Register tmpPhiResult =
+                                        new Register(((PointerType) tmpAllocaInst.AllocaType).baseType,
+                                                VarName + (RegNum++));
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
 
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
@@ -155,7 +159,7 @@ public class SSAConstructor extends Pass {
                 ((moveInstruction) tmpInst).rd.ReplaceRegisterUse(
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
-           */
+*/
             } else if (tmpInst instanceof storeInstruction && DefAlloca.containsKey(tmpInst)) {
                 allocaInstruction tmpAllocInst = DefAlloca.get(tmpInst);
                 if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst))
