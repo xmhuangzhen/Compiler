@@ -13,9 +13,9 @@ public class moveInstruction extends IRInstruction{
         super(tmpBasicBlock);
         rd = tmprd;
         rs = tmprs;
-        if(rs != null){
+        /*if(rs != null){
             rd.NeedPtr = rs.NeedPtr;
-        }
+        }*/
         if (rs != null && rs instanceof Register)
             rs.AddRegisterUseInInstruction(this);
         rd.Defs = this;
