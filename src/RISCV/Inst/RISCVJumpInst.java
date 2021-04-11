@@ -6,6 +6,8 @@ import RISCV.Operand.RISCVVirtualReg;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVModule;
 
+import java.util.HashSet;
+
 public class RISCVJumpInst extends RISCVInstruction{
 
     public RISCVBasicBlock JumpToBlock;
@@ -17,6 +19,16 @@ public class RISCVJumpInst extends RISCVInstruction{
 
     @Override
     public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2) {
+    }
+
+    @Override
+    public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen, HashSet<RISCVRegister> BlockKill) {
+
+    }
+
+    @Override
+    public void replaceUse(RISCVRegister reg1, RISCVRegister reg2) {
+
     }
 
     @Override

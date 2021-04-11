@@ -10,10 +10,10 @@ public class RISCVStackReg extends RISCVRegister{
     public RISCVImm Offset;
 
     public RISCVStackReg(RISCVFunction tmpFunc,RISCVRegister tmpbaseReg,int modified) {
-        super("stack_"+ tmpFunc.StackNum);
+        super("stack_"+ tmpFunc.NaiveStackNum);
         thisFunc = tmpFunc;
-        Index = tmpFunc.StackNum;
-        tmpFunc.StackNum++;
+        Index = tmpFunc.NaiveStackNum;
+        tmpFunc.NaiveStackNum++;
         baseReg = tmpbaseReg;
         Offset = new RISCVImm(modified);
     }

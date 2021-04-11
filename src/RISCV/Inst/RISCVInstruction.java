@@ -8,7 +8,9 @@ import RISCV.RISCVBasicBlock;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 abstract public class RISCVInstruction {
     public enum RISCVBinaryENUMType{
@@ -27,8 +29,14 @@ abstract public class RISCVInstruction {
     public RISCVInstruction nextInst, preInst;
     public ArrayList<RISCVRegister> UsedVirtualReg;
 
+    //for graph coloring use
+    public HashSet<RISCVRegister> use;
+    public HashSet<RISCVRegister> def;
+
     public RISCVInstruction(){
         UsedVirtualReg = new ArrayList<>();
+        use = new HashSet<>();
+        def = new HashSet<>();
     }
 
     public void addInstPre(RISCVBasicBlock tmpBlock, RISCVInstruction tmpInst){
@@ -57,5 +65,38 @@ abstract public class RISCVInstruction {
         }
     }
 
+    //for Naive Reg Allocator use
     abstract public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2);
+
+    //for Liveness Analysis use
+    abstract public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen,
+                                           HashSet<RISCVRegister> BlockKill);
+
+    //for graph coloring use
+    abstract public void replaceUse(RISCVRegister reg1, RISCVRegister reg2);
+
+    //for graph coloring use
+    public void replaceInst(RISCVBasicBlock tmpBlock, RISCVInstruction tmpInst){
+        tmpInst.preInst = preInst;
+        tmpInst.nextInst = nextInst;
+        if(preInst == null)
+            tmpBlock.HeadInst = tmpInst;
+        else
+            preInst.nextInst = tmpInst;
+        if(nextInst == null)
+            tmpBlock.TailInst = tmpInst;
+        else
+            nextInst.preInst = tmpInst;
+    }
+
+    public void removeInst(RISCVBasicBlock tmpBlock){
+        if (preInst == null)
+            tmpBlock.HeadInst = nextInst;
+        else
+            preInst.nextInst = nextInst;
+        if(nextInst == null)
+            tmpBlock.TailInst = preInst;
+        else
+            nextInst.preInst = preInst;
+    }
 }

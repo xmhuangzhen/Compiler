@@ -13,24 +13,35 @@ import RISCV.Inst.RISCVliInst;
 import RISCV.Operand.*;
 
 import java.awt.image.TileObserver;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class RISCVModule {
     public static ArrayList<String> RISCVPhyRegName = new ArrayList<>(Arrays.asList(
             "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2", "s0", "s1",
             "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
             "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"));
+    public static ArrayList<String> RISCVOKPhyRegName = new ArrayList<>(Arrays.asList(
+            "a0","a1","a2","a3","a4","a5","a6","a7","t0","t1",
+            "t2",/*"s0",*/"s1","s2","s3","s4","s5","s6","s7","s8",
+            "s9","s10","s11","t3","t4","t5","t6","ra"));
+    public static ArrayList<String> RISCVCalleePhyRegName = new ArrayList<>(Arrays.asList(
+            "s0","s1","s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11"));
+    public static ArrayList<String> RISCVCallerPhyRegName = new ArrayList<>(Arrays.asList(
+            "ra","t0","t1", "t2","a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
+            "t3","t4","t5","t6"));
     public static int Max_Imm = (1 << 11) - 1, Min_Imm = -(1 << 11);
-    public ArrayList<RISCVPhyReg> PhyRegList;
+    public static ArrayList<RISCVPhyReg> PhyRegList;
     public HashMap<IROperand, RISCVVirtualReg> VirtualRegMap;
     public HashMap<IROperand, RISCVGlobalReg> GlobalRegMap;
     public HashMap<IRFunction, RISCVFunction> RISCVFuncMap;
     public static int VirtualRegCnt, BlockCnt;
 
     public HashMap<IRBasicBlock, RISCVBasicBlock> BasicBlockMap;
+
+    //for graph coloring
+    public ArrayList<RISCVPhyReg> okPhyRegList;
+    public ArrayList<RISCVPhyReg> CalleePhyRegList;
+    public ArrayList<RISCVPhyReg> CallerPhyRegList;
 
     public RISCVModule() {
         //Reg
@@ -48,6 +59,17 @@ public class RISCVModule {
 
         //func
         RISCVFuncMap = new LinkedHashMap<>();
+
+        //for graph coloring
+        okPhyRegList = new ArrayList<>();
+        for (int i = 0; i < RISCVOKPhyRegName.size(); ++i)
+            okPhyRegList.add(getPhyReg(RISCVOKPhyRegName.get(i)));
+        CalleePhyRegList = new ArrayList<>();
+        for(int i = 0;i < RISCVCalleePhyRegName.size();++i)
+            CalleePhyRegList.add(getPhyReg(RISCVCalleePhyRegName.get(i)));
+        CallerPhyRegList = new ArrayList<>();
+        for(int i = 0;i < RISCVCallerPhyRegName.size();++i)
+            CallerPhyRegList.add(getPhyReg(RISCVCallerPhyRegName.get(i)));
     }
 
     public RISCVRegister getRISCVReg(IROperand tmpIROperand, RISCVBasicBlock tmpBasicBlock) {
@@ -114,7 +136,7 @@ public class RISCVModule {
         else return RISCVInstruction.RISCVWidthENUMType.w;
     }
 
-    public RISCVPhyReg getPhyReg(String tmpName) {
+    public static RISCVPhyReg getPhyReg(String tmpName) {
         for (int i = 0; i < 32; ++i) {
             if (RISCVPhyRegName.get(i).equals(tmpName))
                 return PhyRegList.get(i);
@@ -123,9 +145,9 @@ public class RISCVModule {
     }
 
 
-    public RISCVGlobalReg getGlobalReg(IROperand tmpOperand){
-        if(GlobalRegMap.containsKey(tmpOperand)) return GlobalRegMap.get(tmpOperand);
-        if(tmpOperand instanceof GlobalVariables) {
+    public RISCVGlobalReg getGlobalReg(IROperand tmpOperand) {
+        if (GlobalRegMap.containsKey(tmpOperand)) return GlobalRegMap.get(tmpOperand);
+        if (tmpOperand instanceof GlobalVariables) {
             addGlobalReg((GlobalVariables) tmpOperand);
             return GlobalRegMap.get(tmpOperand);
         } else return null;

@@ -11,6 +11,11 @@ public class RISCVVirtualReg extends RISCVRegister{
 
     @Override
     public String toString() {
-        return RegisterName;
+        if(color == null) {
+            return RegisterName;
+        }
+        else {
+            return color.RegisterName;
+        }
     }
 }

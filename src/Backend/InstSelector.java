@@ -196,9 +196,19 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                     rd,rs,new RISCVAddrImm(rs,0)));
         } else{
-         //   System.out.println(it.toString()+","+it.LoadResult.toString()+","+it.LoadPointer.toString());
-           // System.out.println(rd.RegisterName+","+rs.RegisterName);
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
+            if(rs instanceof RISCVGlobalReg) {
+                RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+                //lui t0,%hi(a)
+                //lw t1,%lo(a)(t0)
+                curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
+                        (RISCVGlobalReg) rs, RISCVRelocationImm.RelocationENUMType.hi)));
+                curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                        rd, tmpAddrReg,
+                        new RISCVRelocationImm((RISCVGlobalReg) rs,
+                                RISCVRelocationImm.RelocationENUMType.lo)));
+            } else {
+                curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd, rs));
+            }
         }
 /*        if(it.LoadResult.thisType.equals(it.LoadPointer.thisType)){
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
@@ -244,12 +254,17 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                     val, tmpAddrImm.baseReg, tmpAddrImm));
 //            System.out.println(tmpAddrImm.baseReg.RegisterName);
-        } else
-        if(it.StorePointer.NeedPtr) {
+        } else if(it.StorePointer.NeedPtr) {
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                     val,addr,new RISCVAddrImm(addr,0)));
+        } else if(addr instanceof RISCVGlobalReg){
+            RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
+            curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
+                    (RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.hi)));
+            curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
+                    val, tmpAddrReg,
+                    new RISCVRelocationImm((RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.lo)));
         }
-
 
         else {
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(addr, val));

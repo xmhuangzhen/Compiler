@@ -4,6 +4,7 @@ import RISCV.Operand.*;
 import RISCV.RISCVModule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class RISCVlInst extends RISCVInstruction {
 
@@ -20,6 +21,11 @@ public class RISCVlInst extends RISCVInstruction {
         offset = tmpoffset;
         if ((rd instanceof RISCVVirtualReg) || (rd instanceof RISCVGlobalReg)) UsedVirtualReg.add(rd);
         if ((rs1 instanceof RISCVVirtualReg) || (rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
+
+        if(!(rd instanceof RISCVGlobalReg))
+            def.add(rd);
+        if(!(rs1 instanceof RISCVGlobalReg))
+            use.add(rs1);
     }
 
     @Override
@@ -28,6 +34,25 @@ public class RISCVlInst extends RISCVInstruction {
         if (rs1 == reg1) rs1 = reg2;
     }
 
+    @Override
+    public void replaceUse(RISCVRegister reg1, RISCVRegister reg2) {
+        if(rd != null && rd == reg1 && def.contains(rd)){
+            def.remove(rd);
+            rd = reg2;
+            def.add(rd);
+        }
+        if(rs1 != null && rs1 == reg1 && use.contains(rs1)) {
+            use.remove(rs1);
+            rs1 = reg2;
+            use.add(rs1);
+        }
+    }
+
+    @Override
+    public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen, HashSet<RISCVRegister> BlockKill) {
+        if(!(rs1 instanceof RISCVGlobalReg) && !BlockKill.contains(rs1)) BlockGen.add(rs1);
+        if(!(rd instanceof RISCVGlobalReg)) BlockKill.add(rd);
+    }
 
     @Override
     public String toString() {

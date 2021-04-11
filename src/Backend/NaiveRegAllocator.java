@@ -34,7 +34,7 @@ public class NaiveRegAllocator {
                         for (int i = 0; i < tmpInst.UsedVirtualReg.size(); ++i) {
                             RISCVRegister tmpReg = tmpInst.UsedVirtualReg.get(i);
                             if (!RegCountSet.contains(tmpReg)) {
-                                tmpFunc.StackCounting++;
+                                tmpFunc.NaiveStackCounting++;
                                 RegCountSet.add(tmpReg);
                             }
                         }
@@ -61,7 +61,7 @@ public class NaiveRegAllocator {
                             RISCVRegister tmpReg = thisInst.UsedVirtualReg.get(i);
                             RISCVRegister tmpStoreReg;
                             if (!RegAllocMap.containsKey(tmpReg)) {
-                                int OffsetOfSp = 4*(SegNum+1+tmpFunc.StackNum+1);
+                                int OffsetOfSp = 4*(SegNum+1+tmpFunc.NaiveStackNum+1);
                                 int SegNumberOfThis = OffsetOfSp/2048;
                                 tmpStoreReg = new RISCVStackReg(tmpFunc,
                                         curRISCVModule.getPhyReg("s"+SegNumberOfThis),

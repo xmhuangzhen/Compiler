@@ -71,14 +71,22 @@ public class Main {
                     new SSADestructor(tmpSSAConstructor.curIRModule);
             tmpSSADestructor.run();
             //--------Opt End------
-            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+//            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
             instSelector.visit(instSelector.curIRModule);
 
             //Register Allocate
-            NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
+          //  NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
+            //regAlloc.run();
+  //          PrintStream printStream1 = new PrintStream("output.ll");
+    //        ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
+      //      asmPrinter1.run();
+
+
+            GraphColoringRegAllocator regAlloc =
+                    new GraphColoringRegAllocator(instSelector.curRISCVModule);
             regAlloc.run();
 
             // ASM Print
