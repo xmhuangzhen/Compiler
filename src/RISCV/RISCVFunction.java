@@ -2,10 +2,12 @@ package RISCV;
 
 import IR.IRFunction;
 import RISCV.Operand.RISCVAddrImm;
+import RISCV.Operand.RISCVPhyReg;
 import RISCV.Operand.RISCVRegister;
 import RISCV.Operand.RISCVRelocationImm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,9 +25,10 @@ public class RISCVFunction {
 
     public RISCVBasicBlock EntranceBlock = null, LastBlock = null;
 
-
     //for graph coloring use
     public int GCStackNum;
+
+    public HashSet<RISCVPhyReg> usedPhyReg;
 
     public RISCVFunction(IRFunction tmpFunc){
         thisIRFunc = tmpFunc;
@@ -38,6 +41,8 @@ public class RISCVFunction {
 
         //DFSOrder = new ArrayList<>();
         GCStackNum = 0;
+
+        usedPhyReg = new HashSet<>();
     }
 
     public void addBlock(RISCVBasicBlock tmpBlock){
