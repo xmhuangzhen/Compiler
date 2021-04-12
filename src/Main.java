@@ -15,10 +15,14 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Main {
     public static void main(String[] args) throws Exception{
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+  //      System.out.println("start building: " + dtf.format(LocalDateTime.now()));
 
         InputStream input = null;
         if(args.length != 0)
@@ -41,6 +45,8 @@ public class Main {
             ASTRoot = (RootNode)astBuilder.visit(parseTreeRoot);
             SemanticChecker semanticCheck  = new SemanticChecker();
             semanticCheck.visit(ASTRoot);
+
+            if(args.length != 2) return;
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
@@ -99,5 +105,7 @@ public class Main {
             System.err.println(er.toString());
             throw new RuntimeException();
         }
+
+     //   System.out.println("Finish building: " + dtf.format(LocalDateTime.now()));
     }
 }
