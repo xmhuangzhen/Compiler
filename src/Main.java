@@ -25,9 +25,10 @@ public class Main {
   //      System.out.println("start building: " + dtf.format(LocalDateTime.now()));
 
         InputStream input = null;
-        if(args.length != 0)
-            input = new FileInputStream("test.mx");
-        else input = System.in;
+//        if(args.length != 0)
+  //          input = new FileInputStream("test.mx");
+       // else
+            input = System.in;
 
         try {
             RootNode ASTRoot;
