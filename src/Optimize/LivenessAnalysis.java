@@ -47,12 +47,12 @@ public class LivenessAnalysis {
 
         CalculateLiveOut(curFunc.LastBlock);
 
-        System.out.println(curFunc.FunctionName);
+    /*    System.out.println(curFunc.FunctionName);
         for(RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;tmpBlock != null;
         tmpBlock = tmpBlock.nextBlock){
             System.out.println(tmpBlock.BlockName+","+tmpBlock.LiveOut  );
         }
-        return false;
+      */  return false;
     }
 
     public void CalculateLiveOut(RISCVBasicBlock curBlock) {
