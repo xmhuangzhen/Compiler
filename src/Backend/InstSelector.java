@@ -44,7 +44,7 @@ public class InstSelector implements IRVisitor {
         for (var tmpFunc : it.IRFunctionTable.values()) {
             curRISCVModule.addFunc(tmpFunc);
             for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock; tmpBlock != null;
-                 tmpBlock = tmpBlock.nextBasicBlocks){
+                 tmpBlock = tmpBlock.nextBasicBlocks) {
                 curRISCVModule.getRISCVBasicBlock(tmpBlock);
             }
         }
@@ -72,7 +72,7 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(
                     RISCVInstruction.RISCVWidthENUMType.w,
                     curRISCVModule.getRISCVReg(it.thisFunctionParameters.get(i), curRISCVBasicBlock),
-                    curRISCVModule.getPhyReg("s1"),
+                    curRISCVModule.getPhyReg("s0"),
                     new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }
@@ -116,7 +116,8 @@ public class InstSelector implements IRVisitor {
                 curRISCVBasicBlock.addInstruction(new RISCVmvInst(curRISCVModule.getPhyReg("a0"),
                         tmpRISCVReturnVal));
             }
-*/        }
+*/
+        }
         curRISCVBasicBlock.addInstruction(new RISCVretInst());
     }
 
@@ -124,13 +125,13 @@ public class InstSelector implements IRVisitor {
     public void visit(brInstruction it) {
         if (it.brCond == null) {
             RISCVBasicBlock tmpJumptoBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
-            if(tmpJumptoBlock == null) throw new RuntimeException(it.toString());
+            if (tmpJumptoBlock == null) throw new RuntimeException(it.toString());
             curRISCVBasicBlock.addInstruction(new RISCVJumpInst(tmpJumptoBlock));
         } else {
             RISCVBasicBlock tmpIfTrueBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
             RISCVBasicBlock tmpIfFalseBlock = curRISCVModule.getRISCVBasicBlock(it.brIfFalse);
-            RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond,curRISCVBasicBlock);
-            curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg,tmpIfTrueBlock,tmpIfFalseBlock));
+            RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond, curRISCVBasicBlock);
+            curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg, tmpIfTrueBlock, tmpIfFalseBlock));
         }
     }
 
@@ -185,18 +186,18 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(loadInstruction it) {
-      //  System.out.println(it.toString());
+        //  System.out.println(it.toString());
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.LoadResult, curRISCVBasicBlock);
         RISCVRegister rs = curRISCVModule.getRISCVReg(it.LoadPointer, curRISCVBasicBlock);
-        if(curRISCVFunction.GEPAddrMap.containsKey(rs)){
+        if (curRISCVFunction.GEPAddrMap.containsKey(rs)) {
             RISCVAddrImm tmpAddrImm = curRISCVFunction.GEPAddrMap.get(rs);
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                     rd, tmpAddrImm.baseReg, tmpAddrImm));
-        } else if(it.LoadPointer.NeedPtr) {
+        } else if (it.LoadPointer.NeedPtr) {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
-                    rd,rs,new RISCVAddrImm(rs,0)));
-        } else{
-            if(rs instanceof RISCVGlobalReg) {
+                    rd, rs, new RISCVAddrImm(rs, 0)));
+        } else {
+            if (rs instanceof RISCVGlobalReg) {
                 RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
                 //lui t0,%hi(a)
                 //lw t1,%lo(a)(t0)
@@ -229,7 +230,8 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVlInst(curRISCVModule.getWidth(it.LoadResult)
                     , rd, rs, new RISCVImm(0)));
         }
-  */  }
+  */
+    }
 
     @Override
     public void visit(storeInstruction it) {
@@ -254,19 +256,17 @@ public class InstSelector implements IRVisitor {
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                     val, tmpAddrImm.baseReg, tmpAddrImm));
 //            System.out.println(tmpAddrImm.baseReg.RegisterName);
-        } else if(it.StorePointer.NeedPtr) {
+        } else if (it.StorePointer.NeedPtr) {
             curRISCVBasicBlock.addInstruction(new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
-                    val,addr,new RISCVAddrImm(addr,0)));
-        } else if(addr instanceof RISCVGlobalReg){
+                    val, addr, new RISCVAddrImm(addr, 0)));
+        } else if (addr instanceof RISCVGlobalReg) {
             RISCVVirtualReg tmpAddrReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
             curRISCVBasicBlock.addInstruction(new RISCVLUIInst(tmpAddrReg, new RISCVRelocationImm(
                     (RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.hi)));
             curRISCVBasicBlock.addInstruction(new RISCVsInst(curRISCVModule.getWidth(it.StorePointer),
                     val, tmpAddrReg,
                     new RISCVRelocationImm((RISCVGlobalReg) addr, RISCVRelocationImm.RelocationENUMType.lo)));
-        }
-
-        else {
+        } else {
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(addr, val));
         }
         /*if(val instanceof RISCVGlobalReg){
@@ -299,19 +299,18 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(moveInstruction it) {
-        RISCVRegister rd = curRISCVModule.getRISCVReg(it.rd,curRISCVBasicBlock);
-        RISCVRegister rs = curRISCVModule.getRISCVReg(it.rs,curRISCVBasicBlock);
-        curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd,rs));
+        RISCVRegister rd = curRISCVModule.getRISCVReg(it.rd, curRISCVBasicBlock);
+        RISCVRegister rs = curRISCVModule.getRISCVReg(it.rs, curRISCVBasicBlock);
+        curRISCVBasicBlock.addInstruction(new RISCVmvInst(rd, rs));
     }
 
     @Override
     public void visit(getElementPtrInstruction it) {
-        if(it.GetElementPtrPtr instanceof GlobalVariables){
+        if (it.GetElementPtrPtr instanceof GlobalVariables) {
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,
                     curRISCVModule.GlobalRegMap.get(it.GetElementPtrPtr)));
-        }
-        else if(it.GetElementPtrPtr.thisType instanceof PointerType) {
+        } else if (it.GetElementPtrPtr.thisType instanceof PointerType) {
             RISCVRegister baseReg = curRISCVModule.getRISCVReg(it.GetElementPtrPtr, curRISCVBasicBlock);
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             if (it.GetElementPtrIdx.size() == 1) {
@@ -322,16 +321,15 @@ public class InstSelector implements IRVisitor {
                     if (val <= Max_Imm && val >= Min_Imm) {
                         curRISCVBasicBlock.addInstruction(
                                 new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                rd, baseReg, null, new RISCVImm((int) val)));
-                    }
-                    else
+                                        rd, baseReg, null, new RISCVImm((int) val)));
+                    } else
                         curRISCVBasicBlock.addInstruction(
                                 new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                rd, baseReg,
-                                curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, val), curRISCVBasicBlock),
-                                null));
+                                        rd, baseReg,
+                                        curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32, val), curRISCVBasicBlock),
+                                        null));
                 } else { // rd = baseReg + Index * 4
-                    if(!(ArrayIndex instanceof Register|| ArrayIndex instanceof Parameter))
+                    if (!(ArrayIndex instanceof Register || ArrayIndex instanceof Parameter))
                         throw new RuntimeException();
                     RISCVRegister IndexReg = curRISCVModule.getRISCVReg(ArrayIndex, curRISCVBasicBlock);
                     RISCVRegister tmpReg = new RISCVVirtualReg(curRISCVModule.VirtualRegCnt++);
@@ -350,25 +348,25 @@ public class InstSelector implements IRVisitor {
                 long tmpIndex = ((IntegerConstant) it.GetElementPtrIdx.get(1)).value;
                 long tmpGetMemberOffset = tmpStructureType.getMemberOffset(tmpIndex);
                 if (!(tmpStructureType.StructureMemberType.get((int) tmpIndex) instanceof PointerType)) {
-                    curRISCVFunction.GEPAddrMap.put(rd,new RISCVAddrImm(baseReg,(int)tmpGetMemberOffset));
+                    curRISCVFunction.GEPAddrMap.put(rd, new RISCVAddrImm(baseReg, (int) tmpGetMemberOffset));
                 } else {
                     if (tmpGetMemberOffset <= Max_Imm && tmpGetMemberOffset >= Min_Imm)
                         curRISCVBasicBlock.addInstruction(
                                 new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                rd, baseReg, null, new RISCVImm((int) tmpGetMemberOffset)));
+                                        rd, baseReg, null, new RISCVImm((int) tmpGetMemberOffset)));
                     else
                         curRISCVBasicBlock.addInstruction(
                                 new RISCVBinaryOpInst(RISCVInstruction.RISCVBinaryENUMType.add,
-                                rd, baseReg,
-                                curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32,
-                                        tmpGetMemberOffset), curRISCVBasicBlock),
-                                null));
+                                        rd, baseReg,
+                                        curRISCVModule.getRISCVReg(new IntegerConstant(IntegerType.IRBitWidth.i32,
+                                                tmpGetMemberOffset), curRISCVBasicBlock),
+                                        null));
                 }
             }
         } else {//const string or maybe others?
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             RISCVGlobalReg rs = curRISCVModule.getGlobalReg(it.GetElementPtrPtr);
-            if(rs != null)curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,rs));
+            if (rs != null) curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd, rs));
         }
     }
 
@@ -423,7 +421,7 @@ public class InstSelector implements IRVisitor {
         for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
             RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
             curRISCVBasicBlock.addInstruction(new RISCVmvInst(
-                    curRISCVModule.getPhyReg("a"+i),
+                    curRISCVModule.getPhyReg("a" + i),
                     tmpReg));
         }
 
@@ -437,6 +435,8 @@ public class InstSelector implements IRVisitor {
                     new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }
+        if (it.CallParameters.size() > curRISCVFunction.MaxParaCall)
+            curRISCVFunction.MaxParaCall = it.CallParameters.size();
         //(3) funccall
         curRISCVBasicBlock.addInstruction(new RISCVCallInst(curRISCVModule.RISCVFuncMap.get(it.CallFunction)));
         if (it.CallFunction.thisReturnValue != null) {

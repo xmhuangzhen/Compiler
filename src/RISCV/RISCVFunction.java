@@ -15,6 +15,7 @@ public class RISCVFunction {
     public String FunctionName;
     public boolean IsBuiltIn;
     public Map<RISCVRegister, RISCVAddrImm> GEPAddrMap;
+    public int MaxParaCall;
 
     //for Naive Reg Allocator use
     public int NaiveStackNum;
@@ -33,6 +34,7 @@ public class RISCVFunction {
         NaiveStackNum = 0;
         NaiveStackCounting = 0;
         GEPAddrMap = new LinkedHashMap<>();
+        MaxParaCall = 0;
 
         //DFSOrder = new ArrayList<>();
         GCStackNum = 0;
@@ -53,8 +55,10 @@ public class RISCVFunction {
         return 4*NaiveStackCounting + (16-(4*NaiveStackCounting%16))+4*16;
     }
 
+    //ra,s0-s11,maxparacall
     public int GCRealStackSize(){
-        return 4*GCStackNum + (16-(4*GCStackNum%16))+4*16;
+        return 4*GCStackNum + (16-(4*GCStackNum%16))+
+                4*16+4*MaxParaCall;
     }
 
     @Override

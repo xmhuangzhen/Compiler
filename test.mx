@@ -1,135 +1,50 @@
 /*
 Test Package: Codegen
-Author: 14' Rongyu You
-Time: 2020-02-03
+Author: 14' Shichao Xu
+Time: 2020-02-02
 Input:
 === input ===
 === end ===
 Output:
 === output ===
-vector x: ( 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
-excited!
-vector y: ( 9, 8, 7, 817, 5, 4, 3, 2, 1, 0 )
-x + y: ( 18, 16, 14, 823, 10, 8, 6, 4, 2, 0 )
-x * y: 0
-(1 << 3) * y: ( 72, 64, 56, 6536, 40, 32, 24, 16, 8, 0 )
+1025
 === end ===
 ExitCode: 0
 InstLimit: -1
-Origin Package: Codegen Pretest-900
+Origin Package: Codegen Pretest-867
 */
-//
-// Naive vector class for Mx*.
-// Without any guarantee for robustness.
-//
-class vector{
-	int[] data;
-	void init(int[] vec){
-		// init the vector from an array
-		if (vec == null) return;
-		data = new int[vec.size()];
-		int i;
-		for (i = 0; i < vec.size(); ++i)
-		{
-			data[i] = vec[i];
-		}
-	}
-
-	int getDim(){
-		if (data == null) return 0;
-		return data.size();
-	}
-
-	int dot(vector rhs){
-		int i = 0;
-		int result = 0;
-		while(i < getDim()){
-			//result = data[i] * rhs[i];
-			result = data[i] * rhs.data[i];
-			++i;
-		}
-		return result;
-	}
-
-	vector scalarInPlaceMultiply(int c){
-		if (data == null) return null;
-		int i;
-		for (i = 0; i < getDim(); ++i) {
-			this.data[i] = c * this.data[i];
-		}
-		return this;
-	}
-
-	vector add(vector rhs){
-		if (getDim() != rhs.getDim() || getDim() == 0)
-			return null;
-		vector temp = new vector;
-		int i;
-		temp.data = new int[getDim()];
-		for (i = 0; i < getDim(); ++i){
-			temp.data[i] = data[i] + rhs.data[i];
-		}
-		return temp;
-	}
-
-	bool set(int idx, int value){
-		if (getDim() < idx) return false;
-		data[idx] = value;
-		return true;
-	}
-
-	string tostring(){
-		string temp = "( ";
-		if (getDim() > 0) {
-			temp = temp + toString(data[0]);
-		}
-		int i;
-		for (i = 1; i < getDim(); ++i) {
-			temp = temp + ", " + toString(data[i]);
-		}
-		temp = temp + " )";
-		return temp;
-	}
-
-	bool copy(vector rhs){
-		if (rhs == null) return false;
-		if (rhs.getDim() == 0) {
-			data = null;
-		} else {
-			data = new int[rhs.getDim()];
-			int i;
-			for (i = 0; i < getDim(); ++i) {
-				data[i] = rhs.data[i];
-			}
-		}
-		return true;
-	}
-};
-
-int main(){
-	vector x = new vector;
-	int[] a = new int[10];
-	int i;
-	for (i = 0; i < 10; ++i){
-		a[i] = 9 - i;
-	}
-	x.init(a);
-	print("vector x: ");
-	println(x.tostring());
-
-	vector y = new vector;
-	y.copy(x);
-	if (y.set(3, 817)){
-		println("excited!");
-	}
-	print("vector y: ");
-	println(y.tostring());
-	print("x + y: ");
-	println((x.add(y)).tostring());
-	print("x * y: ");
-	println(toString(x.dot(y)));
-	print("(1 << 3) * y: ");
-	println(y.scalarInPlaceMultiply(1 << 3).tostring());
-	return 0;
+int gcd(int x, int y, int j0 , int j1 , int j2 , int j3 , int j4 , int j5 , int j6 , int j7 , int j8 , int j9 , int j10 , int j11 , int j12 , int j13 , int j14 , int j15 , int j16 , int j17 , int j18 , int j19 , int j20 , int j21 , int j22 , int j23 , int j24 , int j25 , int j26 , int j27 , int j28 , int j29) {
+  int i;
+  int j;
+  for(i = 0; i<= 10; ++i)
+    j = (j0 +j1 +j2 +j3 +j4 +j5 +j6 +j7 +j8 +j9 +j10 +j11 +j12 +j13 +j14 +j15 +j16 +j17 +j18 +j19 +j20 +j21 +j22 +j23 +j24 +j25 +j26 +j27 +j28 +j29) % 100;
+  if (x%y == 0) return y;
+  else return gcd1(y, x%y,j ,gcd(10,68, 0 , 2 , 4 , 6 , 8 , 10 , 12 , 14 , 16 , 18 , 20 , 22 , 24 , 26 , 28 , 30 , 32 , 34 , 36 , 38 , 40 , 42 , 44 , 46 , 48 , 50 , 52 , 54 , 56 , 58) ,j2 ,j3 ,j4 ,j5 ,j6 ,j7 ,j8 ,j9 ,j10 ,j11 ,j12 ,j13 ,j14 ,j15 ,j16 ,j17 ,j18 ,j19 ,j20 ,j21 ,j22 ,j23 ,j24 ,j25 ,j26 ,j27 ,j28 ,j29);
 }
 
+
+
+int gcd1(int x, int y, int j0 , int j1 , int j2 , int j3 , int j4 , int j5 , int j6 , int j7 , int j8 , int j9 , int j10 , int j11 , int j12 , int j13 , int j14 , int j15 , int j16 , int j17 , int j18 , int j19 , int j20 , int j21 , int j22 , int j23 , int j24 , int j25 , int j26 , int j27 , int j28 , int j29) {
+  int j;
+  j = (j0 +j1 +j2 +j3 +j4 +j5 +j6 +j7 +j8 +j9 +j10 +j11 +j12 +j13 +j14 +j15 +j16 +j17 +j18 +j19 +j20 +j21 +j22 +j23 +j24 +j25 +j26 +j27 +j28 +j29) % 100;
+  if (x%y == 0) return y;
+  else return gcd2(y, x%y,j ,j1 ,j2 ,j3 ,j4 ,j5 ,j6 ,j7 ,j8 ,j9 ,j10 ,j11 ,j12 ,j13 ,j14 ,j15 ,j16 ,j17 ,j18 ,j19 ,j20 ,j21 ,j22 ,j23 ,j24 ,j25 ,j26 ,j27 ,j28 ,j29);
+}
+
+
+
+int gcd2(int x, int y, int j0 , int j1 , int j2 , int j3 , int j4 , int j5 , int j6 , int j7 , int j8 , int j9 , int j10 , int j11 , int j12 , int j13 , int j14 , int j15 , int j16 , int j17 , int j18 , int j19 , int j20 , int j21 , int j22 , int j23 , int j24 , int j25 , int j26 , int j27 , int j28 , int j29) {
+  int j;
+  j = (j0 +j1 +j2 +j3 +j4 +j5 +j6 +j7 +j8 +j9 +j10 +j11 +j12 +j13 +j14 +j15 +j16 +j17 +j18 +j19 +j20 +j21 +j22 +j23 +j24 +j25 +j26 +j27 +j28 +j29) % 100;
+  if (x%y == 0) return y;
+  else return gcd(y, x%y,j0 ,j1 ,j2 ,j3 ,j4 ,j5 ,j6 ,j7 ,j8 ,j9 ,j10 ,j11 ,j12 ,j13 ,j14 ,j15 ,j16 ,j17 ,j18 ,j19 ,j20 ,j21 ,j22 ,j23 ,j24 ,j25 ,j26 ,j27 ,j28 ,j29);
+}
+
+
+
+
+int main() {
+    println(toString(gcd(10,1, 0 , 2 , 4 , 6 , 8 , 10 , 12 , 14 , 16 , 18 , 20 , 22 , 24 , 26 , 28 , 30 , 32 , 34 , 36 , 38 , 40 , 42 , 44 , 46 , 48 , 50 , 52 , 54 , 56 , 58) + 1024));
+
+    return 0;
+}

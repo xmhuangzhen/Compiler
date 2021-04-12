@@ -25,10 +25,10 @@ public class Main {
   //      System.out.println("start building: " + dtf.format(LocalDateTime.now()));
 
         InputStream input = null;
-    /*    if(args.length != 0)
-            input = new FileInputStream("test.mx");
-        else
-      */      input = System.in;
+    //    if(args.length != 0)
+        //    input = new FileInputStream("test.mx");
+      //  else
+            input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -87,7 +87,7 @@ public class Main {
             //Register Allocate
           //  NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
             //regAlloc.run();
-         /*   PrintStream printStream1 = new PrintStream("output.ll");
+  /*          PrintStream printStream1 = new PrintStream("output.ll");
             ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
             asmPrinter1.run();
 */
