@@ -5,6 +5,7 @@ import RISCV.RISCVModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class RISCVBinaryOpInst extends RISCVInstruction{
 
@@ -29,10 +30,6 @@ public class RISCVBinaryOpInst extends RISCVInstruction{
         if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
         if ((rs2 instanceof RISCVVirtualReg)||(rs2 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs2);
 
-        //for graph coloring use
-        if(!(rd instanceof RISCVGlobalReg)) def.add(rd);
-        if(!(rs1 instanceof RISCVGlobalReg)) use.add(rs1);
-        if(rs2 != null && !(rs2 instanceof RISCVGlobalReg)) use.add(rs2);
     }
 
     @Override
@@ -43,30 +40,30 @@ public class RISCVBinaryOpInst extends RISCVInstruction{
     }
 
     @Override
-    public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen, HashSet<RISCVRegister> BlockKill) {
-        if(!(rs1 instanceof RISCVGlobalReg) && !BlockKill.contains(rs1))
-            BlockGen.add(rs1);
-        if(!(rs2 instanceof RISCVGlobalReg) && rs2 != null && !BlockKill.contains(rs2))
-            BlockGen.add(rs2);
-        if(!(rd instanceof RISCVGlobalReg)) BlockKill.add(rd);
+    public HashSet<RISCVRegister> use() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        if(!(rs1 instanceof RISCVGlobalReg)) res.add(rs1);
+        if(rs2!= null && !(rs2 instanceof RISCVGlobalReg)) res.add(rs2);
+        return res;
+    }
+
+    @Override
+    public HashSet<RISCVRegister> def() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        if(!(rd instanceof RISCVGlobalReg)) res.add(rd);
+        return res;
     }
 
     @Override
     public void replaceUse(RISCVRegister reg1, RISCVRegister reg2) {
-        if(rd != null && rd == reg1 && def.contains(rd)){
-            def.remove(rd);
+        if(rd != null && rd == reg1){
             rd = reg2;
-            def.add(rd);
         }
-        if(rs1 != null && rs1 == reg1 && use.contains(rs1)) {
-            use.remove(rs1);
+        if(rs1 != null && rs1 == reg1) {
             rs1 = reg2;
-            use.add(rs1);
         }
-        if(rs2 != null && rs2 == reg1 && use.contains(rs2)) {
-            use.remove(rs2);
+        if(rs2 != null && rs2 == reg1) {
             rs2 = reg2;
-            use.add(rs2);
         }
     }
 

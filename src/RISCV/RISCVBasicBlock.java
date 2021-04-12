@@ -12,7 +12,6 @@ public class RISCVBasicBlock {
 
     public String BlockName;
     public IRBasicBlock thisIRBasicBlock;
-    public ArrayList<RISCVInstruction> InstructionList;
     public RISCVInstruction HeadInst, TailInst;
     public RISCVBasicBlock nextBlock;
 
@@ -23,8 +22,6 @@ public class RISCVBasicBlock {
     public ArrayList<RISCVBasicBlock> successor;
 
     //for Liveness Analysis use
-    public HashSet<RISCVRegister> gen;
-    public HashSet<RISCVRegister> kill;
     public HashSet<RISCVRegister> LiveOut;
     public HashSet<RISCVRegister> LiveIn;
 
@@ -35,13 +32,11 @@ public class RISCVBasicBlock {
         HeadInst = null;
         TailInst = null;
 
-        DFSVisited = false;
         predecessor = new ArrayList<>();
         successor = new ArrayList<>();
 
-        gen = new LinkedHashSet<>();
-        kill = new LinkedHashSet<>();
         LiveOut = new LinkedHashSet<>();
+        LiveIn = new LinkedHashSet<>();
     }
 
     public void addInstruction(RISCVInstruction tmpInst){

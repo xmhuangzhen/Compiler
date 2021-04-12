@@ -28,6 +28,6 @@ public class RISCVRegister extends RISCVOperand{
         alias = null;
         if(this instanceof RISCVPhyReg) color = (RISCVPhyReg) this;
         else color = null;
-        StackOffset = 0;
+        StackOffset = -1;
     }
 }

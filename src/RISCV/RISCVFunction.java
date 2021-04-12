@@ -22,8 +22,6 @@ public class RISCVFunction {
 
     public RISCVBasicBlock EntranceBlock = null, LastBlock = null;
 
-    //for Liveness Analysis use
-    public ArrayList<RISCVBasicBlock> DFSOrder;
 
     //for graph coloring use
     public int GCStackNum;
@@ -36,7 +34,7 @@ public class RISCVFunction {
         NaiveStackCounting = 0;
         GEPAddrMap = new LinkedHashMap<>();
 
-        DFSOrder = new ArrayList<>();
+        //DFSOrder = new ArrayList<>();
         GCStackNum = 0;
     }
 
@@ -57,27 +55,6 @@ public class RISCVFunction {
 
     public int GCRealStackSize(){
         return 4*GCStackNum + (16-(4*GCStackNum%16))+4*16;
-    }
-
-
-
-    //for Liveness Analysis use
-    public void getDFSOrder(){
-        for(RISCVBasicBlock tmpBlock = EntranceBlock;
-            tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
-            tmpBlock.DFSVisited = false;
-        DFSOrder.clear();
-        DFS(EntranceBlock);
-    }
-
-    public void DFS(RISCVBasicBlock curBlock){
-        curBlock.DFSVisited = true;
-        DFSOrder.add(curBlock);
-        for(var tmpBlock : curBlock.successor){
-            if(!tmpBlock.DFSVisited){
-                DFS(tmpBlock);
-            }
-        }
     }
 
     @Override

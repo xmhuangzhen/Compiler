@@ -5,62 +5,71 @@ import RISCV.Operand.RISCVRegister;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVFunction;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.*;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
-public class LivenessAnalysis{
+public class LivenessAnalysis {
 
     public RISCVFunction curFunc;
+    public HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> BLockUses;
+    public HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> BLockDefs;
+    public HashSet<RISCVBasicBlock> BlockVisited;
 
     public LivenessAnalysis(RISCVFunction tmpFunc) {
         curFunc = tmpFunc;
+        BLockUses = new LinkedHashMap<>();
+        BLockDefs = new LinkedHashMap<>();
+        BlockVisited = new LinkedHashSet<>();
     }
 
     public boolean run() {
-        //Algorithm in Ch17.4
-
         RISCVCFGConstructor tmpCFG = new RISCVCFGConstructor(curFunc);
         tmpCFG.run();
 
-        //(1) get the DFS order(17.4.3)
-        curFunc.getDFSOrder();
 
-        //(2) get RISCVBasicBlock Gen & Kill
-        for (var tmpBlock : curFunc.DFSOrder) {
-            tmpBlock.gen = new LinkedHashSet<>();
-            tmpBlock.kill = new LinkedHashSet<>();
-            for (RISCVInstruction tmpInst = tmpBlock.HeadInst;
-                 tmpInst != null; tmpInst = tmpInst.nextInst) {
-                tmpInst.ComputeGenAndKill(tmpBlock.gen, tmpBlock.kill);
+        for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBlock) {
+            HashSet<RISCVRegister> tmpUse = new LinkedHashSet<>();
+            HashSet<RISCVRegister> tmpDef = new LinkedHashSet<>();
+            for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
+                 tmpInst = tmpInst.nextInst) {
+                HashSet<RISCVRegister> usenotdef = new LinkedHashSet<>(tmpInst.use());
+                usenotdef.removeAll(tmpDef);
+                tmpUse.addAll(usenotdef);
+                tmpDef.addAll(tmpInst.def());
             }
+            BLockUses.put(tmpBlock, tmpUse);
+            BLockDefs.put(tmpBlock, tmpDef);
+            tmpBlock.LiveIn.clear();
+            tmpBlock.LiveOut.clear();
         }
-
-        //(3) get in & out in BasicBlock-based CFG(17.4.3)
-        boolean modified = true;
-        while (modified) {
-            modified = false;
-            for (int i = curFunc.DFSOrder.size() - 1; i >= 0; --i) {
-                RISCVBasicBlock curBlock = curFunc.DFSOrder.get(i);
-                HashSet<RISCVRegister> NewLiveOut = new LinkedHashSet<>();
-                for (var sucBlock : curBlock.successor) {
-
-                    HashSet<RISCVRegister> tmp = new LinkedHashSet<>(sucBlock.LiveOut);
-                    tmp.removeAll(sucBlock.kill);
-                    tmp.addAll(sucBlock.gen);
-                    NewLiveOut.addAll(tmp);
-                }
-                if (!NewLiveOut.equals(curBlock.LiveOut)) {
-                    modified = true;
-                    curBlock.LiveOut = NewLiveOut;
-                }
-            }
-        }
-/*        for(var tmp:curFunc.DFSOrder){
-            System.out.println(tmp+","+tmp.LiveOut +","+tmp.gen+","+tmp.kill );
-        }
-   */     return false;
+        CalculateLiveOut(curFunc.LastBlock);
+        return false;
     }
+
+    public void CalculateLiveOut(RISCVBasicBlock curBlock) {
+        if(BlockVisited.contains(curBlock)) return;
+        BlockVisited.add(curBlock);
+
+        HashSet<RISCVRegister> liveOut = new LinkedHashSet<>();
+        for (var sucBlock : curBlock.successor)
+            liveOut.addAll(sucBlock.LiveIn);
+        curBlock.LiveOut.addAll(liveOut);
+
+        HashSet<RISCVRegister> liveIn = new LinkedHashSet<>(liveOut);
+        liveIn.removeAll(BLockDefs.get(curBlock));
+        liveIn.addAll(BLockUses.get(curBlock));
+        liveIn.removeAll(curBlock.LiveIn);
+
+        if (!liveIn.isEmpty()) {
+            curBlock.LiveIn.addAll(liveIn);
+            BlockVisited.removeAll(curBlock.predecessor);
+        }
+
+        for (var preBlock : curBlock.predecessor) {
+            CalculateLiveOut(preBlock);
+        }
+    }
+
 }

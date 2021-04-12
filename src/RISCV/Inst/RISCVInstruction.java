@@ -29,20 +29,16 @@ abstract public class RISCVInstruction {
     public RISCVInstruction nextInst, preInst;
     public ArrayList<RISCVRegister> UsedVirtualReg;
 
-    //for graph coloring use
-    public HashSet<RISCVRegister> use;
-    public HashSet<RISCVRegister> def;
 
     public RISCVInstruction(){
         UsedVirtualReg = new ArrayList<>();
-        use = new HashSet<>();
-        def = new HashSet<>();
     }
 
     public void addInstPre(RISCVBasicBlock tmpBlock, RISCVInstruction tmpInst){
         if(this.preInst == null){
-            tmpBlock.HeadInst = tmpInst;
             tmpInst.nextInst = this;
+            tmpInst.preInst = null;
+            tmpBlock.HeadInst = tmpInst;
             this.preInst = tmpInst;
         } else {
             this.preInst.nextInst = tmpInst;
@@ -56,6 +52,7 @@ abstract public class RISCVInstruction {
         if(this.nextInst == null){
             tmpBlock.TailInst = tmpInst;
             tmpInst.preInst = this;
+            tmpInst.nextInst = null;
             this.nextInst = tmpInst;
         } else {
             this.nextInst.preInst = tmpInst;
@@ -68,11 +65,12 @@ abstract public class RISCVInstruction {
     //for Naive Reg Allocator use
     abstract public void replaceReg(RISCVRegister reg1, RISCVPhyReg reg2);
 
-    //for Liveness Analysis use
-    abstract public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen,
-                                           HashSet<RISCVRegister> BlockKill);
+
 
     //for graph coloring use
+    abstract public HashSet<RISCVRegister> use();
+    abstract public HashSet<RISCVRegister> def();
+
     abstract public void replaceUse(RISCVRegister reg1, RISCVRegister reg2);
 
     //for graph coloring use

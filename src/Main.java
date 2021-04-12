@@ -89,6 +89,7 @@ public class Main {
                     new GraphColoringRegAllocator(instSelector.curRISCVModule);
             regAlloc.run();
 
+
             // ASM Print
 //            PrintStream printStream = System.out;
             PrintStream printStream = new PrintStream("output.s");

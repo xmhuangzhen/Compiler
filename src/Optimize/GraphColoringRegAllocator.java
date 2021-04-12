@@ -16,24 +16,6 @@ import java.util.Stack;
 
 public class GraphColoringRegAllocator extends ASMPass {
 
-    static class Edge {
-        public RISCVRegister u,v;
-
-        public Edge(RISCVRegister tmpu, RISCVRegister tmpv){
-            u = tmpu;
-            v = tmpv;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof Edge && ((Edge) obj).u.equals(u) && ((Edge) obj).v.equals(v);
-        }
-
-        @Override
-        public int hashCode() {
-            return u.hashCode() ^ v.hashCode();
-        }
-    }
 
 
     //data structure of vertexes, worklists, sets, stacks
@@ -61,6 +43,8 @@ public class GraphColoringRegAllocator extends ASMPass {
     public int K;
     public RISCVFunction curFunc;
     public HashSet<RISCVRegister> SpillTemp = new LinkedHashSet<>();
+
+    public static int INF = 0x3f3f3f3f;
 
     public GraphColoringRegAllocator(RISCVModule tmpModule) {
         super(tmpModule);
@@ -135,12 +119,12 @@ public class GraphColoringRegAllocator extends ASMPass {
 
 
                 //remove useless mv inst
-                for(RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;
-                tmpBlock != null; tmpBlock =tmpBlock.nextBlock){
-                    for(tmpInst = tmpBlock.HeadInst;
-                    tmpInst != null; tmpInst = tmpInst.nextInst){
-                        if(tmpInst instanceof RISCVmvInst){
-                            if(((RISCVmvInst) tmpInst).rd.color == ((RISCVmvInst) tmpInst).rs1.color){
+                for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;
+                     tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
+                    for (tmpInst = tmpBlock.HeadInst;
+                         tmpInst != null; tmpInst = tmpInst.nextInst) {
+                        if (tmpInst instanceof RISCVmvInst) {
+                            if (((RISCVmvInst) tmpInst).rd.color == ((RISCVmvInst) tmpInst).rs1.color) {
                                 tmpInst.removeInst(tmpBlock);
                             }
                         }
@@ -162,21 +146,13 @@ public class GraphColoringRegAllocator extends ASMPass {
             MakeWorklist();
 
             do {
-             //   System.out.println(curFunc.FunctionName);
                 if (!simplifyWorklist.isEmpty()) {
-                   // System.out.println("1");
                     Simplify();
-                }
-                else if (!worklistMoves.isEmpty()) {
-                  //  System.out.println("2");
+                } else if (!worklistMoves.isEmpty()) {
                     Coalesce();
-                }
-                else if (!freezeWorklist.isEmpty()) {
-               //     System.out.println("3");
+                } else if (!freezeWorklist.isEmpty()) {
                     Freeze();
-                }
-                else if (!spillWorklist.isEmpty()) {
-                 //   System.out.println("4");
+                } else if (!spillWorklist.isEmpty()) {
                     SelectSpill();
                 }
             } while (!(simplifyWorklist.isEmpty() && worklistMoves.isEmpty() &&
@@ -213,8 +189,8 @@ public class GraphColoringRegAllocator extends ASMPass {
              tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst;
                  tmpInst != null; tmpInst = tmpInst.nextInst) {
-                initialed.addAll(tmpInst.use);
-                initialed.addAll(tmpInst.def);
+                initialed.addAll(tmpInst.use());
+                initialed.addAll(tmpInst.def());
             }
         }
 
@@ -232,40 +208,41 @@ public class GraphColoringRegAllocator extends ASMPass {
         for (var tmpReg : precolored) {
             tmpReg.alias = null;
             tmpReg.color = (RISCVPhyReg) tmpReg;
-            tmpReg.degree = 1073741823;
+            tmpReg.degree = INF;
             tmpReg.adjList.clear();
             tmpReg.moveList.clear();
         }
 
-        for (var tmpBlock : curFunc.DFSOrder) {
+        for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBlock) {
             double tmpWeight = Math.pow(10, Math.min(tmpBlock.predecessor.size(), tmpBlock.successor.size()));
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextInst) {
-                for (var tmp : tmpInst.use) tmp.weight += tmpWeight;
-                for (var tmp : tmpInst.def) tmp.weight += tmpWeight;
+                for (var tmp : tmpInst.use()) tmp.weight += tmpWeight;
+                for (var tmp : tmpInst.def()) tmp.weight += tmpWeight;
             }
         }
     }
 
     public void Build() {
-        for (var Blockb : curFunc.DFSOrder) {
+        for (RISCVBasicBlock Blockb = curFunc.EntranceBlock; Blockb != null;
+             Blockb = Blockb.nextBlock) {
             HashSet<RISCVRegister> live = new LinkedHashSet<>(Blockb.LiveOut);
-        //    System.out.println(Blockb.BlockName+","+live);
             for (RISCVInstruction InstI = Blockb.TailInst; InstI != null; InstI = InstI.preInst) {
                 if (InstI instanceof RISCVmvInst) {
-                    live.removeAll(InstI.use);
-                    for (var tmpn : InstI.def) tmpn.moveList.add((RISCVmvInst) InstI);
-                    for (var tmpn : InstI.use) tmpn.moveList.add((RISCVmvInst) InstI);
+                    live.removeAll(InstI.use());
+                    for (var tmpn : InstI.def()) tmpn.moveList.add((RISCVmvInst) InstI);
+                    for (var tmpn : InstI.use()) tmpn.moveList.add((RISCVmvInst) InstI);
                     worklistMoves.add((RISCVmvInst) InstI);
                 }
-                live.addAll(InstI.def);
+                live.addAll(InstI.def());
                 live.add(curRISCVModule.getPhyReg("zero"));
-                for (var tmpd : InstI.def)
+                for (var tmpd : InstI.def())
                     for (var tmpl : live) {
                         AddEdge(tmpl, tmpd);
                     }
-                live.removeAll(InstI.def);
-                live.addAll(InstI.use);
+                live.removeAll(InstI.def());
+                live.addAll(InstI.use());
             }
         }
     }
@@ -287,7 +264,7 @@ public class GraphColoringRegAllocator extends ASMPass {
 
     public void MakeWorklist() {
         for (var n : initialed) {
-        //    initialed.remove(n);
+            //    initialed.remove(n);
             if (n.degree >= K) {
                 spillWorklist.add(n);
             } else if (MoveRelated(n)) {
@@ -298,14 +275,14 @@ public class GraphColoringRegAllocator extends ASMPass {
         }
     }
 
-    public HashSet<RISCVRegister> Adjacent(RISCVRegister n){
+    public HashSet<RISCVRegister> Adjacent(RISCVRegister n) {
         HashSet<RISCVRegister> res = new LinkedHashSet<>(n.adjList);
         res.removeAll(selectStack);
         res.removeAll(coalescedNodes);
         return res;
     }
 
-    public HashSet<RISCVmvInst> NodeMoves(RISCVRegister n){
+    public HashSet<RISCVmvInst> NodeMoves(RISCVRegister n) {
         HashSet<RISCVmvInst> res = new LinkedHashSet<>(activeMoves);
         res.addAll(worklistMoves);
         res.retainAll(n.moveList);
@@ -318,11 +295,11 @@ public class GraphColoringRegAllocator extends ASMPass {
 
     public void Simplify() {
         RISCVRegister n = simplifyWorklist.iterator().next();
-       // System.out.println(n);
         simplifyWorklist.remove(n);
         selectStack.push(n);
-        for (RISCVRegister m : Adjacent(n))
+        for (RISCVRegister m : Adjacent(n)) {
             DecrementDegree(m);
+        }
     }
 
     public void DecrementDegree(RISCVRegister m) {
@@ -406,7 +383,10 @@ public class GraphColoringRegAllocator extends ASMPass {
     }
 
     public RISCVRegister GetAlias(RISCVRegister n) {
-        if (coalescedNodes.contains(n)) return n.alias = GetAlias(n.alias);
+        if (coalescedNodes.contains(n)) {
+            n.alias =  GetAlias(n.alias);
+            return n.alias;
+        }
         return n;
     }
 
@@ -426,7 +406,6 @@ public class GraphColoringRegAllocator extends ASMPass {
         EnableMoves(tmp);
 
         for (var t : Adjacent(v)) {
-        //    System.out.println("2,"+t+","+u);
             AddEdge(t, u);
             DecrementDegree(t);
         }
@@ -466,12 +445,17 @@ public class GraphColoringRegAllocator extends ASMPass {
     public void SelectSpill() {
         RISCVRegister m = null;
         double cost = 1e9;
+        boolean changed = false;
         for (RISCVRegister tmp : spillWorklist) {
             if (!SpillTemp.contains(tmp) && tmp.weight / tmp.degree < cost) {
+                changed = true;
                 m = tmp;
                 cost = tmp.weight / tmp.degree;
+            } else if (!changed) {
+                m = tmp;
             }
         }
+
 
         spillWorklist.remove(m);
         simplifyWorklist.add(m);
@@ -483,12 +467,10 @@ public class GraphColoringRegAllocator extends ASMPass {
             RISCVRegister n = selectStack.pop();
             ArrayList<RISCVPhyReg> okColors = new ArrayList<>(curRISCVModule.okPhyRegList);
             for (var w : n.adjList) {
-            //    System.out.println(n+","+w);
                 if (coloredNodes.contains(GetAlias(w)) || precolored.contains(GetAlias(w))) {
                     okColors.remove(GetAlias(w).color);
                 }
             }
-         //   System.out.println(okColors.size());
             if (okColors.isEmpty()) {
                 spilledNodes.add(n);
             } else {
@@ -502,17 +484,17 @@ public class GraphColoringRegAllocator extends ASMPass {
     }
 
     public void RewriteProgram() {
-
         for (var v : spilledNodes) {
             v.StackOffset = curFunc.GCStackNum; //-4*(3+StackOffset) (s0)
             curFunc.GCStackNum++;
         }
 
-        for (RISCVBasicBlock tmpBlock : curFunc.DFSOrder) {
+        for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBlock) {
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextInst) {
-                if (!tmpInst.def.isEmpty()) {
-                    RISCVRegister rd = tmpInst.def.iterator().next();
+                if (!tmpInst.def().isEmpty() && tmpInst.def().size() == 1) {
+                    RISCVRegister rd = tmpInst.def().iterator().next();
                     if (rd instanceof RISCVVirtualReg) {
                         GetAlias(rd);
                     }
@@ -520,13 +502,13 @@ public class GraphColoringRegAllocator extends ASMPass {
             }
         }
 
-
-        for (RISCVBasicBlock tmpBlock : curFunc.DFSOrder) {
+        for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBlock) {
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextInst) {
-                for (var tmpuse : tmpInst.use) {
+                for (var tmpuse : tmpInst.use()) {
                     if (tmpuse.StackOffset >= 0) {
-                        if (tmpInst.def.contains(tmpuse)) {
+                        if (!tmpInst.def().isEmpty() && tmpInst.def().contains(tmpuse)) {
                             //need load & store before use
                             RISCVVirtualReg tmpVirtualReg =
                                     new RISCVVirtualReg(RISCVModule.VirtualRegCnt++);
@@ -545,7 +527,8 @@ public class GraphColoringRegAllocator extends ASMPass {
                         } else {
                             if (tmpInst instanceof RISCVmvInst && ((RISCVmvInst) tmpInst).rs1 == tmpuse &&
                                     ((RISCVmvInst) tmpInst).rd.StackOffset < 0) {// mv -> load
-                                RISCVInstruction replaceInst = new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                RISCVInstruction replaceInst = new RISCVlInst(
+                                        RISCVInstruction.RISCVWidthENUMType.w,
                                         ((RISCVmvInst) tmpInst).rd,
                                         curRISCVModule.getPhyReg("s0"),
                                         new RISCVImm(-4 * (tmpuse.StackOffset + 3)));
@@ -566,9 +549,10 @@ public class GraphColoringRegAllocator extends ASMPass {
                         }
                     }
                 }
-                for (var tmpdef : tmpInst.def) {
+
+                for (var tmpdef : tmpInst.def()) {
                     if (tmpdef.StackOffset >= 0) {
-                        if (!tmpInst.use.contains(tmpdef)) {
+                        if (!tmpInst.use().contains(tmpdef)) {
                             if (tmpInst instanceof RISCVmvInst && ((RISCVmvInst) tmpInst).rd == tmpdef &&
                                     ((RISCVmvInst) tmpInst).rs1.StackOffset < 0) {// mv -> store
                                 RISCVInstruction replaceInst = new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
@@ -583,8 +567,8 @@ public class GraphColoringRegAllocator extends ASMPass {
                                         new RISCVVirtualReg(RISCVModule.VirtualRegCnt++);
                                 SpillTemp.add(tmpVirtualReg);
                                 tmpInst.replaceUse(tmpdef, tmpVirtualReg);
-                                tmpInst.addInstPre(tmpBlock,
-                                        new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                tmpInst.addInstNxt(tmpBlock,
+                                        new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                                                 tmpVirtualReg,
                                                 curRISCVModule.getPhyReg("s0"),
                                                 new RISCVImm(-4 * (tmpdef.StackOffset + 3))));

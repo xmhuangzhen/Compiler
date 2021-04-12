@@ -9,6 +9,7 @@ import RISCV.RISCVModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class RISCVBranchInst extends RISCVInstruction {
 
@@ -38,8 +39,6 @@ public class RISCVBranchInst extends RISCVInstruction {
         IfTrueBasicBlock = tmpIfTrue;
         IfFalseBasicBlock = tmpIfFalse;
         if ((rs1 instanceof RISCVVirtualReg)||(rs1 instanceof RISCVGlobalReg)) UsedVirtualReg.add(rs1);
-        if(!(rs1 instanceof RISCVGlobalReg))
-            use.add(rs1);
     }
 
     @Override
@@ -49,17 +48,22 @@ public class RISCVBranchInst extends RISCVInstruction {
 
     @Override
     public void replaceUse(RISCVRegister reg1, RISCVRegister reg2) {
-        if(rs1 != null && rs1 == reg1 && use.contains(rs1)) {
-            use.remove(rs1);
+        if(rs1 != null && rs1 == reg1) {
             rs1 = reg2;
-            use.add(rs1);
         }
     }
 
+    @Override
+    public HashSet<RISCVRegister> use() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        if(!(rs1 instanceof RISCVGlobalReg)) res.add(rs1);
+        return res;
+    }
 
     @Override
-    public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen, HashSet<RISCVRegister> BlockKill) {
-        if(!(rs1 instanceof RISCVGlobalReg) && !BlockKill.contains(rs1)) BlockGen.add(rs1);
+    public HashSet<RISCVRegister> def() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        return res;
     }
 
     @Override

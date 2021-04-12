@@ -8,6 +8,7 @@ import RISCV.RISCVModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class RISCVsetzInst extends RISCVInstruction {
 
@@ -26,11 +27,6 @@ public class RISCVsetzInst extends RISCVInstruction {
         }
         if ((rs instanceof RISCVVirtualReg)||(rs instanceof RISCVGlobalReg))
             UsedVirtualReg.add(rs);
-
-        if(!(rd instanceof RISCVGlobalReg))
-            def.add(rd);
-        if(!(rs instanceof RISCVGlobalReg))
-            use.add(rs);
     }
 
     @Override
@@ -39,26 +35,33 @@ public class RISCVsetzInst extends RISCVInstruction {
         if(rs == reg1) rs = reg2;
     }
 
-    @Override
-    public void ComputeGenAndKill(HashSet<RISCVRegister> BlockGen,
-                                  HashSet<RISCVRegister> BlockKill) {
-        if(!(rs instanceof RISCVGlobalReg) && !BlockKill.contains(rs)) BlockGen.add(rs);
-        if(!(rd instanceof RISCVGlobalReg)) BlockKill.add(rd);
-    }
+
 
     @Override
     public void replaceUse(RISCVRegister reg1, RISCVRegister reg2) {
-        if(rd != null && rd == reg1 && def.contains(rd)){
-            def.remove(rd);
+        if(rd != null && rd == reg1){
             rd = reg2;
-            def.add(rd);
         }
-        if(rs != null && rs == reg1 && use.contains(rs)) {
-            use.remove(rs);
+        if(rs != null && rs == reg1) {
             rs = reg2;
-            use.add(rs);
         }
     }
+
+    @Override
+    public HashSet<RISCVRegister> use() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        if(!(rs instanceof RISCVGlobalReg)) res.add(rs);
+        return res;
+    }
+
+    @Override
+    public HashSet<RISCVRegister> def() {
+        HashSet<RISCVRegister> res = new LinkedHashSet<>();
+        if(!(rd instanceof RISCVGlobalReg)) res.add(rd);
+        return res;
+    }
+
+
 
     @Override
     public String toString() {
