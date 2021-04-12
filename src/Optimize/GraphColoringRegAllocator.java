@@ -16,8 +16,6 @@ import java.util.Stack;
 
 public class GraphColoringRegAllocator extends ASMPass {
 
-
-
     //data structure of vertexes, worklists, sets, stacks
     public HashSet<RISCVRegister> precolored = new LinkedHashSet<>();
     public HashSet<RISCVRegister> initialed = new LinkedHashSet<>();
@@ -44,7 +42,7 @@ public class GraphColoringRegAllocator extends ASMPass {
     public RISCVFunction curFunc;
     public HashSet<RISCVRegister> SpillTemp = new LinkedHashSet<>();
 
-    public static int INF = 0x3f3f3f3f;
+    public static int INF = 0x3f3f3f3f;//1073741823;
 
     public GraphColoringRegAllocator(RISCVModule tmpModule) {
         super(tmpModule);

@@ -46,7 +46,7 @@ public class Main {
             SemanticChecker semanticCheck  = new SemanticChecker();
             semanticCheck.visit(ASTRoot);
 
-            if(args.length != 2) return;
+            if(args.length == 0) return;
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
@@ -86,9 +86,9 @@ public class Main {
             //Register Allocate
           //  NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
             //regAlloc.run();
-  //          PrintStream printStream1 = new PrintStream("output.ll");
-    //        ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
-      //      asmPrinter1.run();
+            PrintStream printStream1 = new PrintStream("output.ll");
+            ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
+            asmPrinter1.run();
 
 
             GraphColoringRegAllocator regAlloc =

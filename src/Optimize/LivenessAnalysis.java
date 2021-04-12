@@ -44,6 +44,7 @@ public class LivenessAnalysis {
             tmpBlock.LiveIn.clear();
             tmpBlock.LiveOut.clear();
         }
+
         CalculateLiveOut(curFunc.LastBlock);
         return false;
     }
