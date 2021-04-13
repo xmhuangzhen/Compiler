@@ -88,7 +88,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-            new IRPrinter("output.ll").run(currentModule);
+         //   new IRPrinter("output.ll").run(currentModule);
 
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
