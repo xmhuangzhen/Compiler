@@ -17,302 +17,40 @@ LBB25:
 test:
 #LBB42:
 	sw ra,-4(sp)
-	sw s1,-12(sp)
-	sw s2,-16(sp)
-	sw s3,-20(sp)
-	sw s4,-24(sp)
-	sw s5,-28(sp)
-	sw s6,-32(sp)
-	sw s7,-36(sp)
-	sw s8,-40(sp)
-	sw s9,-44(sp)
-	sw s10,-48(sp)
-	sw s11,-52(sp)
 	mv s0,sp
-	addi sp,sp,-400
-	lui a0,%hi(n)
-	lw a1,%lo(n)(a0)
+	addi sp,sp,-80
 	li a0,0
+	li a2,0
 	j LBB43
 LBB43:
-	slt a3,a0,a1
-	bnez a3,LBB45
-	j LBB44
-LBB44:
+	li a1,200
+	slt a1,a2,a1
+	bnez a1,LBB44
 	j LBB52
+LBB44:
+	j LBB45
 LBB45:
-	sw a1,-156(s0)
-	mv s7,a0
 	j LBB46
 LBB46:
-	addi a0,s7,1
-	li a1,0
-	xor a1,a0,a1
-	snez a1,a1
-	bnez a1,LBB48
 	j LBB47
 LBB47:
-	sw a0,-164(s0)
-	sw a0,-160(s0)
-	sw a0,-152(s0)
-	sw a0,-148(s0)
-	sw a0,-144(s0)
-	sw a0,-136(s0)
-	sw a0,-132(s0)
-	sw a0,-128(s0)
-	sw a0,-124(s0)
-	sw a0,-120(s0)
-	sw a0,-116(s0)
-	sw a0,-112(s0)
-	sw a0,-108(s0)
-	sw a0,-104(s0)
-	sw a0,-100(s0)
-	sw a0,-96(s0)
-	sw a0,-92(s0)
-	sw a0,-88(s0)
-	sw a0,-84(s0)
-	sw a0,-80(s0)
-	sw a0,-76(s0)
-	sw a0,-72(s0)
-	sw a0,-68(s0)
-	sw a0,-64(s0)
-	sw a0,-60(s0)
-	sw a0,-56(s0)
-	sw a0,-372(s0)
-	mv ra,a0
-	mv t6,a0
-	mv t4,a0
-	mv a5,a0
-	mv a7,a0
-	mv t0,a0
-	mv s9,a0
-	mv s10,a0
-	mv t3,a0
-	mv a3,a0
-	mv t5,a0
-	mv s6,a0
-	mv s2,a0
-	mv s1,a0
-	mv s5,a0
-	mv t1,a0
-	mv a6,a0
-	mv a1,a0
-	mv t2,a0
-	mv a2,a0
-	mv a4,a0
-	mv s3,a0
-	mv s4,a0
-	li a0,0
-	mv s11,a0
-	lw s8,-156(s0)
-	mv a0,s7
-	j LBB50
+	j LBB48
 LBB48:
-	sw a0,-140(s0)
-	sw a0,-368(s0)
-	mv ra,a0
-	mv t6,a0
-	mv t5,a0
-	mv t2,a0
-	mv a7,a0
-	mv t3,a0
-	mv t4,a0
-	mv a4,a0
-	mv s5,a0
-	mv t0,a0
-	mv a2,a0
-	mv t1,a0
-	mv s11,a0
-	mv s1,a0
-	mv s9,a0
-	mv s3,a0
-	mv s6,a0
-	mv a3,a0
-	mv a6,a0
-	mv a1,a0
-	mv s10,a0
-	mv s2,a0
-	mv a5,a0
-	mv s8,a0
-	sw a0,-172(s0)
-	sw a0,-180(s0)
-	sw a0,-188(s0)
-	sw a0,-196(s0)
-	sw a0,-204(s0)
-	sw a0,-212(s0)
-	sw a0,-220(s0)
-	sw a0,-228(s0)
-	sw a0,-236(s0)
-	sw a0,-244(s0)
-	sw a0,-252(s0)
-	sw a0,-260(s0)
-	sw a0,-268(s0)
-	sw a0,-276(s0)
-	sw a0,-284(s0)
-	sw a0,-292(s0)
-	sw a0,-300(s0)
-	sw a0,-308(s0)
-	sw a0,-316(s0)
-	sw a0,-324(s0)
-	sw a0,-332(s0)
-	sw a0,-340(s0)
-	sw a0,-348(s0)
-	lw s4,-156(s0)
-	sw s4,-360(s0)
 	j LBB49
 LBB49:
-	lw s4,-140(s0)
-	sw s4,-164(s0)
-	lw s4,-368(s0)
-	sw s4,-160(s0)
-	sw ra,-152(s0)
-	sw t6,-148(s0)
-	sw t5,-144(s0)
-	sw a0,-136(s0)
-	sw t2,-132(s0)
-	sw a7,-128(s0)
-	sw t3,-124(s0)
-	sw t4,-120(s0)
-	sw a4,-116(s0)
-	sw s5,-112(s0)
-	sw t0,-108(s0)
-	sw a2,-104(s0)
-	sw t1,-100(s0)
-	sw s11,-96(s0)
-	sw s1,-92(s0)
-	sw s9,-88(s0)
-	sw s3,-84(s0)
-	sw s6,-80(s0)
-	sw a3,-76(s0)
-	sw a6,-72(s0)
-	sw a1,-68(s0)
-	sw s10,-64(s0)
-	sw s2,-60(s0)
-	sw a5,-56(s0)
-	sw s8,-372(s0)
-	lw ra,-172(s0)
-	lw t6,-180(s0)
-	lw t4,-188(s0)
-	lw a5,-196(s0)
-	lw a7,-204(s0)
-	lw t0,-212(s0)
-	lw s9,-220(s0)
-	lw s10,-228(s0)
-	lw t3,-236(s0)
-	lw a3,-244(s0)
-	lw t5,-252(s0)
-	lw s6,-260(s0)
-	lw s2,-268(s0)
-	lw s1,-276(s0)
-	lw s5,-284(s0)
-	lw t1,-292(s0)
-	lw a6,-300(s0)
-	lw a1,-308(s0)
-	lw t2,-316(s0)
-	lw a2,-324(s0)
-	lw a4,-332(s0)
-	lw s3,-340(s0)
-	lw s4,-348(s0)
-	lw s11,-140(s0)
-	lw s8,-360(s0)
-	mv a0,s7
+	addi a1,a2,1
+	addi a0,a0,1
 	j LBB50
 LBB50:
-	lw s7,-164(s0)
-	sw s7,-364(s0)
-	lw s7,-160(s0)
-	sw s7,-356(s0)
-	lw s7,-152(s0)
-	sw s7,-352(s0)
-	lw s7,-148(s0)
-	sw s7,-344(s0)
-	lw s7,-144(s0)
-	sw s7,-336(s0)
-	lw s7,-136(s0)
-	sw s7,-328(s0)
-	lw s7,-132(s0)
-	sw s7,-320(s0)
-	lw s7,-128(s0)
-	sw s7,-312(s0)
-	lw s7,-124(s0)
-	sw s7,-304(s0)
-	lw s7,-120(s0)
-	sw s7,-296(s0)
-	lw s7,-116(s0)
-	sw s7,-288(s0)
-	lw s7,-112(s0)
-	sw s7,-280(s0)
-	lw s7,-108(s0)
-	sw s7,-272(s0)
-	lw s7,-104(s0)
-	sw s7,-264(s0)
-	lw s7,-100(s0)
-	sw s7,-256(s0)
-	lw s7,-96(s0)
-	sw s7,-248(s0)
-	lw s7,-92(s0)
-	sw s7,-240(s0)
-	lw s7,-88(s0)
-	sw s7,-232(s0)
-	lw s7,-84(s0)
-	sw s7,-224(s0)
-	lw s7,-80(s0)
-	sw s7,-216(s0)
-	lw s7,-76(s0)
-	sw s7,-208(s0)
-	lw s7,-72(s0)
-	sw s7,-200(s0)
-	lw s7,-68(s0)
-	sw s7,-192(s0)
-	lw s7,-64(s0)
-	sw s7,-184(s0)
-	lw s7,-60(s0)
-	sw s7,-176(s0)
-	lw s7,-56(s0)
-	sw s7,-168(s0)
-	lw s7,-372(s0)
-	mv s7,ra
-	mv s7,t6
-	mv s7,t4
-	mv a5,a7
-	mv a5,t0
-	mv a5,s9
-	mv a5,s10
-	mv a5,t3
-	mv a3,t5
-	mv a3,s6
-	mv a3,s2
-	mv a3,s1
-	mv a3,s5
-	mv a3,t1
-	mv a3,a6
-	mv a1,t2
-	mv a1,a2
-	mv a1,a4
-	mv a1,s3
-	mv a1,s4
-	mv a2,s11
-	mv a1,s8
 	j LBB51
 LBB51:
-	addi a0,a0,1
+	addi a2,a1,1
 	j LBB43
 LBB52:
+	mv a1,a0
 	j LBB53
 LBB53:
-	mv a0,a2
-	addi sp,sp,400
-	lw s1,-12(sp)
-	lw s2,-16(sp)
-	lw s3,-20(sp)
-	lw s4,-24(sp)
-	lw s5,-28(sp)
-	lw s6,-32(sp)
-	lw s7,-36(sp)
-	lw s8,-40(sp)
-	lw s9,-44(sp)
-	lw s10,-48(sp)
-	lw s11,-52(sp)
+	addi sp,sp,80
 	lw ra,-4(sp)
 	ret
 # end function : test
@@ -321,30 +59,15 @@ LBB53:
 main:
 #LBB54:
 	sw ra,-4(sp)
-	sw s1,-12(sp)
 	mv s0,sp
 	addi sp,sp,-80
 	call __init__
-	li a1,100
-	lui a0,%hi(n)
-	sw a1,%lo(n)(a0)
 	call test
-	mv s1,a0
-	li a1,200
-	lui a0,%hi(n)
-	sw a1,%lo(n)(a0)
-	call test
-	add a0,s1,a0
-	addi a0,a0,-300
+	addi a0,a0,-100
 	j LBB55
 LBB55:
 	addi sp,sp,80
-	lw s1,-12(sp)
 	lw ra,-4(sp)
 	ret
 # end function : main
 .section	.sdata,"aw",@progbits
-	.p2align	2
-n:
-	.word	0
-

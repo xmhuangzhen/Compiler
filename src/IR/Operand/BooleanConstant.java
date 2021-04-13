@@ -1,5 +1,6 @@
 package IR.Operand;
 
+import IR.Instruction.IRInstruction;
 import IR.TypeSystem.IntegerType;
 
 public class BooleanConstant extends Constant{

@@ -48,9 +48,14 @@
 --------------------
          |
          V
-------------------------
-|  Register Allocator  |
-------------------------
+----------------------
+|  Liveness Analysis |
+----------------------
+         |
+         V
+---------------------------------------
+|  Graph Coloring Register Allocator  |
+---------------------------------------
          |
          V
 --------------------
@@ -64,6 +69,6 @@
 
 
 
-
+Sparse conditional constant propagation
 
 - Dominator Tree reference: Lengauer-Tarjan algorithm

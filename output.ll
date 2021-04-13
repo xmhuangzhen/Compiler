@@ -1,757 +1,99 @@
-	.text
-	.globl	__init__					# start function : __init__
-	.p2align	2
-__init__:
-#LBB24:
-	j LBB25
-LBB25:
-	ret
-# end function : __init__
-	.globl	gcd					# start function : gcd
-	.p2align	2
-gcd:
-#LBB42:
-	mv %0,a0
-	mv %1,a1
-	mv %2,a2
-	mv %3,a3
-	mv %4,a4
-	mv %5,a5
-	mv %6,a6
-	mv %7,a7
-	lw %8,0(s0)
-	lw %9,4(s0)
-	lw %10,8(s0)
-	lw %11,12(s0)
-	lw %12,16(s0)
-	lw %13,20(s0)
-	lw %14,24(s0)
-	lw %15,28(s0)
-	lw %16,32(s0)
-	lw %17,36(s0)
-	lw %18,40(s0)
-	lw %19,44(s0)
-	lw %20,48(s0)
-	lw %21,52(s0)
-	lw %22,56(s0)
-	lw %23,60(s0)
-	lw %24,64(s0)
-	lw %25,68(s0)
-	lw %26,72(s0)
-	lw %27,76(s0)
-	lw %28,80(s0)
-	lw %29,84(s0)
-	lw %30,88(s0)
-	lw %31,92(s0)
-	li %33,0
-	mv %32,%33
-	j LBB43
-LBB43:
-	li %35,10
-	slt %36,%35,%32
-	xori %34,%36,1
-	bnez %34,LBB45
-	j LBB44
-LBB44:
-	mv %37,%32
-	j LBB48
-LBB45:
-	mv %38,%32
-	j LBB46
-LBB46:
-	mv %39,%2
-	mv %40,%3
-	add %41,%39,%40
-	mv %42,%4
-	add %43,%41,%42
-	mv %44,%5
-	add %45,%43,%44
-	mv %46,%6
-	add %47,%45,%46
-	mv %48,%7
-	add %49,%47,%48
-	mv %50,%8
-	add %51,%49,%50
-	mv %52,%9
-	add %53,%51,%52
-	mv %54,%10
-	add %55,%53,%54
-	mv %56,%11
-	add %57,%55,%56
-	mv %58,%12
-	add %59,%57,%58
-	mv %60,%13
-	add %61,%59,%60
-	mv %62,%14
-	add %63,%61,%62
-	mv %64,%15
-	add %65,%63,%64
-	mv %66,%16
-	add %67,%65,%66
-	mv %68,%17
-	add %69,%67,%68
-	mv %70,%18
-	add %71,%69,%70
-	mv %72,%19
-	add %73,%71,%72
-	mv %74,%20
-	add %75,%73,%74
-	mv %76,%21
-	add %77,%75,%76
-	mv %78,%22
-	add %79,%77,%78
-	mv %80,%23
-	add %81,%79,%80
-	mv %82,%24
-	add %83,%81,%82
-	mv %84,%25
-	add %85,%83,%84
-	mv %86,%26
-	add %87,%85,%86
-	mv %88,%27
-	add %89,%87,%88
-	mv %90,%28
-	add %91,%89,%90
-	mv %92,%29
-	add %93,%91,%92
-	mv %94,%30
-	add %95,%93,%94
-	mv %96,%31
-	add %97,%95,%96
-	li %99,100
-	rem %98,%97,%99
-	mv %100,%98
-	mv %101,%38
-	j LBB47
-LBB47:
-	addi %102,%101,1
-	mv %32,%102
-	j LBB43
-LBB48:
-	mv %103,%0
-	mv %104,%1
-	rem %105,%103,%104
-	li %107,0
-	xor %108,%105,%107
-	seqz %106,%108
-	bnez %106,LBB50
-	j LBB49
-LBB49:
-	mv %109,%37
-	j LBB52
-LBB50:
-	mv %110,%37
-	j LBB51
-LBB51:
-	mv %111,%1
-	mv %112,%111
-	mv %113,%110
-	j LBB53
-LBB52:
-	mv %114,%1
-	mv %115,%0
-	mv %116,%1
-	rem %117,%115,%116
-	li %118,10
-	mv a0,%118
-	li %119,68
-	mv a1,%119
-	li %120,0
-	mv a2,%120
-	li %121,2
-	mv a3,%121
-	li %122,4
-	mv a4,%122
-	li %123,6
-	mv a5,%123
-	li %124,8
-	mv a6,%124
-	li %125,10
-	mv a7,%125
-	li %126,12
-	sw %126,0(sp)
-	li %127,14
-	sw %127,4(sp)
-	li %128,16
-	sw %128,8(sp)
-	li %129,18
-	sw %129,12(sp)
-	li %130,20
-	sw %130,16(sp)
-	li %131,22
-	sw %131,20(sp)
-	li %132,24
-	sw %132,24(sp)
-	li %133,26
-	sw %133,28(sp)
-	li %134,28
-	sw %134,32(sp)
-	li %135,30
-	sw %135,36(sp)
-	li %136,32
-	sw %136,40(sp)
-	li %137,34
-	sw %137,44(sp)
-	li %138,36
-	sw %138,48(sp)
-	li %139,38
-	sw %139,52(sp)
-	li %140,40
-	sw %140,56(sp)
-	li %141,42
-	sw %141,60(sp)
-	li %142,44
-	sw %142,64(sp)
-	li %143,46
-	sw %143,68(sp)
-	li %144,48
-	sw %144,72(sp)
-	li %145,50
-	sw %145,76(sp)
-	li %146,52
-	sw %146,80(sp)
-	li %147,54
-	sw %147,84(sp)
-	li %148,56
-	sw %148,88(sp)
-	li %149,58
-	sw %149,92(sp)
-	call gcd
-	mv %150,a0
-	mv %151,%4
-	mv %152,%5
-	mv %153,%6
-	mv %154,%7
-	mv %155,%8
-	mv %156,%9
-	mv %157,%10
-	mv %158,%11
-	mv %159,%12
-	mv %160,%13
-	mv %161,%14
-	mv %162,%15
-	mv %163,%16
-	mv %164,%17
-	mv %165,%18
-	mv %166,%19
-	mv %167,%20
-	mv %168,%21
-	mv %169,%22
-	mv %170,%23
-	mv %171,%24
-	mv %172,%25
-	mv %173,%26
-	mv %174,%27
-	mv %175,%28
-	mv %176,%29
-	mv %177,%30
-	mv %178,%31
-	mv a0,%114
-	mv a1,%117
-	mv a2,%100
-	mv a3,%150
-	mv a4,%151
-	mv a5,%152
-	mv a6,%153
-	mv a7,%154
-	sw %155,0(sp)
-	sw %156,4(sp)
-	sw %157,8(sp)
-	sw %158,12(sp)
-	sw %159,16(sp)
-	sw %160,20(sp)
-	sw %161,24(sp)
-	sw %162,28(sp)
-	sw %163,32(sp)
-	sw %164,36(sp)
-	sw %165,40(sp)
-	sw %166,44(sp)
-	sw %167,48(sp)
-	sw %168,52(sp)
-	sw %169,56(sp)
-	sw %170,60(sp)
-	sw %171,64(sp)
-	sw %172,68(sp)
-	sw %173,72(sp)
-	sw %174,76(sp)
-	sw %175,80(sp)
-	sw %176,84(sp)
-	sw %177,88(sp)
-	sw %178,92(sp)
-	call gcd1
-	mv %179,a0
-	mv %112,%179
-	mv %113,%109
-	j LBB53
-LBB53:
-	mv a0,%112
-	ret
-# end function : gcd
-	.globl	gcd1					# start function : gcd1
-	.p2align	2
-gcd1:
-#LBB54:
-	mv %180,a0
-	mv %181,a1
-	mv %182,a2
-	mv %183,a3
-	mv %184,a4
-	mv %185,a5
-	mv %186,a6
-	mv %187,a7
-	lw %188,0(s0)
-	lw %189,4(s0)
-	lw %190,8(s0)
-	lw %191,12(s0)
-	lw %192,16(s0)
-	lw %193,20(s0)
-	lw %194,24(s0)
-	lw %195,28(s0)
-	lw %196,32(s0)
-	lw %197,36(s0)
-	lw %198,40(s0)
-	lw %199,44(s0)
-	lw %200,48(s0)
-	lw %201,52(s0)
-	lw %202,56(s0)
-	lw %203,60(s0)
-	lw %204,64(s0)
-	lw %205,68(s0)
-	lw %206,72(s0)
-	lw %207,76(s0)
-	lw %208,80(s0)
-	lw %209,84(s0)
-	lw %210,88(s0)
-	lw %211,92(s0)
-	mv %212,%182
-	mv %213,%183
-	add %214,%212,%213
-	mv %215,%184
-	add %216,%214,%215
-	mv %217,%185
-	add %218,%216,%217
-	mv %219,%186
-	add %220,%218,%219
-	mv %221,%187
-	add %222,%220,%221
-	mv %223,%188
-	add %224,%222,%223
-	mv %225,%189
-	add %226,%224,%225
-	mv %227,%190
-	add %228,%226,%227
-	mv %229,%191
-	add %230,%228,%229
-	mv %231,%192
-	add %232,%230,%231
-	mv %233,%193
-	add %234,%232,%233
-	mv %235,%194
-	add %236,%234,%235
-	mv %237,%195
-	add %238,%236,%237
-	mv %239,%196
-	add %240,%238,%239
-	mv %241,%197
-	add %242,%240,%241
-	mv %243,%198
-	add %244,%242,%243
-	mv %245,%199
-	add %246,%244,%245
-	mv %247,%200
-	add %248,%246,%247
-	mv %249,%201
-	add %250,%248,%249
-	mv %251,%202
-	add %252,%250,%251
-	mv %253,%203
-	add %254,%252,%253
-	mv %255,%204
-	add %256,%254,%255
-	mv %257,%205
-	add %258,%256,%257
-	mv %259,%206
-	add %260,%258,%259
-	mv %261,%207
-	add %262,%260,%261
-	mv %263,%208
-	add %264,%262,%263
-	mv %265,%209
-	add %266,%264,%265
-	mv %267,%210
-	add %268,%266,%267
-	mv %269,%211
-	add %270,%268,%269
-	li %272,100
-	rem %271,%270,%272
-	mv %273,%180
-	mv %274,%181
-	rem %275,%273,%274
-	li %277,0
-	xor %278,%275,%277
-	seqz %276,%278
-	bnez %276,LBB56
-	j LBB55
-LBB55:
-	mv %279,%271
-	j LBB58
-LBB56:
-	mv %280,%271
-	j LBB57
-LBB57:
-	mv %281,%181
-	mv %282,%281
-	mv %283,%280
-	j LBB59
-LBB58:
-	mv %284,%181
-	mv %285,%180
-	mv %286,%181
-	rem %287,%285,%286
-	mv %288,%183
-	mv %289,%184
-	mv %290,%185
-	mv %291,%186
-	mv %292,%187
-	mv %293,%188
-	mv %294,%189
-	mv %295,%190
-	mv %296,%191
-	mv %297,%192
-	mv %298,%193
-	mv %299,%194
-	mv %300,%195
-	mv %301,%196
-	mv %302,%197
-	mv %303,%198
-	mv %304,%199
-	mv %305,%200
-	mv %306,%201
-	mv %307,%202
-	mv %308,%203
-	mv %309,%204
-	mv %310,%205
-	mv %311,%206
-	mv %312,%207
-	mv %313,%208
-	mv %314,%209
-	mv %315,%210
-	mv %316,%211
-	mv a0,%284
-	mv a1,%287
-	mv a2,%279
-	mv a3,%288
-	mv a4,%289
-	mv a5,%290
-	mv a6,%291
-	mv a7,%292
-	sw %293,0(sp)
-	sw %294,4(sp)
-	sw %295,8(sp)
-	sw %296,12(sp)
-	sw %297,16(sp)
-	sw %298,20(sp)
-	sw %299,24(sp)
-	sw %300,28(sp)
-	sw %301,32(sp)
-	sw %302,36(sp)
-	sw %303,40(sp)
-	sw %304,44(sp)
-	sw %305,48(sp)
-	sw %306,52(sp)
-	sw %307,56(sp)
-	sw %308,60(sp)
-	sw %309,64(sp)
-	sw %310,68(sp)
-	sw %311,72(sp)
-	sw %312,76(sp)
-	sw %313,80(sp)
-	sw %314,84(sp)
-	sw %315,88(sp)
-	sw %316,92(sp)
-	call gcd2
-	mv %317,a0
-	mv %282,%317
-	mv %283,%279
-	j LBB59
-LBB59:
-	mv a0,%282
-	ret
-# end function : gcd1
-	.globl	gcd2					# start function : gcd2
-	.p2align	2
-gcd2:
-#LBB60:
-	mv %318,a0
-	mv %319,a1
-	mv %320,a2
-	mv %321,a3
-	mv %322,a4
-	mv %323,a5
-	mv %324,a6
-	mv %325,a7
-	lw %326,0(s0)
-	lw %327,4(s0)
-	lw %328,8(s0)
-	lw %329,12(s0)
-	lw %330,16(s0)
-	lw %331,20(s0)
-	lw %332,24(s0)
-	lw %333,28(s0)
-	lw %334,32(s0)
-	lw %335,36(s0)
-	lw %336,40(s0)
-	lw %337,44(s0)
-	lw %338,48(s0)
-	lw %339,52(s0)
-	lw %340,56(s0)
-	lw %341,60(s0)
-	lw %342,64(s0)
-	lw %343,68(s0)
-	lw %344,72(s0)
-	lw %345,76(s0)
-	lw %346,80(s0)
-	lw %347,84(s0)
-	lw %348,88(s0)
-	lw %349,92(s0)
-	mv %350,%320
-	mv %351,%321
-	add %352,%350,%351
-	mv %353,%322
-	add %354,%352,%353
-	mv %355,%323
-	add %356,%354,%355
-	mv %357,%324
-	add %358,%356,%357
-	mv %359,%325
-	add %360,%358,%359
-	mv %361,%326
-	add %362,%360,%361
-	mv %363,%327
-	add %364,%362,%363
-	mv %365,%328
-	add %366,%364,%365
-	mv %367,%329
-	add %368,%366,%367
-	mv %369,%330
-	add %370,%368,%369
-	mv %371,%331
-	add %372,%370,%371
-	mv %373,%332
-	add %374,%372,%373
-	mv %375,%333
-	add %376,%374,%375
-	mv %377,%334
-	add %378,%376,%377
-	mv %379,%335
-	add %380,%378,%379
-	mv %381,%336
-	add %382,%380,%381
-	mv %383,%337
-	add %384,%382,%383
-	mv %385,%338
-	add %386,%384,%385
-	mv %387,%339
-	add %388,%386,%387
-	mv %389,%340
-	add %390,%388,%389
-	mv %391,%341
-	add %392,%390,%391
-	mv %393,%342
-	add %394,%392,%393
-	mv %395,%343
-	add %396,%394,%395
-	mv %397,%344
-	add %398,%396,%397
-	mv %399,%345
-	add %400,%398,%399
-	mv %401,%346
-	add %402,%400,%401
-	mv %403,%347
-	add %404,%402,%403
-	mv %405,%348
-	add %406,%404,%405
-	mv %407,%349
-	add %408,%406,%407
-	li %410,100
-	rem %409,%408,%410
-	mv %411,%318
-	mv %412,%319
-	rem %413,%411,%412
-	li %415,0
-	xor %416,%413,%415
-	seqz %414,%416
-	bnez %414,LBB62
-	j LBB61
-LBB61:
-	mv %417,%409
-	j LBB64
-LBB62:
-	mv %418,%409
-	j LBB63
-LBB63:
-	mv %419,%319
-	mv %420,%419
-	mv %421,%418
-	j LBB65
-LBB64:
-	mv %422,%319
-	mv %423,%318
-	mv %424,%319
-	rem %425,%423,%424
-	mv %426,%320
-	mv %427,%321
-	mv %428,%322
-	mv %429,%323
-	mv %430,%324
-	mv %431,%325
-	mv %432,%326
-	mv %433,%327
-	mv %434,%328
-	mv %435,%329
-	mv %436,%330
-	mv %437,%331
-	mv %438,%332
-	mv %439,%333
-	mv %440,%334
-	mv %441,%335
-	mv %442,%336
-	mv %443,%337
-	mv %444,%338
-	mv %445,%339
-	mv %446,%340
-	mv %447,%341
-	mv %448,%342
-	mv %449,%343
-	mv %450,%344
-	mv %451,%345
-	mv %452,%346
-	mv %453,%347
-	mv %454,%348
-	mv %455,%349
-	mv a0,%422
-	mv a1,%425
-	mv a2,%426
-	mv a3,%427
-	mv a4,%428
-	mv a5,%429
-	mv a6,%430
-	mv a7,%431
-	sw %432,0(sp)
-	sw %433,4(sp)
-	sw %434,8(sp)
-	sw %435,12(sp)
-	sw %436,16(sp)
-	sw %437,20(sp)
-	sw %438,24(sp)
-	sw %439,28(sp)
-	sw %440,32(sp)
-	sw %441,36(sp)
-	sw %442,40(sp)
-	sw %443,44(sp)
-	sw %444,48(sp)
-	sw %445,52(sp)
-	sw %446,56(sp)
-	sw %447,60(sp)
-	sw %448,64(sp)
-	sw %449,68(sp)
-	sw %450,72(sp)
-	sw %451,76(sp)
-	sw %452,80(sp)
-	sw %453,84(sp)
-	sw %454,88(sp)
-	sw %455,92(sp)
-	call gcd
-	mv %456,a0
-	mv %420,%456
-	mv %421,%417
-	j LBB65
-LBB65:
-	mv a0,%420
-	ret
-# end function : gcd2
-	.globl	main					# start function : main
-	.p2align	2
-main:
-#LBB66:
-	call __init__
-	li %457,10
-	mv a0,%457
-	li %458,1
-	mv a1,%458
-	li %459,0
-	mv a2,%459
-	li %460,2
-	mv a3,%460
-	li %461,4
-	mv a4,%461
-	li %462,6
-	mv a5,%462
-	li %463,8
-	mv a6,%463
-	li %464,10
-	mv a7,%464
-	li %465,12
-	sw %465,0(sp)
-	li %466,14
-	sw %466,4(sp)
-	li %467,16
-	sw %467,8(sp)
-	li %468,18
-	sw %468,12(sp)
-	li %469,20
-	sw %469,16(sp)
-	li %470,22
-	sw %470,20(sp)
-	li %471,24
-	sw %471,24(sp)
-	li %472,26
-	sw %472,28(sp)
-	li %473,28
-	sw %473,32(sp)
-	li %474,30
-	sw %474,36(sp)
-	li %475,32
-	sw %475,40(sp)
-	li %476,34
-	sw %476,44(sp)
-	li %477,36
-	sw %477,48(sp)
-	li %478,38
-	sw %478,52(sp)
-	li %479,40
-	sw %479,56(sp)
-	li %480,42
-	sw %480,60(sp)
-	li %481,44
-	sw %481,64(sp)
-	li %482,46
-	sw %482,68(sp)
-	li %483,48
-	sw %483,72(sp)
-	li %484,50
-	sw %484,76(sp)
-	li %485,52
-	sw %485,80(sp)
-	li %486,54
-	sw %486,84(sp)
-	li %487,56
-	sw %487,88(sp)
-	li %488,58
-	sw %488,92(sp)
-	call gcd
-	mv %489,a0
-	addi %490,%489,1024
-	mv a0,%490
-	call toString
-	mv %491,a0
-	mv a0,%491
-	call println
-	li %493,0
-	mv %492,%493
-	j LBB67
-LBB67:
-	mv a0,%492
-	ret
-# end function : main
-.section	.sdata,"aw",@progbits
+
+
+define ReturnType : void
+Parameter :  @__init__()
+define ReturnType : i32
+Parameter :  @test()
+define ReturnType : i32
+Parameter :  @main()
+
+define ReturnType : void
+Parameter :  @__init__(){
+__init___entrance_block    br label %__init___return_block
+
+__init___return_block                              ; preds = %__init___entrance_block
+    ret void
+
+}
+
+define ReturnType : i32
+Parameter :  @test(){
+test_entrance_block    %j12=0
+    %i0=0
+    br label %for_cond_block0
+
+for_cond_block0                                    ; preds = %test_entrance_block
+    %slt5 = icmp slt i32 %i0, 200
+    br i1 %slt5, label %for_body_block2, label %for_dest_block3
+
+for_body_block2                                    ; preds = %for_cond_block0
+    %j13=%j12
+    %i1=%i0
+    br label %andand_b_block9
+
+andand_b_block9                                    ; preds = %for_body_block2
+    %j15=%j13
+    %i3=%i1
+    br label %andand_dest_block10
+
+andand_dest_block10                                ; preds = %andand_b_block9
+    %j16=%j15
+    %i4=%i3
+    br label %andand_b_block7
+
+andand_b_block7                                    ; preds = %andand_dest_block10
+    %j17=%j16
+    %i5=%i4
+    br label %andand_dest_block8
+
+andand_dest_block8                                 ; preds = %andand_b_block7
+    %j18=%j17
+    %i6=%i5
+    br label %if_then_block4
+
+if_then_block4                                     ; preds = %andand_dest_block8
+    %j19=%j18
+    %i7=%i6
+    SelfAdd117 = add i32 %i6, 1
+    SelfAdd119 = add i32 %j18, 1
+    br label %if_dest_block6
+
+if_dest_block6                                     ; preds = %if_then_block4
+    %j21=%SelfAdd119
+    %i9=%SelfAdd117
+    br label %for_step_block1
+
+for_step_block1                                    ; preds = %if_dest_block6
+    %j22=%SelfAdd119
+    %i10=%SelfAdd117
+    SelfAdd125 = add i32 %SelfAdd117, 1
+    %j12=%j22
+    %i0=%SelfAdd125
+    br label %for_cond_block0
+
+for_dest_block3                                    ; preds = %for_step_block1
+    %j14=%j12
+    %i2=%i0
+    %testreturn_value0=%j12
+    br label %test_return_block
+
+test_return_block                                  ; preds = %for_dest_block3
+    %j23=%j14
+    %i11=%i2
+    ret i32 %testreturn_value0
+
+}
+
+define ReturnType : i32
+Parameter :  @main(){
+main_entrance_block    %call_init128 = call void @__init__()
+    %funccal129 = call i32 @test()
+    sub130 = sub i32 %funccal129, 100
+    %mainreturn_value127=%sub130
+    br label %main_return_block
+
+main_return_block                                  ; preds = %main_entrance_block
+    ret i32 %mainreturn_value127
+
+}
+

@@ -1,6 +1,5 @@
 package IR.Instruction;
 
-import Backend.IRObject;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;

@@ -51,7 +51,7 @@ public class SSAConstructor extends Pass {
                     Queue<IRBasicBlock> BlockW = new LinkedList<>();//set of BBs contain def of v
                     HashSet<IRBasicBlock> BlockF = new LinkedHashSet<>();//set of BB where phi is added
                     Visited = new LinkedHashSet<>();
-                    for (var tmpInst : tmpAllocaInst.AllocaResult.use.keySet()) {
+                    for (var tmpInst : tmpAllocaInst.AllocaResult.use) {
                         if (tmpInst instanceof storeInstruction) {
                             DefAlloca.put(tmpInst, tmpAllocaInst);
                             if (!Visited.contains(tmpInst.thisBasicBlock)) {

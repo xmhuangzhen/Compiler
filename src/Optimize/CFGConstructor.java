@@ -17,20 +17,20 @@ public class CFGConstructor extends Pass {
         super(tmpModule);
     }
 
-    public void preSetBranch(){
-        for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
-        tmpBlock.nextBasicBlocks != null; tmpBlock = tmpBlock.nextBasicBlocks){
-            for(IRInstruction tmpInst = tmpBlock.HeadInst;tmpInst != null;
-            tmpInst = tmpInst.nextIRInstruction){
-                if(tmpInst instanceof brInstruction)
-                    if(((brInstruction) tmpInst).brCond == null){
+    public void preSetBranch() {
+        for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
+             tmpBlock.nextBasicBlocks != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+            for (IRInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
+                 tmpInst = tmpInst.nextIRInstruction) {
+                if (tmpInst instanceof brInstruction)
+                    if (((brInstruction) tmpInst).brCond == null) {
                         tmpInst.nextIRInstruction = null;
                         tmpBlock.TailInst = tmpInst;
                     }
             }
-            if(!(tmpBlock.TailInst instanceof brInstruction)){
+            if (!(tmpBlock.TailInst instanceof brInstruction)) {
                 tmpBlock.addBasicBlockInst(new brInstruction(tmpBlock,
-                        null,tmpBlock.nextBasicBlocks,null));
+                        null, tmpBlock.nextBasicBlocks, null));
             }
         }
     }
@@ -39,15 +39,15 @@ public class CFGConstructor extends Pass {
         for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
              tmpBlock != null;
              tmpBlock = tmpBlock.nextBasicBlocks) {
-            for(IRInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
-            tmpInst = tmpInst.nextIRInstruction){
-                if(tmpInst instanceof callInstruction){
-                    for(var tmp : ((callInstruction) tmpInst).CallParameters){
-                        if(tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
+            for (IRInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
+                 tmpInst = tmpInst.nextIRInstruction) {
+                if (tmpInst instanceof callInstruction) {
+                    for (var tmp : ((callInstruction) tmpInst).CallParameters) {
+                        if (tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
                     }
-                } else if(tmpInst instanceof getElementPtrInstruction){
-                    for(var tmp : ((getElementPtrInstruction) tmpInst).GetElementPtrIdx)
-                        if(tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
+                } else if (tmpInst instanceof getElementPtrInstruction) {
+                    for (var tmp : ((getElementPtrInstruction) tmpInst).GetElementPtrIdx)
+                        if (tmp instanceof Register) tmp.AddRegisterUseInInstruction(tmpInst);
                 }
             }
         }
@@ -61,27 +61,7 @@ public class CFGConstructor extends Pass {
                 curFunc = tmpIRFunc;
                 preSetBranch();
                 preInitializeCall();
-
-                for (IRBasicBlock tmpIRBasicBlock = tmpIRFunc.thisEntranceBlock;
-                     tmpIRBasicBlock != null;
-                     tmpIRBasicBlock = tmpIRBasicBlock.nextBasicBlocks) {
-                    for (IRInstruction tmpInst = tmpIRBasicBlock.HeadInst;
-                         tmpInst != null;
-                         tmpInst = tmpInst.nextIRInstruction) {
-                        if (tmpInst instanceof brInstruction) {
-                            if (((brInstruction) tmpInst).brIfTrue != null) {
-                                tmpIRBasicBlock.CFGSuccessor.add(((brInstruction) tmpInst).brIfTrue);
-                                ((brInstruction) tmpInst).brIfTrue.CFGPredecessor.add(tmpIRBasicBlock);
-                            }
-                            if (((brInstruction) tmpInst).brIfFalse != null) {
-                                tmpIRBasicBlock.CFGSuccessor.add(((brInstruction) tmpInst).brIfFalse);
-                                ((brInstruction) tmpInst).brIfFalse.CFGPredecessor.add(tmpIRBasicBlock);
-                            }
-                        }
-                    }
-                }
-
-                tmpIRFunc.CalculateDFSOrder();
+                //actual CFG constructor is removed to CFGSimplification
             }
         return false;
     }

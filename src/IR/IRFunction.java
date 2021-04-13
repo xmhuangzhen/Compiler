@@ -132,9 +132,32 @@ public class IRFunction {
 
         curBlock.nextBasicBlocks.prevBasicBlocks = curBlock.prevBasicBlocks;
 
+        //after maybe not need
         for(var tmpPreBlock : curBlock.CFGPredecessor)
             tmpPreBlock.CFGSuccessor.remove(curBlock);
         for (var tmpNxtBlock : curBlock.CFGSuccessor)
             tmpNxtBlock.CFGPredecessor.remove(curBlock);
     }
+
+    public void CFGSimpGetDFS(){
+        DFSOrder.clear();
+        DFNcurNumber = 0;
+        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            tmpBlock.DFN = 0;
+        }
+        CFGSimpDFS(thisEntranceBlock);
+    }
+
+    public void CFGSimpDFS(IRBasicBlock curBlock){
+        ++DFNcurNumber;
+        curBlock.DFN = DFNcurNumber;
+        DFSOrder.add(curBlock);
+        for(var nextBlock : curBlock.CFGSuccessor){
+            if(nextBlock.DFN == 0){
+                CFGSimpDFS(nextBlock);
+            }
+        }
+    }
+
 }

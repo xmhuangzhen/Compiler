@@ -107,8 +107,20 @@ public class IRBasicBlock {
     }
 
     public void removePhiInstBlock(IRBasicBlock tmpBlock){
-        if(HeadInst instanceof phiInstruction){
-            ((phiInstruction) HeadInst).removeBlock(tmpBlock);
+        for(IRInstruction tmpInst = HeadInst; tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+            if(tmpInst instanceof phiInstruction) {
+                ((phiInstruction) tmpInst).removeBlock(tmpBlock);
+            }
+            else return;
+        }
+    }
+
+    public void replacePhiInstBlock(IRBasicBlock tmpBlock,IRBasicBlock newBlock){
+        for(IRInstruction tmpInst = HeadInst; tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+            if(tmpInst instanceof phiInstruction) {
+                ((phiInstruction) tmpInst).replaceBlock(tmpBlock,newBlock);
+            }
+            else return;
         }
     }
 
