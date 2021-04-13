@@ -53,6 +53,35 @@ public class CFGConstructor extends Pass {
         }
     }
 
+    public void ConstructCFG() {
+        for (IRBasicBlock tmpIRBasicBlock = curFunc.thisEntranceBlock;
+             tmpIRBasicBlock != null;
+             tmpIRBasicBlock = tmpIRBasicBlock.nextBasicBlocks) {
+            tmpIRBasicBlock.CFGSuccessor.clear();
+            tmpIRBasicBlock.CFGPredecessor.clear();
+        }
+        for (IRBasicBlock tmpIRBasicBlock = curFunc.thisEntranceBlock;
+             tmpIRBasicBlock != null;
+             tmpIRBasicBlock = tmpIRBasicBlock.nextBasicBlocks) {
+            for (IRInstruction tmpInst = tmpIRBasicBlock.HeadInst;
+                 tmpInst != null;
+                 tmpInst = tmpInst.nextIRInstruction) {
+                if (tmpInst instanceof brInstruction) {
+                    if (((brInstruction) tmpInst).brIfTrue != null) {
+                        tmpIRBasicBlock.CFGSuccessor.add(((brInstruction) tmpInst).brIfTrue);
+                        ((brInstruction) tmpInst).brIfTrue.CFGPredecessor.add(tmpIRBasicBlock);
+                    }
+                    if (((brInstruction) tmpInst).brIfFalse != null) {
+                        tmpIRBasicBlock.CFGSuccessor.add(((brInstruction) tmpInst).brIfFalse);
+                        ((brInstruction) tmpInst).brIfFalse.CFGPredecessor.add(tmpIRBasicBlock);
+                    }
+                }
+            }
+        }
+        curFunc.CFGSimpGetDFS();
+    }
+
+
     @Override
     public boolean run() {
         for (var tmpIRFunc : curIRModule.IRFunctionTable.values())
@@ -61,7 +90,7 @@ public class CFGConstructor extends Pass {
                 curFunc = tmpIRFunc;
                 preSetBranch();
                 preInitializeCall();
-                //actual CFG constructor is removed to CFGSimplification
+                ConstructCFG();
             }
         return false;
     }

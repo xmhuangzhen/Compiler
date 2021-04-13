@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
     //    if(args.length != 0)
-    //        input = new FileInputStream("test.mx");
+            input = new FileInputStream("test.mx");
       //  else
-            input = System.in;
+        //    input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -58,8 +58,8 @@ public class Main {
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
-            CFGSimplification tmpCFGSimp = new CFGSimplification(tmpCFGConstructor.curIRModule);
-            tmpCFGSimp.run();
+//            CFGSimplification tmpCFGSimp = new CFGSimplification(tmpCFGConstructor.curIRModule);
+  //          tmpCFGSimp.run();
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(tmpCFGConstructor.curIRModule);
             tmpDominatorTreeConstructor.run();
@@ -77,10 +77,11 @@ public class Main {
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
+                CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
                 if(!modified) break;
             }
+            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -88,7 +89,6 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-         //   new IRPrinter("output.ll").run(currentModule);
 
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);
