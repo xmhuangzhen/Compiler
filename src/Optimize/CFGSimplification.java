@@ -87,7 +87,7 @@ public class CFGSimplification extends Pass {
                         }
                        // if(preBlock.HeadInst )
                         if(curBlock != curFunc.thisReturnBlock) {
-                            System.out.println(preBlock.TailInst);
+      //                      System.out.println(preBlock.TailInst);
   /*                          preBlock.TailInst.removeInst();
                             preBlock.TailInst.nextIRInstruction = curBlock.HeadInst;
                             curBlock.HeadInst.preIRInstruction = preBlock.TailInst;
