@@ -120,13 +120,6 @@ public class CFGSimplification extends Pass {
         boolean thismodified = false;
         for(IRBasicBlock curBlock = curFunc.thisEntranceBlock;
             curBlock != null; curBlock = curBlock.nextBasicBlocks) {
-/*
-            System.out.println("--------");
-            System.out.println(curBlock + "," + curBlock.prevBasicBlocks);
-            for (var t = curBlock.HeadInst; t != null; t = t.nextIRInstruction)
-                System.out.println(t);
-*/
-
             for (IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextIRInstruction) {
                 if (tmpInst instanceof phiInstruction) {

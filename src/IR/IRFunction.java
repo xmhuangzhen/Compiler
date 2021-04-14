@@ -25,8 +25,6 @@ public class IRFunction {
     public IRBasicBlock thisReturnBlock;
 
     //for Dominator Tree
-    public ArrayList<IRBasicBlock> DomDFSOrder;
-    public int DomDFNcurNumber;
 
     public ArrayList<IRBasicBlock> DFSOrder;
     public int DFNcurNumber;
@@ -48,7 +46,6 @@ public class IRFunction {
 
         DFSOrder = new ArrayList<>();
         DFNcurNumber = 0;
-        DomDFSOrder = new ArrayList<>();
 
         allocaInstTable = new LinkedHashSet<>();
     }
@@ -95,7 +92,7 @@ public class IRFunction {
         for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
              tmpBlock = tmpBlock.nextBasicBlocks) {
             tmpBlock.DominatorTreeImmediateDominator = null;
-            tmpBlock.DominatorTreeSemiDominator = null;
+            tmpBlock.DominatorTreeSemiDominator = tmpBlock;
             tmpBlock.DFN = 0;
             tmpBlock.DominatorTreeLabel = null;
             tmpBlock.DominatorTreeAncestor = null;
@@ -104,7 +101,7 @@ public class IRFunction {
         CFGDFS(thisEntranceBlock);
     }
 
-    public void CFGDFS(IRBasicBlock curBlock){
+    public void CFGDFS(IRBasicBlock curBlock) {
         ++DFNcurNumber;
         curBlock.DFN = DFNcurNumber;
         curBlock.DominatorTreeSemiDominator = curBlock;
@@ -112,34 +109,12 @@ public class IRFunction {
         curBlock.DominatorTreeAncestor = null;
         curBlock.DominatorTreeBucket = new LinkedHashSet<>();
         DFSOrder.add(curBlock);
-        for(var nextBlock : curBlock.CFGSuccessor){
-            if(nextBlock.DFN == 0){
+        for (var nextBlock : curBlock.CFGSuccessor) {
+            if (nextBlock.DFN == 0) {
                 nextBlock.DominatorTreeFather = curBlock;
                 CFGDFS(nextBlock);
             }
         }
-    }
-
-    public void CalculateDomDFSOrder() {
-        DomDFNcurNumber = 0;
-        DomDFSOrder.clear();
-        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
-             tmpBlock = tmpBlock.nextBasicBlocks) {
-            tmpBlock.DominatorTreeChildren = new LinkedHashSet<>();
-        }
-        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
-             tmpBlock = tmpBlock.nextBasicBlocks) {
-            if (tmpBlock.DominatorTreeFather != null)
-                tmpBlock.DominatorTreeFather.DominatorTreeChildren.add(tmpBlock);
-        }
-        DomDFS(thisEntranceBlock);
-    }
-
-    public void DomDFS(IRBasicBlock curBlock){
-        if(DomDFSOrder.contains(curBlock)) return;
-        DomDFSOrder.add(curBlock);
-        for(IRBasicBlock sucBlock : curBlock.DominatorTreeChildren)
-            DomDFS(sucBlock);
     }
 
     //for CFG simplification

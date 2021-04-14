@@ -40,16 +40,23 @@ public class SparseConditionalConstantPropagation extends Pass {
     }
 
     public void SCCPInFunc() {
+        int cnt = 200;
         while (true) {
+            cnt--;;
+            if(cnt == 0) break;
+         //   System.out.println("a");
             ChangedInFunc = false;
             BlockVisited.clear();
+           // System.out.println("b");
             SCCPInBlock(curFunc.thisEntranceBlock);
+          //  System.out.println("c");
             if (!ChangedInFunc) break;
         }
     }
 
     public void SCCPInBlock(IRBasicBlock curBlock) {
         if(BlockVisited.contains(curBlock)) return;
+
         BlockVisited.add(curBlock);
 
         //(1) remove unused block
@@ -59,8 +66,6 @@ public class SparseConditionalConstantPropagation extends Pass {
             System.out.println(curBlock);
             curBlock.TailInst.replaceInst(replaceInst);
         }
-
-
 
         //(2) check phi
         for(IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;

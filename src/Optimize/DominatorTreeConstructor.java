@@ -42,6 +42,11 @@ public class DominatorTreeConstructor extends Pass {
                 //(1) get dfs order
                 tmpFunc.CalculateDFSOrder();
 
+/*                System.out.println("---------------------");
+                System.out.println(tmpFunc.thisFunctionName);
+                for(var tmp : tmpFunc.DFSOrder)
+                    System.out.print(tmp.BasicBlockName+",");
+*/
                 //(2) get semi dominator
                 for (int i = tmpFunc.DFNcurNumber; i > 1; --i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
@@ -54,9 +59,15 @@ public class DominatorTreeConstructor extends Pass {
                     BlockW.DominatorTreeSemiDominator.DominatorTreeBucket.add(BlockW);
                     Link(BlockW.DominatorTreeFather, BlockW);
 
+
+/*                    System.out.println(BlockW.BasicBlockName+","+
+                            BlockW.DominatorTreeFather.BasicBlockName+","+
+                            BlockW.DominatorTreeSemiDominator.BasicBlockName);
+  */
                     for (IRBasicBlock BlockV : BlockW.DominatorTreeFather.DominatorTreeBucket) {
                     //    BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
                         IRBasicBlock BlockU = Eval(BlockV);
+//                        System.out.println(BlockV.BasicBlockName);
                         if (BlockU.DominatorTreeSemiDominator.DFN < BlockV.DominatorTreeSemiDominator.DFN)
                             BlockV.DominatorTreeImmediateDominator = BlockU;
                         else
@@ -67,6 +78,7 @@ public class DominatorTreeConstructor extends Pass {
 
                 for (int i = 2; i <= tmpFunc.DFNcurNumber; ++i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
+              //      System.out.println(BlockW.BasicBlockName);
                     if (BlockW.DominatorTreeImmediateDominator.DFN != BlockW.DominatorTreeSemiDominator.DFN)
                         BlockW.DominatorTreeImmediateDominator =
                                 BlockW.DominatorTreeImmediateDominator.DominatorTreeImmediateDominator;

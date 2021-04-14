@@ -58,16 +58,18 @@ public class Main {
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
-            //        CFGSimplification tmpCFGSimp = new CFGSimplification(tmpCFGConstructor.curIRModule);
-            //      tmpCFGSimp.run();
+            IRModule currentModule = tmpCFGConstructor.curIRModule;
+            CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
+            tmpCFGSimp.run();
+
             DominatorTreeConstructor tmpDominatorTreeConstructor =
-                    new DominatorTreeConstructor(tmpCFGConstructor.curIRModule);
+                    new DominatorTreeConstructor(currentModule);
             tmpDominatorTreeConstructor.run();
             DominanceFrontierConstructor tmpDominanceFrontierConstructor =
                     new DominanceFrontierConstructor(tmpDominatorTreeConstructor.curIRModule);
             tmpDominanceFrontierConstructor.run();
 
-            IRModule currentModule = tmpDominanceFrontierConstructor.curIRModule;
+            currentModule = tmpDominanceFrontierConstructor.curIRModule;
 
             SSAConstructor tmpSSAConstructor =
                     new SSAConstructor(tmpDominanceFrontierConstructor.curIRModule);
@@ -75,15 +77,19 @@ public class Main {
 
             currentModule = tmpSSAConstructor.curIRModule;
 
+           // System.out.println("1");
             while (true) {
+             //   System.out.println("10");
                 boolean modified = false;
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+           //     System.out.println(11);
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
-                CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
                 if (!modified) break;
             }
+         //   System.out.println("2");
 
 
             //(n) Destruct SSA
@@ -92,6 +98,8 @@ public class Main {
             tmpSSADestructor.run();
             //--------Opt End------
        //     new IRPrinter("output.ll").run(currentModule);
+        //    new IRPrinter("output.ll").run(currentModule);
+
 
 
             InstSelector instSelector = new InstSelector(tmpIRBuilder.currentModule);

@@ -117,6 +117,7 @@ public class SSAConstructor extends Pass {
     }
 
     void VariableRenaming(IRBasicBlock curBlock, IRBasicBlock preBlock) {
+        if(!PhiInstMap.containsKey(curBlock)) return;
         //Line 14-17 (define phi Inst)
 
         for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
