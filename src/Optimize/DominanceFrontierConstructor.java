@@ -14,7 +14,7 @@ public class DominanceFrontierConstructor extends Pass {
             if (!tmpFunc.IsBuiltIn) {
 
                 //Algorithm 3.2
-                for (IRBasicBlock Blockb = tmpFunc.thisEntranceBlock;
+/*                for (IRBasicBlock Blockb = tmpFunc.thisEntranceBlock;
                      Blockb != null;
                      Blockb = Blockb.nextBasicBlocks)
                     if (Blockb.DFN != 0) {
@@ -27,6 +27,32 @@ public class DominanceFrontierConstructor extends Pass {
                             }
                         }
                     }
+*/
+                //wiki
+                for (IRBasicBlock BlockB = tmpFunc.thisEntranceBlock; BlockB != null;
+                     BlockB = BlockB.nextBasicBlocks)
+                    if (BlockB.DFN != 0) {
+                        if (BlockB.CFGPredecessor.size() > 1) {
+                            for (IRBasicBlock BlockP : BlockB.CFGPredecessor) {
+                                IRBasicBlock runner = BlockP;
+                                while (runner != BlockB.DominatorTreeImmediateDominator) {
+                                    runner.DominanceFrontier.add(BlockB);
+                                    runner = runner.DominatorTreeImmediateDominator;
+                                }
+                            }
+                        }
+                    }
+
+                /*
+                for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+                     tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                    System.out.print(tmpBlock.BasicBlockName + ":");
+                    for (var t : tmpBlock.DominanceFrontier) {
+                        System.out.print(t + ",");
+                    }
+                    System.out.println("");
+                }
+ */
             }
         return false;
     }

@@ -84,6 +84,8 @@ public class DominatorTreeConstructor extends Pass {
                                 BlockW.DominatorTreeImmediateDominator.DominatorTreeImmediateDominator;
                 }
 
+
+
                 for (int i = 1; i <= tmpFunc.DFNcurNumber; ++i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
                     BlockW.StrictDominator = new LinkedHashSet<>();

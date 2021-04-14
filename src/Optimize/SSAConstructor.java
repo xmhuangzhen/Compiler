@@ -65,6 +65,7 @@ public class SSAConstructor extends Pass {
                     //Line 4-6
                     for (var tmpInst : tmpAllocaInst.AllocaResult.use) {
                         if (tmpInst instanceof storeInstruction) {
+//                            System.out.println(tmpAllocaInst +","+tmpInst+","+tmpInst.thisBasicBlock);
                             DefAlloca.put(tmpInst, tmpAllocaInst);
                             BlockW.offer(tmpInst.thisBasicBlock);
                             DefsV.add(tmpInst.thisBasicBlock);
@@ -90,6 +91,7 @@ public class SSAConstructor extends Pass {
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
 
+//                                System.out.println(BlockY+","+tmpAllocaInst);
 
                                 //Line 12
                                 BlockF.add(BlockY);
@@ -118,9 +120,10 @@ public class SSAConstructor extends Pass {
 
     void VariableRenaming(IRBasicBlock curBlock, IRBasicBlock preBlock) {
         if(!PhiInstMap.containsKey(curBlock)) return;
-        //Line 14-17 (define phi Inst)
 
+        //Line 14-17 (define phi Inst)
         for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
+           // System.out.println(curBlock+","+tmpAllocInst);
             phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
             tmpPhiInst.PhiLabel.add(preBlock);
             if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
@@ -156,9 +159,12 @@ public class SSAConstructor extends Pass {
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
             } else if (tmpInst instanceof storeInstruction && DefAlloca.containsKey(tmpInst)) {
+              //  System.out.println(curBlock+","+tmpInst);
                 allocaInstruction tmpAllocInst = DefAlloca.get(tmpInst);
-                if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst))
+                if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst)) {
+                    //System.out.println("1");
                     ReachingDefMap.get(curBlock).put(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
+                }
                 else
                     ReachingDefMap.get(curBlock).replace(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
                 tmpInst.thisBasicBlock.removeInst(tmpInst);

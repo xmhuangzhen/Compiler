@@ -24,7 +24,7 @@ LBB43:
 	li a2,200
 	slt a2,a1,a2
 	bnez a2,LBB44
-	j LBB53
+	j LBB52
 LBB44:
 LBB45:
 LBB46:
@@ -33,17 +33,12 @@ LBB48:
 LBB49:
 	addi a1,a1,1
 	addi a0,a0,1
-	j LBB51
 LBB50:
-	li a2,2
-	li a0,0
-	div a0,a2,a0
 LBB51:
-LBB52:
 	addi a1,a1,1
 	j LBB43
+LBB52:
 LBB53:
-LBB54:
 	addi sp,sp,80
 	lw ra,-4(sp)
 	ret
@@ -51,14 +46,14 @@ LBB54:
 	.globl	main					# start function : main
 	.p2align	2
 main:
-#LBB55:
+#LBB54:
 	sw ra,-4(sp)
 	mv s0,sp
 	addi sp,sp,-80
 	call __init__
 	call test
 	addi a0,a0,-100
-LBB56:
+LBB55:
 	addi sp,sp,80
 	lw ra,-4(sp)
 	ret
