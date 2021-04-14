@@ -55,18 +55,47 @@ public class CFGSimplification extends Pass {
             }
         }
         curFunc.CFGSimpGetDFS();
+
+/*        System.out.println("------------------------");
+        System.out.println(curFunc.thisFunctionName);
+        for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;tmpBlock != null;
+        tmpBlock = tmpBlock.nextBasicBlocks){
+            System.out.print(tmpBlock.BasicBlockName+":");
+            for(var t : tmpBlock.CFGSuccessor)
+                System.out.print(t.BasicBlockName+",");
+            System.out.print("|||");
+            for(var t : tmpBlock.CFGPredecessor)
+                System.out.print(t.BasicBlockName+",");
+            System.out.println("");
+        }
+        */
     }
 
     public boolean FuncSimplification() {
         boolean thismodified = false;
+        int cnt = 10;
         while (true) {
+            cnt--;
+            if(cnt == 0) break;
+//            System.out.println("a");
             ConstructCFG();
+  //          System.out.println("b");
             boolean tmpmodified = deleteUnusedPhiInst();
+    //        System.out.println("c");
             tmpmodified |= deleteUnusedBlock();
+      //      System.out.println("d");
             if (!tmpmodified) break;
             else thismodified = true;
         }
-        return thismodified;
+/*        ConstructCFG();
+        System.out.println("---------");
+        for(var t = curFunc.thisEntranceBlock;t != null; t = t.nextBasicBlocks){
+            System.out.print(t+":");
+            for(var tmp : t.CFGSuccessor)
+                System.out.print(tmp+",");
+            System.out.println("");
+        }
+  */      return thismodified;
     }
 
     public boolean deleteUnusedBlock() {
@@ -78,14 +107,15 @@ public class CFGSimplification extends Pass {
                     SucBlock.removePhiInstBlock(curBlock);
                 curFunc.removeBasicBlock(curBlock);
                 thismodified = true;
+                return true;
             } else {
                 if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
                 !(curBlock.HeadInst instanceof phiInstruction)) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
-                    if (preBlock.CFGSuccessor.size() == 1) {
+                    if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
-
+/*
                         preBlock.TailInst.removeInst();
 
                         if(preBlock.TailInst != null) {
@@ -109,7 +139,7 @@ public class CFGSimplification extends Pass {
                              tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)
                             tmpBlcok.replacePhiInstBlock(curBlock, preBlock);
                         return true;
-                    }
+  */                  }
                 }
             }
         }

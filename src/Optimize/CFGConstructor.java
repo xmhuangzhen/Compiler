@@ -89,6 +89,20 @@ public class CFGConstructor extends Pass {
             System.out.println("");
         }*/
 //        curFunc.CFGSimpGetDFS();
+/*
+        System.out.println("------CONSTRUCTOR------------------");
+        System.out.println(curFunc.thisFunctionName);
+        for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;tmpBlock != null;
+            tmpBlock = tmpBlock.nextBasicBlocks){
+            System.out.print(tmpBlock.BasicBlockName+":");
+            for(var t : tmpBlock.CFGSuccessor)
+                System.out.print(t.BasicBlockName+",");
+            System.out.print("|||");
+            for(var t : tmpBlock.CFGPredecessor)
+                System.out.print(t.BasicBlockName+",");
+            System.out.println("");
+        }
+*/
     }
 
 

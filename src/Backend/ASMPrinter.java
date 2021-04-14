@@ -1,6 +1,7 @@
 package Backend;
 
 import RISCV.Inst.RISCVInstruction;
+import RISCV.Inst.RISCVJumpInst;
 import RISCV.Operand.RISCVGlobalReg;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVFunction;
@@ -43,6 +44,9 @@ public class ASMPrinter {
             if(thisFunc.EntranceBlock == thisBasicBlock) ASMPrintStream.print("#");
             ASMPrintStream.println(thisBasicBlock.BlockName + ":");
             for (RISCVInstruction tmpInst = thisBasicBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
+                if(tmpInst instanceof RISCVJumpInst){
+                    if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
+                }
                 ASMPrintStream.println("\t" + tmpInst.toString());
             }
         } //else{

@@ -26,8 +26,8 @@ public class Main {
         //      System.out.println("start building: " + dtf.format(LocalDateTime.now()));
 
         InputStream input = null;
-        //    if(args.length != 0)
-    //    input = new FileInputStream("test.mx");
+       //     if(args.length != 0)
+     //   input = new FileInputStream("test.mx");
         //  else
               input = System.in;
 
@@ -77,19 +77,22 @@ public class Main {
 
             currentModule = tmpSSAConstructor.curIRModule;
 
-           // System.out.println("1");
+        //    System.out.println("1");
+            int cnt = 2;
             while (true) {
-             //   System.out.println("10");
+                cnt--;
+                if(cnt == 0) break;
+            //    System.out.println("10");
                 boolean modified = false;
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-           //     System.out.println(11);
+            //    System.out.println(11);
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
                 if (!modified) break;
             }
-         //   System.out.println("2");
+       //     System.out.println("2");
 
 
             //(n) Destruct SSA

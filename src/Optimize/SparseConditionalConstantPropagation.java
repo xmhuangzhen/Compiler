@@ -60,13 +60,13 @@ public class SparseConditionalConstantPropagation extends Pass {
         BlockVisited.add(curBlock);
 
         //(1) remove unused block
-        if (curBlock != curFunc.thisEntranceBlock && curBlock.CFGPredecessor.isEmpty()) {
+/*        if (curBlock != curFunc.thisEntranceBlock && curBlock.CFGPredecessor.isEmpty()) {
             IRInstruction replaceInst = new brInstruction(curBlock,
                     null, curBlock, null);
             System.out.println(curBlock);
             curBlock.TailInst.replaceInst(replaceInst);
         }
-
+*/
         //(2) check phi
         for(IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;
             tmpInst = tmpInst.nextIRInstruction){
