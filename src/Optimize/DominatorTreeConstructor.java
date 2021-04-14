@@ -26,7 +26,7 @@ public class DominatorTreeConstructor extends Pass {
     }
 
     public void Link(IRBasicBlock BlockV, IRBasicBlock BlockW) {
-        BlockV.DominatorTreeAncestor = BlockW;
+        BlockW.DominatorTreeAncestor = BlockV;
     }
 
     public IRBasicBlock Eval(IRBasicBlock BlockV) {
@@ -54,16 +54,15 @@ public class DominatorTreeConstructor extends Pass {
                     BlockW.DominatorTreeSemiDominator.DominatorTreeBucket.add(BlockW);
                     Link(BlockW.DominatorTreeFather, BlockW);
 
-                    HashSet<IRBasicBlock> tmpBucket =
-                            new LinkedHashSet<>(BlockW.DominatorTreeFather.DominatorTreeBucket);
-                    for (IRBasicBlock BlockV : tmpBucket) {
-                        BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
+                    for (IRBasicBlock BlockV : BlockW.DominatorTreeFather.DominatorTreeBucket) {
+                    //    BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
                         IRBasicBlock BlockU = Eval(BlockV);
                         if (BlockU.DominatorTreeSemiDominator.DFN < BlockV.DominatorTreeSemiDominator.DFN)
                             BlockV.DominatorTreeImmediateDominator = BlockU;
                         else
                             BlockV.DominatorTreeImmediateDominator = BlockW.DominatorTreeFather;
                     }
+                    BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
                 }
 
                 for (int i = 2; i <= tmpFunc.DFNcurNumber; ++i) {
@@ -75,6 +74,7 @@ public class DominatorTreeConstructor extends Pass {
 
                 for (int i = 1; i <= tmpFunc.DFNcurNumber; ++i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
+                    BlockW.StrictDominator = new LinkedHashSet<>();
                     for (IRBasicBlock BlockU = BlockW.DominatorTreeImmediateDominator;
                          BlockU != null;
                          BlockU = BlockU.DominatorTreeImmediateDominator) {

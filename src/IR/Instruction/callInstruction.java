@@ -7,6 +7,8 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class callInstruction extends IRInstruction{
     public IRFunction CallFunction;
@@ -31,6 +33,22 @@ public class callInstruction extends IRInstruction{
                 CallParameters.set(i,newObject);
                 CallParameters.get(i).AddRegisterUseInInstruction(this);
             }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        for(int i = 0;i < CallParameters.size();++i)
+            if(CallParameters.get(i) instanceof Register)
+                res.add(CallParameters.get(i));
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(CallResult != null) res.add(CallResult);
+        return res;
     }
 
     @Override

@@ -23,6 +23,17 @@ public class parallelCopyInstruction extends IRInstruction{
     public void replaceUse(IROperand originObject, IROperand newObject) {
 
     }
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
+    }
 
     @Override
     public void accept(IRVisitor it) {

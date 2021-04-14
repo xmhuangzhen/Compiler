@@ -66,16 +66,7 @@ public class SparseConditionalConstantPropagation extends Pass {
         for(IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;
             tmpInst = tmpInst.nextIRInstruction){
             if(tmpInst instanceof phiInstruction){
-                if(((phiInstruction) tmpInst).PhiValue.size() == 1){
-                    IRInstruction replaceInst = new moveInstruction(curBlock,
-                            ((phiInstruction) tmpInst).PhiResult,
-                            ((phiInstruction) tmpInst).PhiValue.get(0));
-                    ((phiInstruction) tmpInst).PhiResult.ReplaceRegisterUse(
-                            ((phiInstruction) tmpInst).PhiValue.get(0));
-                    tmpInst.replaceInst(replaceInst);
-                    tmpInst = replaceInst;
-                    ChangedInFunc = true;
-                }
+                checkPhiInst((phiInstruction) tmpInst);
             } else break;
         }
 
@@ -96,6 +87,51 @@ public class SparseConditionalConstantPropagation extends Pass {
 
         for(var sucBlock : curBlock.CFGSuccessor)
             SCCPInBlock(sucBlock);
+    }
+
+    public void checkPhiInst(phiInstruction curInst){
+        IROperand V1 = getConstant(curInst.PhiValue.get(0));
+        if(curInst.PhiValue.size() == 1) {
+            IRInstruction replaceInst = new moveInstruction(curInst.thisBasicBlock,
+                    curInst.PhiResult, curInst.PhiValue.get(0));
+            curInst.replaceInst(replaceInst);
+
+            if(V1 != null) curInst.PhiResult.ReplaceRegisterUse(V1);
+            else curInst.PhiResult.ReplaceRegisterUse(curInst.PhiValue.get(0));
+            ChangedInFunc = true;
+        } else if(V1 != null) {
+            boolean PhiValueSame = true;
+            if(V1 instanceof IntegerConstant) {
+                for (int i = 1; i < curInst.PhiValue.size(); ++i) {
+                    IROperand Vn = getConstant(curInst.PhiValue.get(i));
+                    if (Vn == null || !(Vn instanceof IntegerConstant) ||
+                            ((IntegerConstant) Vn).value != ((IntegerConstant) V1).value){
+                        PhiValueSame = false;
+                        break;
+                    }
+                }
+                if(PhiValueSame){
+                    curInst.PhiResult.ReplaceRegisterUse(V1);
+                    ChangedInFunc = true;
+                }
+            } else if(V1 instanceof BooleanConstant){
+                for (int i = 1; i < curInst.PhiValue.size(); ++i) {
+                    IROperand Vn = getConstant(curInst.PhiValue.get(i));
+                    if (Vn == null || !(Vn instanceof BooleanConstant) ||
+                            ((BooleanConstant) Vn).value != ((BooleanConstant) V1).value){
+                        PhiValueSame = false;
+                        break;
+                    }
+                }
+                if(PhiValueSame){
+                    IRInstruction replaceInst = new moveInstruction(curInst.thisBasicBlock,
+                            curInst.PhiResult, curInst.PhiValue.get(0));
+                    curInst.replaceInst(replaceInst);
+                    curInst.PhiResult.ReplaceRegisterUse(curInst.PhiValue.get(0));
+                    ChangedInFunc = true;
+                }
+            }
+        }
     }
 
     public void checkBranch(brInstruction curInst) {

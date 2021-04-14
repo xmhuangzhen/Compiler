@@ -24,7 +24,6 @@ public class CFGSimplification extends Pass {
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
             if (!tmpFunc.IsBuiltIn) {
                 curFunc = tmpFunc;
-                ConstructCFG();
                 modified |= FuncSimplification();
             }
         return modified;
@@ -87,10 +86,16 @@ public class CFGSimplification extends Pass {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
 
-
                         preBlock.TailInst.removeInst();
-                        preBlock.TailInst.nextIRInstruction = curBlock.HeadInst;
-                        curBlock.HeadInst.preIRInstruction = preBlock.TailInst;
+
+                        if(preBlock.TailInst != null) {
+                            preBlock.TailInst.nextIRInstruction = curBlock.HeadInst;
+                            curBlock.HeadInst.preIRInstruction = preBlock.TailInst;
+                        }
+                        else{
+                            preBlock.TailInst = curBlock.HeadInst;
+                            preBlock.HeadInst = curBlock.HeadInst;
+                        }
                         for (IRInstruction tmpInst = curBlock.HeadInst;
                              tmpInst != null; tmpInst = tmpInst.nextIRInstruction) {
                             tmpInst.thisBasicBlock = preBlock;

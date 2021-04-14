@@ -5,6 +5,9 @@ import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class moveInstruction extends IRInstruction{
     public IROperand rd,rs;
 
@@ -29,6 +32,20 @@ public class moveInstruction extends IRInstruction{
             rs.NeedPtr = originObject.NeedPtr;
             rs.AddRegisterUseInInstruction(this);
         }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(rs instanceof Register) res.add(rs);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(rd instanceof Register) res.add(rd);
+        return res;
     }
 
     @Override

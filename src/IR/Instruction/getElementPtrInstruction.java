@@ -7,6 +7,8 @@ import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class getElementPtrInstruction extends IRInstruction{
 
@@ -41,6 +43,24 @@ public class getElementPtrInstruction extends IRInstruction{
                 GetElementPtrIdx.get(i).AddRegisterUseInInstruction(this);
             }
     }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(GetElementPtrPtr instanceof Register) res.add(GetElementPtrPtr);
+        for(int i = 0;i < GetElementPtrIdx.size();++i)
+            if(GetElementPtrIdx.get(i) instanceof Register)
+                res.add(GetElementPtrIdx.get(i));
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(GetElementPtrResult);
+        return res;
+    }
+
 
     @Override
     public String toString() {

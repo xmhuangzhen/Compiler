@@ -5,6 +5,9 @@ import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class brInstruction extends IRInstruction{
     public IROperand brCond;
     public IRBasicBlock brIfTrue;
@@ -37,6 +40,18 @@ public class brInstruction extends IRInstruction{
         if (brIfFalse == originBlock) {
             brIfFalse = newBlock;
         }
+    }
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(brCond != null && brCond instanceof Register) res.add(brCond);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
     }
 
     @Override

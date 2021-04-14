@@ -6,6 +6,9 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class storeInstruction extends IRInstruction{
     public IROperand StoreValue;
     public IROperand StorePointer;
@@ -34,6 +37,22 @@ public class storeInstruction extends IRInstruction{
             StorePointer.NeedPtr = originObject.NeedPtr;
             StorePointer.AddRegisterUseInInstruction(this);
         }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(StorePointer instanceof Register)
+            res.add(StorePointer);
+        if(StoreValue instanceof Register)
+            res.add(StoreValue);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
     }
 
     @Override

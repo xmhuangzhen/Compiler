@@ -5,6 +5,9 @@ import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class bitwiseBinaryInstruction extends IRInstruction{
     public enum BitwiseBinaryOperandType{
         shl, ashr, and, or, xor
@@ -42,6 +45,21 @@ public class bitwiseBinaryInstruction extends IRInstruction{
             bitwiseBinaryOp2.NeedPtr = originObject.NeedPtr;
             bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
         }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(bitwiseBinaryOp1 instanceof Register) res.add(bitwiseBinaryOp1);
+        if(bitwiseBinaryOp2 instanceof Register) res.add(bitwiseBinaryOp2);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(bitwiseBinaryResult);
+        return res;
     }
 
     @Override

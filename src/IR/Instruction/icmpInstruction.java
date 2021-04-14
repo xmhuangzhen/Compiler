@@ -6,6 +6,9 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class icmpInstruction extends IRInstruction{
     public enum IcmpOperandENUM{
         eq, ne, sgt, sge, slt, sle
@@ -47,6 +50,22 @@ public class icmpInstruction extends IRInstruction{
             IcmpOp2.AddRegisterUseInInstruction(this);
         }
     }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(IcmpOp1 instanceof Register) res.add(IcmpOp1);
+        if(IcmpOp2 instanceof Register) res.add(IcmpOp2);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(IcmpResult);
+        return res;
+    }
+
 
     @Override
     public String toString() {

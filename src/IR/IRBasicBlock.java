@@ -30,6 +30,7 @@ public class IRBasicBlock {
     public IRBasicBlock DominatorTreeLabel, DominatorTreeAncestor;
     public HashSet<IRBasicBlock> DominatorTreeBucket;
     public HashSet<IRBasicBlock> StrictDominator;
+    public HashSet<IRBasicBlock> DominatorTreeChildren;
 
     //for Dominance Frontier Use
     public HashSet<IRBasicBlock> DominanceFrontier;
@@ -53,6 +54,7 @@ public class IRBasicBlock {
         DominatorTreeAncestor = null;
         DominatorTreeBucket = new LinkedHashSet<>();
         StrictDominator = new LinkedHashSet<>();
+        DominatorTreeChildren = new LinkedHashSet<>();
 
         DominanceFrontier = new LinkedHashSet<>();
     }

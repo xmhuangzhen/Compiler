@@ -5,6 +5,9 @@ import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class binaryOpInstruction extends IRInstruction{
     public enum BinaryOperandENUM{
         add,sub,mul,sdiv,srem
@@ -42,6 +45,20 @@ public class binaryOpInstruction extends IRInstruction{
             BinaryOp2.NeedPtr = originObject.NeedPtr;
             BinaryOp2.AddRegisterUseInInstruction(this);
         }
+    }
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(BinaryOp1 instanceof Register) res.add(BinaryOp1);
+        if(BinaryOp2 instanceof Register) res.add(BinaryOp2);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(BinaryResult);
+        return res;
     }
 
     @Override

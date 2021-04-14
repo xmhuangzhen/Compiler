@@ -7,6 +7,9 @@ import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 import IR.TypeSystem.VoidType;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class retInstruction extends IRInstruction {
 
     public IRTypeSystem returnType;
@@ -18,6 +21,20 @@ public class retInstruction extends IRInstruction {
         returnValue = tmpValue;
         if (returnValue != null && returnValue instanceof Register)
             returnValue.AddRegisterUseInInstruction(this);
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(returnValue != null && returnValue instanceof Register)
+            res.add(returnValue);
+        return res;
     }
 
     @Override

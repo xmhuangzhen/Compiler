@@ -26,6 +26,7 @@ public class IRFunction {
 
     //for Dominator Tree
     public ArrayList<IRBasicBlock> DomDFSOrder;
+    public int DomDFNcurNumber;
 
     public ArrayList<IRBasicBlock> DFSOrder;
     public int DFNcurNumber;
@@ -93,6 +94,7 @@ public class IRFunction {
         DFSOrder.clear();
         for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
              tmpBlock = tmpBlock.nextBasicBlocks) {
+            tmpBlock.DominatorTreeImmediateDominator = null;
             tmpBlock.DominatorTreeSemiDominator = null;
             tmpBlock.DFN = 0;
             tmpBlock.DominatorTreeLabel = null;
@@ -108,6 +110,7 @@ public class IRFunction {
         curBlock.DominatorTreeSemiDominator = curBlock;
         curBlock.DominatorTreeLabel = curBlock;
         curBlock.DominatorTreeAncestor = null;
+        curBlock.DominatorTreeBucket = new LinkedHashSet<>();
         DFSOrder.add(curBlock);
         for(var nextBlock : curBlock.CFGSuccessor){
             if(nextBlock.DFN == 0){
@@ -115,6 +118,28 @@ public class IRFunction {
                 CFGDFS(nextBlock);
             }
         }
+    }
+
+    public void CalculateDomDFSOrder() {
+        DomDFNcurNumber = 0;
+        DomDFSOrder.clear();
+        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            tmpBlock.DominatorTreeChildren = new LinkedHashSet<>();
+        }
+        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            if (tmpBlock.DominatorTreeFather != null)
+                tmpBlock.DominatorTreeFather.DominatorTreeChildren.add(tmpBlock);
+        }
+        DomDFS(thisEntranceBlock);
+    }
+
+    public void DomDFS(IRBasicBlock curBlock){
+        if(DomDFSOrder.contains(curBlock)) return;
+        DomDFSOrder.add(curBlock);
+        for(IRBasicBlock sucBlock : curBlock.DominatorTreeChildren)
+            DomDFS(sucBlock);
     }
 
     //for CFG simplification

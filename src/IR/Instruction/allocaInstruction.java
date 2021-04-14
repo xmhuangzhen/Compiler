@@ -6,6 +6,9 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class allocaInstruction extends IRInstruction{
     public Register AllocaResult;
     public IRTypeSystem AllocaType;
@@ -14,13 +17,24 @@ public class allocaInstruction extends IRInstruction{
         super(tmpBasicBlock);
         AllocaResult = tmpResult;
         AllocaType = tmpType;
-        AllocaResult.AddRegisterUseInInstruction(this);
+//        AllocaResult.AddRegisterUseInInstruction(this);
     }
 
     @Override
     public void replaceUse(IROperand originObject, IROperand newOperand) {
     }
 
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        return res;
+    }
 
     @Override
     public String toString() {

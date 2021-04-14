@@ -27,6 +27,23 @@ public class phiInstruction extends IRInstruction{
 
     }
 
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        for(int i = 0;i < PhiValue.size();++i)
+            if(PhiValue.get(i) instanceof Register)
+                res.add(PhiValue.get(i));
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(PhiResult);
+        return res;
+    }
+
+
     //for SSA Destructor use
     public void replaceBlock(IRBasicBlock originBlock, IRBasicBlock newBlock){
         for(int i = 0;i < PhiLabel.size();++i){

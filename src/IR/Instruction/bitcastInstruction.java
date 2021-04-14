@@ -6,6 +6,9 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class bitcastInstruction extends IRInstruction{
     //<result> = bitcast <ty> <value> to <ty2>             ; yields ty2
     public Register bitcastResult;
@@ -30,6 +33,20 @@ public class bitcastInstruction extends IRInstruction{
             bitcastOperand.NeedPtr = originObject.NeedPtr;
             bitcastOperand.AddRegisterUseInInstruction(this);
         }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(bitcastOperand instanceof Register) res.add(bitcastOperand);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(bitcastResult);
+        return res;
     }
 
     @Override

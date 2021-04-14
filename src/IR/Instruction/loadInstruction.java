@@ -5,6 +5,9 @@ import IR.IRBasicBlock;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
 public class loadInstruction extends IRInstruction{
     public Register LoadResult;
     public IROperand LoadPointer;
@@ -26,6 +29,20 @@ public class loadInstruction extends IRInstruction{
             LoadPointer.NeedPtr = originObject.NeedPtr;
             LoadPointer.AddRegisterUseInInstruction(this);
         }
+    }
+
+    @Override
+    public HashSet<IROperand> getuse() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        if(LoadPointer instanceof Register) res.add(LoadPointer);
+        return res;
+    }
+
+    @Override
+    public HashSet<IROperand> getdef() {
+        HashSet<IROperand> res = new LinkedHashSet<>();
+        res.add(LoadResult);
+        return res;
     }
 
     @Override
