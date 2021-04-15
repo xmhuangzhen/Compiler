@@ -123,7 +123,7 @@ public class SSAConstructor extends Pass {
 
         //Line 14-17 (define phi Inst)
         for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
-           // System.out.println(curBlock+","+tmpAllocInst);
+            // System.out.println(curBlock+","+tmpAllocInst);
             phiInstruction tmpPhiInst = PhiInstMap.get(curBlock).get(tmpAllocInst);
             tmpPhiInst.PhiLabel.add(preBlock);
             if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
@@ -159,7 +159,7 @@ public class SSAConstructor extends Pass {
                         ReachingDefMap.get(curBlock).get(UseAlloca.get(tmpInst)));
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
             } else if (tmpInst instanceof storeInstruction && DefAlloca.containsKey(tmpInst)) {
-              //  System.out.println(curBlock+","+tmpInst);
+                //  System.out.println(curBlock+","+tmpInst);
                 allocaInstruction tmpAllocInst = DefAlloca.get(tmpInst);
                 if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst)) {
                     //System.out.println("1");

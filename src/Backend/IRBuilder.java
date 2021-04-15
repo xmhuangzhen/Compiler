@@ -242,9 +242,11 @@ public class IRBuilder implements ASTVisitor {
 
 
 //        System.out.println(it.funcName+","+it.funcType.Typename+(it.funcType instanceof ClassTypeNode));
+//        System.out.println(it.funcType);
         currentFunction.thisReturnValue = new Register(new PointerType(currentModule.getIRType(it.funcType)),
                 tmpFuncName + "return_value" + (RegNum++));
  //       System.out.println(currentFunction.thisFunctionName+","+currentFunction.thisReturnValue.thisType);
+
 
         if (it.funcName.equals("main")) {
             Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
@@ -1029,12 +1031,12 @@ public class IRBuilder implements ASTVisitor {
                 if (tmpTypeNode.Typename.equals("string")) {
                     String tmpFuncNameInString = "__string_" + ((MemberAccExprNode) it.funcName).Identifier;
                     IRFunction tmpIRFunction = currentModule.IRFunctionTable.get(tmpFuncNameInString);
-                    IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
+                    FunctionType tmpFuncIRType = tmpIRFunction.thisFunctionType;
                     Register tmpResult = null;
 
 
                     if (!tmpFuncIRType.equals("void"))
-                        tmpResult = new Register(tmpFuncIRType, "funccal" + (RegNum++));
+                        tmpResult = new Register(tmpFuncIRType.FuncReturnType, "funccal" + (RegNum++));
                     callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
                     tmpCallInst.CallParameters.add(((MemberAccExprNode) it.funcName).expr.ExprResult);
                     for (var tmp : it.pars)
@@ -1094,10 +1096,10 @@ public class IRBuilder implements ASTVisitor {
             }
             if (tmpIRFunction == null) throw new RuntimeException();
 
-            IRTypeSystem tmpFuncIRType = tmpIRFunction.thisFunctionType;
+            FunctionType tmpFuncIRType = tmpIRFunction.thisFunctionType;
             Register tmpResult = null;
             if (!tmpFuncIRType.equals("void"))
-                tmpResult = new Register(tmpFuncIRType, "funccal" + (RegNum++));
+                tmpResult = new Register(tmpFuncIRType.FuncReturnType, "funccal" + (RegNum++));
 
             callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
             if(currentClassName!= null && IsClassFunction) {

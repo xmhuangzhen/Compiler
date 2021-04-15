@@ -40,7 +40,7 @@ public class SparseConditionalConstantPropagation extends Pass {
     }
 
     public void SCCPInFunc() {
-        int cnt = 200;
+        int cnt = 20;
         while (true) {
             cnt--;;
             if(cnt == 0) break;

@@ -65,36 +65,23 @@ public class DominatorTreeConstructor extends Pass {
                             BlockW.DominatorTreeSemiDominator.BasicBlockName);
   */
                     for (IRBasicBlock BlockV : BlockW.DominatorTreeFather.DominatorTreeBucket) {
-                    //    BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
+                        //    BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
                         IRBasicBlock BlockU = Eval(BlockV);
-//                        System.out.println(BlockV.BasicBlockName);
                         if (BlockU.DominatorTreeSemiDominator.DFN < BlockV.DominatorTreeSemiDominator.DFN)
                             BlockV.DominatorTreeImmediateDominator = BlockU;
                         else
                             BlockV.DominatorTreeImmediateDominator = BlockW.DominatorTreeFather;
                     }
-                    BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
+                    //BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
                 }
 
                 for (int i = 2; i <= tmpFunc.DFNcurNumber; ++i) {
                     IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
-              //      System.out.println(BlockW.BasicBlockName);
                     if (BlockW.DominatorTreeImmediateDominator.DFN != BlockW.DominatorTreeSemiDominator.DFN)
                         BlockW.DominatorTreeImmediateDominator =
                                 BlockW.DominatorTreeImmediateDominator.DominatorTreeImmediateDominator;
                 }
 
-
-
-                for (int i = 1; i <= tmpFunc.DFNcurNumber; ++i) {
-                    IRBasicBlock BlockW = tmpFunc.DFSOrder.get(i - 1);
-                    BlockW.StrictDominator = new LinkedHashSet<>();
-                    for (IRBasicBlock BlockU = BlockW.DominatorTreeImmediateDominator;
-                         BlockU != null;
-                         BlockU = BlockU.DominatorTreeImmediateDominator) {
-                        BlockW.StrictDominator.add(BlockU);
-                    }
-                }
             }
         return false;
     }

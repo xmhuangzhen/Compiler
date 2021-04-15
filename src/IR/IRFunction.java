@@ -30,7 +30,7 @@ public class IRFunction {
     public int DFNcurNumber;
 
     //for SSA Constructor
-    public HashSet<allocaInstruction> allocaInstTable;
+    public ArrayList<allocaInstruction> allocaInstTable;
 
     public IRFunction(FunctionType tmpFunctionType, String tmpFunctionName){
         thisFunctionType = tmpFunctionType;
@@ -47,7 +47,7 @@ public class IRFunction {
         DFSOrder = new ArrayList<>();
         DFNcurNumber = 0;
 
-        allocaInstTable = new LinkedHashSet<>();
+        allocaInstTable = new ArrayList<>();
     }
 
     public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){

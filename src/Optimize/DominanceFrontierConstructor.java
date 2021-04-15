@@ -3,6 +3,9 @@ package Optimize;
 import IR.IRBasicBlock;
 import IR.IRModule;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class DominanceFrontierConstructor extends Pass {
     public DominanceFrontierConstructor(IRModule tmpModule) {
         super(tmpModule);
@@ -29,6 +32,7 @@ public class DominanceFrontierConstructor extends Pass {
                     }
 */
                 //wiki
+
                 for (IRBasicBlock BlockB = tmpFunc.thisEntranceBlock; BlockB != null;
                      BlockB = BlockB.nextBasicBlocks)
                     if (BlockB.DFN != 0) {
@@ -53,6 +57,7 @@ public class DominanceFrontierConstructor extends Pass {
                     System.out.println("");
                 }
  */
+
             }
         return false;
     }

@@ -154,6 +154,7 @@ public class SSADestructor extends Pass {
 
                     //Line 9
                     Register aPrime = new Register(a.thisType,"aPrime"+(RegNum++));
+                  //  aPrime.NeedPtr = a.NeedPtr;//?
 
                     //Line 10
                     seq.add(new moveInstruction(curBlock,aPrime,a));

@@ -27,7 +27,7 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-     //   input = new FileInputStream("test.mx");
+   //     input = new FileInputStream("test.mx");
         //  else
               input = System.in;
 
@@ -65,18 +65,19 @@ public class Main {
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(currentModule);
             tmpDominatorTreeConstructor.run();
-            DominanceFrontierConstructor tmpDominanceFrontierConstructor =
+           DominanceFrontierConstructor tmpDominanceFrontierConstructor =
                     new DominanceFrontierConstructor(tmpDominatorTreeConstructor.curIRModule);
             tmpDominanceFrontierConstructor.run();
 
             currentModule = tmpDominanceFrontierConstructor.curIRModule;
 
             SSAConstructor tmpSSAConstructor =
-                    new SSAConstructor(tmpDominanceFrontierConstructor.curIRModule);
+                    new SSAConstructor(currentModule);
             tmpSSAConstructor.run();
 
             currentModule = tmpSSAConstructor.curIRModule;
-     //       new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
+
 
         //    System.out.println("1");
 //            int cnt = 1;
@@ -110,9 +111,9 @@ public class Main {
             //Register Allocate
             //  NaiveRegAllocator regAlloc = new NaiveRegAllocator(instSelector.curRISCVModule);
             //regAlloc.run();
-  //          PrintStream printStream1 = new PrintStream("output.ll");
-  //          ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
-//            asmPrinter1.run();
+   //         PrintStream printStream1 = new PrintStream("output.ll");
+     //       ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
+       //     asmPrinter1.run();
 
 
             GraphColoringRegAllocator regAlloc =

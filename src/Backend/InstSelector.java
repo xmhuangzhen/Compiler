@@ -306,6 +306,7 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(getElementPtrInstruction it) {
+     //   System.out.println(it);
         if (it.GetElementPtrPtr instanceof GlobalVariables) {
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,
