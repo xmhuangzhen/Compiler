@@ -29,10 +29,19 @@ public class IRBasicBlock {
     public IRBasicBlock DominatorTreeImmediateDominator, DominatorTreeSemiDominator;
     public IRBasicBlock DominatorTreeLabel, DominatorTreeAncestor;
     public HashSet<IRBasicBlock> DominatorTreeBucket;
-    public ArrayList<IRBasicBlock> DominatorTreeChildren;
 
     //for Dominance Frontier Use
     public HashSet<IRBasicBlock> DominanceFrontier;
+
+    //for ADCE use
+    public ArrayList<IRBasicBlock> PostCFGSuccessor;
+    public ArrayList<IRBasicBlock> PostCFGPredecessor;
+    public int PostDFN;//0 -- no visit
+    public IRBasicBlock PostDominatorTreeFather;
+    public IRBasicBlock PostDominatorTreeImmediateDominator, PostDominatorTreeSemiDominator;
+    public IRBasicBlock PostDominatorTreeLabel, PostDominatorTreeAncestor;
+    public HashSet<IRBasicBlock> PostDominatorTreeBucket;
+    public HashSet<IRBasicBlock> PostDominanceFrontier;
 
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
@@ -46,15 +55,27 @@ public class IRBasicBlock {
         CFGPredecessor = new ArrayList<>();
         CFGSuccessor = new ArrayList<>();
         DFN = 0;
+
+        PostCFGPredecessor = new ArrayList<>();
+        PostCFGSuccessor = new ArrayList<>();
+        PostDFN = 0;
+
         DominatorTreeFather = null;
         DominatorTreeImmediateDominator = null;
         DominatorTreeSemiDominator = null;
         DominatorTreeLabel = null;
         DominatorTreeAncestor = null;
         DominatorTreeBucket = new LinkedHashSet<>();
-        DominatorTreeChildren = new ArrayList<>();
 
         DominanceFrontier = new LinkedHashSet<>();
+
+        PostDominatorTreeFather = null;
+        PostDominatorTreeImmediateDominator = null;
+        PostDominatorTreeSemiDominator = null;
+        PostDominatorTreeLabel = null;
+        PostDominatorTreeAncestor = null;
+        PostDominatorTreeBucket = new LinkedHashSet<>();
+        PostDominanceFrontier = new LinkedHashSet<>();
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){

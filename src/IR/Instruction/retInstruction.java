@@ -21,19 +21,21 @@ public class retInstruction extends IRInstruction {
         returnValue = tmpValue;
         if (returnValue != null && returnValue instanceof Register)
             returnValue.AddRegisterUseInInstruction(this);
+
+        HasSideEffect = true;
     }
 
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
+        if(returnValue != null && returnValue instanceof Register)
+            res.add(returnValue);
         return res;
     }
 
     @Override
     public HashSet<IROperand> getdef() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(returnValue != null && returnValue instanceof Register)
-            res.add(returnValue);
         return res;
     }
 

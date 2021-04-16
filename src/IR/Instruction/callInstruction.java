@@ -22,6 +22,8 @@ public class callInstruction extends IRInstruction{
         CallResult = tmpResult;
         CallParameters = new ArrayList<>();
         if(CallResult != null) CallResult.Defs = this;
+
+        HasSideEffect = true;
     }
 
     @Override

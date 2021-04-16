@@ -21,6 +21,8 @@ public class brInstruction extends IRInstruction{
         brIfFalse = tmpbrIfFalse;
         if (brCond != null && brCond instanceof Register)
             brCond.AddRegisterUseInInstruction(this);
+
+        HasSideEffect = true;
     }
 
     @Override

@@ -11,9 +11,11 @@ public abstract class IRInstruction {
     public IRInstruction preIRInstruction;
     public IRInstruction nextIRInstruction;
 
+    public boolean HasSideEffect;// IO;return;call;store to memory
 
     public IRInstruction(IRBasicBlock tmpBasicBlock){
         thisBasicBlock = tmpBasicBlock;
+        HasSideEffect = false;
     }
 
     public void replaceInst(IRInstruction tmpInst){

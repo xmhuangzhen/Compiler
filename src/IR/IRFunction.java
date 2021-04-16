@@ -3,6 +3,7 @@ package IR;
 import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
 import IR.Instruction.allocaInstruction;
+import IR.Instruction.brInstruction;
 import IR.Operand.IROperand;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
@@ -25,9 +26,13 @@ public class IRFunction {
     public IRBasicBlock thisReturnBlock;
 
     //for Dominator Tree
-
     public ArrayList<IRBasicBlock> DFSOrder;
     public int DFNcurNumber;
+
+    //for ADCE
+    public ArrayList<IRBasicBlock> PostDFSOrder;
+    public int PostDFNcurNumber;
+
 
     //for SSA Constructor
     public ArrayList<allocaInstruction> allocaInstTable;
@@ -46,6 +51,9 @@ public class IRFunction {
 
         DFSOrder = new ArrayList<>();
         DFNcurNumber = 0;
+
+        PostDFSOrder = new ArrayList<>();
+        PostDFNcurNumber = 0;
 
         allocaInstTable = new ArrayList<>();
     }
@@ -116,6 +124,65 @@ public class IRFunction {
             }
         }
     }
+
+    //for ADCE
+    public void PostCFGConstructor(){
+        for(IRBasicBlock tmpBlock = thisEntranceBlock;tmpBlock != null;
+        tmpBlock = tmpBlock.nextBasicBlocks){
+            tmpBlock.PostCFGPredecessor.clear();
+            tmpBlock.PostCFGSuccessor.clear();
+        }
+        for(IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+        tmpBlock = tmpBlock.nextBasicBlocks){
+            for (IRInstruction tmpInst = tmpBlock.HeadInst;
+                 tmpInst != null;
+                 tmpInst = tmpInst.nextIRInstruction) {
+                if (tmpInst instanceof brInstruction) {
+                    if (((brInstruction) tmpInst).brIfTrue != null) {
+                        tmpBlock.PostCFGPredecessor.add(((brInstruction) tmpInst).brIfTrue);
+                        ((brInstruction) tmpInst).brIfTrue.PostCFGSuccessor.add(tmpBlock);
+                    }
+                    if (((brInstruction) tmpInst).brIfFalse != null) {
+                        tmpBlock.PostCFGPredecessor.add(((brInstruction) tmpInst).brIfFalse);
+                        ((brInstruction) tmpInst).brIfFalse.PostCFGSuccessor.add(tmpBlock);
+                    }
+                }
+            }
+        }
+    }
+
+    public void CalculatePostDFSOrder() {
+        PostDFNcurNumber = 0;
+        PostDFSOrder.clear();
+        for (IRBasicBlock tmpBlock = thisEntranceBlock; tmpBlock != null;
+             tmpBlock = tmpBlock.nextBasicBlocks) {
+            tmpBlock.PostDominatorTreeImmediateDominator = null;
+            tmpBlock.PostDominatorTreeSemiDominator = tmpBlock;
+            tmpBlock.PostDFN = 0;
+            tmpBlock.PostDominatorTreeLabel = null;
+            tmpBlock.PostDominatorTreeAncestor = null;
+            tmpBlock.PostDominatorTreeFather = null;
+        }
+        PostCFGDFS(thisEntranceBlock);
+    }
+
+    public void PostCFGDFS(IRBasicBlock curBlock) {
+        ++PostDFNcurNumber;
+        curBlock.PostDFN = PostDFNcurNumber;
+        curBlock.PostDominatorTreeSemiDominator = curBlock;
+        curBlock.PostDominatorTreeLabel = curBlock;
+        curBlock.PostDominatorTreeAncestor = null;
+        curBlock.PostDominatorTreeBucket = new LinkedHashSet<>();
+        PostDFSOrder.add(curBlock);
+        for (var nextBlock : curBlock.PostCFGSuccessor) {
+            if (nextBlock.PostDFN == 0) {
+                nextBlock.PostDominatorTreeFather = curBlock;
+                CFGDFS(nextBlock);
+            }
+        }
+    }
+
+
 
     //for CFG simplification
     public void removeBasicBlock(IRBasicBlock curBlock) {

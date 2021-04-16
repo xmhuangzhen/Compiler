@@ -21,6 +21,8 @@ public class storeInstruction extends IRInstruction{
             StoreValue.AddRegisterUseInInstruction(this);
         if (StorePointer instanceof Register)
             StorePointer.AddRegisterUseInInstruction(this);
+
+        HasSideEffect = true;
     }
 
     @Override
