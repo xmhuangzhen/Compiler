@@ -18,7 +18,7 @@ public class loadInstruction extends IRInstruction{
         LoadPointer = tmpPointer;
         if (LoadPointer instanceof Register)
             LoadPointer.AddRegisterUseInInstruction(this);
-        LoadResult.Defs = this;
+        LoadResult.Defs.add(this);
 
     }
 

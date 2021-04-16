@@ -58,18 +58,17 @@ public class AggressiveDeadCodeElimination extends Pass {
                     IRInstruction S = W.poll();
                     if (LiveInst.contains(S)) continue;
                     LiveInst.add(S);
-//                    System.out.println("----------------");
-  //                  System.out.println(S.toString());
+             //       System.out.println("----------------");
+               //     System.out.println(S.toString());
 
                     for (IROperand tmpReg : S.getuse()) {
     //                    System.out.println(tmpReg.toString());
-                        IRInstruction tmpInst = tmpReg.Defs;
-      //                  System.out.println(tmpInst);
-                        if (tmpReg.Defs != null && !WVisited.contains(tmpInst)) {
-                            W.offer(tmpInst);
-                            WVisited.add(tmpInst);
+                        for(IRInstruction tmpInst : tmpReg.Defs) {
+                            if (tmpReg.Defs != null && !WVisited.contains(tmpInst)) {
+                                W.offer(tmpInst);
+                                WVisited.add(tmpInst);
+                            }
                         }
-
                     }
                 }
 

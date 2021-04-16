@@ -107,6 +107,7 @@ public class SSAConstructor extends Pass {
                 }
 
 
+
                 Visited.clear();
                 VariableRenaming(curFunction.thisEntranceBlock, null);
 

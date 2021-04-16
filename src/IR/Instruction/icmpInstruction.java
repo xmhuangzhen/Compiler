@@ -32,7 +32,7 @@ public class icmpInstruction extends IRInstruction{
             IcmpOp1.AddRegisterUseInInstruction(this);
         if (IcmpOp2 instanceof Register)
             IcmpOp2.AddRegisterUseInInstruction(this);
-        IcmpResult.Defs = this;
+        IcmpResult.Defs.add(this);
     }
 
     @Override

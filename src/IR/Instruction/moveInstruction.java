@@ -21,7 +21,7 @@ public class moveInstruction extends IRInstruction{
         }*/
         if (rs != null && rs instanceof Register)
             rs.AddRegisterUseInInstruction(this);
-        rd.Defs = this;
+        rd.Defs.add(this);
     }
 
     @Override

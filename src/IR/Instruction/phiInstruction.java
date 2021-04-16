@@ -19,7 +19,7 @@ public class phiInstruction extends IRInstruction{
         PhiResult = tmpResult;
         PhiValue = new ArrayList<>();
         PhiLabel = new ArrayList<>();
-        PhiResult.Defs = this;
+        PhiResult.Defs.add(this);
     }
 
     @Override

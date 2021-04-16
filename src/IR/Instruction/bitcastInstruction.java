@@ -22,7 +22,7 @@ public class bitcastInstruction extends IRInstruction{
         bitcastResult = tmpResult;
         if (bitcastOperand instanceof Register)
             bitcastOperand.AddRegisterUseInInstruction(this);
-        bitcastResult.Defs = this;
+        bitcastResult.Defs.add(this);
     }
 
     @Override

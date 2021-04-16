@@ -11,14 +11,14 @@ abstract public class IROperand{
     public boolean NeedPtr;
 
     //for SSA use
-    public IRInstruction Defs;
+    public HashSet<IRInstruction> Defs;
     public HashSet<IRInstruction> use;
 
     public IROperand(IRTypeSystem tmpType){
         super();
         thisType = tmpType;
         NeedPtr = false;
-        Defs = null;
+        Defs = new LinkedHashSet<>();
         use = new LinkedHashSet<>();
     }
 
