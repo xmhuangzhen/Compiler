@@ -19,6 +19,7 @@ public class loadInstruction extends IRInstruction{
         if (LoadPointer instanceof Register)
             LoadPointer.AddRegisterUseInInstruction(this);
         LoadResult.Defs = this;
+
     }
 
     @Override

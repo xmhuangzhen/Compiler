@@ -65,7 +65,7 @@ public class AggressiveDeadCodeElimination extends Pass {
     //                    System.out.println(tmpReg.toString());
                         IRInstruction tmpInst = tmpReg.Defs;
       //                  System.out.println(tmpInst);
-                        if (!WVisited.contains(tmpInst)) {
+                        if (tmpReg.Defs != null && !WVisited.contains(tmpInst)) {
                             W.offer(tmpInst);
                             WVisited.add(tmpInst);
                         }
