@@ -183,8 +183,26 @@ public class InlineExpander extends Pass {
         }
 
 
-        for(IRInstruction tmpInstI= CallInst.nextIRInstruction;
-        tmpInstI != null;){
+
+/*        for(IRInstruction tmp = curBlock.HeadInst;
+        tmp != null; tmp = tmp.nextIRInstruction){
+            System.out.println(tmp);
+        }
+  */
+
+        for(IRBasicBlock tmpBlock = curBlock;tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
+            for( IRInstruction tmpInst = tmpBlock.HeadInst;tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
+                if(tmpInst instanceof  phiInstruction){
+                    for (int i = 0; i < ((phiInstruction) tmpInst).PhiLabel.size(); ++i)
+                        if (((phiInstruction) tmpInst).PhiLabel.get(i) == curBlock) {
+                                ((phiInstruction) tmpInst).PhiLabel.set(i, AfterCallBlock);
+                        }
+
+                }
+        }
+
+        for (IRInstruction tmpInstI = CallInst.nextIRInstruction;
+             tmpInstI != null; ) {
             IRInstruction curInst = tmpInstI;
             tmpInstI = tmpInstI.nextIRInstruction;
             curInst.thisBasicBlock = AfterCallBlock;
@@ -219,32 +237,16 @@ public class InlineExpander extends Pass {
             }
         }
 
-//        if(CallInst.nextIRInstruction != null)
-  //          System.out.println(CallInst.nextIRInstruction.preIRInstruction);
 
         CallInst.nextIRInstruction = null;
         curBlock.TailInst = CallInst;
         CallInst.removeInst();
-        curBlock.addBasicBlockInst(new brInstruction(curBlock,null,repStartBlock,null));
-
-
-    /*    System.out.println("!!!!!!!!!!!!!!!!!!!!");
-        for(var tmp = AfterCallBlock.HeadInst;tmp != null; tmp = tmp.nextIRInstruction){
-            System.out.println(tmp);
-        }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@");
-        for(var tmp = AfterCallBlock.TailInst;tmp != null; tmp = tmp.preIRInstruction){
-            System.out.println(tmp);
-        }
-        System.out.println("####################");
-
-     */
-
+        curBlock.addBasicBlockInst(new brInstruction(curBlock, null, repStartBlock, null));
 
         repEndBlock.addBasicBlockInst(new brInstruction(repEndBlock,
                 null, AfterCallBlock, null));
 
-        constructCFG(curFunc);//maybe not need?
+        constructCFG(curFunc);
         return true;
     }
 
@@ -381,5 +383,6 @@ public class InlineExpander extends Pass {
                 }
             }
         }
+        curFunc.CFGSimpGetDFS();
     }
 }
