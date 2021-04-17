@@ -1,68 +1,41 @@
 /*
-Test Package: Optim
-Author: 18' Zonghan YANG
-Time: 2021-04-07
+Test Package: Codegen
+Author: Pikachu
+Time: 2020-02-02
 Input:
 === input ===
-
+8
+11 12 1 2 13 14 3 4
 === end ===
 Output:
 === output ===
-
+2
 === end ===
 ExitCode: 0
-InstLimit: 99999
+InstLimit: -1
+Origin Package: Codeforces 1145A #52445759
 */
-
-int unsigned_shl(int x, int k) {
-    return x << k;
-}
-
-int unsigned_shr(int x, int k) { // k should be (0, 31)
-    int INT_MIN = 1 << 31;
-    if (x >= 0) return x >> k;
-    else return (1 << (31 - k)) | ((x ^ INT_MIN) >> k);
-}
-
-int rng(int rng_seed) {
-    int rng_mask = 1073741823;
-    int x = rng_seed;
-    x = x ^ unsigned_shl(x, 13);
-    x = x ^ unsigned_shr(x, 17);
-    x = x ^ unsigned_shl(x, 5);
-    x = x & rng_mask;
-    return x;
-}
-
-int test(int q, int w, int e, int r, int t, int y, int u, int i, int o, int p) { // long parameter list test
-    if (q == w) {
-		if (w != e || e != r) {
-			return test(w, e, r, t, y, u, i, o, p, q) + 1;
-		} else {
-			return test(w, e, r, t, y - 1, u - 2, i, o, p, q) + 2;
+int n;
+int[] a = new int[20];
+int jud(int x){
+	int i,j;
+	for(i=0;i<n/x;i++){
+		bool flag=false;
+		for(j=0;j<x-1;j++){
+			if(a[i*x+j]>a[i*x+j+1])flag=true;
 		}
-	} else {
-		return q + w + q;
+		if(!flag)return 1;
 	}
+	return 0;
 }
-
-int main() {
-    int rng_seed = 19260817;
-    int sum = 0;
-    for ( ; ; ) {
-        int u = rng(rng_seed);
-        int v = rng(u);
-        rng_seed = v;
-        if ((u & 255) != (v & 255)) {
-            int w = rng(rng_seed);
-            int x = rng(w);
-			int y = rng(x);
-			int z = rng(y);
-			int zz = rng(z);
-			rng_seed = zz;
-            sum = sum ^ test(w & 3, w >> 28, x & 1, x >> 29, y >> 25, y & 31, z >> 15, z & 32767, zz >> 15, zz & 32767);
+int i;
+int main(){
+	n = getInt();
+	for(i=0;i<n;i++) a[i] = getInt();
+	for(i=n; i > 0;i = i / 2)
+        if(jud(i) > 0){
+            print(toString(i));
+            return 0;
         }
-		else break;
-    }
-    return sum;
+	return 0;
 }

@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-     //   input = new FileInputStream("test.mx");
+        input = new FileInputStream("test.mx");
         //  else
-              input = System.in;
+ //             input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -80,7 +80,7 @@ public class Main {
 
 
         //    System.out.println("1");
-            int cnt = 2;
+            int cnt = 12;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;

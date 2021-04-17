@@ -348,6 +348,7 @@ public class InlineExpander extends Pass {
             resOperand = new Register(OriOperand.thisType,
                     ((Register) OriOperand).RegisterName + "_i" + (RegNum++));
         else throw new RuntimeException();
+        resOperand.NeedPtr = OriOperand.NeedPtr;
         CalleeIROperandMap.put(OriOperand, resOperand);
         return resOperand;
     }
