@@ -26,6 +26,7 @@ public class SSADestructor extends Pass {
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
             if (!tmpFunc.IsBuiltIn) {
                 curFunction = tmpFunc;
+                curFunction.CFGSimpGetDFS();
                 CriticalEdgeSpltting();
                 SequentialCopy();
             }
@@ -90,17 +91,19 @@ public class SSADestructor extends Pass {
 
                     //Line 11-15
                     for (var tmpPhiInst : PhiInstLists) {
-                     //   System.out.println(tmpPhiInst.toString());
                         for (int i = 0; i < tmpPhiInst.PhiLabel.size(); ++i) {
                             IRBasicBlock B_i = tmpPhiInst.PhiLabel.get(i);
                             IROperand a_i = tmpPhiInst.PhiValue.get(i);
+
+
                             for (IRInstruction tmpInst = B_i.TailInst; tmpInst != null;
-                                 tmpInst = tmpInst.preIRInstruction)
+                                 tmpInst = tmpInst.preIRInstruction) {
                                 if (tmpInst instanceof parallelCopyInstruction) {
                                     ((parallelCopyInstruction) tmpInst).PCMoveInst.add(new moveInstruction(
                                             B_i, tmpPhiInst.PhiResult, a_i));
                                     break;
                                 }
+                            }
                         }
                         curBlock.removeInst(tmpPhiInst);
                     }
@@ -122,11 +125,6 @@ public class SSADestructor extends Pass {
                     break;
                 }
             if(pcopy == null) continue;
-            /*for(var tmpInst : pcopy.PCMoveInst){
-                System.out.println(tmpInst.toString());
-            }
-            System.out.println("------");
-*/
 
             //Line 2
             ArrayList<moveInstruction> seq = new ArrayList<>();
@@ -165,11 +163,13 @@ public class SSADestructor extends Pass {
             }
 
             if(curBlock.TailInst instanceof brInstruction){
-                for(var tmpMoveInst : seq)
-                    curBlock.addBasicBlockInstPreInst(curBlock.TailInst,tmpMoveInst);
+                for(var tmpMoveInst : seq) {
+                    curBlock.addBasicBlockInstPreInst(curBlock.TailInst, tmpMoveInst);
+                }
             } else {
-                for(var tmpMoveInst : seq)
+                for(var tmpMoveInst : seq) {
                     curBlock.addBasicBlockInstAtFront(tmpMoveInst);
+                }
             }
 
             curBlock.removeInst(pcopy);

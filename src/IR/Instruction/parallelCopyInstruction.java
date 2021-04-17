@@ -39,4 +39,12 @@ public class parallelCopyInstruction extends IRInstruction{
     public void accept(IRVisitor it) {
 
     }
+
+    @Override
+    public String toString() {
+        StringBuilder tmpString = new StringBuilder("PC_Inst:");
+        for(var tmp : PCMoveInst)
+            tmpString.append(tmp+";");
+        return tmpString.toString();
+    }
 }

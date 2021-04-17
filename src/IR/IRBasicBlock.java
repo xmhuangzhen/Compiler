@@ -94,8 +94,8 @@ public class IRBasicBlock {
             HeadInst = tmpInst;
             TailInst = tmpInst;
         } else {
-            HeadInst.preIRInstruction = tmpInst;
             tmpInst.nextIRInstruction = HeadInst;
+            HeadInst.preIRInstruction = tmpInst;
             HeadInst = tmpInst;
         }
     }

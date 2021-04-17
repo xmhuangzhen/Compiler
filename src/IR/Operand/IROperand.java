@@ -6,7 +6,7 @@ import IR.TypeSystem.IRTypeSystem;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
-abstract public class IROperand{
+abstract public class IROperand {
     public IRTypeSystem thisType;
     public boolean NeedPtr;
 
@@ -14,7 +14,7 @@ abstract public class IROperand{
     public HashSet<IRInstruction> Defs;
     public HashSet<IRInstruction> use;
 
-    public IROperand(IRTypeSystem tmpType){
+    public IROperand(IRTypeSystem tmpType) {
         super();
         thisType = tmpType;
         NeedPtr = false;
@@ -22,21 +22,20 @@ abstract public class IROperand{
         use = new LinkedHashSet<>();
     }
 
-    public void AddRegisterUseInInstruction(IRInstruction tmpInst){
-        use.add(tmpInst);
+    public void AddRegisterUseInInstruction(IRInstruction tmpInst) {
+        if (!use.contains(tmpInst)) use.add(tmpInst);
     }
 
-
-    public void ReplaceRegisterUse(IROperand tmpObject){
+    public void ReplaceRegisterUse(IROperand tmpObject) {
         HashSet<IRInstruction> tmpUse = new LinkedHashSet<>(use);
-        for(IRInstruction tmpInst : tmpUse){
+        for (IRInstruction tmpInst : tmpUse) {
             tmpInst.replaceUse(this, tmpObject);
         }
         use.clear();
     }
 
-    public void DeleteRegisterUseInInstruction(IRInstruction tmpInst){
-        if(use.contains(tmpInst)){
+    public void DeleteRegisterUseInInstruction(IRInstruction tmpInst) {
+        if (use.contains(tmpInst)) {
             use.remove(tmpInst);
         }
     }

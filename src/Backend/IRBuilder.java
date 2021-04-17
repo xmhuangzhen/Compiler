@@ -249,9 +249,9 @@ public class IRBuilder implements ASTVisitor {
 
 
         if (it.funcName.equals("main")) {
-            Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
+//            Register tmpResult = new Register(new VoidType(), "call_init" + (RegNum++));
             IRFunction tmpFunc = currentModule.IRFunctionTable.get("__init__");
-            callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunc);
+            callInstruction tmpCallInst = new callInstruction(currentBasicBlock, null, tmpFunc);
             currentBasicBlock.addBasicBlockInst(tmpCallInst);
         }
 
@@ -613,6 +613,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else {
                 throw new RuntimeException();
@@ -630,6 +632,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else {
                 throw new RuntimeException();
@@ -647,6 +651,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else {
                 throw new RuntimeException();
@@ -664,6 +670,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else {
                 throw new RuntimeException();
@@ -681,6 +689,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else {
                 throw new RuntimeException();
@@ -703,6 +713,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else if (it.lhs.ExprType.Typename.equals("null")) {
                 if (it.rhs.ExprType.Typename.equals("null")) {
@@ -743,6 +755,8 @@ public class IRBuilder implements ASTVisitor {
                 callInstruction tmpcallInst = new callInstruction(currentBasicBlock, tmpResult, tmpFunction);
                 tmpcallInst.CallParameters.add(it.lhs.ExprResult);
                 tmpcallInst.CallParameters.add(it.rhs.ExprResult);
+                it.lhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
+                it.rhs.ExprResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             } else if (it.lhs.ExprType.Typename.equals("null")) {
                 if (it.rhs.ExprType.Typename.equals("null")) {
@@ -835,6 +849,7 @@ public class IRBuilder implements ASTVisitor {
         IRFunction tmpCallFunc = currentModule.IRFunctionTable.get("malloc");
         callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpCallResult, tmpCallFunc);
         tmpCallInst.CallParameters.add(tmpCallSize2);
+        tmpCallSize2.AddRegisterUseInInstruction(tmpCallInst);
         currentBasicBlock.addBasicBlockInst(tmpCallInst);
 
         //store size at first
@@ -868,6 +883,7 @@ public class IRBuilder implements ASTVisitor {
             Register EndReg = new Register(cur_type, "SubArray_end_reg"+(RegNum++));
             tmpGEPInst = new getElementPtrInstruction(currentBasicBlock,ArrayTrueAddr,EndReg);
             tmpGEPInst.GetElementPtrIdx.add(it.exprDim.get(cur_dim).ExprResult);
+            it.exprDim.get(cur_dim).ExprResult.AddRegisterUseInInstruction(tmpGEPInst);
             currentBasicBlock.addBasicBlockInst(tmpGEPInst);
 
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,null,
@@ -938,6 +954,7 @@ public class IRBuilder implements ASTVisitor {
                 tmpFunction = currentModule.IRFunctionTable.get(tmpClassName + "." + tmpClassName);
                 tmpcallInst = new callInstruction(currentBasicBlock, null, tmpFunction);
                 tmpcallInst.CallParameters.add(tmpCastResult);
+                tmpCastResult.AddRegisterUseInInstruction(tmpcallInst);
                 currentBasicBlock.addBasicBlockInst(tmpcallInst);
             }
         } else {
@@ -1039,8 +1056,10 @@ public class IRBuilder implements ASTVisitor {
                         tmpResult = new Register(tmpFuncIRType.FuncReturnType, "funccal" + (RegNum++));
                     callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
                     tmpCallInst.CallParameters.add(((MemberAccExprNode) it.funcName).expr.ExprResult);
-                    for (var tmp : it.pars)
+                    for (var tmp : it.pars) {
                         tmpCallInst.CallParameters.add(tmp.ExprResult);
+                        tmp.ExprResult.AddRegisterUseInInstruction(tmpCallInst);
+                    }
                     currentBasicBlock.addBasicBlockInst(tmpCallInst);
                     it.ExprResult = tmpResult;
                 } else {
@@ -1056,8 +1075,10 @@ public class IRBuilder implements ASTVisitor {
 
                     callInstruction tmpCallInst = new callInstruction(currentBasicBlock, tmpResult, tmpIRFunction);
                     tmpCallInst.CallParameters.add(((MemberAccExprNode) it.funcName).expr.ExprResult);
-                    for (var tmp : it.pars)
+                    for (var tmp : it.pars) {
                         tmpCallInst.CallParameters.add(tmp.ExprResult);
+                        tmp.ExprResult.AddRegisterUseInInstruction(tmpCallInst);
+                    }
                     currentBasicBlock.addBasicBlockInst(tmpCallInst);
                     it.ExprResult = tmpResult;
                 }
@@ -1108,9 +1129,12 @@ public class IRBuilder implements ASTVisitor {
                     throw new RuntimeException();
                 IROperand tmpThisOperand = IdAddrMap.GetIdExprAddr("this");
                 tmpCallInst.CallParameters.add(tmpThisOperand);
+                tmpThisOperand.AddRegisterUseInInstruction(tmpCallInst);
             }
-            for (var tmp : it.pars)
+            for (var tmp : it.pars) {
                 tmpCallInst.CallParameters.add(tmp.ExprResult);
+                tmp.ExprResult.AddRegisterUseInInstruction(tmpCallInst);
+            }
             currentBasicBlock.addBasicBlockInst(tmpCallInst);
             it.ExprResult = tmpResult;
         } else {

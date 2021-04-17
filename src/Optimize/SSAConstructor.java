@@ -16,7 +16,7 @@ public class SSAConstructor extends Pass {
     public HashMap<IRInstruction, allocaInstruction> UseAlloca;//load
     public HashMap<IRInstruction, allocaInstruction> DefAlloca;//store
     public HashMap<IRBasicBlock, HashMap<allocaInstruction, phiInstruction>> PhiInstMap;
-    public HashMap<IRBasicBlock, HashMap<allocaInstruction,IROperand>> ReachingDefMap;
+    public HashMap<IRBasicBlock, HashMap<allocaInstruction, IROperand>> ReachingDefMap;
     public HashSet<IRBasicBlock> Visited;
     public IRFunction curFunction;
     public Integer RegNum;
@@ -60,7 +60,7 @@ public class SSAConstructor extends Pass {
                 for (var tmpAllocaInst : tmpFunc.allocaInstTable) {
                     HashSet<IRBasicBlock> BlockF = new LinkedHashSet<>();//set of BB where phi is added
                     Queue<IRBasicBlock> BlockW = new LinkedList<>();//set of BBs contain def of v
-                    HashSet<IRBasicBlock> DefsV  = new LinkedHashSet<>();
+                    HashSet<IRBasicBlock> DefsV = new LinkedHashSet<>();
 
                     //Line 4-6
                     for (var tmpInst : tmpAllocaInst.AllocaResult.use) {
@@ -83,7 +83,7 @@ public class SSAConstructor extends Pass {
                             if (!BlockF.contains(BlockY)) {
                                 //Line 11
                                 String VarName = tmpAllocaInst.AllocaResult.RegisterName;
-                                if(!(tmpAllocaInst.AllocaType instanceof PointerType))
+                                if (!(tmpAllocaInst.AllocaType instanceof PointerType))
                                     throw new RuntimeException();
                                 Register tmpPhiResult =
                                         new Register(((PointerType) tmpAllocaInst.AllocaType).baseType,
@@ -107,11 +107,10 @@ public class SSAConstructor extends Pass {
                 }
 
 
-
                 Visited.clear();
                 VariableRenaming(curFunction.thisEntranceBlock, null);
 
-                for(var tmpAllocaInst : curFunction.allocaInstTable){
+                for (var tmpAllocaInst : curFunction.allocaInstTable) {
                     tmpAllocaInst.thisBasicBlock.removeInst(tmpAllocaInst);
                 }
             }
@@ -120,7 +119,7 @@ public class SSAConstructor extends Pass {
     }
 
     void VariableRenaming(IRBasicBlock curBlock, IRBasicBlock preBlock) {
-        if(!PhiInstMap.containsKey(curBlock)) return;
+        if (!PhiInstMap.containsKey(curBlock)) return;
 
         //Line 14-17 (define phi Inst)
         for (allocaInstruction tmpAllocInst : PhiInstMap.get(curBlock).keySet()) {
@@ -131,7 +130,9 @@ public class SSAConstructor extends Pass {
                     ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
                 tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
             } else {
-                tmpPhiInst.PhiValue.add(ReachingDefMap.get(preBlock).get(tmpAllocInst));
+                IROperand tmpOperand = ReachingDefMap.get(preBlock).get(tmpAllocInst);
+                tmpPhiInst.PhiValue.add(tmpOperand);
+                tmpOperand.AddRegisterUseInInstruction(tmpPhiInst);
             }
         }
 
@@ -165,8 +166,7 @@ public class SSAConstructor extends Pass {
                 if (!ReachingDefMap.get(curBlock).containsKey(tmpAllocInst)) {
                     //System.out.println("1");
                     ReachingDefMap.get(curBlock).put(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
-                }
-                else
+                } else
                     ReachingDefMap.get(curBlock).replace(tmpAllocInst, ((storeInstruction) tmpInst).StoreValue);
                 tmpInst.thisBasicBlock.removeInst(tmpInst);
             }
@@ -177,4 +177,5 @@ public class SSAConstructor extends Pass {
 
         for (IRInstruction tmpPhiInst : PhiInstMap.get(curBlock).values())
             curBlock.addBasicBlockInstAtFront(tmpPhiInst);
-    }}
+    }
+}

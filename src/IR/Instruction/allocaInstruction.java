@@ -6,6 +6,7 @@ import IR.Operand.IROperand;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -41,6 +42,7 @@ public class allocaInstruction extends IRInstruction{
         //<result> = alloca [inalloca] <type> [, <ty> <NumElements>] [, align <alignment>] [, addrspace(<num>)]     ; yields type addrspace(num)*:result
         return AllocaResult.toString() + " = alloca " + AllocaType.toString();
     }
+
 
     public void accept(IRVisitor it){
         it.visit(this);

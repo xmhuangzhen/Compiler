@@ -4,6 +4,7 @@ import Backend.IRVisitor;
 import IR.*;
 import IR.Operand.IROperand;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class IRInstruction {

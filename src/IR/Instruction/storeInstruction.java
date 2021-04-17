@@ -66,7 +66,10 @@ public class storeInstruction extends IRInstruction{
                     + " " + StorePointer.toString();
         //    System.out.println(tmpString);
             return tmpString;
-        }else return null;
+        }else {
+         //   System.out.println(StorePointer.isConstant());
+            return "store pointer is not pointertype"+StorePointer.thisType;
+        }
         //else throw new RuntimeException(StorePointer.thisType.toString()+","+StorePointer.toString());
     }
 

@@ -27,7 +27,7 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-      //  input = new FileInputStream("test.mx");
+ //       input = new FileInputStream("test.mx");
         //  else
               input = System.in;
 
@@ -80,10 +80,10 @@ public class Main {
 
 
         //    System.out.println("1");
-//            int cnt = 1;
+            int cnt = 2;
             while (true) {
-  //              cnt--;
-    //            if(cnt == 0) break;
+                cnt--;
+                if(cnt == 0) break;
             //    System.out.println("10");
                 boolean modified = false;
                 tmpCFGSimp = new CFGSimplification(currentModule);
@@ -95,10 +95,11 @@ public class Main {
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
+                InlineExpander tmpInline = new InlineExpander(currentModule);
+                modified |= tmpInline.run();
                 if (!modified) break;
             }
        //     System.out.println("2");
-         //   new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -106,6 +107,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
+     //       new IRPrinter("output.ll").run(currentModule);
 
 
 

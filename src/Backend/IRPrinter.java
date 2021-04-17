@@ -65,14 +65,22 @@ public class IRPrinter implements IRVisitor {
         outPrintWriter.print(it.BasicBlockName);
 
         if (it.prevBasicBlocks != null) {
-            outPrintWriter.print(" ".repeat(50 - it.BasicBlockName.length() + 1));
+//            outPrintWriter.print(" ".repeat(100 - it.BasicBlockName.length() + 1));
             outPrintWriter.print("; preds = "+it.prevBasicBlocks.toString());
             outPrintWriter.println("");
         }
 
+/*
+        for (IRInstruction curInst = it.TailInst; curInst != null;
+             curInst = curInst.preIRInstruction)
+            curInst.accept(this);
+*/
+
+
         for (IRInstruction curInst = it.HeadInst; curInst != null;
              curInst = curInst.nextIRInstruction)
             curInst.accept(this);
+
     }
 
 
