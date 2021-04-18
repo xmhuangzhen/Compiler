@@ -73,7 +73,13 @@ public class GraphColoringRegAllocator extends ASMPass {
                     tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst1);
                 }
                 tmpInst = tmpInst1;
-                for (int i = 0; i < 12; ++i)
+                tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+                        new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                curRISCVModule.getPhyReg("s0"),
+                                curRISCVModule.getPhyReg("sp"),
+                                new RISCVImm(-8)));
+                tmpInst = tmpInst1.nextInst;
+                for (int i = 1; i < 12; ++i)
                     if (curFunc.usedPhyReg.contains(curRISCVModule.getPhyReg("s" + i))) {
                         tmpInst.addInstNxt(tmpFunc.EntranceBlock,
                                 new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
@@ -106,7 +112,12 @@ public class GraphColoringRegAllocator extends ASMPass {
                                 curRISCVModule.getPhyReg("sp"),
                                 null, new RISCVImm(tmpFunc.GCRealStackSize())));
 
-                for (int i = 0; i < 12; ++i)
+                tmpInst.addInstPre(tmpFunc.LastBlock,
+                        new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
+                                curRISCVModule.getPhyReg("s0"),
+                                curRISCVModule.getPhyReg("sp"),
+                                new RISCVImm(-8)));
+                for (int i = 1; i < 12; ++i)
                     if (curFunc.usedPhyReg.contains(curRISCVModule.getPhyReg("s" + i))) {
                         tmpInst.addInstPre(tmpFunc.LastBlock,
                                 new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,

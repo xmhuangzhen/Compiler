@@ -165,6 +165,7 @@ public class InlineExpander extends Pass {
         if (!(calleeFunc.thisFunctionType.FuncReturnType instanceof VoidType)) {
             IRInstruction repInst = new moveInstruction(AfterCallBlock,
                     CallInst.CallResult, getReplaceOperand(calleeFunc.thisReturnValue));
+            CallInst.CallResult.NeedPtr = calleeFunc.thisReturnValue.NeedPtr;
             repInst.preIRInstruction = null;
             repInst.nextIRInstruction = null;
             AfterCallBlock.addBasicBlockInst(repInst);

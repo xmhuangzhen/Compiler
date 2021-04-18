@@ -1,795 +1,4259 @@
 	.text
-	.globl	show					# start function : show
+	.globl	getcount					# start function : getcount
 	.p2align	2
-show:
+getcount:
 #LBB40:
 	sw ra,-4(sp)
+	sw s0,-8(sp)
+	mv s0,sp
+	addi sp,sp,-80
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB41:
+	addi sp,sp,80
+	lw s0,-8(sp)
+	lw ra,-4(sp)
+	ret
+# end function : getcount
+	.globl	main					# start function : main
+	.p2align	2
+main:
+#LBB42:
+	sw ra,-4(sp)
+	sw s0,-8(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
+	sw s3,-20(sp)
+	sw s4,-24(sp)
+	sw s5,-28(sp)
+	sw s6,-32(sp)
+	sw s7,-36(sp)
+	sw s8,-40(sp)
+	sw s9,-44(sp)
+	sw s10,-48(sp)
+	sw s11,-52(sp)
 	mv s0,sp
-	addi sp,sp,-88
-	li s2,0
-LBB41:
-	lui a0,%hi(now)
-	lw a0,%lo(now)(a0)
-	slt a0,s2,a0
-	bnez a0,LBB42
-	j LBB44
-LBB42:
-	lui a0,%hi(a)
-	lw a1,%lo(a)(a0)
-	slli a0,s2,2
-	add a0,a1,a0
-	lw a0,0(a0)
+	addi sp,sp,-1064
+LBB43:
+LBB44:
+LBB45:
+	li a0,8
+	call malloc
+	li a1,1
+	sw a1,0(a0)
+	addi a0,a0,4
+	addi a1,a0,0
+	lui a0,%hi(count)
+	sw a1,%lo(count)(a0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	addi a1,a0,0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB46:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB47:
+LBB48:
+	sw a0,-108(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB49:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB50:
+LBB51:
+	sw a0,-112(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB52:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB53:
+LBB54:
+	sw a0,-116(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB55:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB56:
+LBB57:
+	sw a0,-120(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB58:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB59:
+LBB60:
+	sw a0,-124(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB61:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB62:
+LBB63:
+	sw a0,-128(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB64:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB65:
+LBB66:
+	sw a0,-132(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB67:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB68:
+LBB69:
+	sw a0,-136(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB70:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB71:
+LBB72:
+	sw a0,-140(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB73:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB74:
+LBB75:
+	sw a0,-144(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB76:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB77:
+LBB78:
+	sw a0,-148(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB79:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB80:
+LBB81:
+	sw a0,-152(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB82:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB83:
+LBB84:
+	sw a0,-156(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB85:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB86:
+LBB87:
+	sw a0,-160(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB88:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB89:
+LBB90:
+	sw a0,-164(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB91:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB92:
+LBB93:
+	sw a0,-168(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB94:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB95:
+LBB96:
+	sw a0,-172(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB97:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB98:
+LBB99:
+	sw a0,-176(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB100:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB101:
+LBB102:
+	sw a0,-180(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB103:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB104:
+LBB105:
+	sw a0,-184(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB106:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB107:
+LBB108:
+	sw a0,-188(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB109:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB110:
+LBB111:
+	sw a0,-192(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB112:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB113:
+LBB114:
+	sw a0,-196(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB115:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB116:
+LBB117:
+	sw a0,-200(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB118:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB119:
+LBB120:
+	sw a0,-1032(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB121:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB122:
+LBB123:
+	sw a0,-1028(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB124:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB125:
+LBB126:
+	sw a0,-1024(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB127:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB128:
+LBB129:
+	sw a0,-1020(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB130:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB131:
+LBB132:
+	sw a0,-1016(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB133:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB134:
+LBB135:
+	sw a0,-1012(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB136:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB137:
+LBB138:
+	sw a0,-1008(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB139:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB140:
+LBB141:
+	sw a0,-1004(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB142:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB143:
+LBB144:
+	sw a0,-1000(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB145:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB146:
+LBB147:
+	sw a0,-996(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB148:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB149:
+LBB150:
+	sw a0,-992(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB151:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB152:
+LBB153:
+	sw a0,-988(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB154:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB155:
+LBB156:
+	sw a0,-984(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB157:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB158:
+LBB159:
+	sw a0,-980(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB160:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB161:
+LBB162:
+	sw a0,-976(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB163:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB164:
+LBB165:
+	sw a0,-972(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB166:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB167:
+LBB168:
+	sw a0,-968(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB169:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB170:
+LBB171:
+	sw a0,-964(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB172:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB173:
+LBB174:
+	sw a0,-960(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB175:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB176:
+LBB177:
+	sw a0,-956(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB178:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB179:
+LBB180:
+	sw a0,-952(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB181:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB182:
+LBB183:
+	sw a0,-948(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB184:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB185:
+LBB186:
+	sw a0,-944(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB187:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB188:
+LBB189:
+	sw a0,-940(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB190:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB191:
+LBB192:
+	sw a0,-936(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB193:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB194:
+LBB195:
+	sw a0,-932(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB196:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB197:
+LBB198:
+	sw a0,-928(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB199:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB200:
+LBB201:
+	sw a0,-924(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB202:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB203:
+LBB204:
+	sw a0,-920(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB205:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB206:
+LBB207:
+	sw a0,-916(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB208:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB209:
+LBB210:
+	sw a0,-912(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB211:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB212:
+LBB213:
+	sw a0,-908(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB214:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB215:
+LBB216:
+	sw a0,-904(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB217:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB218:
+LBB219:
+	sw a0,-900(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB220:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB221:
+LBB222:
+	sw a0,-896(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB223:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB224:
+LBB225:
+	sw a0,-892(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB226:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB227:
+LBB228:
+	sw a0,-888(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB229:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB230:
+LBB231:
+	sw a0,-884(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB232:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB233:
+LBB234:
+	sw a0,-880(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB235:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB236:
+LBB237:
+	sw a0,-876(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB238:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB239:
+LBB240:
+	sw a0,-872(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB241:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB242:
+LBB243:
+	sw a0,-868(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB244:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB245:
+LBB246:
+	sw a0,-864(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB247:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB248:
+LBB249:
+	sw a0,-860(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB250:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB251:
+LBB252:
+	sw a0,-856(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB253:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB254:
+LBB255:
+	sw a0,-852(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB256:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB257:
+LBB258:
+	sw a0,-848(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB259:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB260:
+LBB261:
+	sw a0,-844(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB262:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB263:
+LBB264:
+	sw a0,-840(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB265:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB266:
+LBB267:
+	sw a0,-836(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB268:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB269:
+LBB270:
+	sw a0,-832(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB271:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB272:
+LBB273:
+	sw a0,-828(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB274:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB275:
+LBB276:
+	sw a0,-824(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB277:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB278:
+LBB279:
+	sw a0,-820(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB280:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB281:
+LBB282:
+	sw a0,-816(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB283:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB284:
+LBB285:
+	sw a0,-812(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB286:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB287:
+LBB288:
+	sw a0,-808(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB289:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB290:
+LBB291:
+	sw a0,-804(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB292:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB293:
+LBB294:
+	sw a0,-800(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB295:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB296:
+LBB297:
+	sw a0,-796(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB298:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB299:
+LBB300:
+	sw a0,-792(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB301:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB302:
+LBB303:
+	sw a0,-788(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB304:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB305:
+LBB306:
+	sw a0,-784(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB307:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB308:
+LBB309:
+	sw a0,-780(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB310:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB311:
+LBB312:
+	sw a0,-776(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB313:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB314:
+LBB315:
+	sw a0,-772(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB316:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB317:
+LBB318:
+	sw a0,-768(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB319:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB320:
+LBB321:
+	sw a0,-764(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB322:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB323:
+LBB324:
+	sw a0,-760(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB325:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB326:
+LBB327:
+	sw a0,-756(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB328:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB329:
+LBB330:
+	sw a0,-752(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB331:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB332:
+LBB333:
+	sw a0,-748(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB334:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB335:
+LBB336:
+	sw a0,-744(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+LBB337:
+	addi a1,a0,0
+	lw a0,0(a1)
+	addi a0,a0,1
+	sw a0,0(a1)
+LBB338:
+LBB339:
+	sw a0,-204(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-740(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-736(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-732(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-728(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-724(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-720(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-716(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-712(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-708(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-704(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-700(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-696(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-692(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-688(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-684(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-680(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-676(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-672(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-668(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-664(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-660(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-656(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-652(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-648(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-644(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-640(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-636(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-632(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-628(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-624(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-620(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-616(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-612(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-608(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-604(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-600(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-596(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-592(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-588(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-584(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-580(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-576(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-572(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-568(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-564(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-560(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-556(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-552(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-548(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-544(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-540(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-536(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-532(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-528(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-524(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-520(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-516(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-512(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-508(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-504(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-500(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-496(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-492(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-488(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-484(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-480(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-476(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-472(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-468(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-464(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-460(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-456(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-452(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-448(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-444(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-440(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-436(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-432(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-428(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-424(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-420(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-416(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-412(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-408(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-404(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-400(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-396(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-392(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-388(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-384(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-380(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-376(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-372(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-368(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-364(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-360(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-356(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-352(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-348(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-344(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-340(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-336(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-332(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-328(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-324(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-320(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-316(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-312(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-308(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-304(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-300(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-296(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-292(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-288(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-284(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-280(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-276(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-272(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-268(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-264(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-260(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-256(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-252(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-248(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-244(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-240(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-236(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-232(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-228(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-224(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-220(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-216(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-212(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-208(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-104(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-100(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-96(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-92(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-88(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-84(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-80(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-76(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-72(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-68(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-64(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-60(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	sw a0,-56(s0)
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s11,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s10,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s8,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s7,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s2,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s4,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s3,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s5,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s6,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s1,a0
+	lui a0,%hi(count)
+	lw a0,%lo(count)(a0)
+	call getcount
+	mv s9,a0
+	lw a0,-108(s0)
 	call toString
 	la a1,const_string_no0
 	call __string_add
 	call print
-LBB43:
-	addi s2,s2,1
-	j LBB41
-LBB44:
+	lw a0,-112(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-116(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-120(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-124(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-128(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-132(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-136(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-140(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-144(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-148(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-152(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-156(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-160(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-164(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-168(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-172(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-176(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-180(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-184(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-188(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-192(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-196(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-200(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1032(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1028(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1024(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1020(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1016(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1012(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1008(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1004(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1000(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-996(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-992(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-988(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-984(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-980(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-976(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-972(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-968(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-964(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-960(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-956(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-952(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-948(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-944(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-940(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-936(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-932(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-928(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-924(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-920(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-916(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-912(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-908(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-904(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-900(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-896(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-892(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-888(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-884(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-880(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-876(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-872(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-868(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-864(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-860(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-856(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-852(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-848(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-844(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-840(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-836(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-832(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-828(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-824(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-820(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-816(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-812(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-808(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-804(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-800(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-796(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-792(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-788(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-784(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-780(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-776(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-772(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-768(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-764(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-760(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-756(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-752(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-748(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-744(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-204(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-740(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-736(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-732(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-728(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-724(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-720(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-716(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-712(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-708(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-704(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-700(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-696(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-692(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-688(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-684(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-680(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-676(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-672(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-668(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-664(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-660(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-656(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-652(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-648(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-644(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-640(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-636(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-632(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-628(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-624(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-620(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-616(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-612(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-608(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-604(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-600(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-596(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-592(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-588(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-584(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-580(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-576(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-572(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-568(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-564(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-560(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-556(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-552(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-548(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-544(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-540(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-536(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-532(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-528(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-524(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-520(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-516(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-512(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-508(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-504(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-500(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-496(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-492(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-488(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-484(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-480(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-476(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-472(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-468(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-464(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-460(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-456(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-452(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-448(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-444(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-440(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-436(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-432(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-428(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-424(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-420(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-416(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-412(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-408(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-404(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-400(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-396(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-392(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-388(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-384(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-380(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-376(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-372(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-368(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-364(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-360(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-356(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-352(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-348(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-344(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-340(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-336(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-332(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-328(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-324(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-320(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-316(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-312(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-308(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-304(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-300(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-296(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-292(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-288(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-284(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-280(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-276(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-272(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-268(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-264(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-260(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-256(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-252(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-248(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-244(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-240(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-236(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-232(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-228(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-224(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-220(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-216(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-212(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-208(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-104(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-100(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-96(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-92(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-88(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-84(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-80(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-76(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-72(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-68(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-64(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-60(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-56(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s11
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s10
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s8
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s7
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s2
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s4
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s3
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s5
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s6
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s1
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s9
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
 	la a0,const_string_no1
 	call println
-LBB45:
+	lw a0,-108(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-112(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-116(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-120(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-124(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-128(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-132(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-136(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-140(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-144(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-148(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-152(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-156(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-160(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-164(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-168(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-172(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-176(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-180(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-184(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-188(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-192(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-196(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-200(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1032(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1028(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1024(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1020(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1016(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1012(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1008(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1004(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-1000(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-996(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-992(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-988(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-984(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-980(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-976(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-972(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-968(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-964(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-960(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-956(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-952(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-948(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-944(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-940(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-936(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-932(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-928(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-924(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-920(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-916(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-912(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-908(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-904(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-900(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-896(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-892(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-888(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-884(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-880(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-876(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-872(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-868(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-864(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-860(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-856(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-852(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-848(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-844(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-840(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-836(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-832(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-828(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-824(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-820(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-816(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-812(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-808(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-804(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-800(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-796(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-792(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-788(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-784(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-780(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-776(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-772(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-768(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-764(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-760(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-756(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-752(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-748(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-744(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-204(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-740(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-736(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-732(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-728(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-724(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-720(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-716(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-712(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-708(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-704(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-700(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-696(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-692(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-688(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-684(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-680(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-676(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-672(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-668(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-664(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-660(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-656(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-652(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-648(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-644(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-640(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-636(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-632(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-628(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-624(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-620(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-616(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-612(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-608(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-604(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-600(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-596(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-592(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-588(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-584(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-580(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-576(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-572(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-568(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-564(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-560(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-556(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-552(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-548(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-544(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-540(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-536(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-532(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-528(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-524(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-520(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-516(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-512(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-508(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-504(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-500(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-496(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-492(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-488(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-484(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-480(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-476(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-472(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-468(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-464(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-460(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-456(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-452(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-448(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-444(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-440(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-436(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-432(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-428(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-424(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-420(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-416(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-412(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-408(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-404(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-400(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-396(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-392(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-388(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-384(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-380(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-376(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-372(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-368(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-364(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-360(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-356(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-352(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-348(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-344(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-340(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-336(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-332(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-328(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-324(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-320(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-316(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-312(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-308(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-304(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-300(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-296(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-292(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-288(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-284(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-280(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-276(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-272(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-268(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-264(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-260(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-256(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-252(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-248(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-244(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-240(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-236(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-232(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-228(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-224(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-220(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-216(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-212(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-208(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-104(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-100(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-96(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-92(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-88(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-84(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-80(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-76(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-72(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-68(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-64(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-60(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	lw a0,-56(s0)
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s11
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s10
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s8
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s7
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s2
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s4
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s3
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s5
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s6
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
 	mv a0,s1
-	addi sp,sp,88
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	mv a0,s9
+	call toString
+	la a1,const_string_no0
+	call __string_add
+	call print
+	la a0,const_string_no1
+	call println
+	li a0,0
+LBB340:
+	addi sp,sp,1064
+	lw s0,-8(sp)
 	lw s1,-12(sp)
 	lw s2,-16(sp)
-	lw ra,-4(sp)
-	ret
-# end function : show
-	.globl	win					# start function : win
-	.p2align	2
-win:
-#LBB46:
-	sw ra,-4(sp)
-	mv s0,sp
-	addi sp,sp,-84
-	li a0,404
-	call malloc
-	li a1,100
-	sw a1,0(a0)
-	addi a0,a0,4
-	addi a2,a0,0
-	lui a0,%hi(now)
-	lw a1,%lo(now)(a0)
-	lui a0,%hi(h)
-	lw a0,%lo(h)(a0)
-	xor a0,a1,a0
-	snez a0,a0
-	bnez a0,LBB47
-	j LBB48
-LBB47:
-	li a0,0
-	j LBB69
-LBB48:
-	li a0,0
-LBB49:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB50
-	j LBB52
-LBB50:
-	slli a1,a0,2
-	add a4,a2,a1
-	lui a1,%hi(a)
-	lw a3,%lo(a)(a1)
-	slli a1,a0,2
-	add a1,a3,a1
-	lw a1,0(a1)
-	sw a1,0(a4)
-LBB51:
-	addi a0,a0,1
-	j LBB49
-LBB52:
-	li a0,0
-LBB53:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	addi a1,a1,-1
-	slt a1,a0,a1
-	bnez a1,LBB54
-	j LBB62
-LBB54:
-	addi a1,a0,1
-LBB55:
-	lui a3,%hi(now)
-	lw a3,%lo(now)(a3)
-	slt a3,a1,a3
-	bnez a3,LBB56
-	j LBB60
-LBB56:
-	slli a3,a0,2
-	add a3,a2,a3
-	lw a4,0(a3)
-	slli a3,a1,2
-	add a3,a2,a3
-	lw a3,0(a3)
-	slt a3,a3,a4
-	bnez a3,LBB57
-	j LBB58
-LBB57:
-	slli a3,a0,2
-	add a3,a2,a3
-	lw a5,0(a3)
-	slli a3,a0,2
-	add a4,a2,a3
-	slli a3,a1,2
-	add a3,a2,a3
-	lw a3,0(a3)
-	sw a3,0(a4)
-	slli a3,a1,2
-	add a3,a2,a3
-	sw a5,0(a3)
-LBB58:
-LBB59:
-	addi a1,a1,1
-	j LBB55
-LBB60:
-LBB61:
-	addi a0,a0,1
-	j LBB53
-LBB62:
-	li a0,0
-LBB63:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB64
-	j LBB68
-LBB64:
-	slli a1,a0,2
-	add a1,a2,a1
-	lw a3,0(a1)
-	addi a1,a0,1
-	xor a1,a3,a1
-	snez a1,a1
-	bnez a1,LBB65
-	j LBB66
-LBB65:
-	li a0,0
-	j LBB69
-LBB66:
-LBB67:
-	addi a0,a0,1
-	j LBB63
-LBB68:
-	li a0,1
-LBB69:
-	addi sp,sp,84
-	lw ra,-4(sp)
-	ret
-# end function : win
-	.globl	main					# start function : main
-	.p2align	2
-main:
-#LBB70:
-	sw ra,-4(sp)
-	sw s1,-12(sp)
-	sw s2,-16(sp)
-	mv s0,sp
-	addi sp,sp,-88
-LBB71:
-	li a1,48271
-	lui a0,%hi(A)
-	sw a1,%lo(A)(a0)
-	li a1,2147483647
-	lui a0,%hi(M)
-	sw a1,%lo(M)(a0)
-	li a1,1
-	lui a0,%hi(seed)
-	sw a1,%lo(seed)(a0)
-LBB72:
-LBB73:
-	li a1,210
-	lui a0,%hi(n)
-	sw a1,%lo(n)(a0)
-	li a1,0
-	lui a0,%hi(h)
-	sw a1,%lo(h)(a0)
-	li a0,404
-	call malloc
-	li a1,100
-	sw a1,0(a0)
-	addi a0,a0,4
-	addi a1,a0,0
-	lui a0,%hi(a)
-	sw a1,%lo(a)(a0)
-	lui a0,%hi(M)
-	lw a1,%lo(M)(a0)
-	lui a0,%hi(A)
-	lw a0,%lo(A)(a0)
-	div a1,a1,a0
-	lui a0,%hi(Q)
-	sw a1,%lo(Q)(a0)
-	lui a0,%hi(M)
-	lw a1,%lo(M)(a0)
-	lui a0,%hi(A)
-	lw a0,%lo(A)(a0)
-	rem a1,a1,a0
-	lui a0,%hi(R)
-	sw a1,%lo(R)(a0)
-	lui a0,%hi(n)
-	lw a0,%lo(n)(a0)
-LBB74:
-LBB75:
-	lui a1,%hi(h)
-	lw a1,%lo(h)(a1)
-	slt a1,a0,a1
-	xori a1,a1,1
-	bnez a1,LBB76
-	j LBB80
-LBB76:
-	lui a1,%hi(h)
-	lw a2,%lo(h)(a1)
-	lui a1,%hi(h)
-	lw a1,%lo(h)(a1)
-	addi a1,a1,1
-	mul a2,a2,a1
-	li a1,2
-	div a1,a2,a1
-	xor a1,a0,a1
-	seqz a1,a1
-	bnez a1,LBB77
-	j LBB78
-LBB77:
-	li a0,1
-	j LBB81
-LBB78:
-LBB79:
-	lui a1,%hi(h)
-	lw a1,%lo(h)(a1)
-	addi a2,a1,1
-	lui a1,%hi(h)
-	sw a2,%lo(h)(a1)
-	j LBB75
-LBB80:
-	li a0,0
-LBB81:
-LBB82:
-	li a1,1
-	xor a0,a1,a0
-	bnez a0,LBB83
-	j LBB84
-LBB83:
-	la a0,const_string_no2
-	call println
-	li a0,1
-	j LBB170
-LBB84:
-	la a0,const_string_no3
-	call println
-LBB85:
-	li a0,3654898
-	lui a1,%hi(seed)
-	sw a0,%lo(seed)(a1)
-LBB86:
-LBB87:
-LBB88:
-	lui a0,%hi(A)
-	lw a2,%lo(A)(a0)
-	lui a0,%hi(seed)
-	lw a1,%lo(seed)(a0)
-	lui a0,%hi(Q)
-	lw a0,%lo(Q)(a0)
-	rem a0,a1,a0
-	mul a3,a2,a0
-	lui a0,%hi(R)
-	lw a2,%lo(R)(a0)
-	lui a0,%hi(seed)
-	lw a1,%lo(seed)(a0)
-	lui a0,%hi(Q)
-	lw a0,%lo(Q)(a0)
-	div a0,a1,a0
-	mul a0,a2,a0
-	sub a1,a3,a0
-	li a0,0
-	slt a0,a1,a0
-	xori a0,a0,1
-	bnez a0,LBB89
-	j LBB90
-LBB89:
-	lui a0,%hi(seed)
-	sw a1,%lo(seed)(a0)
-	j LBB91
-LBB90:
-	lui a0,%hi(M)
-	lw a0,%lo(M)(a0)
-	add a1,a1,a0
-	lui a0,%hi(seed)
-	sw a1,%lo(seed)(a0)
-LBB91:
-	lui a0,%hi(seed)
-	lw a0,%lo(seed)(a0)
-LBB92:
-LBB93:
-	li a1,10
-	rem a0,a0,a1
-	addi a1,a0,1
-	lui a0,%hi(now)
-	sw a1,%lo(now)(a0)
-	lui a0,%hi(now)
-	lw a0,%lo(now)(a0)
-	call toString
-	call println
-	li a0,0
-	li a1,0
-LBB94:
-	lui a2,%hi(now)
-	lw a2,%lo(now)(a2)
-	addi a2,a2,-1
-	slt a2,a1,a2
-	bnez a2,LBB95
-	j LBB112
-LBB95:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a3,a3,a2
-LBB96:
-	lui a2,%hi(A)
-	lw a5,%lo(A)(a2)
-	lui a2,%hi(seed)
-	lw a4,%lo(seed)(a2)
-	lui a2,%hi(Q)
-	lw a2,%lo(Q)(a2)
-	rem a2,a4,a2
-	mul a6,a5,a2
-	lui a2,%hi(R)
-	lw a5,%lo(R)(a2)
-	lui a2,%hi(seed)
-	lw a4,%lo(seed)(a2)
-	lui a2,%hi(Q)
-	lw a2,%lo(Q)(a2)
-	div a2,a4,a2
-	mul a2,a5,a2
-	sub a4,a6,a2
-	li a2,0
-	slt a2,a4,a2
-	xori a2,a2,1
-	bnez a2,LBB97
-	j LBB98
-LBB97:
-	lui a2,%hi(seed)
-	sw a4,%lo(seed)(a2)
-	j LBB99
-LBB98:
-	lui a2,%hi(M)
-	lw a2,%lo(M)(a2)
-	add a4,a4,a2
-	lui a2,%hi(seed)
-	sw a4,%lo(seed)(a2)
-LBB99:
-	lui a2,%hi(seed)
-	lw a2,%lo(seed)(a2)
-LBB100:
-LBB101:
-	li a4,10
-	rem a2,a2,a4
-	addi a2,a2,1
-	sw a2,0(a3)
-LBB102:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a2,0(a2)
-	add a3,a2,a0
-	lui a2,%hi(n)
-	lw a2,%lo(n)(a2)
-	slt a2,a2,a3
-	bnez a2,LBB103
-	j LBB110
-LBB103:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a3,a3,a2
-LBB104:
-	lui a2,%hi(A)
-	lw a5,%lo(A)(a2)
-	lui a2,%hi(seed)
-	lw a4,%lo(seed)(a2)
-	lui a2,%hi(Q)
-	lw a2,%lo(Q)(a2)
-	rem a2,a4,a2
-	mul a6,a5,a2
-	lui a2,%hi(R)
-	lw a5,%lo(R)(a2)
-	lui a2,%hi(seed)
-	lw a4,%lo(seed)(a2)
-	lui a2,%hi(Q)
-	lw a2,%lo(Q)(a2)
-	div a2,a4,a2
-	mul a2,a5,a2
-	sub a4,a6,a2
-	li a2,0
-	slt a2,a4,a2
-	xori a2,a2,1
-	bnez a2,LBB105
-	j LBB106
-LBB105:
-	lui a2,%hi(seed)
-	sw a4,%lo(seed)(a2)
-	j LBB107
-LBB106:
-	lui a2,%hi(M)
-	lw a2,%lo(M)(a2)
-	add a4,a4,a2
-	lui a2,%hi(seed)
-	sw a4,%lo(seed)(a2)
-LBB107:
-	lui a2,%hi(seed)
-	lw a2,%lo(seed)(a2)
-LBB108:
-LBB109:
-	li a4,10
-	rem a2,a2,a4
-	addi a2,a2,1
-	sw a2,0(a3)
-	j LBB102
-LBB110:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a2,0(a2)
-	add a0,a0,a2
-LBB111:
-	addi a1,a1,1
-	j LBB94
-LBB112:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	addi a1,a1,-1
-	slli a1,a1,2
-	add a2,a2,a1
-	lui a1,%hi(n)
-	lw a1,%lo(n)(a1)
-	sub a0,a1,a0
-	sw a0,0(a2)
-	call show
-LBB113:
-	li a0,0
-LBB114:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB115
-	j LBB128
-LBB115:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	slli a1,a0,2
-	add a1,a2,a1
-	lw a2,0(a1)
-	li a1,0
-	xor a1,a2,a1
-	seqz a1,a1
-	bnez a1,LBB116
-	j LBB126
-LBB116:
-	addi a1,a0,1
-LBB117:
-	lui a2,%hi(now)
-	lw a2,%lo(now)(a2)
-	slt a2,a1,a2
-	bnez a2,LBB118
-	j LBB125
-LBB118:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a3,0(a2)
-	li a2,0
-	xor a2,a3,a2
-	snez a2,a2
-	bnez a2,LBB119
-	j LBB123
-LBB119:
-LBB120:
-	mv a2,a0
-	lui a3,%hi(a)
-	lw a4,%lo(a)(a3)
-	slli a3,a2,2
-	add a3,a4,a3
-	lw a5,0(a3)
-	lui a3,%hi(a)
-	lw a3,%lo(a)(a3)
-	slli a2,a2,2
-	add a4,a3,a2
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a2,0(a2)
-	sw a2,0(a4)
-	lui a2,%hi(a)
-	lw a2,%lo(a)(a2)
-	slli a1,a1,2
-	add a1,a2,a1
-	sw a5,0(a1)
-LBB121:
-LBB122:
-	j LBB125
-LBB123:
-LBB124:
-	addi a1,a1,1
-	j LBB117
-LBB125:
-LBB126:
-LBB127:
-	addi a0,a0,1
-	j LBB114
-LBB128:
-	li a0,0
-LBB129:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB130
-	j LBB134
-LBB130:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	slli a1,a0,2
-	add a1,a2,a1
-	lw a2,0(a1)
-	li a1,0
-	xor a1,a2,a1
-	seqz a1,a1
-	bnez a1,LBB131
-	j LBB132
-LBB131:
-	lui a1,%hi(now)
-	sw a0,%lo(now)(a1)
-	j LBB134
-LBB132:
-LBB133:
-	addi a0,a0,1
-	j LBB129
-LBB134:
-LBB135:
-LBB136:
-	li s1,0
-LBB137:
-	call win
-	li a1,1
-	xor a0,a1,a0
-	bnez a0,LBB138
-	j LBB169
-LBB138:
-	la s2,const_string_no4
-	addi s1,s1,1
-	mv a0,s1
-	call toString
-	mv a1,a0
-	mv a0,s2
-	call __string_add
-	la a1,const_string_no5
-	call __string_add
-	call println
-LBB139:
-	li a0,0
-LBB140:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB141
-	j LBB142
-LBB141:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	slli a1,a0,2
-	add a2,a2,a1
-	lw a1,0(a2)
-	addi a1,a1,-1
-	sw a1,0(a2)
-	addi a0,a0,1
-	j LBB140
-LBB142:
-	lui a0,%hi(a)
-	lw a1,%lo(a)(a0)
-	lui a0,%hi(now)
-	lw a0,%lo(now)(a0)
-	slli a0,a0,2
-	add a1,a1,a0
-	lui a0,%hi(now)
-	lw a0,%lo(now)(a0)
-	sw a0,0(a1)
-	lui a0,%hi(now)
-	lw a0,%lo(now)(a0)
-	addi a1,a0,1
-	lui a0,%hi(now)
-	sw a1,%lo(now)(a0)
-LBB143:
-LBB144:
-LBB145:
-	li a0,0
-LBB146:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB147
-	j LBB160
-LBB147:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	slli a1,a0,2
-	add a1,a2,a1
-	lw a2,0(a1)
-	li a1,0
-	xor a1,a2,a1
-	seqz a1,a1
-	bnez a1,LBB148
-	j LBB158
-LBB148:
-	addi a1,a0,1
-LBB149:
-	lui a2,%hi(now)
-	lw a2,%lo(now)(a2)
-	slt a2,a1,a2
-	bnez a2,LBB150
-	j LBB157
-LBB150:
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a3,0(a2)
-	li a2,0
-	xor a2,a3,a2
-	snez a2,a2
-	bnez a2,LBB151
-	j LBB155
-LBB151:
-LBB152:
-	mv a2,a0
-	lui a3,%hi(a)
-	lw a4,%lo(a)(a3)
-	slli a3,a2,2
-	add a3,a4,a3
-	lw a5,0(a3)
-	lui a3,%hi(a)
-	lw a3,%lo(a)(a3)
-	slli a2,a2,2
-	add a4,a3,a2
-	lui a2,%hi(a)
-	lw a3,%lo(a)(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	lw a2,0(a2)
-	sw a2,0(a4)
-	lui a2,%hi(a)
-	lw a2,%lo(a)(a2)
-	slli a1,a1,2
-	add a1,a2,a1
-	sw a5,0(a1)
-LBB153:
-LBB154:
-	j LBB157
-LBB155:
-LBB156:
-	addi a1,a1,1
-	j LBB149
-LBB157:
-LBB158:
-LBB159:
-	addi a0,a0,1
-	j LBB146
-LBB160:
-	li a0,0
-LBB161:
-	lui a1,%hi(now)
-	lw a1,%lo(now)(a1)
-	slt a1,a0,a1
-	bnez a1,LBB162
-	j LBB166
-LBB162:
-	lui a1,%hi(a)
-	lw a2,%lo(a)(a1)
-	slli a1,a0,2
-	add a1,a2,a1
-	lw a2,0(a1)
-	li a1,0
-	xor a1,a2,a1
-	seqz a1,a1
-	bnez a1,LBB163
-	j LBB164
-LBB163:
-	lui a1,%hi(now)
-	sw a0,%lo(now)(a1)
-	j LBB166
-LBB164:
-LBB165:
-	addi a0,a0,1
-	j LBB161
-LBB166:
-LBB167:
-LBB168:
-	call show
-	j LBB137
-LBB169:
-	la s2,const_string_no6
-	mv a0,s1
-	call toString
-	mv a1,a0
-	mv a0,s2
-	call __string_add
-	la a1,const_string_no7
-	call __string_add
-	call println
-	li a0,0
-LBB170:
-	addi sp,sp,88
-	lw s1,-12(sp)
-	lw s2,-16(sp)
+	lw s3,-20(sp)
+	lw s4,-24(sp)
+	lw s5,-28(sp)
+	lw s6,-32(sp)
+	lw s7,-36(sp)
+	lw s8,-40(sp)
+	lw s9,-44(sp)
+	lw s10,-48(sp)
+	lw s11,-52(sp)
 	lw ra,-4(sp)
 	ret
 # end function : main
 .section	.sdata,"aw",@progbits
 	.p2align	2
-n:
+count:
 	.word	0
-
-	.p2align	2
-h:
-	.word	0
-
-	.p2align	2
-now:
-	.word	0
-
-	.p2align	2
-a:
-	.word	0
-
-	.p2align	2
-A:
-	.word	48271
-
-	.p2align	2
-M:
-	.word	2147483647
-
-	.p2align	2
-Q:
-	.word	0
-
-	.p2align	2
-R:
-	.word	0
-
-	.p2align	2
-seed:
-	.word	1
 
 const_string_no0:
 	.asciz	" "
 
 const_string_no1:
 	.asciz	""
-
-const_string_no2:
-	.asciz	"Sorry, the number n must be a number s.t. there exists i satisfying n=1+2+...+i"
-
-const_string_no3:
-	.asciz	"Let's start!"
-
-const_string_no4:
-	.asciz	"step "
-
-const_string_no5:
-	.asciz	":"
-
-const_string_no6:
-	.asciz	"Total: "
-
-const_string_no7:
-	.asciz	" step(s)"
 
