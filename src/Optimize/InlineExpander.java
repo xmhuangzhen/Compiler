@@ -190,7 +190,7 @@ public class InlineExpander extends Pass {
         }
   */
 
-        for(IRBasicBlock tmpBlock = curBlock;tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
+        for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
             for( IRInstruction tmpInst = tmpBlock.HeadInst;tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
                 if(tmpInst instanceof  phiInstruction){
                     for (int i = 0; i < ((phiInstruction) tmpInst).PhiLabel.size(); ++i)

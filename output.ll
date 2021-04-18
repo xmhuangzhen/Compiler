@@ -1,626 +1,756 @@
 
+@n
+@h
+@now
+@a
+@A
+@M
+@Q
+@R
+@seed
+@const_string_no0
+@const_string_no1
+@const_string_no2
+@const_string_no3
+@const_string_no4
+@const_string_no5
+@const_string_no6
+@const_string_no7
 
-define ReturnType : i32
-Parameter : i32  @rng(i32*)
-define ReturnType : i32
-Parameter : i32 i32 i32 i32 i32 i32 i32 i32 i32 i32  @test(i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*)
+define ReturnType : void
+Parameter :  @show()
+define ReturnType : i1
+Parameter :  @win()
 define ReturnType : i32
 Parameter :  @main()
 
-define ReturnType : i32
-Parameter : i32  @rng(i32*){
-rng_entrance_block    %Id_load24 = load i32, i32* %rng_seed
-    br label %unsigned_shl_entrance_block_i0
+define ReturnType : void
+Parameter :  @show(){
+show_entrance_block    br label %for_cond_block9
 
-unsigned_shl_entrance_block_i0; preds = %rng_entrance_block
-    %unsigned_shl_ip0_0=%Id_load24
-    %unsigned_shl_ip1_1=13
-    %Id_load1_i2 = load i32, i32* %unsigned_shl_ip0_0
-    %Id_load2_i3 = load i32, i32* %unsigned_shl_ip1_1
-    shl3_i4 = shl i32 %Id_load1_i2, %Id_load2_i3
-    %unsigned_shlreturn_value0_i5=%shl3_i4
-    br label %unsigned_shl_return_block_i1
+for_cond_block9; preds = %show_entrance_block
+    %i|addr580 = phi i32[ 0, %show_entrance_block], [ %PreAdd72, %for_step_block10]
+    %now61 = load i32, i32 @now
+    %slt62 = icmp slt i32 %i|addr580, %now61
+    br i1 %slt62, label %for_body_block11, label %for_dest_block12
 
-unsigned_shl_return_block_i1; preds = %unsigned_shl_entrance_block_i0
-    br label %rng_entrance_block_AB_2
+for_body_block11; preds = %for_cond_block9
+    %a63 = load i32*, i32* @a
+    %getElementPtr65 = getelementptr i32, i32* %a63, i32 %i|addr580
+    %GEP_Load66 = load i32, i32* %getElementPtr65
+    %funccal67 = call i8* @toString(i32 %GEP_Load66)
+    %StringConst68 = getelementptr [1 x i8], [1 x i8]* @const_string_no0, i32 0, i32 0
+    %add69 = call i8* @__string_add(i8* %funccal67, i8* %StringConst68)
+    %funccal70 = call void @print(i8* %add69)
+    br label %for_step_block10
 
-rng_entrance_block_AB_2; preds = %unsigned_shl_return_block_i1
-    %funccal28=%unsigned_shlreturn_value0_i5
-    ashr29 = xor i32 %Id_load24, %funccal28
-    br label %unsigned_shr_entrance_block_i3
+for_step_block10; preds = %for_body_block11
+    PreAdd72 = add i32 %i|addr580, 1
+    br label %for_cond_block9
 
-unsigned_shr_entrance_block_i3; preds = %rng_entrance_block_AB_2
-    %unsigned_shr_ip0_6=%ashr29
-    %unsigned_shr_ip1_7=17
-    %Id_load7_i8 = load i32, i32* %unsigned_shr_ip0_6
-    %sge8_i9 = icmp sge i32 %Id_load7_i8, 0
-    br i1 %sge8_i9, label %if_then_block0_i4, label %if_else_block1_i5
+for_dest_block12; preds = %for_step_block10
+    %StringConst73 = getelementptr [0 x i8], [0 x i8]* @const_string_no1, i32 0, i32 0
+    %funccal74 = call void @println(i8* %StringConst73)
+    br label %show_return_block
 
-if_then_block0_i4; preds = %unsigned_shr_entrance_block_i3
-    %Id_load9_i10 = load i32, i32* %unsigned_shr_ip0_6
-    %Id_load10_i11 = load i32, i32* %unsigned_shr_ip1_7
-    ashr11_i12 = ashr i32 %Id_load9_i10, %Id_load10_i11
-    %unsigned_shrreturn_value4_i13=%ashr11_i12
-    br label %unsigned_shr_return_block_i6
-
-if_else_block1_i5; preds = %if_then_block0_i4
-    %Id_load12_i14 = load i32, i32* %unsigned_shr_ip1_7
-    sub13_i15 = sub i32 31, %Id_load12_i14
-    shl14_i16 = shl i32 1, %sub13_i15
-    %Id_load15_i17 = load i32, i32* %unsigned_shr_ip0_6
-    ashr17_i18 = xor i32 %Id_load15_i17, 2147483648
-    %Id_load18_i19 = load i32, i32* %unsigned_shr_ip1_7
-    ashr19_i20 = ashr i32 %ashr17_i18, %Id_load18_i19
-    or20_i21 = or i32 %shl14_i16, %ashr19_i20
-    %unsigned_shrreturn_value4_i13=%or20_i21
-    br label %unsigned_shr_return_block_i6
-
-unsigned_shr_return_block_i6; preds = %if_else_block1_i5
-    br label %rng_entrance_block_AB_2_AB_7
-
-rng_entrance_block_AB_2_AB_7; preds = %unsigned_shr_return_block_i6
-    %funccal33=%unsigned_shrreturn_value4_i13
-    ashr34 = xor i32 %ashr29, %funccal33
-    br label %unsigned_shl_entrance_block_i8
-
-unsigned_shl_entrance_block_i8; preds = %rng_entrance_block_AB_2_AB_7
-    %unsigned_shl_ip0_22=%ashr34
-    %unsigned_shl_ip1_23=5
-    %Id_load1_i24 = load i32, i32* %unsigned_shl_ip0_22
-    %Id_load2_i25 = load i32, i32* %unsigned_shl_ip1_23
-    shl3_i26 = shl i32 %Id_load1_i24, %Id_load2_i25
-    %unsigned_shlreturn_value0_i27=%shl3_i26
-    br label %unsigned_shl_return_block_i9
-
-unsigned_shl_return_block_i9; preds = %unsigned_shl_entrance_block_i8
-    br label %rng_entrance_block_AB_2_AB_7_AB_10
-
-rng_entrance_block_AB_2_AB_7_AB_10; preds = %unsigned_shl_return_block_i9
-    %funccal38=%unsigned_shlreturn_value0_i27
-    ashr39 = xor i32 %ashr34, %funccal38
-    and43 = and i32 %ashr39, 1073741823
-    %rngreturn_value21=%and43
-    br label %rng_return_block
-
-rng_return_block; preds = %rng_entrance_block_AB_2_AB_7_AB_10
-    ret i32 %rngreturn_value21
+show_return_block; preds = %for_dest_block12
+    ret void
 
 }
 
-define ReturnType : i32
-Parameter : i32 i32 i32 i32 i32 i32 i32 i32 i32 i32  @test(i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*, i32*){
-test_entrance_block    %Id_load46 = load i32, i32* %q
-    %Id_load47 = load i32, i32* %w
-    %eq48 = icmp eq i32 %Id_load46, %Id_load47
-    br i1 %eq48, label %if_then_block3, label %if_else_block4
+define ReturnType : i1
+Parameter :  @win(){
+win_entrance_block    %call_malloc_func81 = call i8* @malloc(i32 404)
+    store i32 100, i32* %call_malloc_func81
+    %call_array_head82 = getelementptr i32, i32* %call_malloc_func81, i32 1
+    call_array_head_cast_83 = bitcast i32* %call_array_head82 to i32*
+    %now85 = load i32, i32 @now
+    %h86 = load i32, i32 @h
+    %ne87 = icmp ne i32 %now85, %h86
+    br i1 %ne87, label %if_then_block13, label %if_dest_block14
 
-if_then_block3; preds = %test_entrance_block
-    %Id_load49 = load i32, i32* %w
-    %Id_load50 = load i32, i32* %e
-    %ne51 = icmp ne i32 %Id_load49, %Id_load50
-    %lhs_compare_52 = icmp eq i1 %ne51, 0
-    br i1 %lhs_compare_52, label %oror_b_block9, label %oror_dest_block10
+if_then_block13; preds = %win_entrance_block
+    %winreturn_value75=false
+    br label %win_return_block
 
-oror_b_block9; preds = %if_then_block3
-    %Id_load53 = load i32, i32* %e
-    %Id_load54 = load i32, i32* %r
-    %ne55 = icmp ne i32 %Id_load53, %Id_load54
-    br label %oror_dest_block10
+if_dest_block14; preds = %if_then_block13
+    br label %for_cond_block15
 
-oror_dest_block10; preds = %oror_b_block9
-    Oror_56 = or i1 %ne51, %ne55
-    br i1 %Oror_56, label %if_then_block6, label %if_else_block7
+for_cond_block15; preds = %if_dest_block14
+    %j|addr775 = phi i32[ 0, %if_dest_block14], [ %PreAdd101, %for_step_block16]
+    %now90 = load i32, i32 @now
+    %slt91 = icmp slt i32 %j|addr775, %now90
+    br i1 %slt91, label %for_body_block17, label %for_dest_block18
 
-if_then_block6; preds = %oror_dest_block10
-    %Id_load57 = load i32, i32* %w
-    %Id_load58 = load i32, i32* %e
-    %Id_load59 = load i32, i32* %r
-    %Id_load60 = load i32, i32* %t
-    %Id_load61 = load i32, i32* %y
-    %Id_load62 = load i32, i32* %u
-    %Id_load63 = load i32, i32* %i
-    %Id_load64 = load i32, i32* %o
-    %Id_load65 = load i32, i32* %p
-    %Id_load66 = load i32, i32* %q
-    %funccal67 = call i32 @test(i32 %Id_load57, i32 %Id_load58, i32 %Id_load59, i32 %Id_load60, i32 %Id_load61, i32 %Id_load62, i32 %Id_load63, i32 %Id_load64, i32 %Id_load65, i32 %Id_load66)
-    add68 = add i32 %funccal67, 1
-    %testreturn_value45=%add68
-    br label %test_return_block
+for_body_block17; preds = %for_cond_block15
+    %getElementPtr94 = getelementptr i32, i32* %call_array_head_cast_83, i32 %j|addr775
+    %a96 = load i32*, i32* @a
+    %getElementPtr98 = getelementptr i32, i32* %a96, i32 %j|addr775
+    %GEP_Load99 = load i32, i32* %getElementPtr98
+    store i32 %GEP_Load99, i32* %getElementPtr94
+    br label %for_step_block16
 
-if_else_block7; preds = %if_then_block6
-    %Id_load69 = load i32, i32* %w
-    %Id_load70 = load i32, i32* %e
-    %Id_load71 = load i32, i32* %r
-    %Id_load72 = load i32, i32* %t
-    %Id_load73 = load i32, i32* %y
-    sub74 = sub i32 %Id_load73, 1
-    %Id_load75 = load i32, i32* %u
-    sub76 = sub i32 %Id_load75, 2
-    %Id_load77 = load i32, i32* %i
-    %Id_load78 = load i32, i32* %o
-    %Id_load79 = load i32, i32* %p
-    %Id_load80 = load i32, i32* %q
-    %funccal81 = call i32 @test(i32 %Id_load69, i32 %Id_load70, i32 %Id_load71, i32 %Id_load72, i32 %sub74, i32 %sub76, i32 %Id_load77, i32 %Id_load78, i32 %Id_load79, i32 %Id_load80)
-    add82 = add i32 %funccal81, 2
-    %testreturn_value45=%add82
-    br label %test_return_block
+for_step_block16; preds = %for_body_block17
+    PreAdd101 = add i32 %j|addr775, 1
+    br label %for_cond_block15
 
-if_else_block4; preds = %if_else_block7
-    %Id_load83 = load i32, i32* %q
-    %Id_load84 = load i32, i32* %w
-    add85 = add i32 %Id_load83, %Id_load84
-    %Id_load86 = load i32, i32* %q
-    add87 = add i32 %add85, %Id_load86
-    %testreturn_value45=%add87
-    br label %test_return_block
+for_dest_block18; preds = %for_step_block16
+    br label %for_cond_block19
 
-test_return_block; preds = %if_else_block4
-    ret i32 %testreturn_value45
+for_cond_block19; preds = %for_dest_block18
+    %i|addr762 = phi i32[ 0, %for_dest_block18], [ %PreAdd143, %for_step_block20]
+    %now104 = load i32, i32 @now
+    sub105 = sub i32 %now104, 1
+    %slt106 = icmp slt i32 %i|addr762, %sub105
+    br i1 %slt106, label %for_body_block21, label %for_dest_block22
+
+for_body_block21; preds = %for_cond_block19
+    add109 = add i32 %i|addr762, 1
+    br label %for_cond_block23
+
+for_cond_block23; preds = %for_body_block21
+    %j|addr777 = phi i32[ %add109, %for_body_block21], [ %PreAdd141, %for_step_block24]
+    %now111 = load i32, i32 @now
+    %slt112 = icmp slt i32 %j|addr777, %now111
+    br i1 %slt112, label %for_body_block25, label %for_dest_block26
+
+for_body_block25; preds = %for_cond_block23
+    %getElementPtr115 = getelementptr i32, i32* %call_array_head_cast_83, i32 %i|addr762
+    %GEP_Load116 = load i32, i32* %getElementPtr115
+    %getElementPtr119 = getelementptr i32, i32* %call_array_head_cast_83, i32 %j|addr777
+    %GEP_Load120 = load i32, i32* %getElementPtr119
+    %sgt121 = icmp sgt i32 %GEP_Load116, %GEP_Load120
+    br i1 %sgt121, label %if_then_block27, label %if_dest_block28
+
+if_then_block27; preds = %for_body_block25
+    %getElementPtr125 = getelementptr i32, i32* %call_array_head_cast_83, i32 %i|addr762
+    %GEP_Load126 = load i32, i32* %getElementPtr125
+    %getElementPtr129 = getelementptr i32, i32* %call_array_head_cast_83, i32 %i|addr762
+    %getElementPtr133 = getelementptr i32, i32* %call_array_head_cast_83, i32 %j|addr777
+    %GEP_Load134 = load i32, i32* %getElementPtr133
+    store i32 %GEP_Load134, i32* %getElementPtr129
+    %getElementPtr137 = getelementptr i32, i32* %call_array_head_cast_83, i32 %j|addr777
+    store i32 %GEP_Load126, i32* %getElementPtr137
+    br label %if_dest_block28
+
+if_dest_block28; preds = %if_then_block27
+    br label %for_step_block24
+
+for_step_block24; preds = %if_dest_block28
+    PreAdd141 = add i32 %j|addr777, 1
+    br label %for_cond_block23
+
+for_dest_block26; preds = %for_step_block24
+    br label %for_step_block20
+
+for_step_block20; preds = %for_dest_block26
+    PreAdd143 = add i32 %i|addr762, 1
+    br label %for_cond_block19
+
+for_dest_block22; preds = %for_step_block20
+    br label %for_cond_block29
+
+for_cond_block29; preds = %for_dest_block22
+    %i|addr763 = phi i32[ 0, %for_dest_block22], [ %PreAdd156, %for_step_block30]
+    %now146 = load i32, i32 @now
+    %slt147 = icmp slt i32 %i|addr763, %now146
+    br i1 %slt147, label %for_body_block31, label %for_dest_block32
+
+for_body_block31; preds = %for_cond_block29
+    %getElementPtr150 = getelementptr i32, i32* %call_array_head_cast_83, i32 %i|addr763
+    %GEP_Load151 = load i32, i32* %getElementPtr150
+    add153 = add i32 %i|addr763, 1
+    %ne154 = icmp ne i32 %GEP_Load151, %add153
+    br i1 %ne154, label %if_then_block33, label %if_dest_block34
+
+if_then_block33; preds = %for_body_block31
+    %winreturn_value75=false
+    br label %win_return_block
+
+if_dest_block34; preds = %if_then_block33
+    br label %for_step_block30
+
+for_step_block30; preds = %if_dest_block34
+    PreAdd156 = add i32 %i|addr763, 1
+    br label %for_cond_block29
+
+for_dest_block32; preds = %for_step_block30
+    %winreturn_value75=true
+    br label %win_return_block
+
+win_return_block; preds = %for_dest_block32
+    ret i1 %winreturn_value75
 
 }
 
 define ReturnType : i32
 Parameter :  @main(){
-main_entrance_block    br label %__init___entrance_block_i11
-
-__init___entrance_block_i11; preds = %main_entrance_block
-    br label %__init___return_block_i12
-
-__init___return_block_i12; preds = %__init___entrance_block_i11
-    br label %main_entrance_block_AB_13
-
-main_entrance_block_AB_13; preds = %__init___return_block_i12
-    %sum|addr901=0
-    %rng_seed|addr890=19260817
-    br label %for_body_block11
-
-for_body_block11; preds = %main_entrance_block_AB_13
-    br label %rng_entrance_block_i14
-
-rng_entrance_block_i14; preds = %for_body_block11
-    %rng_ip0_28=%rng_seed|addr890
-    %Id_load24_i29 = load i32, i32* %rng_ip0_28
-    br label %unsigned_shl_entrance_block_i0_i15
-
-unsigned_shl_entrance_block_i0_i15; preds = %rng_entrance_block_i14
-    %unsigned_shl_ip0_0_i30=%Id_load24_i29
-    %unsigned_shl_ip1_1_i31=13
-    %Id_load1_i2_i32 = load i32, i32* %unsigned_shl_ip0_0_i30
-    %Id_load2_i3_i33 = load i32, i32* %unsigned_shl_ip1_1_i31
-    shl3_i4_i34 = shl i32 %Id_load1_i2_i32, %Id_load2_i3_i33
-    %unsigned_shlreturn_value0_i5_i35=%shl3_i4_i34
-    br label %unsigned_shl_return_block_i1_i16
-
-unsigned_shl_return_block_i1_i16; preds = %unsigned_shl_entrance_block_i0_i15
-    br label %rng_entrance_block_AB_2_i17
-
-rng_entrance_block_AB_2_i17; preds = %unsigned_shl_return_block_i1_i16
-    %funccal28_i36=%unsigned_shlreturn_value0_i5_i35
-    ashr29_i37 = xor i32 %Id_load24_i29, %funccal28_i36
-    br label %unsigned_shr_entrance_block_i3_i18
-
-unsigned_shr_entrance_block_i3_i18; preds = %rng_entrance_block_AB_2_i17
-    %unsigned_shr_ip0_6_i38=%ashr29_i37
-    %unsigned_shr_ip1_7_i39=17
-    %Id_load7_i8_i40 = load i32, i32* %unsigned_shr_ip0_6_i38
-    %sge8_i9_i41 = icmp sge i32 %Id_load7_i8_i40, 0
-    br i1 %sge8_i9_i41, label %if_then_block0_i4_i19, label %if_else_block1_i5_i20
-
-if_then_block0_i4_i19; preds = %unsigned_shr_entrance_block_i3_i18
-    %Id_load9_i10_i42 = load i32, i32* %unsigned_shr_ip0_6_i38
-    %Id_load10_i11_i43 = load i32, i32* %unsigned_shr_ip1_7_i39
-    ashr11_i12_i44 = ashr i32 %Id_load9_i10_i42, %Id_load10_i11_i43
-    %unsigned_shrreturn_value4_i13_i45=%ashr11_i12_i44
-    br label %unsigned_shr_return_block_i6_i21
-
-if_else_block1_i5_i20; preds = %if_then_block0_i4_i19
-    %Id_load12_i14_i46 = load i32, i32* %unsigned_shr_ip1_7_i39
-    sub13_i15_i47 = sub i32 31, %Id_load12_i14_i46
-    shl14_i16_i48 = shl i32 1, %sub13_i15_i47
-    %Id_load15_i17_i49 = load i32, i32* %unsigned_shr_ip0_6_i38
-    ashr17_i18_i50 = xor i32 %Id_load15_i17_i49, 2147483648
-    %Id_load18_i19_i51 = load i32, i32* %unsigned_shr_ip1_7_i39
-    ashr19_i20_i52 = ashr i32 %ashr17_i18_i50, %Id_load18_i19_i51
-    or20_i21_i53 = or i32 %shl14_i16_i48, %ashr19_i20_i52
-    %unsigned_shrreturn_value4_i13_i45=%or20_i21_i53
-    br label %unsigned_shr_return_block_i6_i21
-
-unsigned_shr_return_block_i6_i21; preds = %if_else_block1_i5_i20
-    br label %rng_entrance_block_AB_2_AB_7_i22
-
-rng_entrance_block_AB_2_AB_7_i22; preds = %unsigned_shr_return_block_i6_i21
-    %funccal33_i54=%unsigned_shrreturn_value4_i13_i45
-    ashr34_i55 = xor i32 %ashr29_i37, %funccal33_i54
-    br label %unsigned_shl_entrance_block_i8_i23
-
-unsigned_shl_entrance_block_i8_i23; preds = %rng_entrance_block_AB_2_AB_7_i22
-    %unsigned_shl_ip0_22_i56=%ashr34_i55
-    %unsigned_shl_ip1_23_i57=5
-    %Id_load1_i24_i58 = load i32, i32* %unsigned_shl_ip0_22_i56
-    %Id_load2_i25_i59 = load i32, i32* %unsigned_shl_ip1_23_i57
-    shl3_i26_i60 = shl i32 %Id_load1_i24_i58, %Id_load2_i25_i59
-    %unsigned_shlreturn_value0_i27_i61=%shl3_i26_i60
-    br label %unsigned_shl_return_block_i9_i24
-
-unsigned_shl_return_block_i9_i24; preds = %unsigned_shl_entrance_block_i8_i23
-    br label %rng_entrance_block_AB_2_AB_7_AB_10_i25
-
-rng_entrance_block_AB_2_AB_7_AB_10_i25; preds = %unsigned_shl_return_block_i9_i24
-    %funccal38_i62=%unsigned_shlreturn_value0_i27_i61
-    ashr39_i63 = xor i32 %ashr34_i55, %funccal38_i62
-    and43_i64 = and i32 %ashr39_i63, 1073741823
-    %rngreturn_value21_i65=%and43_i64
-    br label %rng_return_block_i26
-
-rng_return_block_i26; preds = %rng_entrance_block_AB_2_AB_7_AB_10_i25
-    br label %for_body_block11_AB_27
-
-for_body_block11_AB_27; preds = %rng_return_block_i26
-    %funccal93=%rngreturn_value21_i65
-    br label %rng_entrance_block_i28
-
-rng_entrance_block_i28; preds = %for_body_block11_AB_27
-    %rng_ip0_66=%funccal93
-    %Id_load24_i67 = load i32, i32* %rng_ip0_66
-    br label %unsigned_shl_entrance_block_i0_i29
-
-unsigned_shl_entrance_block_i0_i29; preds = %rng_entrance_block_i28
-    %unsigned_shl_ip0_0_i68=%Id_load24_i67
-    %unsigned_shl_ip1_1_i69=13
-    %Id_load1_i2_i70 = load i32, i32* %unsigned_shl_ip0_0_i68
-    %Id_load2_i3_i71 = load i32, i32* %unsigned_shl_ip1_1_i69
-    shl3_i4_i72 = shl i32 %Id_load1_i2_i70, %Id_load2_i3_i71
-    %unsigned_shlreturn_value0_i5_i73=%shl3_i4_i72
-    br label %unsigned_shl_return_block_i1_i30
-
-unsigned_shl_return_block_i1_i30; preds = %unsigned_shl_entrance_block_i0_i29
-    br label %rng_entrance_block_AB_2_i31
-
-rng_entrance_block_AB_2_i31; preds = %unsigned_shl_return_block_i1_i30
-    %funccal28_i74=%unsigned_shlreturn_value0_i5_i73
-    ashr29_i75 = xor i32 %Id_load24_i67, %funccal28_i74
-    br label %unsigned_shr_entrance_block_i3_i32
-
-unsigned_shr_entrance_block_i3_i32; preds = %rng_entrance_block_AB_2_i31
-    %unsigned_shr_ip0_6_i76=%ashr29_i75
-    %unsigned_shr_ip1_7_i77=17
-    %Id_load7_i8_i78 = load i32, i32* %unsigned_shr_ip0_6_i76
-    %sge8_i9_i79 = icmp sge i32 %Id_load7_i8_i78, 0
-    br i1 %sge8_i9_i79, label %if_then_block0_i4_i33, label %if_else_block1_i5_i34
-
-if_then_block0_i4_i33; preds = %unsigned_shr_entrance_block_i3_i32
-    %Id_load9_i10_i80 = load i32, i32* %unsigned_shr_ip0_6_i76
-    %Id_load10_i11_i81 = load i32, i32* %unsigned_shr_ip1_7_i77
-    ashr11_i12_i82 = ashr i32 %Id_load9_i10_i80, %Id_load10_i11_i81
-    %unsigned_shrreturn_value4_i13_i83=%ashr11_i12_i82
-    br label %unsigned_shr_return_block_i6_i35
-
-if_else_block1_i5_i34; preds = %if_then_block0_i4_i33
-    %Id_load12_i14_i84 = load i32, i32* %unsigned_shr_ip1_7_i77
-    sub13_i15_i85 = sub i32 31, %Id_load12_i14_i84
-    shl14_i16_i86 = shl i32 1, %sub13_i15_i85
-    %Id_load15_i17_i87 = load i32, i32* %unsigned_shr_ip0_6_i76
-    ashr17_i18_i88 = xor i32 %Id_load15_i17_i87, 2147483648
-    %Id_load18_i19_i89 = load i32, i32* %unsigned_shr_ip1_7_i77
-    ashr19_i20_i90 = ashr i32 %ashr17_i18_i88, %Id_load18_i19_i89
-    or20_i21_i91 = or i32 %shl14_i16_i86, %ashr19_i20_i90
-    %unsigned_shrreturn_value4_i13_i83=%or20_i21_i91
-    br label %unsigned_shr_return_block_i6_i35
-
-unsigned_shr_return_block_i6_i35; preds = %if_else_block1_i5_i34
-    br label %rng_entrance_block_AB_2_AB_7_i36
-
-rng_entrance_block_AB_2_AB_7_i36; preds = %unsigned_shr_return_block_i6_i35
-    %funccal33_i92=%unsigned_shrreturn_value4_i13_i83
-    ashr34_i93 = xor i32 %ashr29_i75, %funccal33_i92
-    br label %unsigned_shl_entrance_block_i8_i37
-
-unsigned_shl_entrance_block_i8_i37; preds = %rng_entrance_block_AB_2_AB_7_i36
-    %unsigned_shl_ip0_22_i94=%ashr34_i93
-    %unsigned_shl_ip1_23_i95=5
-    %Id_load1_i24_i96 = load i32, i32* %unsigned_shl_ip0_22_i94
-    %Id_load2_i25_i97 = load i32, i32* %unsigned_shl_ip1_23_i95
-    shl3_i26_i98 = shl i32 %Id_load1_i24_i96, %Id_load2_i25_i97
-    %unsigned_shlreturn_value0_i27_i99=%shl3_i26_i98
-    br label %unsigned_shl_return_block_i9_i38
-
-unsigned_shl_return_block_i9_i38; preds = %unsigned_shl_entrance_block_i8_i37
-    br label %rng_entrance_block_AB_2_AB_7_AB_10_i39
-
-rng_entrance_block_AB_2_AB_7_AB_10_i39; preds = %unsigned_shl_return_block_i9_i38
-    %funccal38_i100=%unsigned_shlreturn_value0_i27_i99
-    ashr39_i101 = xor i32 %ashr34_i93, %funccal38_i100
-    and43_i102 = and i32 %ashr39_i101, 1073741823
-    %rngreturn_value21_i103=%and43_i102
-    br label %rng_return_block_i40
-
-rng_return_block_i40; preds = %rng_entrance_block_AB_2_AB_7_AB_10_i39
-    br label %for_body_block11_AB_27_AB_41
-
-for_body_block11_AB_27_AB_41; preds = %rng_return_block_i40
-    %funccal96=%rngreturn_value21_i103
-    and100 = and i32 %funccal93, 255
-    and102 = and i32 %funccal96, 255
-    %ne103 = icmp ne i32 %and100, %and102
-    br i1 %ne103, label %if_then_block13, label %if_else_block14
-
-if_then_block13; preds = %for_body_block11_AB_27_AB_41
-    br label %rng_entrance_block_i42
-
-rng_entrance_block_i42; preds = %if_then_block13
-    %rng_ip0_104=%funccal96
-    %Id_load24_i105 = load i32, i32* %rng_ip0_104
-    br label %unsigned_shl_entrance_block_i0_i43
-
-unsigned_shl_entrance_block_i0_i43; preds = %rng_entrance_block_i42
-    %unsigned_shl_ip0_0_i106=%Id_load24_i105
-    %unsigned_shl_ip1_1_i107=13
-    %Id_load1_i2_i108 = load i32, i32* %unsigned_shl_ip0_0_i106
-    %Id_load2_i3_i109 = load i32, i32* %unsigned_shl_ip1_1_i107
-    shl3_i4_i110 = shl i32 %Id_load1_i2_i108, %Id_load2_i3_i109
-    %unsigned_shlreturn_value0_i5_i111=%shl3_i4_i110
-    br label %unsigned_shl_return_block_i1_i44
-
-unsigned_shl_return_block_i1_i44; preds = %unsigned_shl_entrance_block_i0_i43
-    br label %rng_entrance_block_AB_2_i45
-
-rng_entrance_block_AB_2_i45; preds = %unsigned_shl_return_block_i1_i44
-    %funccal28_i112=%unsigned_shlreturn_value0_i5_i111
-    ashr29_i113 = xor i32 %Id_load24_i105, %funccal28_i112
-    br label %unsigned_shr_entrance_block_i3_i46
-
-unsigned_shr_entrance_block_i3_i46; preds = %rng_entrance_block_AB_2_i45
-    %unsigned_shr_ip0_6_i114=%ashr29_i113
-    %unsigned_shr_ip1_7_i115=17
-    %Id_load7_i8_i116 = load i32, i32* %unsigned_shr_ip0_6_i114
-    %sge8_i9_i117 = icmp sge i32 %Id_load7_i8_i116, 0
-    br i1 %sge8_i9_i117, label %if_then_block0_i4_i47, label %if_else_block1_i5_i48
-
-if_then_block0_i4_i47; preds = %unsigned_shr_entrance_block_i3_i46
-    %Id_load9_i10_i118 = load i32, i32* %unsigned_shr_ip0_6_i114
-    %Id_load10_i11_i119 = load i32, i32* %unsigned_shr_ip1_7_i115
-    ashr11_i12_i120 = ashr i32 %Id_load9_i10_i118, %Id_load10_i11_i119
-    %unsigned_shrreturn_value4_i13_i121=%ashr11_i12_i120
-    br label %unsigned_shr_return_block_i6_i49
-
-if_else_block1_i5_i48; preds = %if_then_block0_i4_i47
-    %Id_load12_i14_i122 = load i32, i32* %unsigned_shr_ip1_7_i115
-    sub13_i15_i123 = sub i32 31, %Id_load12_i14_i122
-    shl14_i16_i124 = shl i32 1, %sub13_i15_i123
-    %Id_load15_i17_i125 = load i32, i32* %unsigned_shr_ip0_6_i114
-    ashr17_i18_i126 = xor i32 %Id_load15_i17_i125, 2147483648
-    %Id_load18_i19_i127 = load i32, i32* %unsigned_shr_ip1_7_i115
-    ashr19_i20_i128 = ashr i32 %ashr17_i18_i126, %Id_load18_i19_i127
-    or20_i21_i129 = or i32 %shl14_i16_i124, %ashr19_i20_i128
-    %unsigned_shrreturn_value4_i13_i121=%or20_i21_i129
-    br label %unsigned_shr_return_block_i6_i49
-
-unsigned_shr_return_block_i6_i49; preds = %if_else_block1_i5_i48
-    br label %rng_entrance_block_AB_2_AB_7_i50
-
-rng_entrance_block_AB_2_AB_7_i50; preds = %unsigned_shr_return_block_i6_i49
-    %funccal33_i130=%unsigned_shrreturn_value4_i13_i121
-    ashr34_i131 = xor i32 %ashr29_i113, %funccal33_i130
-    br label %unsigned_shl_entrance_block_i8_i51
-
-unsigned_shl_entrance_block_i8_i51; preds = %rng_entrance_block_AB_2_AB_7_i50
-    %unsigned_shl_ip0_22_i132=%ashr34_i131
-    %unsigned_shl_ip1_23_i133=5
-    %Id_load1_i24_i134 = load i32, i32* %unsigned_shl_ip0_22_i132
-    %Id_load2_i25_i135 = load i32, i32* %unsigned_shl_ip1_23_i133
-    shl3_i26_i136 = shl i32 %Id_load1_i24_i134, %Id_load2_i25_i135
-    %unsigned_shlreturn_value0_i27_i137=%shl3_i26_i136
-    br label %unsigned_shl_return_block_i9_i52
-
-unsigned_shl_return_block_i9_i52; preds = %unsigned_shl_entrance_block_i8_i51
-    br label %rng_entrance_block_AB_2_AB_7_AB_10_i53
-
-rng_entrance_block_AB_2_AB_7_AB_10_i53; preds = %unsigned_shl_return_block_i9_i52
-    %funccal38_i138=%unsigned_shlreturn_value0_i27_i137
-    ashr39_i139 = xor i32 %ashr34_i131, %funccal38_i138
-    and43_i140 = and i32 %ashr39_i139, 1073741823
-    %rngreturn_value21_i141=%and43_i140
-    br label %rng_return_block_i54
-
-rng_return_block_i54; preds = %rng_entrance_block_AB_2_AB_7_AB_10_i53
-    br label %if_then_block13_AB_55
-
-if_then_block13_AB_55; preds = %rng_return_block_i54
-    %funccal106=%rngreturn_value21_i141
-    br label %rng_entrance_block_i56
-
-rng_entrance_block_i56; preds = %if_then_block13_AB_55
-    %rng_ip0_142=%funccal106
-    %Id_load24_i143 = load i32, i32* %rng_ip0_142
-    br label %unsigned_shl_entrance_block_i0_i57
-
-unsigned_shl_entrance_block_i0_i57; preds = %rng_entrance_block_i56
-    %unsigned_shl_ip0_0_i144=%Id_load24_i143
-    %unsigned_shl_ip1_1_i145=13
-    %Id_load1_i2_i146 = load i32, i32* %unsigned_shl_ip0_0_i144
-    %Id_load2_i3_i147 = load i32, i32* %unsigned_shl_ip1_1_i145
-    shl3_i4_i148 = shl i32 %Id_load1_i2_i146, %Id_load2_i3_i147
-    %unsigned_shlreturn_value0_i5_i149=%shl3_i4_i148
-    br label %unsigned_shl_return_block_i1_i58
-
-unsigned_shl_return_block_i1_i58; preds = %unsigned_shl_entrance_block_i0_i57
-    br label %rng_entrance_block_AB_2_i59
-
-rng_entrance_block_AB_2_i59; preds = %unsigned_shl_return_block_i1_i58
-    %funccal28_i150=%unsigned_shlreturn_value0_i5_i149
-    ashr29_i151 = xor i32 %Id_load24_i143, %funccal28_i150
-    br label %unsigned_shr_entrance_block_i3_i60
-
-unsigned_shr_entrance_block_i3_i60; preds = %rng_entrance_block_AB_2_i59
-    %unsigned_shr_ip0_6_i152=%ashr29_i151
-    %unsigned_shr_ip1_7_i153=17
-    %Id_load7_i8_i154 = load i32, i32* %unsigned_shr_ip0_6_i152
-    %sge8_i9_i155 = icmp sge i32 %Id_load7_i8_i154, 0
-    br i1 %sge8_i9_i155, label %if_then_block0_i4_i61, label %if_else_block1_i5_i62
-
-if_then_block0_i4_i61; preds = %unsigned_shr_entrance_block_i3_i60
-    %Id_load9_i10_i156 = load i32, i32* %unsigned_shr_ip0_6_i152
-    %Id_load10_i11_i157 = load i32, i32* %unsigned_shr_ip1_7_i153
-    ashr11_i12_i158 = ashr i32 %Id_load9_i10_i156, %Id_load10_i11_i157
-    %unsigned_shrreturn_value4_i13_i159=%ashr11_i12_i158
-    br label %unsigned_shr_return_block_i6_i63
-
-if_else_block1_i5_i62; preds = %if_then_block0_i4_i61
-    %Id_load12_i14_i160 = load i32, i32* %unsigned_shr_ip1_7_i153
-    sub13_i15_i161 = sub i32 31, %Id_load12_i14_i160
-    shl14_i16_i162 = shl i32 1, %sub13_i15_i161
-    %Id_load15_i17_i163 = load i32, i32* %unsigned_shr_ip0_6_i152
-    ashr17_i18_i164 = xor i32 %Id_load15_i17_i163, 2147483648
-    %Id_load18_i19_i165 = load i32, i32* %unsigned_shr_ip1_7_i153
-    ashr19_i20_i166 = ashr i32 %ashr17_i18_i164, %Id_load18_i19_i165
-    or20_i21_i167 = or i32 %shl14_i16_i162, %ashr19_i20_i166
-    %unsigned_shrreturn_value4_i13_i159=%or20_i21_i167
-    br label %unsigned_shr_return_block_i6_i63
-
-unsigned_shr_return_block_i6_i63; preds = %if_else_block1_i5_i62
-    br label %rng_entrance_block_AB_2_AB_7_i64
-
-rng_entrance_block_AB_2_AB_7_i64; preds = %unsigned_shr_return_block_i6_i63
-    %funccal33_i168=%unsigned_shrreturn_value4_i13_i159
-    ashr34_i169 = xor i32 %ashr29_i151, %funccal33_i168
-    br label %unsigned_shl_entrance_block_i8_i65
-
-unsigned_shl_entrance_block_i8_i65; preds = %rng_entrance_block_AB_2_AB_7_i64
-    %unsigned_shl_ip0_22_i170=%ashr34_i169
-    %unsigned_shl_ip1_23_i171=5
-    %Id_load1_i24_i172 = load i32, i32* %unsigned_shl_ip0_22_i170
-    %Id_load2_i25_i173 = load i32, i32* %unsigned_shl_ip1_23_i171
-    shl3_i26_i174 = shl i32 %Id_load1_i24_i172, %Id_load2_i25_i173
-    %unsigned_shlreturn_value0_i27_i175=%shl3_i26_i174
-    br label %unsigned_shl_return_block_i9_i66
-
-unsigned_shl_return_block_i9_i66; preds = %unsigned_shl_entrance_block_i8_i65
-    br label %rng_entrance_block_AB_2_AB_7_AB_10_i67
-
-rng_entrance_block_AB_2_AB_7_AB_10_i67; preds = %unsigned_shl_return_block_i9_i66
-    %funccal38_i176=%unsigned_shlreturn_value0_i27_i175
-    ashr39_i177 = xor i32 %ashr34_i169, %funccal38_i176
-    and43_i178 = and i32 %ashr39_i177, 1073741823
-    %rngreturn_value21_i179=%and43_i178
-    br label %rng_return_block_i68
-
-rng_return_block_i68; preds = %rng_entrance_block_AB_2_AB_7_AB_10_i67
-    br label %if_then_block13_AB_55_AB_69
-
-if_then_block13_AB_55_AB_69; preds = %rng_return_block_i68
-    %funccal109=%rngreturn_value21_i179
-    br label %rng_entrance_block_i70
-
-rng_entrance_block_i70; preds = %if_then_block13_AB_55_AB_69
-    %rng_ip0_180=%funccal109
-    %Id_load24_i181 = load i32, i32* %rng_ip0_180
-    br label %unsigned_shl_entrance_block_i0_i71
-
-unsigned_shl_entrance_block_i0_i71; preds = %rng_entrance_block_i70
-    %unsigned_shl_ip0_0_i182=%Id_load24_i181
-    %unsigned_shl_ip1_1_i183=13
-    %Id_load1_i2_i184 = load i32, i32* %unsigned_shl_ip0_0_i182
-    %Id_load2_i3_i185 = load i32, i32* %unsigned_shl_ip1_1_i183
-    shl3_i4_i186 = shl i32 %Id_load1_i2_i184, %Id_load2_i3_i185
-    %unsigned_shlreturn_value0_i5_i187=%shl3_i4_i186
-    br label %unsigned_shl_return_block_i1_i72
-
-unsigned_shl_return_block_i1_i72; preds = %unsigned_shl_entrance_block_i0_i71
-    br label %rng_entrance_block_AB_2_i73
-
-rng_entrance_block_AB_2_i73; preds = %unsigned_shl_return_block_i1_i72
-    %funccal28_i188=%unsigned_shlreturn_value0_i5_i187
-    ashr29_i189 = xor i32 %Id_load24_i181, %funccal28_i188
-    br label %unsigned_shr_entrance_block_i3_i74
-
-unsigned_shr_entrance_block_i3_i74; preds = %rng_entrance_block_AB_2_i73
-    %unsigned_shr_ip0_6_i190=%ashr29_i189
-    %unsigned_shr_ip1_7_i191=17
-    %Id_load7_i8_i192 = load i32, i32* %unsigned_shr_ip0_6_i190
-    %sge8_i9_i193 = icmp sge i32 %Id_load7_i8_i192, 0
-    br i1 %sge8_i9_i193, label %if_then_block0_i4_i75, label %if_else_block1_i5_i76
-
-if_then_block0_i4_i75; preds = %unsigned_shr_entrance_block_i3_i74
-    %Id_load9_i10_i194 = load i32, i32* %unsigned_shr_ip0_6_i190
-    %Id_load10_i11_i195 = load i32, i32* %unsigned_shr_ip1_7_i191
-    ashr11_i12_i196 = ashr i32 %Id_load9_i10_i194, %Id_load10_i11_i195
-    %unsigned_shrreturn_value4_i13_i197=%ashr11_i12_i196
-    br label %unsigned_shr_return_block_i6_i77
-
-if_else_block1_i5_i76; preds = %if_then_block0_i4_i75
-    %Id_load12_i14_i198 = load i32, i32* %unsigned_shr_ip1_7_i191
-    sub13_i15_i199 = sub i32 31, %Id_load12_i14_i198
-    shl14_i16_i200 = shl i32 1, %sub13_i15_i199
-    %Id_load15_i17_i201 = load i32, i32* %unsigned_shr_ip0_6_i190
-    ashr17_i18_i202 = xor i32 %Id_load15_i17_i201, 2147483648
-    %Id_load18_i19_i203 = load i32, i32* %unsigned_shr_ip1_7_i191
-    ashr19_i20_i204 = ashr i32 %ashr17_i18_i202, %Id_load18_i19_i203
-    or20_i21_i205 = or i32 %shl14_i16_i200, %ashr19_i20_i204
-    %unsigned_shrreturn_value4_i13_i197=%or20_i21_i205
-    br label %unsigned_shr_return_block_i6_i77
-
-unsigned_shr_return_block_i6_i77; preds = %if_else_block1_i5_i76
-    br label %rng_entrance_block_AB_2_AB_7_i78
-
-rng_entrance_block_AB_2_AB_7_i78; preds = %unsigned_shr_return_block_i6_i77
-    %funccal33_i206=%unsigned_shrreturn_value4_i13_i197
-    ashr34_i207 = xor i32 %ashr29_i189, %funccal33_i206
-    br label %unsigned_shl_entrance_block_i8_i79
-
-unsigned_shl_entrance_block_i8_i79; preds = %rng_entrance_block_AB_2_AB_7_i78
-    %unsigned_shl_ip0_22_i208=%ashr34_i207
-    %unsigned_shl_ip1_23_i209=5
-    %Id_load1_i24_i210 = load i32, i32* %unsigned_shl_ip0_22_i208
-    %Id_load2_i25_i211 = load i32, i32* %unsigned_shl_ip1_23_i209
-    shl3_i26_i212 = shl i32 %Id_load1_i24_i210, %Id_load2_i25_i211
-    %unsigned_shlreturn_value0_i27_i213=%shl3_i26_i212
-    br label %unsigned_shl_return_block_i9_i80
-
-unsigned_shl_return_block_i9_i80; preds = %unsigned_shl_entrance_block_i8_i79
-    br label %rng_entrance_block_AB_2_AB_7_AB_10_i81
-
-rng_entrance_block_AB_2_AB_7_AB_10_i81; preds = %unsigned_shl_return_block_i9_i80
-    %funccal38_i214=%unsigned_shlreturn_value0_i27_i213
-    ashr39_i215 = xor i32 %ashr34_i207, %funccal38_i214
-    and43_i216 = and i32 %ashr39_i215, 1073741823
-    %rngreturn_value21_i217=%and43_i216
-    br label %rng_return_block_i82
-
-rng_return_block_i82; preds = %rng_entrance_block_AB_2_AB_7_AB_10_i81
-    br label %if_then_block13_AB_55_AB_69_AB_83
-
-if_then_block13_AB_55_AB_69_AB_83; preds = %rng_return_block_i82
-    %funccal112=%rngreturn_value21_i217
-    %funccal115 = call i32 @rng(i32 %funccal112)
-    %funccal118 = call i32 @rng(i32 %funccal115)
-    and124 = and i32 %funccal106, 3
-    ashr126 = ashr i32 %funccal106, 28
-    and128 = and i32 %funccal109, 1
-    ashr130 = ashr i32 %funccal109, 29
-    ashr132 = ashr i32 %funccal112, 25
-    and134 = and i32 %funccal112, 31
-    ashr136 = ashr i32 %funccal115, 15
-    and138 = and i32 %funccal115, 32767
-    ashr140 = ashr i32 %funccal118, 15
-    and142 = and i32 %funccal118, 32767
-    %funccal143 = call i32 @test(i32 %and124, i32 %ashr126, i32 %and128, i32 %ashr130, i32 %ashr132, i32 %and134, i32 %ashr136, i32 %and138, i32 %ashr140, i32 %and142)
-    ashr144 = xor i32 %sum|addr901, %funccal143
-    br label %if_dest_block15
-
-if_else_block14; preds = %if_then_block13_AB_55_AB_69_AB_83
-    br label %for_dest_block12
-
-if_dest_block15; preds = %if_else_block14
-    %sum|addr901=%ashr144
-    %rng_seed|addr890=%funccal118
-    br label %for_body_block11
-
-for_dest_block12; preds = %if_dest_block15
-    %mainreturn_value88=%sum|addr901
+main_entrance_block    br label %__init___entrance_block_i3
+
+__init___entrance_block_i3; preds = %main_entrance_block
+    store pointer is not pointertypei32
+    store pointer is not pointertypei32
+    store pointer is not pointertypei32
+    br label %__init___return_block_i4
+
+__init___return_block_i4; preds = %__init___entrance_block_i3
+    br label %main_entrance_block_AB_5
+
+main_entrance_block_AB_5; preds = %__init___return_block_i4
+    store pointer is not pointertypei32
+    store pointer is not pointertypei32
+    %call_malloc_func231 = call i8* @malloc(i32 404)
+    store i32 100, i32* %call_malloc_func231
+    %call_array_head232 = getelementptr i32, i32* %call_malloc_func231, i32 1
+    call_array_head_cast_233 = bitcast i32* %call_array_head232 to i32*
+    store i32 %call_array_head_cast_233, i32* @a
+    %M235 = load i32, i32 @M
+    %A236 = load i32, i32 @A
+    sdiv237 = sdiv i32 %M235, %A236
+    store pointer is not pointertypei32
+    %M239 = load i32, i32 @M
+    %A240 = load i32, i32 @A
+    srem241 = srem i32 %M239, %A240
+    store pointer is not pointertypei32
+    %n242 = load i32, i32 @n
+    br label %pd_entrance_block_i6
+
+pd_entrance_block_i6; preds = %main_entrance_block_AB_5
+    %pd_ip0_16=%n242
+    br label %for_cond_block3_i7
+
+for_cond_block3_i7; preds = %pd_entrance_block_i6
+    %h45_i17 = load i32, i32 @h
+    %Id_load46_i18 = load i32, i32* %pd_ip0_16
+    %sle47_i19 = icmp sle i32 %h45_i17, %Id_load46_i18
+    br i1 %sle47_i19, label %for_body_block5_i8, label %for_dest_block6_i12
+
+for_body_block5_i8; preds = %for_cond_block3_i7
+    %Id_load48_i20 = load i32, i32* %pd_ip0_16
+    %h49_i21 = load i32, i32 @h
+    %h50_i22 = load i32, i32 @h
+    add51_i23 = add i32 %h50_i22, 1
+    mul52_i24 = mul i32 %h49_i21, %add51_i23
+    sdiv53_i25 = sdiv i32 %mul52_i24, 2
+    %eq54_i26 = icmp eq i32 %Id_load48_i20, %sdiv53_i25
+    br i1 %eq54_i26, label %if_then_block7_i9, label %if_dest_block8_i10
+
+if_then_block7_i9; preds = %for_body_block5_i8
+    %pdreturn_value44_i27=true
+    br label %pd_return_block_i13
+
+if_dest_block8_i10; preds = %if_then_block7_i9
+    br label %for_step_block4_i11
+
+for_step_block4_i11; preds = %if_dest_block8_i10
+    %h55_i28 = load i32, i32 @h
+    PreAdd56_i29 = add i32 %h55_i28, 1
+    store pointer is not pointertypei32
+    br label %for_cond_block3_i7
+
+for_dest_block6_i12; preds = %for_step_block4_i11
+    %pdreturn_value44_i27=false
+    br label %pd_return_block_i13
+
+pd_return_block_i13; preds = %for_dest_block6_i12
+    br label %main_entrance_block_AB_5_AB_14
+
+main_entrance_block_AB_5_AB_14; preds = %pd_return_block_i13
+    %funccal243=%pdreturn_value44_i27
+    not244 = xor i1 true, %funccal243
+    br i1 %not244, label %if_then_block56, label %if_dest_block57
+
+if_then_block56; preds = %main_entrance_block_AB_5_AB_14
+    %StringConst245 = getelementptr [79 x i8], [79 x i8]* @const_string_no2, i32 0, i32 0
+    %funccal246 = call void @println(i8* %StringConst245)
+    %mainreturn_value220=1
     br label %main_return_block
 
-main_return_block; preds = %for_dest_block12
-    ret i32 %mainreturn_value88
+if_dest_block57; preds = %if_then_block56
+    %StringConst247 = getelementptr [12 x i8], [12 x i8]* @const_string_no3, i32 0, i32 0
+    %funccal248 = call void @println(i8* %StringConst247)
+    br label %initialize_entrance_block_i15
+
+initialize_entrance_block_i15; preds = %if_dest_block57
+    %initialize_ip0_30=3654898
+    %Id_load24_i31 = load i32, i32* %initialize_ip0_30
+    store pointer is not pointertypei32
+    br label %initialize_return_block_i16
+
+initialize_return_block_i16; preds = %initialize_entrance_block_i15
+    br label %if_dest_block57_AB_17
+
+if_dest_block57_AB_17; preds = %initialize_return_block_i16
+    br label %random_entrance_block_i18
+
+random_entrance_block_i18; preds = %if_dest_block57_AB_17
+    %A2_i32 = load i32, i32 @A
+    %seed3_i33 = load i32, i32 @seed
+    %Q4_i34 = load i32, i32 @Q
+    srem5_i35 = srem i32 %seed3_i33, %Q4_i34
+    mul6_i36 = mul i32 %A2_i32, %srem5_i35
+    %R7_i37 = load i32, i32 @R
+    %seed8_i38 = load i32, i32 @seed
+    %Q9_i39 = load i32, i32 @Q
+    sdiv10_i40 = sdiv i32 %seed8_i38, %Q9_i39
+    mul11_i41 = mul i32 %R7_i37, %sdiv10_i40
+    sub12_i42 = sub i32 %mul6_i36, %mul11_i41
+    %sge14_i43 = icmp sge i32 %sub12_i42, 0
+    br i1 %sge14_i43, label %if_then_block0_i19, label %if_else_block1_i20
+
+if_then_block0_i19; preds = %random_entrance_block_i18
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i21
+
+if_else_block1_i20; preds = %if_then_block0_i19
+    %M19_i44 = load i32, i32 @M
+    add20_i45 = add i32 %sub12_i42, %M19_i44
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i21
+
+if_dest_block2_i21; preds = %if_else_block1_i20
+    %seed21_i46 = load i32, i32 @seed
+    %randomreturn_value0_i47=%seed21_i46
+    br label %random_return_block_i22
+
+random_return_block_i22; preds = %if_dest_block2_i21
+    br label %if_dest_block57_AB_17_AB_23
+
+if_dest_block57_AB_17_AB_23; preds = %random_return_block_i22
+    %funccal251=%randomreturn_value0_i47
+    srem252 = srem i32 %funccal251, 10
+    add253 = add i32 %srem252, 1
+    store pointer is not pointertypei32
+    %now254 = load i32, i32 @now
+    %funccal255 = call i8* @toString(i32 %now254)
+    %funccal256 = call void @println(i8* %funccal255)
+    br label %for_cond_block58
+
+for_cond_block58; preds = %if_dest_block57_AB_17_AB_23
+    %temp|addr22220 = phi i32[ 0, %if_dest_block57_AB_17_AB_23], [ %add289, %for_step_block59]
+    %i|addr22118 = phi i32[ 0, %if_dest_block57_AB_17_AB_23], [ %PreAdd291, %for_step_block59]
+    %now258 = load i32, i32 @now
+    sub259 = sub i32 %now258, 1
+    %slt260 = icmp slt i32 %i|addr22118, %sub259
+    br i1 %slt260, label %for_body_block60, label %for_dest_block61
+
+for_body_block60; preds = %for_cond_block58
+    %a261 = load i32*, i32* @a
+    %getElementPtr263 = getelementptr i32, i32* %a261, i32 %i|addr22118
+    br label %random_entrance_block_i24
+
+random_entrance_block_i24; preds = %for_body_block60
+    %A2_i48 = load i32, i32 @A
+    %seed3_i49 = load i32, i32 @seed
+    %Q4_i50 = load i32, i32 @Q
+    srem5_i51 = srem i32 %seed3_i49, %Q4_i50
+    mul6_i52 = mul i32 %A2_i48, %srem5_i51
+    %R7_i53 = load i32, i32 @R
+    %seed8_i54 = load i32, i32 @seed
+    %Q9_i55 = load i32, i32 @Q
+    sdiv10_i56 = sdiv i32 %seed8_i54, %Q9_i55
+    mul11_i57 = mul i32 %R7_i53, %sdiv10_i56
+    sub12_i58 = sub i32 %mul6_i52, %mul11_i57
+    %sge14_i59 = icmp sge i32 %sub12_i58, 0
+    br i1 %sge14_i59, label %if_then_block0_i25, label %if_else_block1_i26
+
+if_then_block0_i25; preds = %random_entrance_block_i24
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i27
+
+if_else_block1_i26; preds = %if_then_block0_i25
+    %M19_i60 = load i32, i32 @M
+    add20_i61 = add i32 %sub12_i58, %M19_i60
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i27
+
+if_dest_block2_i27; preds = %if_else_block1_i26
+    %seed21_i62 = load i32, i32 @seed
+    %randomreturn_value0_i63=%seed21_i62
+    br label %random_return_block_i28
+
+random_return_block_i28; preds = %if_dest_block2_i27
+    br label %for_body_block60_AB_29
+
+for_body_block60_AB_29; preds = %random_return_block_i28
+    %funccal265=%randomreturn_value0_i63
+    srem266 = srem i32 %funccal265, 10
+    add267 = add i32 %srem266, 1
+    store i32 %add267, i32* %getElementPtr263
+    br label %while_cond_block62
+
+while_cond_block62; preds = %for_body_block60_AB_29
+    %a268 = load i32*, i32* @a
+    %getElementPtr270 = getelementptr i32, i32* %a268, i32 %i|addr22118
+    %GEP_Load271 = load i32, i32* %getElementPtr270
+    add273 = add i32 %GEP_Load271, %temp|addr22220
+    %n274 = load i32, i32 @n
+    %sgt275 = icmp sgt i32 %add273, %n274
+    br i1 %sgt275, label %while_body_block63, label %while_dest_block64
+
+while_body_block63; preds = %while_cond_block62
+    %a276 = load i32*, i32* @a
+    %getElementPtr278 = getelementptr i32, i32* %a276, i32 %i|addr22118
+    br label %random_entrance_block_i30
+
+random_entrance_block_i30; preds = %while_body_block63
+    %A2_i64 = load i32, i32 @A
+    %seed3_i65 = load i32, i32 @seed
+    %Q4_i66 = load i32, i32 @Q
+    srem5_i67 = srem i32 %seed3_i65, %Q4_i66
+    mul6_i68 = mul i32 %A2_i64, %srem5_i67
+    %R7_i69 = load i32, i32 @R
+    %seed8_i70 = load i32, i32 @seed
+    %Q9_i71 = load i32, i32 @Q
+    sdiv10_i72 = sdiv i32 %seed8_i70, %Q9_i71
+    mul11_i73 = mul i32 %R7_i69, %sdiv10_i72
+    sub12_i74 = sub i32 %mul6_i68, %mul11_i73
+    %sge14_i75 = icmp sge i32 %sub12_i74, 0
+    br i1 %sge14_i75, label %if_then_block0_i31, label %if_else_block1_i32
+
+if_then_block0_i31; preds = %random_entrance_block_i30
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i33
+
+if_else_block1_i32; preds = %if_then_block0_i31
+    %M19_i76 = load i32, i32 @M
+    add20_i77 = add i32 %sub12_i74, %M19_i76
+    store pointer is not pointertypei32
+    br label %if_dest_block2_i33
+
+if_dest_block2_i33; preds = %if_else_block1_i32
+    %seed21_i78 = load i32, i32 @seed
+    %randomreturn_value0_i79=%seed21_i78
+    br label %random_return_block_i34
+
+random_return_block_i34; preds = %if_dest_block2_i33
+    br label %while_body_block63_AB_35
+
+while_body_block63_AB_35; preds = %random_return_block_i34
+    %funccal280=%randomreturn_value0_i79
+    srem281 = srem i32 %funccal280, 10
+    add282 = add i32 %srem281, 1
+    store i32 %add282, i32* %getElementPtr278
+    br label %while_cond_block62
+
+while_dest_block64; preds = %while_body_block63_AB_35
+    %a285 = load i32*, i32* @a
+    %getElementPtr287 = getelementptr i32, i32* %a285, i32 %i|addr22118
+    %GEP_Load288 = load i32, i32* %getElementPtr287
+    add289 = add i32 %temp|addr22220, %GEP_Load288
+    br label %for_step_block59
+
+for_step_block59; preds = %while_dest_block64
+    PreAdd291 = add i32 %i|addr22118, 1
+    br label %for_cond_block58
+
+for_dest_block61; preds = %for_step_block59
+    %a292 = load i32*, i32* @a
+    %now293 = load i32, i32 @now
+    sub294 = sub i32 %now293, 1
+    %getElementPtr295 = getelementptr i32, i32* %a292, i32 %sub294
+    %n297 = load i32, i32 @n
+    sub299 = sub i32 %n297, %temp|addr22220
+    store i32 %sub299, i32* %getElementPtr295
+    %funccal300 = call void @show()
+    br label %merge_entrance_block_i36
+
+merge_entrance_block_i36; preds = %for_dest_block61
+    br label %for_cond_block35_i37
+
+for_cond_block35_i37; preds = %merge_entrance_block_i36
+    %i|addr15812_i80 = phi i32[ 0, %merge_entrance_block_i36], [ %PreAdd186_i81, %for_step_block36_i50]
+    %now161_i82 = load i32, i32 @now
+    %slt162_i83 = icmp slt i32 %i|addr15812_i80, %now161_i82
+    br i1 %slt162_i83, label %for_body_block37_i38, label %for_dest_block38_i51
+
+for_body_block37_i38; preds = %for_cond_block35_i37
+    %a163_i84 = load i32*, i32* @a
+    %getElementPtr165_i85 = getelementptr i32, i32* %a163_i84, i32 %i|addr15812_i80
+    %GEP_Load166_i86 = load i32, i32* %getElementPtr165_i85
+    %eq167_i87 = icmp eq i32 %GEP_Load166_i86, 0
+    br i1 %eq167_i87, label %if_then_block39_i39, label %if_dest_block40_i49
+
+if_then_block39_i39; preds = %for_body_block37_i38
+    add171_i88 = add i32 %i|addr15812_i80, 1
+    br label %for_cond_block41_i40
+
+for_cond_block41_i40; preds = %if_then_block39_i39
+    %j|addr16815_i89 = phi i32[ %add171_i88, %if_then_block39_i39], [ %PreAdd184_i90, %for_step_block42_i47]
+    %now173_i91 = load i32, i32 @now
+    %slt174_i92 = icmp slt i32 %j|addr16815_i89, %now173_i91
+    br i1 %slt174_i92, label %for_body_block43_i41, label %for_dest_block44_i48
+
+for_body_block43_i41; preds = %for_cond_block41_i40
+    %a175_i93 = load i32*, i32* @a
+    %getElementPtr177_i94 = getelementptr i32, i32* %a175_i93, i32 %j|addr16815_i89
+    %GEP_Load178_i95 = load i32, i32* %getElementPtr177_i94
+    %ne179_i96 = icmp ne i32 %GEP_Load178_i95, 0
+    br i1 %ne179_i96, label %if_then_block45_i42, label %if_dest_block46_i46
+
+if_then_block45_i42; preds = %for_body_block43_i41
+    br label %swap_entrance_block_i0_i43
+
+swap_entrance_block_i0_i43; preds = %if_then_block45_i42
+    %swap_ip0_0_i97=%i|addr15812_i80
+    %swap_ip1_1_i98=%j|addr16815_i89
+    %a27_i2_i99 = load i32*, i32* @a
+    %Id_load28_i3_i100 = load i32, i32* %swap_ip0_0_i97
+    %getElementPtr29_i4_i101 = getelementptr i32, i32* %a27_i2_i99, i32 %Id_load28_i3_i100
+    %GEP_Load30_i5_i102 = load i32, i32* %getElementPtr29_i4_i101
+    %a31_i6_i103 = load i32*, i32* @a
+    %Id_load32_i7_i104 = load i32, i32* %swap_ip0_0_i97
+    %getElementPtr33_i8_i105 = getelementptr i32, i32* %a31_i6_i103, i32 %Id_load32_i7_i104
+    %a35_i9_i106 = load i32*, i32* @a
+    %Id_load36_i10_i107 = load i32, i32* %swap_ip1_1_i98
+    %getElementPtr37_i11_i108 = getelementptr i32, i32* %a35_i9_i106, i32 %Id_load36_i10_i107
+    %GEP_Load38_i12_i109 = load i32, i32* %getElementPtr37_i11_i108
+    store i32 %GEP_Load38_i12_i109, i32* %getElementPtr33_i8_i105
+    %a39_i13_i110 = load i32*, i32* @a
+    %Id_load40_i14_i111 = load i32, i32* %swap_ip1_1_i98
+    %getElementPtr41_i15_i112 = getelementptr i32, i32* %a39_i13_i110, i32 %Id_load40_i14_i111
+    store i32 %GEP_Load30_i5_i102, i32* %getElementPtr41_i15_i112
+    br label %swap_return_block_i1_i44
+
+swap_return_block_i1_i44; preds = %swap_entrance_block_i0_i43
+    br label %if_then_block45_AB_2_i45
+
+if_then_block45_AB_2_i45; preds = %swap_return_block_i1_i44
+    br label %for_dest_block44_i48
+
+if_dest_block46_i46; preds = %if_then_block45_AB_2_i45
+    br label %for_step_block42_i47
+
+for_step_block42_i47; preds = %if_dest_block46_i46
+    PreAdd184_i90 = add i32 %j|addr16815_i89, 1
+    br label %for_cond_block41_i40
+
+for_dest_block44_i48; preds = %for_step_block42_i47
+    br label %if_dest_block40_i49
+
+if_dest_block40_i49; preds = %for_dest_block44_i48
+    br label %for_step_block36_i50
+
+for_step_block36_i50; preds = %if_dest_block40_i49
+    PreAdd186_i81 = add i32 %i|addr15812_i80, 1
+    br label %for_cond_block35_i37
+
+for_dest_block38_i51; preds = %for_step_block36_i50
+    br label %for_cond_block47_i52
+
+for_cond_block47_i52; preds = %for_dest_block38_i51
+    %i|addr15813_i113 = phi i32[ 0, %for_dest_block38_i51], [ %PreAdd199_i114, %for_step_block48_i56]
+    %now189_i115 = load i32, i32 @now
+    %slt190_i116 = icmp slt i32 %i|addr15813_i113, %now189_i115
+    br i1 %slt190_i116, label %for_body_block49_i53, label %for_dest_block50_i57
+
+for_body_block49_i53; preds = %for_cond_block47_i52
+    %a191_i117 = load i32*, i32* @a
+    %getElementPtr193_i118 = getelementptr i32, i32* %a191_i117, i32 %i|addr15813_i113
+    %GEP_Load194_i119 = load i32, i32* %getElementPtr193_i118
+    %eq195_i120 = icmp eq i32 %GEP_Load194_i119, 0
+    br i1 %eq195_i120, label %if_then_block51_i54, label %if_dest_block52_i55
+
+if_then_block51_i54; preds = %for_body_block49_i53
+    store pointer is not pointertypei32
+    br label %for_dest_block50_i57
+
+if_dest_block52_i55; preds = %if_then_block51_i54
+    br label %for_step_block48_i56
+
+for_step_block48_i56; preds = %if_dest_block52_i55
+    PreAdd199_i114 = add i32 %i|addr15813_i113, 1
+    br label %for_cond_block47_i52
+
+for_dest_block50_i57; preds = %for_step_block48_i56
+    br label %merge_return_block_i58
+
+merge_return_block_i58; preds = %for_dest_block50_i57
+    br label %for_dest_block61_AB_59
+
+for_dest_block61_AB_59; preds = %merge_return_block_i58
+    br label %while_cond_block65
+
+while_cond_block65; preds = %for_dest_block61_AB_59
+    %count|addr22322 = phi i32[ 0, %for_dest_block61_AB_59], [ %PreAdd306, %while_body_block66_AB_65_AB_89]
+    %funccal302 = call i1 @win()
+    not303 = xor i1 true, %funccal302
+    br i1 %not303, label %while_body_block66, label %while_dest_block67
+
+while_body_block66; preds = %while_cond_block65
+    %StringConst304 = getelementptr [5 x i8], [5 x i8]* @const_string_no4, i32 0, i32 0
+    PreAdd306 = add i32 %count|addr22322, 1
+    %funccal307 = call i8* @toString(i32 %PreAdd306)
+    %add308 = call i8* @__string_add(i8* %StringConst304, i8* %funccal307)
+    %StringConst309 = getelementptr [1 x i8], [1 x i8]* @const_string_no5, i32 0, i32 0
+    %add310 = call i8* @__string_add(i8* %add308, i8* %StringConst309)
+    %funccal311 = call void @println(i8* %add310)
+    br label %move_entrance_block_i60
+
+move_entrance_block_i60; preds = %while_body_block66
+    br label %for_cond_block53_i61
+
+for_cond_block53_i61; preds = %move_entrance_block_i60
+    %i|addr20117_i121 = phi i32[ 0, %move_entrance_block_i60], [ %add212_i122, %for_body_block54_i62]
+    %now203_i123 = load i32, i32 @now
+    %slt204_i124 = icmp slt i32 %i|addr20117_i121, %now203_i123
+    br i1 %slt204_i124, label %for_body_block54_i62, label %for_dest_block55_i63
+
+for_body_block54_i62; preds = %for_cond_block53_i61
+    %a205_i125 = load i32*, i32* @a
+    %getElementPtr207_i126 = getelementptr i32, i32* %a205_i125, i32 %i|addr20117_i121
+    %GEP_Load208_i127 = load i32, i32* %getElementPtr207_i126
+    PreSub209_i128 = sub i32 %GEP_Load208_i127, 1
+    store i32 %PreSub209_i128, i32* %getElementPtr207_i126
+    add212_i122 = add i32 %i|addr20117_i121, 1
+    br label %for_cond_block53_i61
+
+for_dest_block55_i63; preds = %for_body_block54_i62
+    %a213_i129 = load i32*, i32* @a
+    %now214_i130 = load i32, i32 @now
+    %getElementPtr215_i131 = getelementptr i32, i32* %a213_i129, i32 %now214_i130
+    %now217_i132 = load i32, i32 @now
+    store i32 %now217_i132, i32* %getElementPtr215_i131
+    %now218_i133 = load i32, i32 @now
+    SelfAdd219_i134 = add i32 %now218_i133, 1
+    store pointer is not pointertypei32
+    br label %move_return_block_i64
+
+move_return_block_i64; preds = %for_dest_block55_i63
+    br label %while_body_block66_AB_65
+
+while_body_block66_AB_65; preds = %move_return_block_i64
+    br label %merge_entrance_block_i66
+
+merge_entrance_block_i66; preds = %while_body_block66_AB_65
+    br label %for_cond_block35_i67
+
+for_cond_block35_i67; preds = %merge_entrance_block_i66
+    %i|addr15812_i135 = phi i32[ 0, %merge_entrance_block_i66], [ %PreAdd186_i136, %for_step_block36_i80]
+    %now161_i137 = load i32, i32 @now
+    %slt162_i138 = icmp slt i32 %i|addr15812_i135, %now161_i137
+    br i1 %slt162_i138, label %for_body_block37_i68, label %for_dest_block38_i81
+
+for_body_block37_i68; preds = %for_cond_block35_i67
+    %a163_i139 = load i32*, i32* @a
+    %getElementPtr165_i140 = getelementptr i32, i32* %a163_i139, i32 %i|addr15812_i135
+    %GEP_Load166_i141 = load i32, i32* %getElementPtr165_i140
+    %eq167_i142 = icmp eq i32 %GEP_Load166_i141, 0
+    br i1 %eq167_i142, label %if_then_block39_i69, label %if_dest_block40_i79
+
+if_then_block39_i69; preds = %for_body_block37_i68
+    add171_i143 = add i32 %i|addr15812_i135, 1
+    br label %for_cond_block41_i70
+
+for_cond_block41_i70; preds = %if_then_block39_i69
+    %j|addr16815_i144 = phi i32[ %add171_i143, %if_then_block39_i69], [ %PreAdd184_i145, %for_step_block42_i77]
+    %now173_i146 = load i32, i32 @now
+    %slt174_i147 = icmp slt i32 %j|addr16815_i144, %now173_i146
+    br i1 %slt174_i147, label %for_body_block43_i71, label %for_dest_block44_i78
+
+for_body_block43_i71; preds = %for_cond_block41_i70
+    %a175_i148 = load i32*, i32* @a
+    %getElementPtr177_i149 = getelementptr i32, i32* %a175_i148, i32 %j|addr16815_i144
+    %GEP_Load178_i150 = load i32, i32* %getElementPtr177_i149
+    %ne179_i151 = icmp ne i32 %GEP_Load178_i150, 0
+    br i1 %ne179_i151, label %if_then_block45_i72, label %if_dest_block46_i76
+
+if_then_block45_i72; preds = %for_body_block43_i71
+    br label %swap_entrance_block_i0_i73
+
+swap_entrance_block_i0_i73; preds = %if_then_block45_i72
+    %swap_ip0_0_i152=%i|addr15812_i135
+    %swap_ip1_1_i153=%j|addr16815_i144
+    %a27_i2_i154 = load i32*, i32* @a
+    %Id_load28_i3_i155 = load i32, i32* %swap_ip0_0_i152
+    %getElementPtr29_i4_i156 = getelementptr i32, i32* %a27_i2_i154, i32 %Id_load28_i3_i155
+    %GEP_Load30_i5_i157 = load i32, i32* %getElementPtr29_i4_i156
+    %a31_i6_i158 = load i32*, i32* @a
+    %Id_load32_i7_i159 = load i32, i32* %swap_ip0_0_i152
+    %getElementPtr33_i8_i160 = getelementptr i32, i32* %a31_i6_i158, i32 %Id_load32_i7_i159
+    %a35_i9_i161 = load i32*, i32* @a
+    %Id_load36_i10_i162 = load i32, i32* %swap_ip1_1_i153
+    %getElementPtr37_i11_i163 = getelementptr i32, i32* %a35_i9_i161, i32 %Id_load36_i10_i162
+    %GEP_Load38_i12_i164 = load i32, i32* %getElementPtr37_i11_i163
+    store i32 %GEP_Load38_i12_i164, i32* %getElementPtr33_i8_i160
+    %a39_i13_i165 = load i32*, i32* @a
+    %Id_load40_i14_i166 = load i32, i32* %swap_ip1_1_i153
+    %getElementPtr41_i15_i167 = getelementptr i32, i32* %a39_i13_i165, i32 %Id_load40_i14_i166
+    store i32 %GEP_Load30_i5_i157, i32* %getElementPtr41_i15_i167
+    br label %swap_return_block_i1_i74
+
+swap_return_block_i1_i74; preds = %swap_entrance_block_i0_i73
+    br label %if_then_block45_AB_2_i75
+
+if_then_block45_AB_2_i75; preds = %swap_return_block_i1_i74
+    br label %for_dest_block44_i78
+
+if_dest_block46_i76; preds = %if_then_block45_AB_2_i75
+    br label %for_step_block42_i77
+
+for_step_block42_i77; preds = %if_dest_block46_i76
+    PreAdd184_i145 = add i32 %j|addr16815_i144, 1
+    br label %for_cond_block41_i70
+
+for_dest_block44_i78; preds = %for_step_block42_i77
+    br label %if_dest_block40_i79
+
+if_dest_block40_i79; preds = %for_dest_block44_i78
+    br label %for_step_block36_i80
+
+for_step_block36_i80; preds = %if_dest_block40_i79
+    PreAdd186_i136 = add i32 %i|addr15812_i135, 1
+    br label %for_cond_block35_i67
+
+for_dest_block38_i81; preds = %for_step_block36_i80
+    br label %for_cond_block47_i82
+
+for_cond_block47_i82; preds = %for_dest_block38_i81
+    %i|addr15813_i168 = phi i32[ 0, %for_dest_block38_i81], [ %PreAdd199_i169, %for_step_block48_i86]
+    %now189_i170 = load i32, i32 @now
+    %slt190_i171 = icmp slt i32 %i|addr15813_i168, %now189_i170
+    br i1 %slt190_i171, label %for_body_block49_i83, label %for_dest_block50_i87
+
+for_body_block49_i83; preds = %for_cond_block47_i82
+    %a191_i172 = load i32*, i32* @a
+    %getElementPtr193_i173 = getelementptr i32, i32* %a191_i172, i32 %i|addr15813_i168
+    %GEP_Load194_i174 = load i32, i32* %getElementPtr193_i173
+    %eq195_i175 = icmp eq i32 %GEP_Load194_i174, 0
+    br i1 %eq195_i175, label %if_then_block51_i84, label %if_dest_block52_i85
+
+if_then_block51_i84; preds = %for_body_block49_i83
+    store pointer is not pointertypei32
+    br label %for_dest_block50_i87
+
+if_dest_block52_i85; preds = %if_then_block51_i84
+    br label %for_step_block48_i86
+
+for_step_block48_i86; preds = %if_dest_block52_i85
+    PreAdd199_i169 = add i32 %i|addr15813_i168, 1
+    br label %for_cond_block47_i82
+
+for_dest_block50_i87; preds = %for_step_block48_i86
+    br label %merge_return_block_i88
+
+merge_return_block_i88; preds = %for_dest_block50_i87
+    br label %while_body_block66_AB_65_AB_89
+
+while_body_block66_AB_65_AB_89; preds = %merge_return_block_i88
+    %funccal314 = call void @show()
+    br label %while_cond_block65
+
+while_dest_block67; preds = %while_body_block66_AB_65_AB_89
+    %StringConst315 = getelementptr [7 x i8], [7 x i8]* @const_string_no6, i32 0, i32 0
+    %funccal317 = call i8* @toString(i32 %count|addr22322)
+    %add318 = call i8* @__string_add(i8* %StringConst315, i8* %funccal317)
+    %StringConst319 = getelementptr [8 x i8], [8 x i8]* @const_string_no7, i32 0, i32 0
+    %add320 = call i8* @__string_add(i8* %add318, i8* %StringConst319)
+    %funccal321 = call void @println(i8* %add320)
+    %mainreturn_value220=0
+    br label %main_return_block
+
+main_return_block; preds = %while_dest_block67
+    ret i32 %mainreturn_value220
 
 }
 
