@@ -46,7 +46,7 @@ public class InlineExpander extends Pass {
             if (!changed) break;
         }
 
-        InlineCnt = 10;
+/*        InlineCnt = 10;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
@@ -54,7 +54,7 @@ public class InlineExpander extends Pass {
             modified |= changed;
             if (!changed) break;
         }
-
+*/
         return modified;
     }
 

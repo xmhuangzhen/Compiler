@@ -35,16 +35,6 @@ public class SSAConstructor extends Pass {
             if (!tmpFunc.IsBuiltIn) {
 
                 curFunction = tmpFunc;
-       /*         System.out.println("-------------");
-                System.out.println(curFunction.thisFunctionName);
-                for(var tmp = curFunction.thisEntranceBlock;tmp != null; tmp = tmp.nextBasicBlocks){
-                    System.out.print(tmp+":");
-//                    System.out.print(tmp.DominatorTreeImmediateDominator);
-                    for(var t : tmp.DominanceFrontier)
-                        System.out.print(t+",");
-                    System.out.println("");
-                }
-**/
 
                 UseAlloca = new LinkedHashMap<>();
                 DefAlloca = new LinkedHashMap<>();
@@ -55,6 +45,11 @@ public class SSAConstructor extends Pass {
                      tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
                     PhiInstMap.put(tmpBlock, new LinkedHashMap<>());
                     ReachingDefMap.put(tmpBlock, new LinkedHashMap<>());
+                }
+
+                //add para to allocaInstTable
+                for(var tmpPara : tmpFunc.thisFunctionParameters){
+                    //todo
                 }
 
                 //phi insert (Algorithm 3.1)
