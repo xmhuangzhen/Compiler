@@ -189,7 +189,7 @@ public class IRBuilder implements ASTVisitor {
 
                 allocaInstruction tmpAllocaInst =
                         new allocaInstruction(currentBasicBlock,
-                                tmpAddr,tmpIRType);
+                                tmpAddr,new PointerType(tmpIRType));
                 currentBasicBlock.addBasicBlockInst(tmpAllocaInst);
                 currentFunction.allocaInstTable.add(tmpAllocaInst);
             }
@@ -233,19 +233,8 @@ public class IRBuilder implements ASTVisitor {
 
         //(2) visit par
         for(int i = 0;i < currentFunction.thisFunctionParameters.size();++i){
-            Parameter tmpPara = currentFunction.thisFunctionParameters.get(i);
-            IRTypeSystem tmpIRType = tmpPara.thisType;
-            Register tmpAddr = new Register(tmpIRType, tmpPara.ParameterName+"|addr"+(RegNum++));
-            if(!(tmpIRType instanceof PointerType)) throw new RuntimeException();
-            IdAddrMap.AddrMap.put(tmpPara.ParameterName, tmpAddr);
-            allocaInstruction tmpAllocaInst =
-                    new allocaInstruction(currentBasicBlock,
-                            tmpAddr,((PointerType) tmpIRType).baseType);
-            currentBasicBlock.addBasicBlockInst(tmpAllocaInst);
-            currentFunction.allocaInstTable.add(tmpAllocaInst);
-
-            currentBasicBlock.addBasicBlockInst(new moveInstruction(currentBasicBlock,
-                    tmpAddr,tmpPara));
+            IdAddrMap.AddrMap.put(currentFunction.thisFunctionParameters.get(i).ParameterName,
+                    currentFunction.thisFunctionParameters.get(i));
 //            System.out.println(currentFunction.thisFunctionParameters.get(i).ParameterName);
         }
 
@@ -306,20 +295,8 @@ public class IRBuilder implements ASTVisitor {
         if(currentFunction.thisFunctionParameters.size() != 1)
             throw new RuntimeException(Integer.toString(currentFunction.thisFunctionParameters.size()));
         for(int i = 0;i < currentFunction.thisFunctionParameters.size();++i){
-            Parameter tmpPara = currentFunction.thisFunctionParameters.get(i);
-            IRTypeSystem tmpIRType = tmpPara.thisType;
-            Register tmpAddr = new Register(tmpIRType, tmpPara.ParameterName+"|addr"+(RegNum++));
-            if(!(tmpIRType instanceof PointerType)) throw new RuntimeException();
-            IdAddrMap.AddrMap.put(tmpPara.ParameterName, tmpAddr);
-            allocaInstruction tmpAllocaInst =
-                    new allocaInstruction(currentBasicBlock,
-                            tmpAddr,((PointerType) tmpIRType).baseType);
-            currentBasicBlock.addBasicBlockInst(tmpAllocaInst);
-            currentFunction.allocaInstTable.add(tmpAllocaInst);
-
-            currentBasicBlock.addBasicBlockInst(new moveInstruction(currentBasicBlock,
-                    tmpAddr,tmpPara));
-
+            IdAddrMap.AddrMap.put(currentFunction.thisFunctionParameters.get(i).ParameterName,
+                    currentFunction.thisFunctionParameters.get(i));
 //            System.out.println(currentFunction.thisFunctionParameters.get(i).ParameterName);
         }
 
