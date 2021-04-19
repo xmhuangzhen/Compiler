@@ -73,12 +73,13 @@ public class GraphColoringRegAllocator extends ASMPass {
                     tmpInst.addInstPre(tmpFunc.EntranceBlock, tmpInst1);
                 }
                 tmpInst = tmpInst1;
-                tmpInst.addInstNxt(tmpFunc.EntranceBlock,
+/*                tmpInst.addInstNxt(tmpFunc.EntranceBlock,
                         new RISCVsInst(RISCVInstruction.RISCVWidthENUMType.w,
                                 curRISCVModule.getPhyReg("s0"),
                                 curRISCVModule.getPhyReg("sp"),
                                 new RISCVImm(-8)));
-                tmpInst = tmpInst1.nextInst;
+                tmpInst = tmpInst.nextInst;
+  */
                 for (int i = 1; i < 12; ++i)
                     if (curFunc.usedPhyReg.contains(curRISCVModule.getPhyReg("s" + i))) {
                         tmpInst.addInstNxt(tmpFunc.EntranceBlock,
@@ -112,12 +113,12 @@ public class GraphColoringRegAllocator extends ASMPass {
                                 curRISCVModule.getPhyReg("sp"),
                                 null, new RISCVImm(tmpFunc.GCRealStackSize())));
 
-                tmpInst.addInstPre(tmpFunc.LastBlock,
+/*                tmpInst.addInstPre(tmpFunc.LastBlock,
                         new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                 curRISCVModule.getPhyReg("s0"),
                                 curRISCVModule.getPhyReg("sp"),
                                 new RISCVImm(-8)));
-                for (int i = 1; i < 12; ++i)
+  */              for (int i = 1; i < 12; ++i)
                     if (curFunc.usedPhyReg.contains(curRISCVModule.getPhyReg("s" + i))) {
                         tmpInst.addInstPre(tmpFunc.LastBlock,
                                 new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
@@ -126,6 +127,9 @@ public class GraphColoringRegAllocator extends ASMPass {
                                         new RISCVImm(-4 * (2 + i))));
                     }
 
+                tmpInst.addInstPre(tmpFunc.LastBlock,
+                        new RISCVmvInst(RISCVModule.getPhyReg("s0"),
+                                RISCVModule.getPhyReg("sp")));
                 tmpInst.addInstPre(tmpFunc.LastBlock,
                         new RISCVlInst(RISCVInstruction.RISCVWidthENUMType.w,
                                 curRISCVModule.getPhyReg("ra"),

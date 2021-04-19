@@ -19,7 +19,7 @@ abstract public class IROperand {
         thisType = tmpType;
         NeedPtr = false;
         Defs = new LinkedHashSet<>();
-        use = new LinkedHashSet<>();
+        use = new HashSet<>();
     }
 
     public void AddRegisterUseInInstruction(IRInstruction tmpInst) {
@@ -27,7 +27,7 @@ abstract public class IROperand {
     }
 
     public void ReplaceRegisterUse(IROperand tmpObject) {
-        HashSet<IRInstruction> tmpUse = new LinkedHashSet<>(use);
+        HashSet<IRInstruction> tmpUse = new HashSet<>(use);
         for (IRInstruction tmpInst : tmpUse) {
             tmpInst.replaceUse(this, tmpObject);
         }

@@ -71,6 +71,17 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryResult.Defs.add(this);
     }
 
+    public void replaceBinaryInst(IROperand tmpOp1, IROperand tmpOp2){
+        BinaryOp1.DeleteRegisterUseInInstruction(this);
+        BinaryOp2.DeleteRegisterUseInInstruction(this);
+        BinaryOp1 = tmpOp1;
+        BinaryOp2 = tmpOp2;
+        if (BinaryOp1 instanceof Register)
+            BinaryOp1.AddRegisterUseInInstruction(this);
+        if (BinaryOp2 instanceof Register)
+            BinaryOp2.AddRegisterUseInInstruction(this);
+    }
+
     @Override
     public String toString() {
         //<result> = add <ty> <op1>, <op2>          ; yields ty:result

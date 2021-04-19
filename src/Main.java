@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-   //     input = new FileInputStream("test.mx");
+        input = new FileInputStream("test.mx");
         //  else
-              input = System.in;
+   //           input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -103,6 +103,17 @@ public class Main {
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+
+                BinaryInstSimplification tmpBinarySimp =
+                        new BinaryInstSimplification(currentModule);
+                modified |= tmpBinarySimp.run();
+
+                CommonSubexpressionElimination tmpCSE =
+                        new CommonSubexpressionElimination(currentModule);
+                modified |= tmpCSE.run();
+
                 if (!modified) break;
             }
        //     System.out.println("2");
@@ -114,7 +125,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-//            new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
 

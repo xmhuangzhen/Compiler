@@ -25,6 +25,7 @@ public class SSAConstructor extends Pass {
         super(tmpModule);
         RegNum = 0;
         Visited = new LinkedHashSet<>();
+        PhiInstMap = new HashMap<>();
     }
 
 
@@ -47,7 +48,7 @@ public class SSAConstructor extends Pass {
 
                 UseAlloca = new LinkedHashMap<>();
                 DefAlloca = new LinkedHashMap<>();
-                PhiInstMap = new LinkedHashMap<>();
+                PhiInstMap.clear();
                 ReachingDefMap = new LinkedHashMap<>();
 
                 for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;

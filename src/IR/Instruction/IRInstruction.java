@@ -35,6 +35,12 @@ public abstract class IRInstruction {
     }
 
     public void removeInst(){
+        for(var tmp : getuse()){
+            tmp.DeleteRegisterUseInInstruction(this);
+        }
+        for(var tmp : getdef()){
+            tmp.DeleteRegisterUseInInstruction(this);
+        }
         if(preIRInstruction == null && nextIRInstruction == null){
             thisBasicBlock.HeadInst = null;
             thisBasicBlock.TailInst = null;

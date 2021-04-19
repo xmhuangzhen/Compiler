@@ -22,7 +22,7 @@ public class InlineExpander extends Pass {
     HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
 
 
-    public static int InstLimit = 600;
+    public static int InstLimit = 500;
     public static int BlockNum = 0, RegNum = 0;
 
     public InlineExpander(IRModule tmpModule) {
@@ -41,14 +41,24 @@ public class InlineExpander extends Pass {
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
-            boolean changed = tryInline();
+            boolean changed = tryInline(false);
             modified |= changed;
             if (!changed) break;
         }
+
+        InlineCnt = 10;
+        while (true) {
+            InlineCnt--;
+            if (InlineCnt == 0) break;
+            boolean changed = tryInline(true);
+            modified |= changed;
+            if (!changed) break;
+        }
+
         return modified;
     }
 
-    public boolean tryInline() {
+    public boolean tryInline(boolean forceInline) {
         FuncInstNumMap.clear();
         CanBeInlined.clear();
         CalleeFunc.clear();
@@ -63,28 +73,68 @@ public class InlineExpander extends Pass {
         HashSet<String> removeFuncList = new HashSet<>();
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
             if (!tmpFunc.IsBuiltIn) {
-                if (!CalleeFunc.contains(tmpFunc) &&
-                        !tmpFunc.thisFunctionName.equals("main"))
+                if (!CalleeFunc.contains(tmpFunc) && !tmpFunc.thisFunctionName.equals("main"))
                     removeFuncList.add(tmpFunc.thisFunctionName);
             }
         for (var tmpString : removeFuncList)
             curIRModule.IRFunctionTable.remove(tmpString);
         //   System.out.println("-------------------");
         //System.out.println(CanBeInlined);
-        for (var tmpFunc : curIRModule.IRFunctionTable.values())
-            if (!tmpFunc.IsBuiltIn) {
-                for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
-                     tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
-                    for (IRInstruction tmpInst = tmpBlock.HeadInst;
-                         tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
-                        if (tmpInst instanceof callInstruction &&
-                                CanBeInlined.contains(((callInstruction) tmpInst).CallFunction)) {
-                            boolean changed = InlineCall((callInstruction) tmpInst, tmpFunc);
-                            if (changed) return true;
+        ArrayList<callInstruction> InlineList = new ArrayList<>();
+
+        for(var tmpFunc : curIRModule.IRFunctionTable.values())
+            if(!tmpFunc.IsBuiltIn){
+                for(IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+                tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks)
+                    for(IRInstruction tmpInst = tmpBlock.HeadInst;
+                    tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+                        if(tmpInst instanceof callInstruction &&
+                                CanBeInlined.contains(((callInstruction) tmpInst).CallFunction)){
+                            InlineList.add((callInstruction) tmpInst);
                         }
-                }
+                    }
             }
-        return false;
+
+        if(forceInline) {
+            for (var tmpFunc : curIRModule.IRFunctionTable.values())
+                if (!tmpFunc.IsBuiltIn && !CanBeInlined.contains(tmpFunc)) {
+                    boolean IsRecursiveCall = true;
+                    for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+                         tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                        for (IRInstruction tmpInst = tmpBlock.HeadInst;
+                             tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
+                            if (tmpInst instanceof callInstruction &&
+                                    ((callInstruction) tmpInst).CallFunction != tmpFunc &&
+                                    !((callInstruction) tmpInst).CallFunction.IsBuiltIn) {
+                                IsRecursiveCall = false;
+                                break;
+                            }
+                    }
+                    if (IsRecursiveCall) {
+                        for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+                             tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                            for (IRInstruction tmpInst = tmpBlock.HeadInst;
+                                 tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
+                                if (tmpInst instanceof callInstruction &&
+                                        ((callInstruction) tmpInst).CallFunction == tmpFunc) {
+                                    InlineList.add((callInstruction) tmpInst);
+                                }
+                        }
+
+                    }
+                }
+
+        }
+
+        boolean modified = false;
+        for(var tmpInst:InlineList) {
+            IRFunction tmpFunc = tmpInst.thisBasicBlock.BasicBlockFunction;
+            boolean changed = InlineCall(tmpInst, tmpFunc);
+            modified |= changed;
+            constructCFG(tmpFunc);
+        }
+
+        return modified;
     }
 
     public void updateFuncInstNumMap(IRFunction tmpFunc) {
@@ -113,8 +163,15 @@ public class InlineExpander extends Pass {
         //  System.out.println(CallInst+","+CallInst.thisBasicBlock+","+curFunc.thisFunctionName);
         IRBasicBlock curBlock = CallInst.thisBasicBlock;
         IRFunction calleeFunc = CallInst.CallFunction;
-        if (FuncInstNumMap.get(calleeFunc) + FuncInstNumMap.get(calleeFunc) >= InstLimit)
+        if (FuncInstNumMap.get(calleeFunc) + FuncInstNumMap.get(calleeFunc) >= InstLimit) {
             return false;
+        }
+
+        if(calleeFunc == curFunc){
+            curFunc.RecursiveCallExpandNum++;
+            //System.out.println(CallInst);
+            if(calleeFunc.RecursiveCallExpandNum > 10) return false;
+        }
 
         BlockMap.clear();
         for (IRBasicBlock tmpBlock = calleeFunc.thisEntranceBlock;
@@ -247,8 +304,18 @@ public class InlineExpander extends Pass {
         repEndBlock.addBasicBlockInst(new brInstruction(repEndBlock,
                 null, AfterCallBlock, null));
 
+
+        updateFuncInstNumMap(curFunc);
         constructCFG(curFunc);
         return true;
+    }
+
+    public int getBlockNum(IRFunction tmpFunc){
+        int cnt = 0;
+        for(IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+        tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks)
+            cnt++;
+        return cnt;
     }
 
     public IRInstruction getReplaceInst(IRInstruction curInst, IRBasicBlock repBlock) {

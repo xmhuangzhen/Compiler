@@ -37,6 +37,8 @@ public class IRFunction {
     //for SSA Constructor
     public ArrayList<allocaInstruction> allocaInstTable;
 
+    public int RecursiveCallExpandNum;
+
     public IRFunction(FunctionType tmpFunctionType, String tmpFunctionName){
         thisFunctionType = tmpFunctionType;
         thisFunctionName = tmpFunctionName;
@@ -56,6 +58,8 @@ public class IRFunction {
         PostDFNcurNumber = 0;
 
         allocaInstTable = new ArrayList<>();
+
+        RecursiveCallExpandNum = 0;
     }
 
     public void addFunctionBasicBlock(IRBasicBlock tmpBasicBlock){

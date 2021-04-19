@@ -77,6 +77,7 @@ public class RISCVBranchInst extends RISCVInstruction {
 
         tmpString.append("nez " + rs1.toString() + "," + IfTrueBasicBlock.toString());
         tmpString.append("\n\tj ").append(IfFalseBasicBlock.toString());
+
         return tmpString.toString();
     }
 }
