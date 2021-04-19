@@ -22,7 +22,7 @@ public class brInstruction extends IRInstruction{
         if (brCond != null && brCond instanceof Register)
             brCond.AddRegisterUseInInstruction(this);
 
-        HasSideEffect = true;
+       // HasSideEffect = true;
     }
 
     @Override
@@ -54,6 +54,12 @@ public class brInstruction extends IRInstruction{
     public HashSet<IROperand> getdef() {
         HashSet<IROperand> res = new LinkedHashSet<>();
         return res;
+    }
+
+    @Override
+    public void refreshRegisterUse() {
+        if (brCond != null && brCond instanceof Register)
+            brCond.AddRegisterUseInInstruction(this);
     }
 
     @Override

@@ -44,6 +44,8 @@ public class PostDominatorTreeConstructor extends Pass {
                 //(1) get dfs order
                 tmpFunc.CalculatePostDFSOrder();
 
+//                System.out.println(tmpFunc.PostDFSOrder);
+
                 //(2) get semi dominator
                 for (int i = tmpFunc.PostDFNcurNumber; i > 1; --i) {
                     IRBasicBlock BlockW = tmpFunc.PostDFSOrder.get(i - 1);

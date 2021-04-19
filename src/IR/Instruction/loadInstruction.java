@@ -47,6 +47,14 @@ public class loadInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (LoadPointer instanceof Register)
+            LoadPointer.AddRegisterUseInInstruction(this);
+        LoadResult.Defs.add(this);
+
+    }
+
+    @Override
     public String toString() {
         return LoadResult.toString() + " = load " + LoadResult.thisType.toString()
                 +", " + LoadPointer.thisType.toString() + " "+ LoadPointer.toString();

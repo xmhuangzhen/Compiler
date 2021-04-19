@@ -50,6 +50,13 @@ public class retInstruction extends IRInstruction {
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (returnValue != null && returnValue instanceof Register)
+            returnValue.AddRegisterUseInInstruction(this);
+
+    }
+
+    @Override
     public String toString() {
         if (returnType instanceof VoidType)
             return "ret void";

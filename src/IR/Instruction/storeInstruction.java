@@ -58,6 +58,15 @@ public class storeInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (StoreValue instanceof Register)
+            StoreValue.AddRegisterUseInInstruction(this);
+        if (StorePointer instanceof Register)
+            StorePointer.AddRegisterUseInInstruction(this);
+
+    }
+
+    @Override
     public String toString() {
         //System.out.println("Here");
         if(StorePointer.thisType instanceof PointerType) {

@@ -24,6 +24,7 @@ public class PostDominanceFrontierConstructor extends Pass {
                                 IRBasicBlock runner = BlockP;
                                 while (runner != BlockB.PostDominatorTreeImmediateDominator) {
                                     runner.PostDominanceFrontier.add(BlockB);
+                              //      BlockB.PostDominanceFrontierReverse.add(runner);
                                     runner = runner.PostDominatorTreeImmediateDominator;
                                 }
                             }

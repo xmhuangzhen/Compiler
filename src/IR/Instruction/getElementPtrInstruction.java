@@ -61,6 +61,16 @@ public class getElementPtrInstruction extends IRInstruction{
         return res;
     }
 
+    @Override
+    public void refreshRegisterUse() {
+        if (GetElementPtrPtr instanceof Register)
+            GetElementPtrPtr.AddRegisterUseInInstruction(this);
+        GetElementPtrResult.Defs.add(this);
+        for(int i = 0;i < GetElementPtrIdx.size();++i){
+            if(GetElementPtrIdx.get(i) instanceof Register)
+                GetElementPtrIdx.get(i).AddRegisterUseInInstruction(this);
+        }
+    }
 
     @Override
     public String toString() {

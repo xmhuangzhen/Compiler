@@ -43,6 +43,14 @@ public class phiInstruction extends IRInstruction{
         return res;
     }
 
+    @Override
+    public void refreshRegisterUse() {
+        PhiResult.Defs.add(this);
+        for(int i = 0;i < PhiValue.size();++i)
+            if(PhiValue.get(i) instanceof Register){
+                PhiValue.get(i).AddRegisterUseInInstruction(this);
+            }
+    }
 
     //for SSA Destructor use
     public void replaceBlock(IRBasicBlock originBlock, IRBasicBlock newBlock){

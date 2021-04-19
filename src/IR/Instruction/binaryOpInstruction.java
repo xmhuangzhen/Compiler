@@ -63,6 +63,15 @@ public class binaryOpInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (BinaryOp1 instanceof Register)
+            BinaryOp1.AddRegisterUseInInstruction(this);
+        if (BinaryOp2 instanceof Register)
+            BinaryOp2.AddRegisterUseInInstruction(this);
+        BinaryResult.Defs.add(this);
+    }
+
+    @Override
     public String toString() {
         //<result> = add <ty> <op1>, <op2>          ; yields ty:result
         return  BinaryResult.RegisterName + " = " + BinaryOperandType.name()

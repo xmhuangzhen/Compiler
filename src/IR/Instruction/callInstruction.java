@@ -54,6 +54,14 @@ public class callInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if(CallResult != null) CallResult.Defs.add(this);
+        for(var tmpPar : CallParameters)
+            if(tmpPar instanceof Register)
+                tmpPar.AddRegisterUseInInstruction(this);
+    }
+
+    @Override
     public String toString() {
         StringBuilder CallName = new StringBuilder();
         if(CallResult != null) CallName.append(CallResult.toString()+" = ");

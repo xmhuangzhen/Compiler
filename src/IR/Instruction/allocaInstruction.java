@@ -38,6 +38,11 @@ public class allocaInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+
+    }
+
+    @Override
     public String toString() {
         //<result> = alloca [inalloca] <type> [, <ty> <NumElements>] [, align <alignment>] [, addrspace(<num>)]     ; yields type addrspace(num)*:result
         return AllocaResult.toString() + " = alloca " + AllocaType.toString();

@@ -49,6 +49,14 @@ public class moveInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (rs != null && rs instanceof Register)
+            rs.AddRegisterUseInInstruction(this);
+        rd.Defs.add(this);
+
+    }
+
+    @Override
     public String toString() {
         return rd + "=" + rs;
     }

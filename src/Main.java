@@ -27,7 +27,7 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-    //    input = new FileInputStream("test.mx");
+     //   input = new FileInputStream("test.mx");
         //  else
               input = System.in;
 
@@ -92,15 +92,21 @@ public class Main {
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
                 if (!modified) break;
             }
        //     System.out.println("2");
-       //     new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -108,7 +114,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-         //   new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
 
 
 

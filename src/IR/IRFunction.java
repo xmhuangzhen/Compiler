@@ -139,6 +139,7 @@ public class IRFunction {
                  tmpInst = tmpInst.nextIRInstruction) {
                 if (tmpInst instanceof brInstruction) {
                     if (((brInstruction) tmpInst).brIfTrue != null) {
+                    //    System.out.println(tmpInst+","+tmpBlock+","+((brInstruction) tmpInst).brIfTrue);
                         tmpBlock.PostCFGPredecessor.add(((brInstruction) tmpInst).brIfTrue);
                         ((brInstruction) tmpInst).brIfTrue.PostCFGSuccessor.add(tmpBlock);
                     }
@@ -162,8 +163,10 @@ public class IRFunction {
             tmpBlock.PostDominatorTreeLabel = null;
             tmpBlock.PostDominatorTreeAncestor = null;
             tmpBlock.PostDominatorTreeFather = null;
+            tmpBlock.PostDominanceFrontier.clear();
+          //  tmpBlock.PostDominanceFrontierReverse.clear();
         }
-        PostCFGDFS(thisEntranceBlock);
+        PostCFGDFS(thisReturnBlock);
     }
 
     public void PostCFGDFS(IRBasicBlock curBlock) {
@@ -177,7 +180,7 @@ public class IRFunction {
         for (var nextBlock : curBlock.PostCFGSuccessor) {
             if (nextBlock.PostDFN == 0) {
                 nextBlock.PostDominatorTreeFather = curBlock;
-                CFGDFS(nextBlock);
+                PostCFGDFS(nextBlock);
             }
         }
     }

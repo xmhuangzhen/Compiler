@@ -50,6 +50,13 @@ public class bitcastInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+        if (bitcastOperand instanceof Register)
+            bitcastOperand.AddRegisterUseInInstruction(this);
+        bitcastResult.Defs.add(this);
+    }
+
+    @Override
     public String toString() {
         return bitcastResult.RegisterName + " = bitcast " + bitcastOperand.thisType.toString() +
                 " " + bitcastOperand.toString() + " to " + bitcastType2.toString();

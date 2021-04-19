@@ -56,5 +56,8 @@ public abstract class IRInstruction {
 
     abstract public HashSet<IROperand> getdef();
 
+    //for Register Use Refresher use
+    abstract public void refreshRegisterUse();
+
     abstract public void accept(IRVisitor it);
 }

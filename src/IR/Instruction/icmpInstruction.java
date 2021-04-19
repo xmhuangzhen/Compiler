@@ -66,6 +66,14 @@ public class icmpInstruction extends IRInstruction{
         return res;
     }
 
+    @Override
+    public void refreshRegisterUse() {
+        if (IcmpOp1 instanceof Register)
+            IcmpOp1.AddRegisterUseInInstruction(this);
+        if (IcmpOp2 instanceof Register)
+            IcmpOp2.AddRegisterUseInInstruction(this);
+        IcmpResult.Defs.add(this);
+    }
 
     @Override
     public String toString() {

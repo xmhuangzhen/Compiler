@@ -55,48 +55,34 @@ public class CFGSimplification extends Pass {
             }
         }
         curFunc.CFGSimpGetDFS();
-
-/*        System.out.println("------------------------");
-        System.out.println(curFunc.thisFunctionName);
-        for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;tmpBlock != null;
-        tmpBlock = tmpBlock.nextBasicBlocks){
-            System.out.print(tmpBlock.BasicBlockName+":");
-            for(var t : tmpBlock.CFGSuccessor)
-                System.out.print(t.BasicBlockName+",");
-            System.out.print("|||");
-            for(var t : tmpBlock.CFGPredecessor)
-                System.out.print(t.BasicBlockName+",");
-            System.out.println("");
-        }
-        */
     }
 
     public boolean FuncSimplification() {
         boolean thismodified = false;
+        resumeBranch();
         int cnt = 10;
         while (true) {
             cnt--;
             if(cnt == 0) break;
-//            System.out.println("a");
             ConstructCFG();
-  //          System.out.println("b");
             boolean tmpmodified = deleteUnusedPhiInst();
-    //        System.out.println("c");
             tmpmodified |= deleteUnusedBlock();
-      //      System.out.println("d");
             if (!tmpmodified) break;
             else thismodified = true;
         }
-/*        ConstructCFG();
-        System.out.println("---------");
-        for(var t = curFunc.thisEntranceBlock;t != null; t = t.nextBasicBlocks){
-            System.out.print(t+":");
-            for(var tmp : t.CFGSuccessor)
-                System.out.print(tmp+",");
-            System.out.println("");
-        }
-  */      return thismodified;
+        return thismodified;
     }
+
+    public void resumeBranch(){
+        for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
+             tmpBlock.nextBasicBlocks != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+            if (!(tmpBlock.TailInst instanceof brInstruction)) {
+                tmpBlock.addBasicBlockInst(new brInstruction(tmpBlock,
+                        null, tmpBlock.nextBasicBlocks, null));
+            }
+        }
+    }
+
 
     public boolean deleteUnusedBlock() {
         boolean thismodified = false;

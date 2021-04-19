@@ -36,6 +36,11 @@ public class parallelCopyInstruction extends IRInstruction{
     }
 
     @Override
+    public void refreshRegisterUse() {
+
+    }
+
+    @Override
     public void accept(IRVisitor it) {
 
     }
