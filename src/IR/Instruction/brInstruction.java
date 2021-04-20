@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class brInstruction extends IRInstruction{
         brCond = tmpbrCond;
         brIfTrue = tmpbrIfTrue;
         brIfFalse = tmpbrIfFalse;
-        if (brCond != null && brCond instanceof Register)
+        if (brCond != null && (brCond instanceof Register || brCond instanceof Parameter))
             brCond.AddRegisterUseInInstruction(this);
 
        // HasSideEffect = true;
@@ -46,7 +47,8 @@ public class brInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(brCond != null && brCond instanceof Register) res.add(brCond);
+        if(brCond != null && (brCond instanceof Register || brCond instanceof Parameter))
+            res.add(brCond);
         return res;
     }
 
@@ -58,7 +60,7 @@ public class brInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (brCond != null && brCond instanceof Register)
+        if (brCond != null && (brCond instanceof Register || brCond instanceof Parameter))
             brCond.AddRegisterUseInInstruction(this);
     }
 

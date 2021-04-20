@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.HashSet;
@@ -16,7 +17,7 @@ public class loadInstruction extends IRInstruction{
         super(tmpBasicBlock);
         LoadResult = tmpResult;
         LoadPointer = tmpPointer;
-        if (LoadPointer instanceof Register)
+        if (LoadPointer instanceof Register || LoadPointer instanceof Parameter)
             LoadPointer.AddRegisterUseInInstruction(this);
         LoadResult.Defs.add(this);
 
@@ -35,7 +36,8 @@ public class loadInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(LoadPointer instanceof Register) res.add(LoadPointer);
+        if(LoadPointer instanceof Register || LoadPointer instanceof Parameter)
+            res.add(LoadPointer);
         return res;
     }
 
@@ -48,7 +50,7 @@ public class loadInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (LoadPointer instanceof Register)
+        if (LoadPointer instanceof Register || LoadPointer instanceof Parameter)
             LoadPointer.AddRegisterUseInInstruction(this);
         LoadResult.Defs.add(this);
 

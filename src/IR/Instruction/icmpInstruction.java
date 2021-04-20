@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
@@ -28,9 +29,9 @@ public class icmpInstruction extends IRInstruction{
         IcmpType = tmpType;
         IcmpOp1 = tmpOp1;
         IcmpOp2 = tmpOp2;
-        if (IcmpOp1 instanceof Register)
+        if (IcmpOp1 instanceof Register || IcmpOp1 instanceof Parameter)
             IcmpOp1.AddRegisterUseInInstruction(this);
-        if (IcmpOp2 instanceof Register)
+        if (IcmpOp2 instanceof Register || IcmpOp2 instanceof Parameter)
             IcmpOp2.AddRegisterUseInInstruction(this);
         IcmpResult.Defs.add(this);
     }
@@ -54,8 +55,10 @@ public class icmpInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(IcmpOp1 instanceof Register) res.add(IcmpOp1);
-        if(IcmpOp2 instanceof Register) res.add(IcmpOp2);
+        if(IcmpOp1 instanceof Register || IcmpOp1 instanceof Parameter)
+            res.add(IcmpOp1);
+        if(IcmpOp2 instanceof Register || IcmpOp2 instanceof Parameter)
+            res.add(IcmpOp2);
         return res;
     }
 
@@ -68,9 +71,9 @@ public class icmpInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (IcmpOp1 instanceof Register)
+        if (IcmpOp1 instanceof Register || IcmpOp1 instanceof Parameter)
             IcmpOp1.AddRegisterUseInInstruction(this);
-        if (IcmpOp2 instanceof Register)
+        if (IcmpOp2 instanceof Register || IcmpOp2 instanceof  Parameter)
             IcmpOp2.AddRegisterUseInInstruction(this);
         IcmpResult.Defs.add(this);
     }

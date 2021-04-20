@@ -52,7 +52,7 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-            //     new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+            //new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             //--------Opt Start------
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
@@ -117,7 +117,7 @@ public class Main {
                 if (!modified) break;
             }
        //     System.out.println("2");
-       //     new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA

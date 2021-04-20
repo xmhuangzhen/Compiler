@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class phiInstruction extends IRInstruction{
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
         for(int i = 0;i < PhiValue.size();++i)
-            if(PhiValue.get(i) instanceof Register)
+            if(PhiValue.get(i) instanceof Register || PhiValue.get(i) instanceof Parameter)
                 res.add(PhiValue.get(i));
         return res;
     }
@@ -47,7 +48,7 @@ public class phiInstruction extends IRInstruction{
     public void refreshRegisterUse() {
         PhiResult.Defs.add(this);
         for(int i = 0;i < PhiValue.size();++i)
-            if(PhiValue.get(i) instanceof Register){
+            if(PhiValue.get(i) instanceof Register || PhiValue.get(i) instanceof Parameter){
                 PhiValue.get(i).AddRegisterUseInInstruction(this);
             }
     }

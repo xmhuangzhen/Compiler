@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.HashMap;
@@ -25,9 +26,9 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryOp1 = tmpOp1;
         BinaryOp2 = tmpOp2;
         BinaryResult = tmpResult;
-        if (BinaryOp1 instanceof Register)
+        if (BinaryOp1 instanceof Register || BinaryOp1 instanceof Parameter)
             BinaryOp1.AddRegisterUseInInstruction(this);
-        if (BinaryOp2 instanceof Register)
+        if (BinaryOp2 instanceof Register || BinaryOp2 instanceof Parameter)
             BinaryOp2.AddRegisterUseInInstruction(this);
         BinaryResult.Defs.add(this);
     }
@@ -50,8 +51,10 @@ public class binaryOpInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(BinaryOp1 instanceof Register) res.add(BinaryOp1);
-        if(BinaryOp2 instanceof Register) res.add(BinaryOp2);
+        if(BinaryOp1 instanceof Register || BinaryOp1 instanceof Parameter)
+            res.add(BinaryOp1);
+        if(BinaryOp2 instanceof Register || BinaryOp2 instanceof Parameter)
+            res.add(BinaryOp2);
         return res;
     }
 
@@ -64,9 +67,9 @@ public class binaryOpInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (BinaryOp1 instanceof Register)
+        if (BinaryOp1 instanceof Register || BinaryOp1 instanceof Parameter)
             BinaryOp1.AddRegisterUseInInstruction(this);
-        if (BinaryOp2 instanceof Register)
+        if (BinaryOp2 instanceof Register || BinaryOp2 instanceof Parameter)
             BinaryOp2.AddRegisterUseInInstruction(this);
         BinaryResult.Defs.add(this);
     }
@@ -76,9 +79,9 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryOp2.DeleteRegisterUseInInstruction(this);
         BinaryOp1 = tmpOp1;
         BinaryOp2 = tmpOp2;
-        if (BinaryOp1 instanceof Register)
+        if (BinaryOp1 instanceof Register || BinaryOp1 instanceof Parameter)
             BinaryOp1.AddRegisterUseInInstruction(this);
-        if (BinaryOp2 instanceof Register)
+        if (BinaryOp2 instanceof Register || BinaryOp2 instanceof Parameter)
             BinaryOp2.AddRegisterUseInInstruction(this);
     }
 

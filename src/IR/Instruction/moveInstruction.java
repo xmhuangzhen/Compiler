@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class moveInstruction extends IRInstruction{
         /*if(rs != null){
             rd.NeedPtr = rs.NeedPtr;
         }*/
-        if (rs != null && rs instanceof Register)
+        if (rs != null && (rs instanceof Register || rs instanceof Parameter))
             rs.AddRegisterUseInInstruction(this);
         rd.Defs.add(this);
     }
@@ -37,20 +38,21 @@ public class moveInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(rs instanceof Register) res.add(rs);
+        if(rs instanceof Register || rs instanceof Parameter) res.add(rs);
         return res;
     }
 
     @Override
     public HashSet<IROperand> getdef() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(rd instanceof Register) res.add(rd);
+        if(rd instanceof Register || rd instanceof Parameter)
+            res.add(rd);
         return res;
     }
 
     @Override
     public void refreshRegisterUse() {
-        if (rs != null && rs instanceof Register)
+        if (rs != null && (rs instanceof Register || rs instanceof Parameter))
             rs.AddRegisterUseInInstruction(this);
         rd.Defs.add(this);
 

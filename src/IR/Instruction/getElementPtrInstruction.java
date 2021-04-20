@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
@@ -22,7 +23,7 @@ public class getElementPtrInstruction extends IRInstruction{
         GetElementPtrPtr = tmpPtr;
         GetElementPtrResult = tmpResult;
         GetElementPtrIdx = new ArrayList<>();
-        if (GetElementPtrPtr instanceof Register)
+        if (GetElementPtrPtr instanceof Register || GetElementPtrPtr instanceof Parameter)
             GetElementPtrPtr.AddRegisterUseInInstruction(this);
         GetElementPtrResult.Defs.add(this);
     }
@@ -47,9 +48,10 @@ public class getElementPtrInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(GetElementPtrPtr instanceof Register) res.add(GetElementPtrPtr);
+        if(GetElementPtrPtr instanceof Register || GetElementPtrPtr instanceof Parameter)
+            res.add(GetElementPtrPtr);
         for(int i = 0;i < GetElementPtrIdx.size();++i)
-            if(GetElementPtrIdx.get(i) instanceof Register)
+            if(GetElementPtrIdx.get(i) instanceof Register || GetElementPtrIdx.get(i) instanceof Parameter)
                 res.add(GetElementPtrIdx.get(i));
         return res;
     }
@@ -63,11 +65,11 @@ public class getElementPtrInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (GetElementPtrPtr instanceof Register)
+        if (GetElementPtrPtr instanceof Register || GetElementPtrPtr instanceof Parameter)
             GetElementPtrPtr.AddRegisterUseInInstruction(this);
         GetElementPtrResult.Defs.add(this);
         for(int i = 0;i < GetElementPtrIdx.size();++i){
-            if(GetElementPtrIdx.get(i) instanceof Register)
+            if(GetElementPtrIdx.get(i) instanceof Register || GetElementPtrIdx.get(i) instanceof Parameter)
                 GetElementPtrIdx.get(i).AddRegisterUseInInstruction(this);
         }
     }

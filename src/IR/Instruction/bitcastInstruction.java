@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
@@ -20,7 +21,7 @@ public class bitcastInstruction extends IRInstruction{
         bitcastOperand = tmpOperand;
         bitcastType2 = tmpType2;
         bitcastResult = tmpResult;
-        if (bitcastOperand instanceof Register)
+        if (bitcastOperand instanceof Register || bitcastOperand instanceof Parameter)
             bitcastOperand.AddRegisterUseInInstruction(this);
         bitcastResult.Defs.add(this);
     }
@@ -38,7 +39,8 @@ public class bitcastInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(bitcastOperand instanceof Register) res.add(bitcastOperand);
+        if(bitcastOperand instanceof Register || bitcastOperand instanceof Parameter)
+            res.add(bitcastOperand);
         return res;
     }
 
@@ -51,7 +53,7 @@ public class bitcastInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (bitcastOperand instanceof Register)
+        if (bitcastOperand instanceof Register || bitcastOperand instanceof Parameter)
             bitcastOperand.AddRegisterUseInInstruction(this);
         bitcastResult.Defs.add(this);
     }

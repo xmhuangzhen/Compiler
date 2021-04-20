@@ -6,6 +6,7 @@ import IR.IRModule;
 import IR.Instruction.*;
 import IR.Operand.IROperand;
 import IR.Operand.NullConstant;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
@@ -47,10 +48,7 @@ public class SSAConstructor extends Pass {
                     ReachingDefMap.put(tmpBlock, new LinkedHashMap<>());
                 }
 
-                //add para to allocaInstTable
-                for(var tmpPara : tmpFunc.thisFunctionParameters){
-                    //todo
-                }
+
 
                 //phi insert (Algorithm 3.1)
                 for (var tmpAllocaInst : tmpFunc.allocaInstTable) {
@@ -58,10 +56,17 @@ public class SSAConstructor extends Pass {
                     Queue<IRBasicBlock> BlockW = new LinkedList<>();//set of BBs contain def of v
                     HashSet<IRBasicBlock> DefsV = new LinkedHashSet<>();
 
+                    /*
+                    System.out.println("--------------------");
+                    System.out.println(tmpAllocaInst);
+                    System.out.println(tmpAllocaInst.AllocaResult.use);
+                    System.out.println(tmpAllocaInst.AllocaResult.Defs);
+
+                     */
+
                     //Line 4-6
                     for (var tmpInst : tmpAllocaInst.AllocaResult.use) {
                         if (tmpInst instanceof storeInstruction) {
-//                            System.out.println(tmpAllocaInst +","+tmpInst+","+tmpInst.thisBasicBlock);
                             DefAlloca.put(tmpInst, tmpAllocaInst);
                             BlockW.offer(tmpInst.thisBasicBlock);
                             DefsV.add(tmpInst.thisBasicBlock);
@@ -78,7 +83,7 @@ public class SSAConstructor extends Pass {
                         for (IRBasicBlock BlockY : BlockX.DominanceFrontier) {
                             if (!BlockF.contains(BlockY)) {
                                 //Line 11
-                                String VarName = tmpAllocaInst.AllocaResult.RegisterName;
+                                String VarName = tmpAllocaInst.AllocaName;
                                 if (!(tmpAllocaInst.AllocaType instanceof PointerType))
                                     throw new RuntimeException();
                                 Register tmpPhiResult =
@@ -124,7 +129,12 @@ public class SSAConstructor extends Pass {
             tmpPhiInst.PhiLabel.add(preBlock);
             if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
                     ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
-                tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
+                if(tmpAllocInst.AllocaResult instanceof Parameter) {
+                  //  System.out.println(tmpAllocInst);
+                    tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaResult);
+                }else {
+                    tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
+                }
             } else {
                 IROperand tmpOperand = ReachingDefMap.get(preBlock).get(tmpAllocInst);
                 tmpPhiInst.PhiValue.add(tmpOperand);

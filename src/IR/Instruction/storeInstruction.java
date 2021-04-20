@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.PointerType;
 
@@ -17,9 +18,9 @@ public class storeInstruction extends IRInstruction{
         super(tmpBasicBlock);
         StoreValue = tmpValue;
         StorePointer = tmpPointer;
-        if (StoreValue instanceof Register)
+        if (StoreValue instanceof Register || StoreValue instanceof Parameter)
             StoreValue.AddRegisterUseInInstruction(this);
-        if (StorePointer instanceof Register)
+        if (StorePointer instanceof Register || StorePointer instanceof Parameter)
             StorePointer.AddRegisterUseInInstruction(this);
 
         HasSideEffect = true;
@@ -44,9 +45,9 @@ public class storeInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(StorePointer instanceof Register)
+        if(StorePointer instanceof Register || StorePointer instanceof Parameter)
             res.add(StorePointer);
-        if(StoreValue instanceof Register)
+        if(StoreValue instanceof Register || StoreValue instanceof Parameter)
             res.add(StoreValue);
         return res;
     }
@@ -59,9 +60,9 @@ public class storeInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (StoreValue instanceof Register)
+        if (StoreValue instanceof Register || StoreValue instanceof Parameter)
             StoreValue.AddRegisterUseInInstruction(this);
-        if (StorePointer instanceof Register)
+        if (StorePointer instanceof Register || StorePointer instanceof Parameter)
             StorePointer.AddRegisterUseInInstruction(this);
 
     }

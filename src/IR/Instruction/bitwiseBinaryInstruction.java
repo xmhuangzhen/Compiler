@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.HashSet;
@@ -24,9 +25,9 @@ public class bitwiseBinaryInstruction extends IRInstruction{
         bitwiseBinaryOp1 = tmpOp1;
         bitwiseBinaryOp2 = tmpOp2;
         bitwiseBinaryResult = tmpResult;
-        if (bitwiseBinaryOp1 instanceof Register)
+        if (bitwiseBinaryOp1 instanceof Register || bitwiseBinaryOp1 instanceof Parameter)
             bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
-        if (bitwiseBinaryOp2 instanceof Register)
+        if (bitwiseBinaryOp2 instanceof Register || bitwiseBinaryOp2 instanceof Parameter)
             bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
         bitwiseBinaryResult.Defs.add(this);
     }
@@ -50,8 +51,10 @@ public class bitwiseBinaryInstruction extends IRInstruction{
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(bitwiseBinaryOp1 instanceof Register) res.add(bitwiseBinaryOp1);
-        if(bitwiseBinaryOp2 instanceof Register) res.add(bitwiseBinaryOp2);
+        if(bitwiseBinaryOp1 instanceof Register || bitwiseBinaryOp1 instanceof Parameter)
+            res.add(bitwiseBinaryOp1);
+        if(bitwiseBinaryOp2 instanceof Register || bitwiseBinaryOp2 instanceof Parameter)
+            res.add(bitwiseBinaryOp2);
         return res;
     }
 
@@ -64,9 +67,9 @@ public class bitwiseBinaryInstruction extends IRInstruction{
 
     @Override
     public void refreshRegisterUse() {
-        if (bitwiseBinaryOp1 instanceof Register)
+        if (bitwiseBinaryOp1 instanceof Register || bitwiseBinaryOp1 instanceof Parameter)
             bitwiseBinaryOp1.AddRegisterUseInInstruction(this);
-        if (bitwiseBinaryOp2 instanceof Register)
+        if (bitwiseBinaryOp2 instanceof Register || bitwiseBinaryOp2 instanceof Parameter)
             bitwiseBinaryOp2.AddRegisterUseInInstruction(this);
         bitwiseBinaryResult.Defs.add(this);
 

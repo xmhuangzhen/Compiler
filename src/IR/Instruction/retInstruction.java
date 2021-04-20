@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 import IR.TypeSystem.VoidType;
@@ -19,7 +20,7 @@ public class retInstruction extends IRInstruction {
         super(tmpBasicBlock);
         returnType = tmpType;
         returnValue = tmpValue;
-        if (returnValue != null && returnValue instanceof Register)
+        if (returnValue != null && (returnValue instanceof Register || returnValue instanceof Parameter))
             returnValue.AddRegisterUseInInstruction(this);
 
         HasSideEffect = true;
@@ -28,7 +29,7 @@ public class retInstruction extends IRInstruction {
     @Override
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
-        if(returnValue != null && returnValue instanceof Register)
+        if(returnValue != null && (returnValue instanceof Register || returnValue instanceof Parameter))
             res.add(returnValue);
         return res;
     }
@@ -51,7 +52,7 @@ public class retInstruction extends IRInstruction {
 
     @Override
     public void refreshRegisterUse() {
-        if (returnValue != null && returnValue instanceof Register)
+        if (returnValue != null && (returnValue instanceof Register || returnValue instanceof Parameter))
             returnValue.AddRegisterUseInInstruction(this);
 
     }

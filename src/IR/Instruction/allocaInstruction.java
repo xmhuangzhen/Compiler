@@ -3,6 +3,7 @@ package IR.Instruction;
 import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.IRTypeSystem;
 
@@ -11,13 +12,17 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 public class allocaInstruction extends IRInstruction{
-    public Register AllocaResult;
+    public IROperand AllocaResult;
     public IRTypeSystem AllocaType;
 
-    public allocaInstruction(IRBasicBlock tmpBasicBlock, Register tmpResult, IRTypeSystem tmpType) {
+    public String AllocaName;
+
+    public allocaInstruction(IRBasicBlock tmpBasicBlock, IROperand tmpResult, IRTypeSystem tmpType) {
         super(tmpBasicBlock);
         AllocaResult = tmpResult;
         AllocaType = tmpType;
+        if(tmpResult instanceof Register) AllocaName = ((Register) tmpResult).RegisterName;
+        else if(tmpResult instanceof Parameter) AllocaName = ((Parameter) tmpResult).ParameterName;
 //        AllocaResult.AddRegisterUseInInstruction(this);
     }
 

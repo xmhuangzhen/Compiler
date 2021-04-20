@@ -4,6 +4,7 @@ import Backend.IRVisitor;
 import IR.IRBasicBlock;
 import IR.IRFunction;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class callInstruction extends IRInstruction{
     public HashSet<IROperand> getuse() {
         HashSet<IROperand> res = new LinkedHashSet<>();
         for(int i = 0;i < CallParameters.size();++i)
-            if(CallParameters.get(i) instanceof Register)
+            if(CallParameters.get(i) instanceof Register || CallParameters.get(i) instanceof Parameter)
                 res.add(CallParameters.get(i));
         return res;
     }
@@ -57,7 +58,7 @@ public class callInstruction extends IRInstruction{
     public void refreshRegisterUse() {
         if(CallResult != null) CallResult.Defs.add(this);
         for(var tmpPar : CallParameters)
-            if(tmpPar instanceof Register)
+            if(tmpPar instanceof Register || tmpPar instanceof Parameter)
                 tmpPar.AddRegisterUseInInstruction(this);
     }
 
