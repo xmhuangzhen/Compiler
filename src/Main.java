@@ -115,7 +115,7 @@ public class Main {
                 if (!modified) break;
             }
 
-            new IRPrinter("output.ll").run(currentModule);
+    //        new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
