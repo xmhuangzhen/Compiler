@@ -59,7 +59,7 @@ public class Main {
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
             IRModule currentModule = tmpCFGConstructor.curIRModule;
-            CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
+            CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule,false);
             tmpCFGSimp.run();
 
             DominatorTreeConstructor tmpDominatorTreeConstructor =
@@ -76,7 +76,7 @@ public class Main {
             tmpSSAConstructor.run();
 
             currentModule = tmpSSAConstructor.curIRModule;
-//            new IRPrinter("output.ll").run(currentModule);
+       //     new IRPrinter("output.ll").run(currentModule);
 
 
             int cnt = 12;
@@ -85,23 +85,23 @@ public class Main {
                 if(cnt == 0) break;
 
                 boolean modified = false;
-                tmpCFGSimp = new CFGSimplification(currentModule);
+                tmpCFGSimp = new CFGSimplification(currentModule,false);
                 modified |= tmpCFGSimp.run();
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
+                tmpCFGSimp = new CFGSimplification(currentModule,true);
                 modified |= tmpCFGSimp.run();
 
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
+                tmpCFGSimp = new CFGSimplification(currentModule,true);
                 modified |= tmpCFGSimp.run();
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
+                tmpCFGSimp = new CFGSimplification(currentModule,true);
                 modified |= tmpCFGSimp.run();
 
                 BinaryInstSimplification tmpBinarySimp =
@@ -115,7 +115,7 @@ public class Main {
                 if (!modified) break;
             }
 
-//            new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -123,7 +123,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-          //  new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
 
 
 

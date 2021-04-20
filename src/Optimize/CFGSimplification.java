@@ -13,9 +13,11 @@ public class CFGSimplification extends Pass {
 
     public boolean modified;
     public IRFunction curFunc;
+    public boolean needRemoveBlock;
 
-    public CFGSimplification(IRModule tmpModule) {
+    public CFGSimplification(IRModule tmpModule, boolean tmpNeed) {
         super(tmpModule);
+        needRemoveBlock = tmpNeed;
     }
 
     @Override
@@ -102,19 +104,29 @@ public class CFGSimplification extends Pass {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
 
-                        if(curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
-                        && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
-                        && preBlock.TailInst instanceof brInstruction){
+                        if(needRemoveBlock) {
+                            if (curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
+                                    && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
+                                    && preBlock.TailInst instanceof brInstruction) {
 
-                            IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
-                            ((brInstruction) preBlock.TailInst).replaceBlock(curBlock,sucBlock);
-                            preBlock.CFGSuccessor.remove(curBlock);
-                            preBlock.CFGSuccessor.add(sucBlock);
-                            sucBlock.CFGPredecessor.remove(curBlock);
-                            sucBlock.CFGPredecessor.add(preBlock);
-                            curFunc.removeBasicBlock(curBlock);
-                            return true;
+                                IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
+//                                System.out.println(preBlock+","+curBlock+","+sucBlock+",");
+                                ((brInstruction) preBlock.TailInst).replaceBlock(curBlock, sucBlock);
+                                preBlock.CFGSuccessor.remove(curBlock);
+                                preBlock.CFGSuccessor.add(sucBlock);
+                                sucBlock.CFGPredecessor.remove(curBlock);
+                                sucBlock.CFGPredecessor.add(preBlock);
+                                curFunc.removeBasicBlock(curBlock);
+                                for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
+                                tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
+                                    tmpBlock.replacePhiInstBlock(curBlock,preBlock);
+                                }
+                                return true;
+                            }
+
                         }
+
+
 
                         /*
                         preBlock.TailInst.removeInst();
