@@ -73,7 +73,7 @@ public class SSAConstructor extends Pass {
                         } else if (tmpInst instanceof loadInstruction) {
                             UseAlloca.put(tmpInst, tmpAllocaInst);
                         } else {
-                            throw new RuntimeException();
+//                            throw new RuntimeException();
                         }
                     }
 
