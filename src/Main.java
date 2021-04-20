@@ -100,7 +100,7 @@ public class Main {
                 modified |= tmpCFGSimp.run();
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
-            //    modified |= tmpInline.run();
+                modified |= tmpInline.run();
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
 
