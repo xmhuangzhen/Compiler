@@ -76,7 +76,7 @@ public class IRBuilder implements ASTVisitor {
                 if (tmpClassDefNode.consDef == null) tmpIRFunction.IsBuiltIn = true;
                 else {
                     Parameter tmpClassPtr = new Parameter(new PointerType(tmpThisIRType), "this");
-              //       tmpClassPtr.NeedPtr = true;
+                     tmpClassPtr.NeedPtr = true;
                     tmpIRFunction.thisFunctionParameters.add(tmpClassPtr);
                 }
                 currentModule.IRFunctionTable.put(tmpFuncName, tmpIRFunction);
@@ -968,6 +968,7 @@ public class IRBuilder implements ASTVisitor {
         Register tmpResult = new Register(((PointerType) tmpClassPtr.thisType).baseType,
                 "CastToResult" + (RegNum++));
         tmpResult.NeedPtr = true;
+        tmpClassPtr.NeedPtr = true;
         currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock, tmpResult, tmpClassPtr));
         it.ExprResult = tmpResult;
     }
@@ -1123,7 +1124,12 @@ public class IRBuilder implements ASTVisitor {
                     throw new RuntimeException();
                 IROperand tmpThisOperand = IdAddrMap.GetIdExprAddr("this");
                 tmpThisOperand.NeedPtr = true;
-                tmpCallInst.CallParameters.add(tmpThisOperand);
+                Register tmpCastResult = new Register(((PointerType) tmpThisOperand.thisType).baseType,
+                        "CastToResult" + (RegNum++));
+                tmpCastResult.NeedPtr = true;
+                currentBasicBlock.addBasicBlockInst(new loadInstruction(currentBasicBlock,
+                        tmpCastResult, tmpThisOperand));
+                tmpCallInst.CallParameters.add(tmpCastResult);
                 tmpThisOperand.AddRegisterUseInInstruction(tmpCallInst);
             }
             for (var tmp : it.pars) {
@@ -1239,6 +1245,7 @@ public class IRBuilder implements ASTVisitor {
             if (tmpMemberIRType != null && currentFunction != null
                     && IdAddrMap != null && IdAddrMap.CheckIdExprAddr("this")) {
                 IROperand tmpThisOperand = IdAddrMap.GetIdExprAddr("this");
+                tmpThisOperand.NeedPtr = true;
 
                 if(!(tmpThisOperand.thisType instanceof PointerType)) throw new RuntimeException();
                 Register tmpGEPptr = new Register(((PointerType) tmpThisOperand.thisType).baseType,

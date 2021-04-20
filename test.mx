@@ -1,27 +1,71 @@
 /*
 Test Package: Codegen
-Author: 15' Haoran Ye
+Author: 14' Rongyu You
 Time: 2020-02-03
 Input:
 === input ===
 === end ===
 Output:
 === output ===
-eternal!
+vector x: ( 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 )
+excited!
+vector y: ( 9, 8, 7, 817, 5, 4, 3, 2, 1, 0 )
+x + y: ( 18, 16, 14, 823, 10, 8, 6, 4, 2, 0 )
+x * y: 0
+(1 << 3) * y: ( 72, 64, 56, 6536, 40, 32, 24, 16, 8, 0 )
 === end ===
 ExitCode: 0
 InstLimit: -1
-Origin Package: Codegen Pretest-876
+Origin Package: Codegen Pretest-900
 */
-class older{
-	int age;
-	void solveAge(){
-        age = 1;
+//
+// Naive vector class for Mx*.
+// Without any guarantee for robustness.
+//
+class vector{
+	int[] data;
+	void init(int[] vec){
+		// init the vector from an array
+		if (vec == null) return;
+		data = new int[vec.size()];
+		int i;
+		for (i = 0; i < vec.size(); ++i)
+		{
+			data[i] = vec[i];
+		}
 	}
+
+	int getDim(){
+		if (data == null) return 0;
+		return data.size();
+	}
+
+	string tostring(){
+		string temp = "( ";
+		if (getDim() > 0) {
+			temp = temp + toString(data[0]);
+		}
+		int i;
+		for (i = 1; i < getDim(); ++i) {
+			temp = temp + ", " + toString(data[i]);
+		}
+		temp = temp + " )";
+		return temp;
+	}
+
 };
+
 int main(){
-	older mrJiang = new older;
-	mrJiang.solveAge();
-    return mrJiang.age;
+	vector x = new vector;
+	int[] a = new int[10];
+	int i;
+	for (i = 0; i < 10; ++i){
+		a[i] = 9 - i;
+	}
+	x.init(a);
+	print("vector x: ");
+	println(x.tostring());
+
+	return 0;
 }
 
