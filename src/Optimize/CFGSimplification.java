@@ -60,7 +60,7 @@ public class CFGSimplification extends Pass {
     public boolean FuncSimplification() {
         boolean thismodified = false;
         resumeBranch();
-        int cnt = 10;
+        int cnt = 100;
         while (true) {
             cnt--;
             if(cnt == 0) break;
@@ -101,7 +101,22 @@ public class CFGSimplification extends Pass {
                     if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
-/*
+
+                        if(curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
+                        && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
+                        && preBlock.TailInst instanceof brInstruction){
+
+                            IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
+                            ((brInstruction) preBlock.TailInst).replaceBlock(curBlock,sucBlock);
+                            preBlock.CFGSuccessor.remove(curBlock);
+                            preBlock.CFGSuccessor.add(sucBlock);
+                            sucBlock.CFGPredecessor.remove(curBlock);
+                            sucBlock.CFGPredecessor.add(preBlock);
+                            curFunc.removeBasicBlock(curBlock);
+                            return true;
+                        }
+
+                        /*
                         preBlock.TailInst.removeInst();
 
                         if(preBlock.TailInst != null) {

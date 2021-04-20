@@ -22,7 +22,7 @@ public class InlineExpander extends Pass {
     HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
 
 
-    public static int InstLimit = 500;
+    public static int InstLimit = 800;
     public static int BlockNum = 0, RegNum = 0;
 
     public InlineExpander(IRModule tmpModule) {

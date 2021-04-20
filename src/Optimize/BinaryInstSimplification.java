@@ -5,6 +5,7 @@ import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.IRInstruction;
 import IR.Instruction.binaryOpInstruction;
+import IR.Instruction.moveInstruction;
 import IR.Operand.IntegerConstant;
 import IR.Operand.Register;
 import IR.TypeSystem.IntegerType;
@@ -23,7 +24,6 @@ public class BinaryInstSimplification extends Pass {
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
             if (!tmpFunc.IsBuiltIn) {
                 curFunc = tmpFunc;
-              //  System.out.println("-------"+curFunc.thisFunctionName+"--------");
                 modified |= BinaryInstSimpInFunc();
             }
         return modified;
@@ -31,7 +31,6 @@ public class BinaryInstSimplification extends Pass {
 
     public boolean BinaryInstSimpInFunc() {
         boolean modified = false;
-//        System.out.println(curFunc.thisFunctionName);
         for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
              tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
             for (IRInstruction tmpInst = tmpBlock.HeadInst;
@@ -48,13 +47,22 @@ public class BinaryInstSimplification extends Pass {
                             src11 = (Register) ((binaryOpInstruction) tmpInst).BinaryOp2;
                             src12 = ((IntegerConstant) ((binaryOpInstruction) tmpInst).BinaryOp1).value;
                         }
-                   //     System.out.println(tmpInst);
-                     //   System.out.println(src11.use);
-                       // System.out.println(src11.Defs);
+
+                        while(src11.Defs != null && src11.Defs.size() == 1 &&
+                        src11.Defs.iterator().next() instanceof moveInstruction &&
+                        ((moveInstruction) src11.Defs.iterator().next()).rs instanceof Register){
+                            src11 = (Register) ((moveInstruction) src11.Defs.iterator().next()).rs;
+                        }
+                        /*
+                        System.out.println(tmpInst);
+                        System.out.println(src11.use);
+                        System.out.println(src11.Defs);
+
+                         */
 
                         if (src11.use.size() == 1 && src11.Defs.size() == 1 &&
                                 src11.Defs.iterator().next() instanceof binaryOpInstruction) {
-                          //  System.out.println("1");
+                         //   System.out.println("1");
                             binaryOpInstruction tmpInst2 = (binaryOpInstruction) src11.Defs.iterator().next();
                             int Type2 = CanPropagate(tmpInst2);
                             if (Type2 != 0) {

@@ -52,7 +52,7 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+      //      new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             //--------Opt Start------
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
@@ -106,7 +106,7 @@ public class Main {
 
                 BinaryInstSimplification tmpBinarySimp =
                         new BinaryInstSimplification(currentModule);
-             //   modified |= tmpBinarySimp.run();
+                modified |= tmpBinarySimp.run();
 
                 CommonSubexpressionElimination tmpCSE =
                         new CommonSubexpressionElimination(currentModule);
@@ -123,7 +123,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-        //    new IRPrinter("output.ll").run(currentModule);
+          //  new IRPrinter("output.ll").run(currentModule);
 
 
 
