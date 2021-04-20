@@ -51,10 +51,10 @@ public class BinaryInstSimplification extends Pass {
 
                         while (
                                 src11.use.size() == 1 &&
-                                src11.Defs != null && src11.Defs.size() == 1 &&
-                                src11.Defs.iterator().next() instanceof moveInstruction &&
-                           //     src11.Defs.iterator().next().thisBasicBlock == tmpBlock &&
-                                ((moveInstruction) src11.Defs.iterator().next()).rs instanceof Register) {
+                                        src11.Defs != null && src11.Defs.size() == 1 &&
+                                        src11.Defs.iterator().next() instanceof moveInstruction &&
+                                        //     src11.Defs.iterator().next().thisBasicBlock == tmpBlock &&
+                                        ((moveInstruction) src11.Defs.iterator().next()).rs instanceof Register) {
                             src11 = (Register) ((moveInstruction) src11.Defs.iterator().next()).rs;
                         }
 
@@ -75,27 +75,57 @@ public class BinaryInstSimplification extends Pass {
                                 }
 
                                 if (src21.use.size() == 1) {
-
                                     boolean canComb = false;
                                     long src3 = 0;
+                                    boolean ConstRight = true;
+
                                     binaryOpInstruction.BinaryOperandENUM op1 =
                                             ((binaryOpInstruction) tmpInst).BinaryOperandType;
                                     binaryOpInstruction.BinaryOperandENUM op2 = tmpInst2.BinaryOperandType;
+                                    binaryOpInstruction.BinaryOperandENUM op3 = op1;
                                     if (op1 == binaryOpInstruction.BinaryOperandENUM.add) {
                                         if (op2 == binaryOpInstruction.BinaryOperandENUM.add) {
                                             src3 = src12 + src22;
                                             canComb = true;
                                         } else if (op2 == binaryOpInstruction.BinaryOperandENUM.sub) {
-                                            src3 = src12 - src22;
+                                            if (Type2 == 1)//reg-src22+src12
+                                                src3 = src12 - src22;
+                                            else {//src22-reg+src12
+                                                src3 = src22 + src12;
+                                                op3 = binaryOpInstruction.BinaryOperandENUM.sub;
+                                                ConstRight = false;
+                                            }
                                             canComb = true;
                                         }
                                     } else if (op1 == binaryOpInstruction.BinaryOperandENUM.sub) {
-                                        if (op2 == binaryOpInstruction.BinaryOperandENUM.add) {
-                                            src3 = src12 - src22;
-                                            canComb = true;
-                                        } else if (op2 == binaryOpInstruction.BinaryOperandENUM.sub) {
-                                            src3 = src12 + src22;
-                                            canComb = true;
+                                        if (Type == 1) {// xxx - src12
+                                            if (op2 == binaryOpInstruction.BinaryOperandENUM.add) {
+                                                //reg-(src12-src22)
+                                                src3 = src12 - src22;
+                                                canComb = true;
+                                            } else if (op2 == binaryOpInstruction.BinaryOperandENUM.sub) {
+                                                if (Type2 == 1) {//reg-(src12+src22)
+                                                    src3 = src12 + src22;
+                                                } else {//src22-src12-reg
+                                                    src3 = src22 - src12;
+                                                    ConstRight = false;
+                                                }
+                                                canComb = true;
+                                            }
+                                        } else {
+                                            if (op2 == binaryOpInstruction.BinaryOperandENUM.add) {
+                                                //src12-src22-reg
+                                                src3 = src12 - src22;
+                                                ConstRight = false;
+                                            } else if (op2 == binaryOpInstruction.BinaryOperandENUM.sub) {
+                                                if (Type2 == 1) {//src12-src22-reg
+                                                    src3 = src12 - src22;
+                                                    ConstRight = false;
+                                                } else {//reg+src12-src22
+                                                    src3 = src12 - src22;
+                                                    op3 = binaryOpInstruction.BinaryOperandENUM.add;
+                                                }
+                                            }
                                         }
                                     } else if (op1 == binaryOpInstruction.BinaryOperandENUM.mul) {
                                         if (op2 == binaryOpInstruction.BinaryOperandENUM.mul) {
@@ -105,8 +135,14 @@ public class BinaryInstSimplification extends Pass {
                                     }
 
                                     if (canComb) {//-> src21 op1 src3
-                                        ((binaryOpInstruction) tmpInst).replaceBinaryInst(src21,
-                                                new IntegerConstant(IntegerType.IRBitWidth.i32, src3));
+                                        if (ConstRight)
+                                            ((binaryOpInstruction) tmpInst).replaceBinaryInst(src21,
+                                                    new IntegerConstant(IntegerType.IRBitWidth.i32, src3), op3);
+                                        else
+                                            ((binaryOpInstruction) tmpInst).replaceBinaryInst(
+                                                    new IntegerConstant(IntegerType.IRBitWidth.i32, src3),
+                                                    src21, op3);
+
                                         tmpInst2.removeInst();
                                         modified = true;
                                     }

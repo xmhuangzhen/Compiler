@@ -74,11 +74,12 @@ public class binaryOpInstruction extends IRInstruction{
         BinaryResult.Defs.add(this);
     }
 
-    public void replaceBinaryInst(IROperand tmpOp1, IROperand tmpOp2){
+    public void replaceBinaryInst(IROperand tmpOp1, IROperand tmpOp2, BinaryOperandENUM tmpOp3){
         BinaryOp1.DeleteRegisterUseInInstruction(this);
         BinaryOp2.DeleteRegisterUseInInstruction(this);
         BinaryOp1 = tmpOp1;
         BinaryOp2 = tmpOp2;
+        BinaryOperandType = tmpOp3;
         if (BinaryOp1 instanceof Register || BinaryOp1 instanceof Parameter)
             BinaryOp1.AddRegisterUseInInstruction(this);
         if (BinaryOp2 instanceof Register || BinaryOp2 instanceof Parameter)
