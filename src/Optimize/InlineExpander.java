@@ -37,7 +37,7 @@ public class InlineExpander extends Pass {
     @Override
     public boolean run() {
         boolean modified = false;
-        int InlineCnt = 10;
+        int InlineCnt = 20;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
@@ -46,7 +46,7 @@ public class InlineExpander extends Pass {
             if (!changed) break;
         }
 
-/*        InlineCnt = 10;
+        InlineCnt = 10;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
@@ -54,7 +54,7 @@ public class InlineExpander extends Pass {
             modified |= changed;
             if (!changed) break;
         }
-*/
+
         return modified;
     }
 
@@ -170,7 +170,7 @@ public class InlineExpander extends Pass {
         if(calleeFunc == curFunc){
             curFunc.RecursiveCallExpandNum++;
             //System.out.println(CallInst);
-            if(calleeFunc.RecursiveCallExpandNum > 10) return false;
+            if(calleeFunc.RecursiveCallExpandNum > 2) return false;
         }
 
         BlockMap.clear();

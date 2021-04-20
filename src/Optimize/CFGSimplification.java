@@ -128,7 +128,7 @@ public class CFGSimplification extends Pass {
 
 
 
-                        /*
+/*
                         preBlock.TailInst.removeInst();
 
                         if(preBlock.TailInst != null) {
@@ -152,7 +152,8 @@ public class CFGSimplification extends Pass {
                              tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)
                             tmpBlcok.replacePhiInstBlock(curBlock, preBlock);
                         return true;
-  */                  }
+  */
+                    }
                 }
             }
         }
