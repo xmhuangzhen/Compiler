@@ -46,7 +46,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                 W.clear();
                 WVisited.clear();
 
-               // System.out.println("---------------------" + curFunc.thisFunctionName + "-------------");
+                // System.out.println("---------------------" + curFunc.thisFunctionName + "-------------");
                 for (IRBasicBlock tmpBlock = curFunc.thisReturnBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.prevBasicBlocks) {
                     for (IRInstruction tmpInst = tmpBlock.TailInst;
@@ -59,7 +59,7 @@ public class AggressiveDeadCodeElimination extends Pass {
 
                 while (!W.isEmpty()) {
                     IRInstruction S = W.poll();
-                  //  System.out.println(S);
+                    //  System.out.println(S);
                     if (LiveInst.contains(S)) continue;
                     LiveInst.add(S);
                     //       System.out.println("----------------");
@@ -83,7 +83,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                                 WVisited.add(checkInst);
                             }
 
-                            if(checkInst != null) {
+                            if (checkInst != null) {
                                 checkInst = checkInst.preIRInstruction;
                                 if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
                                     W.offer(checkInst);
@@ -107,17 +107,19 @@ public class AggressiveDeadCodeElimination extends Pass {
                         }
                     }
 
-                    for(var preBlock : S.thisBasicBlock.CFGSuccessor){
+                    for (var preBlock : S.thisBasicBlock.CFGSuccessor) {
                         IRInstruction checkInst = preBlock.TailInst;
                         if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
                             W.offer(checkInst);
                             WVisited.add(checkInst);
                         }
 
-                        checkInst = checkInst.preIRInstruction;
-                        if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
-                            W.offer(checkInst);
-                            WVisited.add(checkInst);
+                        if (checkInst != null) {
+                            checkInst = checkInst.preIRInstruction;
+                            if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
+                                W.offer(checkInst);
+                                WVisited.add(checkInst);
+                            }
                         }
                     }
 
@@ -127,7 +129,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                         WVisited.add(checkInst);
                     }
 
-                    if(checkInst != null) {
+                    if (checkInst != null) {
                         checkInst = checkInst.preIRInstruction;
                         if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
                             W.offer(checkInst);
