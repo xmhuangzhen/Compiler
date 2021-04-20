@@ -8,6 +8,7 @@ import IR.Operand.IROperand;
 import IR.Operand.NullConstant;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
+import IR.TypeSystem.IRTypeSystem;
 import IR.TypeSystem.PointerType;
 
 import java.util.*;
@@ -84,11 +85,14 @@ public class SSAConstructor extends Pass {
                             if (!BlockF.contains(BlockY)) {
                                 //Line 11
                                 String VarName = tmpAllocaInst.AllocaName;
-                                if (!(tmpAllocaInst.AllocaType instanceof PointerType))
-                                    throw new RuntimeException();
-                                Register tmpPhiResult =
-                                        new Register(((PointerType) tmpAllocaInst.AllocaType).baseType,
-                                                VarName + (RegNum++));
+                                IRTypeSystem tmpType = null;
+                                if(tmpAllocaInst.AllocaType instanceof PointerType)
+                                    tmpType = ((PointerType) tmpAllocaInst.AllocaType).baseType;
+                           /*     else if(tmpAllocaInst.AllocaResult instanceof Parameter)
+                                    tmpType = tmpAllocaInst.AllocaType;
+                             */   else throw new RuntimeException();
+
+                                Register tmpPhiResult = new Register(tmpType, VarName + (RegNum++));
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
 
@@ -129,12 +133,12 @@ public class SSAConstructor extends Pass {
             tmpPhiInst.PhiLabel.add(preBlock);
             if (!ReachingDefMap.get(preBlock).containsKey(tmpAllocInst) ||
                     ReachingDefMap.get(preBlock).get(tmpAllocInst) == null) {
-                if(tmpAllocInst.AllocaResult instanceof Parameter) {
+               /* if(tmpAllocInst.AllocaResult instanceof Parameter) {
                   //  System.out.println(tmpAllocInst);
                     tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaResult);
                 }else {
-                    tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
-                }
+                 */   tmpPhiInst.PhiValue.add(tmpAllocInst.AllocaType.getValue());
+                //}
             } else {
                 IROperand tmpOperand = ReachingDefMap.get(preBlock).get(tmpAllocInst);
                 tmpPhiInst.PhiValue.add(tmpOperand);

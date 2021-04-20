@@ -1,620 +1,404 @@
 	.text
-	.globl	point.cross					# start function : point.cross
+	.globl	test					# start function : test
 	.p2align	2
-point.cross:
+test:
 #LBB40:
 	sw ra,-4(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
 	mv s0,sp
-	addi sp,sp,-84
-	mv s1,a0
-	mv s2,a1
-	li a0,12
-	call malloc
-	addi a0,a0,0
+	addi sp,sp,-120
+	mv t2,a0
+	lw t1,0(s0)
+	lw s1,4(s0)
+	xor t0,t2,a1
+	seqz t0,t0
+	bnez t0,LBB41
+	j LBB46
 LBB41:
-	mv a1,a0
-	li a2,0
-	sw a2,0(a1)
-	li a2,0
-	sw a2,4(a1)
-	li a2,0
-	sw a2,8(a1)
+	xor t0,a1,a2
+	snez s2,t0
+	li t0,0
+	xor t0,s2,t0
+	seqz t0,t0
+	bnez t0,LBB42
+	j LBB43
 LBB42:
+	xor a0,a2,a3
+	snez a0,a0
 LBB43:
-	lw a2,4(s1)
-	lw a1,8(s2)
-	mul a3,a2,a1
-	lw a2,8(s1)
-	lw a1,4(s2)
-	mul a1,a2,a1
-	sub a2,a3,a1
-	lw a3,8(s1)
-	lw a1,0(s2)
-	mul a4,a3,a1
-	lw a3,0(s1)
-	lw a1,8(s2)
-	mul a1,a3,a1
-	sub a3,a4,a1
-	lw a4,0(s1)
-	lw a1,4(s2)
-	mul a5,a4,a1
-	lw a4,4(s1)
-	lw a1,0(s2)
-	mul a1,a4,a1
-	sub a4,a5,a1
+	or a0,s2,a0
+	bnez a0,LBB44
+	j LBB45
 LBB44:
-	mv a1,a0
-	sw a2,0(a1)
-	sw a3,4(a1)
-	sw a4,8(a1)
+	mv a0,a1
+	mv a1,a2
+	mv a2,a3
+	mv a3,a4
+	mv a4,a5
+	mv a5,a6
+	mv a6,a7
+	mv a7,t1
+	sw s1,0(sp)
+	sw t2,4(sp)
+	call test
+	addi a0,a0,1
+	j LBB47
 LBB45:
+	addi t0,a5,-1
+	addi a5,a6,-2
+	mv a0,a1
+	mv a1,a2
+	mv a2,a3
+	mv a3,a4
+	mv a4,t0
+	mv a6,a7
+	mv a7,t1
+	sw s1,0(sp)
+	sw t2,4(sp)
+	call test
+	addi a0,a0,2
+	j LBB47
 LBB46:
+	add a0,t2,a1
+	add a0,a0,t2
 LBB47:
-	addi sp,sp,84
+	addi sp,sp,120
 	lw s1,-12(sp)
 	lw s2,-16(sp)
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
-# end function : point.cross
-	.globl	point.printPoint					# start function : point.printPoint
+# end function : test
+	.globl	main					# start function : main
 	.p2align	2
-point.printPoint:
+main:
 #LBB48:
 	sw ra,-4(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
-	sw s3,-20(sp)
 	mv s0,sp
-	addi sp,sp,-88
-	mv s2,a0
-	la s3,const_string_no0
-	lw a0,0(s2)
-	call toString
-	mv a1,a0
-	mv a0,s3
-	call __string_add
-	la a1,const_string_no1
-	call __string_add
-	mv s3,a0
-	lw a0,4(s2)
-	call toString
-	mv a1,a0
-	mv a0,s3
-	call __string_add
-	la a1,const_string_no1
-	call __string_add
-	mv s3,a0
-	lw a0,8(s2)
-	call toString
-	mv a1,a0
-	mv a0,s3
-	call __string_add
-	la a1,const_string_no2
-	call __string_add
-	call println
+	addi sp,sp,-120
 LBB49:
-	mv a0,s1
-	addi sp,sp,88
-	lw s1,-12(sp)
-	lw s2,-16(sp)
-	lw s3,-20(sp)
-	mv s0,sp
-	lw ra,-4(sp)
-	ret
-# end function : point.printPoint
-	.globl	main					# start function : main
-	.p2align	2
-main:
-#LBB50:
-	sw ra,-4(sp)
-	sw s1,-12(sp)
-	sw s2,-16(sp)
-	sw s3,-20(sp)
-	sw s4,-24(sp)
-	mv s0,sp
-	addi sp,sp,-88
+LBB50:
 LBB51:
+	li s1,0
+	li s2,19260817
 LBB52:
 LBB53:
-	li a0,12
-	call malloc
-	addi s3,a0,0
 LBB54:
-	mv a0,s3
-	li a1,0
-	sw a1,0(a0)
-	li a1,0
-	sw a1,4(a0)
-	li a1,0
-	sw a1,8(a0)
+	li a0,13
+	sll a0,s2,a0
 LBB55:
 LBB56:
-	li a0,12
-	call malloc
-	addi s1,a0,0
+	xor a1,s2,a0
 LBB57:
-	mv a0,s1
-	li a1,0
-	sw a1,0(a0)
-	li a1,0
-	sw a1,4(a0)
-	li a1,0
-	sw a1,8(a0)
+	li a0,17
+	li a2,0
+	slt a2,a1,a2
+	xori a2,a2,1
+	bnez a2,LBB58
+	j LBB59
 LBB58:
+	sra a0,a1,a0
+	j LBB60
 LBB59:
-	li a0,12
-	call malloc
-	addi s4,a0,0
+	li a2,31
+	sub a3,a2,a0
+	li a2,1
+	sll a3,a2,a3
+	li a2,-2147483648
+	xor a2,a1,a2
+	sra a0,a2,a0
+	or a0,a3,a0
 LBB60:
-	mv a0,s4
-	li a1,0
-	sw a1,0(a0)
-	li a1,0
-	sw a1,4(a0)
-	li a1,0
-	sw a1,8(a0)
 LBB61:
+	xor a1,a1,a0
 LBB62:
-	li a0,12
-	call malloc
-	addi s2,a0,0
+	li a0,5
+	sll a0,a1,a0
 LBB63:
-	mv a0,s2
-	li a1,0
-	sw a1,0(a0)
-	li a1,0
-	sw a1,4(a0)
-	li a1,0
-	sw a1,8(a0)
 LBB64:
+	xor a1,a1,a0
+	li a0,1073741823
+	and a2,a1,a0
 LBB65:
-	mv a0,s3
-	call point.printPoint
 LBB66:
-	mv a0,s3
-	li a1,849
-	li a2,-463
-	li a3,480
-	sw a1,0(a0)
-	sw a2,4(a0)
-	sw a3,8(a0)
 LBB67:
 LBB68:
+	mv a0,a2
+	li a1,13
+	sll a0,a0,a1
 LBB69:
-	mv a0,s1
-	li a1,-208
-	li a2,585
-	li a3,-150
-	sw a1,0(a0)
-	sw a2,4(a0)
-	sw a3,8(a0)
 LBB70:
+	xor a1,a2,a0
 LBB71:
+	li a0,17
+	li a3,0
+	slt a3,a1,a3
+	xori a3,a3,1
+	bnez a3,LBB72
+	j LBB73
 LBB72:
-	mv a0,s4
-	li a1,360
-	li a2,-670
-	li a3,-742
-	sw a1,0(a0)
-	sw a2,4(a0)
-	sw a3,8(a0)
+	sra a0,a1,a0
+	j LBB74
 LBB73:
+	li a3,31
+	sub a4,a3,a0
+	li a3,1
+	sll a4,a3,a4
+	li a3,-2147483648
+	xor a3,a1,a3
+	sra a0,a3,a0
+	or a0,a4,a0
 LBB74:
 LBB75:
-	mv a0,s2
-	li a1,-29
-	li a2,-591
-	li a3,-960
-	sw a1,0(a0)
-	sw a2,4(a0)
-	sw a3,8(a0)
+	xor a1,a1,a0
 LBB76:
+	li a0,5
+	sll a0,a1,a0
 LBB77:
 LBB78:
-	mv a0,s3
-	mv a1,s1
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
+	xor a1,a1,a0
+	li a0,1073741823
+	and a1,a1,a0
 LBB79:
 LBB80:
+	andi a2,a2,255
+	andi a0,a1,255
+	xor a0,a2,a0
+	snez a0,a0
+	bnez a0,LBB81
+	j LBB152
 LBB81:
-	mv a0,s1
-	mv a1,s4
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
 LBB82:
 LBB83:
+	li a0,13
+	sll a0,a1,a0
 LBB84:
-	mv a0,s2
-	mv a1,s4
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
 LBB85:
+	xor a1,a1,a0
 LBB86:
+	li a0,17
+	li a2,0
+	slt a2,a1,a2
+	xori a2,a2,1
+	bnez a2,LBB87
+	j LBB88
 LBB87:
-	mv a0,s4
-	mv a1,s3
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	sub a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	sub a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	sub a0,a3,a0
-	sw a0,8(a2)
+	sra a0,a1,a0
+	j LBB89
 LBB88:
+	li a2,31
+	sub a3,a2,a0
+	li a2,1
+	sll a3,a2,a3
+	li a2,-2147483648
+	xor a2,a1,a2
+	sra a0,a2,a0
+	or a0,a3,a0
 LBB89:
 LBB90:
-	mv a0,s1
-	mv a1,s2
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	sub a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	sub a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	sub a0,a3,a0
-	sw a0,8(a2)
+	xor a1,a1,a0
 LBB91:
+	li a0,5
+	sll a0,a1,a0
 LBB92:
 LBB93:
-	mv a0,s2
-	mv a1,s4
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	sub a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	sub a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	sub a0,a3,a0
-	sw a0,8(a2)
+	xor a1,a1,a0
+	li a0,1073741823
+	and a2,a1,a0
 LBB94:
 LBB95:
 LBB96:
-	mv a0,s4
-	mv a1,s1
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
 LBB97:
+	mv a0,a2
+	li a1,13
+	sll a0,a0,a1
 LBB98:
 LBB99:
-	mv a0,s3
-	mv a1,s1
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
+	xor a1,a2,a0
 LBB100:
+	li a0,17
+	li a3,0
+	slt a3,a1,a3
+	xori a3,a3,1
+	bnez a3,LBB101
+	j LBB102
 LBB101:
+	sra a0,a1,a0
+	j LBB103
 LBB102:
-	mv a0,s1
-	mv a1,s1
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
+	li a3,31
+	sub a4,a3,a0
+	li a3,1
+	sll a4,a3,a4
+	li a3,-2147483648
+	xor a3,a1,a3
+	sra a0,a3,a0
+	or a0,a4,a0
 LBB103:
 LBB104:
+	xor a1,a1,a0
 LBB105:
-	mv a0,s4
-	mv a1,s4
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
+	li a0,5
+	sll a0,a1,a0
 LBB106:
 LBB107:
+	xor a1,a1,a0
+	li a0,1073741823
+	and a3,a1,a0
 LBB108:
-	mv a0,s3
-	mv a1,s2
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	sub a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	sub a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	sub a0,a3,a0
-	sw a0,8(a2)
 LBB109:
 LBB110:
 LBB111:
-	mv a0,s3
-	mv a1,s1
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	add a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	add a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	add a0,a3,a0
-	sw a0,8(a2)
+	mv a0,a3
+	li a1,13
+	sll a0,a0,a1
 LBB112:
 LBB113:
+	xor a1,a3,a0
 LBB114:
-	mv a0,s1
-	mv a1,s4
-	mv a2,a0
-	lw a4,0(a0)
-	lw a3,0(a1)
-	sub a3,a4,a3
-	sw a3,0(a2)
-	mv a2,a0
-	lw a4,4(a0)
-	lw a3,4(a1)
-	sub a3,a4,a3
-	sw a3,4(a2)
-	mv a2,a0
-	lw a3,8(a0)
-	lw a0,8(a1)
-	sub a0,a3,a0
-	sw a0,8(a2)
+	li a0,17
+	li a4,0
+	slt a4,a1,a4
+	xori a4,a4,1
+	bnez a4,LBB115
+	j LBB116
 LBB115:
+	sra a0,a1,a0
+	j LBB117
 LBB116:
+	li a4,31
+	sub a5,a4,a0
+	li a4,1
+	sll a5,a4,a5
+	li a4,-2147483648
+	xor a4,a1,a4
+	sra a0,a4,a0
+	or a0,a5,a0
 LBB117:
-	mv a0,s3
-	lw a2,0(a0)
-	lw a1,0(a0)
-	mul a3,a2,a1
-	lw a2,4(a0)
-	lw a1,4(a0)
-	mul a1,a2,a1
-	add a2,a3,a1
-	lw a1,8(a0)
-	lw a0,8(a0)
-	mul a0,a1,a0
-	add a0,a2,a0
 LBB118:
+	xor a1,a1,a0
 LBB119:
-	call toString
-	call println
+	li a0,5
+	sll a0,a1,a0
 LBB120:
-	mv a0,s1
-	lw a2,0(a0)
-	lw a1,0(a0)
-	mul a3,a2,a1
-	lw a2,4(a0)
-	lw a1,4(a0)
-	mul a1,a2,a1
-	add a2,a3,a1
-	lw a1,8(a0)
-	lw a0,8(a0)
-	mul a0,a1,a0
-	add a0,a2,a0
 LBB121:
+	xor a1,a1,a0
+	li a0,1073741823
+	and a5,a1,a0
 LBB122:
-	call toString
-	call println
 LBB123:
-	mv a0,s1
-	mv a1,s4
-	lw a3,0(a0)
-	lw a2,0(a1)
-	sub a4,a3,a2
-	lw a3,0(a0)
-	lw a2,0(a1)
-	sub a2,a3,a2
-	mul a5,a4,a2
-	lw a3,4(a0)
-	lw a2,4(a1)
-	sub a4,a3,a2
-	lw a3,4(a0)
-	lw a2,4(a1)
-	sub a2,a3,a2
-	mul a2,a4,a2
-	add a4,a5,a2
-	lw a3,8(a0)
-	lw a2,8(a1)
-	sub a3,a3,a2
-	lw a2,8(a0)
-	lw a0,8(a1)
-	sub a0,a2,a0
-	mul a0,a3,a0
-	add a0,a4,a0
 LBB124:
 LBB125:
-	call toString
-	call println
+	mv a0,a5
+	li a1,13
+	sll a0,a0,a1
 LBB126:
-	mv a0,s2
-	mv a1,s3
-	lw a3,0(a0)
-	lw a2,0(a1)
-	sub a4,a3,a2
-	lw a3,0(a0)
-	lw a2,0(a1)
-	sub a2,a3,a2
-	mul a5,a4,a2
-	lw a3,4(a0)
-	lw a2,4(a1)
-	sub a4,a3,a2
-	lw a3,4(a0)
-	lw a2,4(a1)
-	sub a2,a3,a2
-	mul a2,a4,a2
-	add a4,a5,a2
-	lw a3,8(a0)
-	lw a2,8(a1)
-	sub a3,a3,a2
-	lw a2,8(a0)
-	lw a0,8(a1)
-	sub a0,a2,a0
-	mul a0,a3,a0
-	add a0,a4,a0
 LBB127:
+	xor a1,a5,a0
 LBB128:
-	call toString
-	call println
+	li a0,17
+	li a4,0
+	slt a4,a1,a4
+	xori a4,a4,1
+	bnez a4,LBB129
+	j LBB130
 LBB129:
-	mv a0,s4
-	mv a1,s3
-	lw a3,0(a0)
-	lw a2,0(a1)
-	mul a4,a3,a2
-	lw a3,4(a0)
-	lw a2,4(a1)
-	mul a2,a3,a2
-	add a3,a4,a2
-	lw a2,8(a0)
-	lw a0,8(a1)
-	mul a0,a2,a0
-	add a0,a3,a0
+	sra a0,a1,a0
+	j LBB131
 LBB130:
+	li a4,31
+	sub a6,a4,a0
+	li a4,1
+	sll a6,a4,a6
+	li a4,-2147483648
+	xor a4,a1,a4
+	sra a0,a4,a0
+	or a0,a6,a0
 LBB131:
-	call toString
-	call println
-	mv a0,s1
-	mv a1,s2
-	call point.cross
-	call point.printPoint
-	mv a0,s3
-	call point.printPoint
-	mv a0,s1
-	call point.printPoint
-	mv a0,s4
-	call point.printPoint
-	mv a0,s2
-	call point.printPoint
-	li a0,0
 LBB132:
-	addi sp,sp,88
+	xor a1,a1,a0
+LBB133:
+	li a0,5
+	sll a0,a1,a0
+LBB134:
+LBB135:
+	xor a1,a1,a0
+	li a0,1073741823
+	and a7,a1,a0
+LBB136:
+LBB137:
+LBB138:
+LBB139:
+	mv a0,a7
+	li a1,13
+	sll a0,a0,a1
+LBB140:
+LBB141:
+	xor a1,a7,a0
+LBB142:
+	li a0,17
+	li a4,0
+	slt a4,a1,a4
+	xori a4,a4,1
+	bnez a4,LBB143
+	j LBB144
+LBB143:
+	sra a0,a1,a0
+	j LBB145
+LBB144:
+	li a4,31
+	sub a6,a4,a0
+	li a4,1
+	sll a6,a4,a6
+	li a4,-2147483648
+	xor a4,a1,a4
+	sra a0,a4,a0
+	or a0,a6,a0
+LBB145:
+LBB146:
+	xor a1,a1,a0
+LBB147:
+	li a0,5
+	sll a0,a1,a0
+LBB148:
+LBB149:
+	xor a1,a1,a0
+	li a0,1073741823
+	and s2,a1,a0
+LBB150:
+LBB151:
+	andi a0,a2,3
+	srai a1,a2,28
+	andi a2,a3,1
+	srai a3,a3,29
+	srai a4,a5,25
+	andi a5,a5,31
+	srai a6,a7,15
+	li t0,32767
+	and a7,a7,t0
+	srai t1,s2,15
+	li t0,32767
+	and t0,s2,t0
+	sw t1,0(sp)
+	sw t0,4(sp)
+	call test
+	xor s1,s1,a0
+	j LBB153
+LBB152:
+	j LBB154
+LBB153:
+	j LBB52
+LBB154:
+	addi a0,s1,-19
+LBB155:
+	addi sp,sp,120
 	lw s1,-12(sp)
 	lw s2,-16(sp)
-	lw s3,-20(sp)
-	lw s4,-24(sp)
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
 # end function : main
 .section	.sdata,"aw",@progbits
-const_string_no0:
-	.asciz	"("
-
-const_string_no1:
-	.asciz	", "
-
-const_string_no2:
-	.asciz	")"
-

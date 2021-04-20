@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-  //      input = new FileInputStream("test.mx");
+        input = new FileInputStream("test.mx");
         //  else
-              input = System.in;
+  //            input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -79,16 +79,14 @@ public class Main {
 //            new IRPrinter("output.ll").run(currentModule);
 
 
-        //    System.out.println("1");
             int cnt = 12;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
-            //    System.out.println("10");
+
                 boolean modified = false;
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-            //    System.out.println(11);
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
@@ -116,8 +114,8 @@ public class Main {
 
                 if (!modified) break;
             }
-       //     System.out.println("2");
-       //     new IRPrinter("output.ll").run(currentModule);
+
+//            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -125,7 +123,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-           // new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
 
