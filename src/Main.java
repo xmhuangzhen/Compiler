@@ -52,7 +52,7 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
-            //new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+            new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             //--------Opt Start------
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
@@ -100,7 +100,7 @@ public class Main {
                 modified |= tmpCFGSimp.run();
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
-                modified |= tmpInline.run();
+            //    modified |= tmpInline.run();
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
 

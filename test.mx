@@ -1,15 +1,27 @@
-int add1(int x) {
-	return x + 1;
+/*
+Test Package: Codegen
+Author: 15' Haoran Ye
+Time: 2020-02-03
+Input:
+=== input ===
+=== end ===
+Output:
+=== output ===
+eternal!
+=== end ===
+ExitCode: 0
+InstLimit: -1
+Origin Package: Codegen Pretest-876
+*/
+class older{
+	int age;
+	void solveAge(){
+        age = 1;
+	}
+};
+int main(){
+	older mrJiang = new older;
+	mrJiang.solveAge();
+    return mrJiang.age;
 }
 
-int add2(int x) {
-    return add1(add1(x));
-}
-int add4(int x) {
-    return add2(add2(x));
-}
-int N = 1;
-
-int main() {
-    return add4(N) - 3;
-}
