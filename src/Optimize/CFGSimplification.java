@@ -150,9 +150,6 @@ public class CFGSimplification extends Pass {
                             preBlock.TailInst = tmpInst;
                         }
 
-//                        preBlock.nextBasicBlocks = curBlock.nextBasicBlocks;
-  //                      if (curBlock.nextBasicBlocks != null)
-    //                        curBlock.nextBasicBlocks.prevBasicBlocks = preBlock;
                         curFunc.removeBasicBlock(curBlock,false);
                         for (IRBasicBlock tmpBlcok = curFunc.thisEntranceBlock;
                              tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)

@@ -219,8 +219,10 @@ public class SparseConditionalConstantPropagation extends Pass {
                     value = (((BooleanConstant) op1).value && ((BooleanConstant) op2).value);
                 } else if(curInst.bitwiseBinaryOperandType == bitwiseBinaryInstruction.BitwiseBinaryOperandType.or){
                     value = (((BooleanConstant) op1).value || ((BooleanConstant) op2).value);
+                } else if(curInst.bitwiseBinaryOperandType == bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor){
+                    value = (((BooleanConstant) op1).value != ((BooleanConstant) op2).value);
                 } else {
-                    throw new RuntimeException();
+                    throw new RuntimeException(curInst.toString());
                 }
                 BooleanConstant replaceResult = new BooleanConstant(value);
                 ConstValueMap.put(curInst.bitwiseBinaryResult, replaceResult);
