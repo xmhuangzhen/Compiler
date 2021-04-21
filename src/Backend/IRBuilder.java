@@ -814,9 +814,7 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock phiBlock1, phiBlock2;
 
             it.lhs.accept(this);
-            Register tmpCompareResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
-                    "lhs_compare_" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, tmpCompareResult,
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, it.lhs.ExprResult,
                     OrorDestBlock, OrorBBlock));
             phiBlock1 = currentBasicBlock;
 
