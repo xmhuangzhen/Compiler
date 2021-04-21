@@ -141,6 +141,7 @@ public class IRBasicBlock {
     public void replacePhiInstBlock(IRBasicBlock tmpBlock,IRBasicBlock newBlock){
         for(IRInstruction tmpInst = HeadInst; tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
             if(tmpInst instanceof phiInstruction) {
+//                System.out.println(tmpInst+","+tmpBlock+"->"+newBlock);
                 ((phiInstruction) tmpInst).replaceBlock(tmpBlock,newBlock);
             }
             else return;

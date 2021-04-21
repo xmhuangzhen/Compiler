@@ -782,20 +782,28 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock AndandBBlock = new IRBasicBlock(currentFunction, "andand_b_block" + (BlockNum++));
             IRBasicBlock AndandDestBlock = new IRBasicBlock(currentFunction, "andand_dest_block" + (BlockNum++));
 
+            IRBasicBlock phiBlock1,phiBlock2;
+
             it.lhs.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, it.lhs.ExprResult,
                     AndandBBlock, AndandDestBlock));
+            phiBlock1 = currentBasicBlock;
 
             currentBasicBlock = AndandBBlock;
             currentFunction.addFunctionBasicBlock(AndandBBlock);
             it.rhs.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, null,
                     AndandDestBlock, null));
+            phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = AndandDestBlock;
             currentFunction.addFunctionBasicBlock(AndandDestBlock);
             tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "Andand_" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
+/*            phiInstruction tmpPhiInst = new phiInstruction(currentBasicBlock,tmpResult);
+            tmpPhiInst.PhiValue.add(it.lhs.ExprResult); tmpPhiInst.PhiLabel.add(phiBlock1);
+            tmpPhiInst.PhiValue.add(it.rhs.ExprResult); tmpPhiInst.PhiLabel.add(phiBlock2);
+//            currentBasicBlock.addBasicBlockInst(tmpPhiInst);
+  */          currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.and, it.lhs.ExprResult,
                     it.rhs.ExprResult, tmpResult));
             it.ExprResult = tmpResult;
@@ -803,26 +811,30 @@ public class IRBuilder implements ASTVisitor {
             IRBasicBlock OrorBBlock = new IRBasicBlock(currentFunction, "oror_b_block" + (BlockNum++));
             IRBasicBlock OrorDestBlock = new IRBasicBlock(currentFunction, "oror_dest_block" + (BlockNum++));
 
+            IRBasicBlock phiBlock1, phiBlock2;
+
             it.lhs.accept(this);
             Register tmpCompareResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
                     "lhs_compare_" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new icmpInstruction(currentBasicBlock,
-                    icmpInstruction.IcmpOperandENUM.eq, new IntegerType(IntegerType.IRBitWidth.i1),
-                    it.lhs.ExprResult, new IntegerConstant(IntegerType.IRBitWidth.i1, 0),
-                    tmpCompareResult));
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, tmpCompareResult,
-                    OrorBBlock, OrorDestBlock));
+                    OrorDestBlock, OrorBBlock));
+            phiBlock1 = currentBasicBlock;
 
             currentBasicBlock = OrorBBlock;
             currentFunction.addFunctionBasicBlock(OrorBBlock);
             it.rhs.accept(this);
             currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock, null,
                     OrorDestBlock, null));
+            phiBlock2 = currentBasicBlock;
 
             currentBasicBlock = OrorDestBlock;
             currentFunction.addFunctionBasicBlock(OrorDestBlock);
             tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1), "Oror_" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
+    /*        phiInstruction tmpPhiInst = new phiInstruction(currentBasicBlock,tmpResult);
+            tmpPhiInst.PhiValue.add(it.lhs.ExprResult); tmpPhiInst.PhiLabel.add(phiBlock1);
+            tmpPhiInst.PhiValue.add(it.rhs.ExprResult); tmpPhiInst.PhiLabel.add(phiBlock2);
+          //  currentBasicBlock.addBasicBlockInst(tmpPhiInst);
+      */              currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.or, it.lhs.ExprResult,
                     it.rhs.ExprResult, tmpResult));
             it.ExprResult = tmpResult;

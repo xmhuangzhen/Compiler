@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-  //           input = new FileInputStream("test.mx");
+             input = new FileInputStream("test.mx");
         //  else
-              input = System.in;
+  //            input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -59,13 +59,13 @@ public class Main {
             CFGConstructor tmpCFGConstructor = new CFGConstructor(tmpIRBuilder.currentModule);
             tmpCFGConstructor.run();
             IRModule currentModule = tmpCFGConstructor.curIRModule;
-            CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule,false);
+            CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
             tmpCFGSimp.run();
 
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(currentModule);
             tmpDominatorTreeConstructor.run();
-           DominanceFrontierConstructor tmpDominanceFrontierConstructor =
+            DominanceFrontierConstructor tmpDominanceFrontierConstructor =
                     new DominanceFrontierConstructor(tmpDominatorTreeConstructor.curIRModule);
             tmpDominanceFrontierConstructor.run();
 
@@ -76,8 +76,9 @@ public class Main {
             tmpSSAConstructor.run();
 
             currentModule = tmpSSAConstructor.curIRModule;
-       //     new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
 
+       //     System.out.println("------------START------OPT-----------");
 
             int cnt = 32;
             while (true) {
@@ -85,23 +86,23 @@ public class Main {
                 if(cnt == 0) break;
 
                 boolean modified = false;
-                tmpCFGSimp = new CFGSimplification(currentModule,false);
+                tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
-                tmpCFGSimp = new CFGSimplification(currentModule,true);
+                tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
 
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
-                tmpCFGSimp = new CFGSimplification(currentModule,true);
+                tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
-                tmpCFGSimp = new CFGSimplification(currentModule,true);
+                tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
 
                 BinaryInstSimplification tmpBinarySimp =
@@ -115,7 +116,7 @@ public class Main {
                 if (!modified) break;
             }
 
-//            new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -123,7 +124,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-//            new IRPrinter("output.ll").run(currentModule);
+        //    new IRPrinter("output.ll").run(currentModule);
 
 
 

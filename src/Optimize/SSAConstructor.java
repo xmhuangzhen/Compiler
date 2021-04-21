@@ -26,7 +26,7 @@ public class SSAConstructor extends Pass {
     public SSAConstructor(IRModule tmpModule) {
         super(tmpModule);
         RegNum = 0;
-        Visited = new LinkedHashSet<>();
+        Visited = new HashSet<>();
         PhiInstMap = new HashMap<>();
     }
 
@@ -38,23 +38,23 @@ public class SSAConstructor extends Pass {
 
                 curFunction = tmpFunc;
 
-                UseAlloca = new LinkedHashMap<>();
-                DefAlloca = new LinkedHashMap<>();
+                UseAlloca = new HashMap<>();
+                DefAlloca = new HashMap<>();
                 PhiInstMap.clear();
-                ReachingDefMap = new LinkedHashMap<>();
+                ReachingDefMap = new HashMap<>();
 
                 for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
-                    PhiInstMap.put(tmpBlock, new LinkedHashMap<>());
-                    ReachingDefMap.put(tmpBlock, new LinkedHashMap<>());
+                    PhiInstMap.put(tmpBlock, new HashMap<>());
+                    ReachingDefMap.put(tmpBlock, new HashMap<>());
                 }
 
 
                 //phi insert (Algorithm 3.1)
                 for (var tmpAllocaInst : tmpFunc.allocaInstTable) {
-                    HashSet<IRBasicBlock> BlockF = new LinkedHashSet<>();//set of BB where phi is added
+                    HashSet<IRBasicBlock> BlockF = new HashSet<>();//set of BB where phi is added
                     Queue<IRBasicBlock> BlockW = new LinkedList<>();//set of BBs contain def of v
-                    HashSet<IRBasicBlock> DefsV = new LinkedHashSet<>();
+                    HashSet<IRBasicBlock> DefsV = new HashSet<>();
 
                     /*
                     System.out.println("--------------------");
@@ -138,9 +138,10 @@ public class SSAConstructor extends Pass {
 
         if (preBlock != null) {
             for (allocaInstruction tmpAllocInst : curFunction.allocaInstTable) {
-                if (!PhiInstMap.get(curBlock).containsKey(tmpAllocInst))
+                if (!PhiInstMap.get(curBlock).containsKey(tmpAllocInst)) {
                     ReachingDefMap.get(curBlock).put(tmpAllocInst,
                             ReachingDefMap.get(preBlock).get(tmpAllocInst));
+                }
             }
         }
 

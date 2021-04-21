@@ -72,7 +72,7 @@ public class DominatorTreeConstructor extends Pass {
                         else
                             BlockV.DominatorTreeImmediateDominator = BlockW.DominatorTreeFather;
                     }
-                    //BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
+                    BlockW.DominatorTreeFather.DominatorTreeBucket.clear();
                 }
 
                 for (int i = 2; i <= tmpFunc.DFNcurNumber; ++i) {

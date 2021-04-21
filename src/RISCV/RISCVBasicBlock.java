@@ -35,8 +35,8 @@ public class RISCVBasicBlock {
         predecessor = new ArrayList<>();
         successor = new ArrayList<>();
 
-        LiveOut = new LinkedHashSet<>();
-        LiveIn = new LinkedHashSet<>();
+        LiveOut = new HashSet<>();
+        LiveIn = new HashSet<>();
     }
 
     public void addInstruction(RISCVInstruction tmpInst){

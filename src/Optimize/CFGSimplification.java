@@ -13,11 +13,9 @@ public class CFGSimplification extends Pass {
 
     public boolean modified;
     public IRFunction curFunc;
-    public boolean needRemoveBlock;
 
-    public CFGSimplification(IRModule tmpModule, boolean tmpNeed) {
+    public CFGSimplification(IRModule tmpModule) {
         super(tmpModule);
-        needRemoveBlock = tmpNeed;
     }
 
     @Override
@@ -65,17 +63,18 @@ public class CFGSimplification extends Pass {
         int cnt = 100;
         while (true) {
             cnt--;
-            if(cnt == 0) break;
+            if (cnt == 0) break;
             ConstructCFG();
             boolean tmpmodified = deleteUnusedPhiInst();
             tmpmodified |= deleteUnusedBlock();
             if (!tmpmodified) break;
             else thismodified = true;
         }
+        ConstructCFG();
         return thismodified;
     }
 
-    public void resumeBranch(){
+    public void resumeBranch() {
         for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
              tmpBlock.nextBasicBlocks != null; tmpBlock = tmpBlock.nextBasicBlocks) {
             if (!(tmpBlock.TailInst instanceof brInstruction)) {
@@ -87,83 +86,97 @@ public class CFGSimplification extends Pass {
 
 
     public boolean deleteUnusedBlock() {
-        boolean thismodified = false;
         for (IRBasicBlock curBlock = curFunc.thisEntranceBlock;
              curBlock != null; curBlock = curBlock.nextBasicBlocks) {
             if (curBlock.DFN == 0) {
                 for (IRBasicBlock SucBlock : curBlock.CFGSuccessor)
                     SucBlock.removePhiInstBlock(curBlock);
-                curFunc.removeBasicBlock(curBlock);
-                thismodified = true;
+                curFunc.removeBasicBlock(curBlock,true);
                 return true;
             } else {
                 if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
-                !(curBlock.HeadInst instanceof phiInstruction)) {
+                        !(curBlock.HeadInst instanceof phiInstruction)) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
                     if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
 
-                        if(needRemoveBlock) {
-                            if (curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
-                                    && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
-                                    && preBlock.TailInst instanceof brInstruction) {
-
-                                IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
-//                                System.out.println(preBlock+","+curBlock+","+sucBlock+",");
-                                ((brInstruction) preBlock.TailInst).replaceBlock(curBlock, sucBlock);
-                                preBlock.CFGSuccessor.remove(curBlock);
-                                preBlock.CFGSuccessor.add(sucBlock);
-                                sucBlock.CFGPredecessor.remove(curBlock);
-                                sucBlock.CFGPredecessor.add(preBlock);
-                                curFunc.removeBasicBlock(curBlock);
-                                for(IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
-                                tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
-                                    tmpBlock.replacePhiInstBlock(curBlock,preBlock);
-                                }
-                                return true;
-                            }
-
-                        }
-
-
-
 /*
+                        if (curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
+                                && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
+                                && preBlock.TailInst instanceof brInstruction) {
+
+                            IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
+                                System.out.println(preBlock+","+curBlock+","+sucBlock+",2222222222222222222222");
+                            ((brInstruction) preBlock.TailInst).replaceBlock(curBlock, sucBlock);
+                            preBlock.CFGSuccessor.remove(curBlock);
+                            preBlock.CFGSuccessor.add(sucBlock);
+                            sucBlock.CFGPredecessor.remove(curBlock);
+                            sucBlock.CFGPredecessor.add(preBlock);
+                            curFunc.removeBasicBlock(curBlock);
+                            for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
+                                 tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                                tmpBlock.replacePhiInstBlock(curBlock, preBlock);
+                            }
+                            return true;
+                        }
+*/
+                        /*
+
+                        System.out.println("-----------------------");
+                        System.out.println(preBlock+","+curBlock);
+                        for(IRInstruction tmpInst = preBlock.HeadInst;
+                        tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+                            System.out.println(tmpInst);
+                        }
+                        System.out.println("---");
+                        for(IRInstruction tmpInst = curBlock.HeadInst;
+                            tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+                            System.out.println(tmpInst);
+                        }
+*/
+
                         preBlock.TailInst.removeInst();
 
-                        if(preBlock.TailInst != null) {
-                            preBlock.TailInst.nextIRInstruction = curBlock.HeadInst;
-                            curBlock.HeadInst.preIRInstruction = preBlock.TailInst;
-                        }
-                        else{
-                            preBlock.TailInst = curBlock.HeadInst;
-                            preBlock.HeadInst = curBlock.HeadInst;
-                        }
                         for (IRInstruction tmpInst = curBlock.HeadInst;
                              tmpInst != null; tmpInst = tmpInst.nextIRInstruction) {
                             tmpInst.thisBasicBlock = preBlock;
+                            if (preBlock.TailInst != null)
+                                preBlock.TailInst.nextIRInstruction = tmpInst;
+                            else
+                                preBlock.HeadInst = tmpInst;
+
+                            tmpInst.preIRInstruction = preBlock.TailInst;
+                            preBlock.TailInst = tmpInst;
                         }
 
-                        preBlock.TailInst = curBlock.TailInst;
-                        preBlock.nextBasicBlocks = curBlock.nextBasicBlocks;
-                        if(curBlock.nextBasicBlocks != null)
-                            curBlock.nextBasicBlocks.prevBasicBlocks = preBlock;
+//                        preBlock.nextBasicBlocks = curBlock.nextBasicBlocks;
+  //                      if (curBlock.nextBasicBlocks != null)
+    //                        curBlock.nextBasicBlocks.prevBasicBlocks = preBlock;
+                        curFunc.removeBasicBlock(curBlock,false);
                         for (IRBasicBlock tmpBlcok = curFunc.thisEntranceBlock;
                              tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)
                             tmpBlcok.replacePhiInstBlock(curBlock, preBlock);
+
+                        for (IRBasicBlock tmpBlock : curBlock.CFGSuccessor) {
+                            tmpBlock.CFGPredecessor.remove(curBlock);
+                            curBlock.CFGPredecessor.add(preBlock);
+                            preBlock.CFGSuccessor.add(tmpBlock);
+                        }
+                        preBlock.CFGSuccessor.remove(curBlock);
                         return true;
-  */
+
                     }
                 }
             }
         }
-        return thismodified;
+        return false;
     }
 
-    public boolean deleteUnusedPhiInst(){
+    public boolean deleteUnusedPhiInst() {
         boolean thismodified = false;
-        for(IRBasicBlock curBlock = curFunc.thisEntranceBlock;
-            curBlock != null; curBlock = curBlock.nextBasicBlocks) {
+        for (IRBasicBlock curBlock = curFunc.thisEntranceBlock;
+             curBlock != null; curBlock = curBlock.nextBasicBlocks) {
             for (IRInstruction tmpInst = curBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextIRInstruction) {
                 if (tmpInst instanceof phiInstruction) {

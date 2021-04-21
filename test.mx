@@ -64,5 +64,5 @@ int main() {
         }
 		else break;
     }
-    return sum - 19;
+    return sum;
 }
