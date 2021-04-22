@@ -130,8 +130,35 @@ public class InstSelector implements IRVisitor {
         } else {
             RISCVBasicBlock tmpIfTrueBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
             RISCVBasicBlock tmpIfFalseBlock = curRISCVModule.getRISCVBasicBlock(it.brIfFalse);
-            RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond, curRISCVBasicBlock);
-            curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg, tmpIfTrueBlock, tmpIfFalseBlock));
+        /*    if(it.brCond.Defs.size() == 1 && it.brCond.Defs.iterator().next() instanceof icmpInstruction){
+                icmpInstruction tmpInst = (icmpInstruction) it.brCond.Defs.iterator().next();
+                RISCVRegister tmpLReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp1,curRISCVBasicBlock);
+                RISCVRegister tmpRReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp2,curRISCVBasicBlock);
+                // eq, ne, sgt, sge, slt, sle
+                if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.eq){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.eq,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.ne){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.ne,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sgt){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.gt,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sge){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.ge,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.slt){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.lt,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sle){
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.le,tmpIfTrueBlock,tmpIfFalseBlock));
+                } else throw new RuntimeException();
+            } else {*/
+                RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond, curRISCVBasicBlock);
+                curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg, null,
+                        RISCVInstruction.RISCVCompareENUMType.ne,tmpIfTrueBlock, tmpIfFalseBlock));
+           // }
         }
     }
 

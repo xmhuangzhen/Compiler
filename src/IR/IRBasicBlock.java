@@ -104,6 +104,8 @@ public class IRBasicBlock {
 
     public void addBasicBlockInstPreInst(IRInstruction NxtInst, IRInstruction tmpInst){
         tmpInst.preIRInstruction = NxtInst.preIRInstruction;
+        if(NxtInst.preIRInstruction == null)
+            HeadInst = tmpInst;
         tmpInst.nextIRInstruction = NxtInst;
         if(NxtInst.preIRInstruction != null)
             NxtInst.preIRInstruction.nextIRInstruction = tmpInst;

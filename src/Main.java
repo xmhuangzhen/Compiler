@@ -80,7 +80,7 @@ public class Main {
 
        //     System.out.println("------------START------OPT-----------");
 
-            int cnt = 32;
+            int cnt = 72;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
@@ -112,6 +112,12 @@ public class Main {
                 CommonSubexpressionElimination tmpCSE =
                         new CommonSubexpressionElimination(currentModule);
                 modified |= tmpCSE.run();
+
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+                LoopInvariantCodeMotion tmpLICM =
+                        new LoopInvariantCodeMotion(currentModule);
+                modified |= tmpLICM.run();
 
                 if (!modified) break;
             }
