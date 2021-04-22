@@ -91,6 +91,7 @@ public class LoopInvariantCodeMotion extends Pass {
     }
 
     public void getLoop(IRBasicBlock curBlock, IRBasicBlock HeadBlock) {
+        Visited.add(curBlock);
         curLoopBlockStack.add(curBlock);
         if (curBlock == HeadBlock) {
             Loop curLoop = new Loop();
@@ -101,7 +102,7 @@ public class LoopInvariantCodeMotion extends Pass {
             return;
         }
         for (var tmpBlock : curBlock.CFGPredecessor)
-            if (!curLoopBlockStack.contains(tmpBlock)) {
+            if (!Visited.contains(tmpBlock)) {
                 getLoop(tmpBlock, HeadBlock);
             }
         curLoopBlockStack.remove(curBlock);
