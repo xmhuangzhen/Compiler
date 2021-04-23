@@ -23,7 +23,7 @@ abstract public class IROperand {
     }
 
     public void AddRegisterUseInInstruction(IRInstruction tmpInst) {
-        if (!use.contains(tmpInst)) use.add(tmpInst);
+        use.add(tmpInst);
     }
 
     public void ReplaceRegisterUse(IROperand tmpObject) {
@@ -35,9 +35,7 @@ abstract public class IROperand {
     }
 
     public void DeleteRegisterUseInInstruction(IRInstruction tmpInst) {
-        if (use.contains(tmpInst)) {
-            use.remove(tmpInst);
-        }
+        use.remove(tmpInst);
     }
 
     abstract public boolean isConstant();

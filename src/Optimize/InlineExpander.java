@@ -7,6 +7,7 @@ import IR.Instruction.IRInstruction;
 import IR.Instruction.*;
 import IR.Operand.GlobalVariables;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import IR.TypeSystem.VoidType;
 
@@ -351,16 +352,23 @@ public class InlineExpander extends Pass {
             callInstruction OriInst = (callInstruction) curInst;
             callInstruction resInst = new callInstruction(repBlock,
                     (Register) getReplaceOperand(OriInst.CallResult), OriInst.CallFunction);
-            for (int i = 0; i < OriInst.CallParameters.size(); ++i)
-                resInst.CallParameters.add(getReplaceOperand(OriInst.CallParameters.get(i)));
+            for (int i = 0; i < OriInst.CallParameters.size(); ++i) {
+                IROperand tmpRepOperand = getReplaceOperand(OriInst.CallParameters.get(i));
+                resInst.CallParameters.add(tmpRepOperand);
+                tmpRepOperand.AddRegisterUseInInstruction(resInst);
+            }
             return resInst;
         } else if (curInst instanceof getElementPtrInstruction) {
             getElementPtrInstruction OriInst = (getElementPtrInstruction) curInst;
             getElementPtrInstruction resInst = new getElementPtrInstruction(
                     repBlock, getReplaceOperand(OriInst.GetElementPtrPtr),
                     (Register) getReplaceOperand(OriInst.GetElementPtrResult));
-            for (int i = 0; i < OriInst.GetElementPtrIdx.size(); ++i)
-                resInst.GetElementPtrIdx.add(getReplaceOperand(OriInst.GetElementPtrIdx.get(i)));
+            for (int i = 0; i < OriInst.GetElementPtrIdx.size(); ++i) {
+                IROperand tmpRepOperand = getReplaceOperand(OriInst.GetElementPtrIdx.get(i));
+                resInst.GetElementPtrIdx.add(tmpRepOperand);
+                if(tmpRepOperand instanceof Register||tmpRepOperand instanceof Parameter)
+                    tmpRepOperand.AddRegisterUseInInstruction(resInst);
+            }
             return resInst;
         } else if (curInst instanceof icmpInstruction) {
             icmpInstruction OriInst = (icmpInstruction) curInst;
@@ -387,8 +395,12 @@ public class InlineExpander extends Pass {
                     (Register) getReplaceOperand(OriInst.PhiResult));
             for (int i = 0; i < OriInst.PhiLabel.size(); ++i)
                 resInst.PhiLabel.add(getReplaceBlock(OriInst.PhiLabel.get(i)));
-            for (int i = 0; i < OriInst.PhiValue.size(); ++i)
-                resInst.PhiValue.add(getReplaceOperand(OriInst.PhiValue.get(i)));
+            for (int i = 0; i < OriInst.PhiValue.size(); ++i) {
+                IROperand tmpRepOperand = getReplaceOperand(OriInst.PhiValue.get(i));
+                resInst.PhiValue.add(tmpRepOperand);
+                if(tmpRepOperand instanceof Register || tmpRepOperand instanceof Parameter)
+                    tmpRepOperand.AddRegisterUseInInstruction(resInst);
+            }
             return resInst;
         } else if (curInst instanceof storeInstruction) {
             storeInstruction OriInst = (storeInstruction) curInst;

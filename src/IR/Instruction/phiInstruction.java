@@ -25,7 +25,13 @@ public class phiInstruction extends IRInstruction{
 
     @Override
     public void replaceUse(IROperand originObject, IROperand newObject) {
-
+        for(int i = 0;i < PhiValue.size();++i)
+            if(PhiValue.get(i) == originObject){
+                PhiValue.get(i).DeleteRegisterUseInInstruction(this);
+                PhiValue.set(i,newObject);
+                PhiValue.get(i).NeedPtr = newObject.NeedPtr;
+                PhiValue.get(i).AddRegisterUseInInstruction(this);
+            }
     }
 
     @Override

@@ -84,7 +84,6 @@ public class SparseConditionalConstantPropagation extends Pass {
                 tmpInst.removeInst();
                 ChangedInFunc = true;
             }
-
         }
 
         for(var sucBlock : curBlock.CFGSuccessor)
@@ -285,6 +284,9 @@ public class SparseConditionalConstantPropagation extends Pass {
                 IntegerConstant replaceResult = new IntegerConstant(IntegerType.IRBitWidth.i32,
                         ((IntegerConstant) rs).value);
                 ConstValueMap.put(curInst.rd,replaceResult);
+
+//                System.out.println(curInst.rd+","+curInst.rd.use);
+
                 curInst.rd.ReplaceRegisterUse(replaceResult);
                 return true;
             }
@@ -299,18 +301,6 @@ public class SparseConditionalConstantPropagation extends Pass {
             else
                 return curOperand;
         }
-        /*
-        if(curOperand.Defs.size() == 1 && curOperand.Defs.iterator().next() instanceof moveInstruction){
-            moveInstruction tmpInst = (moveInstruction) curOperand.Defs.iterator().next();
-            if(tmpInst.rs instanceof IntegerConstant) {
-                IntegerConstant tmpIConst= new IntegerConstant(IntegerType.IRBitWidth.i32,
-                        ((IntegerConstant) tmpInst.rs).value);
-        //        curOperand.ReplaceRegisterUse(tmpIConst);
-          //      ConstValueMap.put(curOperand,tmpIConst);
-            //    return tmpIConst;
-            }
-        }
-         */
         return ConstValueMap.getOrDefault(curOperand, null);
     }
 }

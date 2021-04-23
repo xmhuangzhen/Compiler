@@ -27,7 +27,7 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
-  //           input = new FileInputStream("test.mx");
+ //            input = new FileInputStream("test.mx");
         //  else
               input = System.in;
 
@@ -76,7 +76,7 @@ public class Main {
             tmpSSAConstructor.run();
 
             currentModule = tmpSSAConstructor.curIRModule;
-//            new IRPrinter("output.ll").run(currentModule);
+      //      new IRPrinter("output.ll").run(currentModule);
 
        //     System.out.println("------------START------OPT-----------");
 
@@ -130,7 +130,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-        //    new IRPrinter("output.ll").run(currentModule);
+       //     new IRPrinter("output.ll").run(currentModule);
 
 
 
