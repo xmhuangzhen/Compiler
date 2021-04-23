@@ -1,7 +1,7 @@
 /*
 Test Package: Optim
 Author: 18' Zonghan YANG
-Time: 2021-03-25
+Time: 2021-04-07
 Input:
 === input ===
 
@@ -11,40 +11,58 @@ Output:
 
 === end ===
 ExitCode: 0
-InstLimit: 1800000
+InstLimit: 99999
 */
 
-
-int test() {
-    int [] a = new int [10000];
-    int i, j, k, l;
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
-            for (k = 0; k < 10; k++) {
-                for (l = 0; l < 10; l++) {
-                    a[i * 1000 + j * 100 + k * 10 + l] = i + l;
-                }
-            }
-        }
-    }
-    int sum = 0;
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 10; j++) {
-            for (k = 0; k < 10; k++) {
-                for (l = 0; l < 10; l++) {
-                    if ((l & 1) == 1) {
-                        sum = sum + a[i * 1000 + j * 100 + k * 10 + l];
-                    } else {
-                        sum = sum - a[i * 1000 + j * 100 + k * 10 + l];
-                    }
-                }
-            }
-        }
-    }
-    return sum;
+int unsigned_shl(int x, int k) {
+    return x << k;
 }
 
+int unsigned_shr(int x, int k) { // k should be (0, 31)
+    int INT_MIN = 1 << 31;
+    if (x >= 0) return x >> k;
+    else return (1 << (31 - k)) | ((x ^ INT_MIN) >> k);
+}
+
+int rng(int rng_seed) {
+    int rng_mask = 1073741823;
+    int x = rng_seed;
+    x = x ^ unsigned_shl(x, 13);
+    x = x ^ unsigned_shr(x, 17);
+    x = x ^ unsigned_shl(x, 5);
+    x = x & rng_mask;
+    return x;
+}
+
+int test(int q, int w, int e, int r, int t, int y, int u, int i, int o, int p) { // long parameter list test
+    if (q == w) {
+		if (w != e || e != r) {
+			return test(w, e, r, t, y, u, i, o, p, q) + 1;
+		} else {
+			return test(w, e, r, t, y - 1, u - 2, i, o, p, q) + 2;
+		}
+	} else {
+		return q + w + q;
+	}
+}
 
 int main() {
-    return test() ^ 5000;
+    int rng_seed = 19260817;
+    int sum = 0;
+    for ( ; ; ) {
+        int u = rng(rng_seed);
+        int v = rng(u);
+        rng_seed = v;
+        if ((u & 255) != (v & 255)) {
+            int w = rng(rng_seed);
+            int x = rng(w);
+			int y = rng(x);
+			int z = rng(y);
+			int zz = rng(z);
+			rng_seed = zz;
+            sum = sum ^ test(w & 3, w >> 28, x & 1, x >> 29, y >> 25, y & 31, z >> 15, z & 32767, zz >> 15, zz & 32767);
+        }
+		else break;
+    }
+    return sum - 19;
 }

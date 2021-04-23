@@ -4,10 +4,7 @@ import IR.IRBasicBlock;
 import IR.IRFunction;
 import IR.IRModule;
 import IR.Instruction.*;
-import IR.Operand.BooleanConstant;
-import IR.Operand.IROperand;
-import IR.Operand.IntegerConstant;
-import IR.Operand.NullConstant;
+import IR.Operand.*;
 import IR.TypeSystem.IntegerType;
 import RISCV.Inst.RISCVInstruction;
 
@@ -40,16 +37,13 @@ public class SparseConditionalConstantPropagation extends Pass {
     }
 
     public void SCCPInFunc() {
-        int cnt = 20;
+        int cnt = 50;
         while (true) {
             cnt--;;
             if(cnt == 0) break;
-         //   System.out.println("a");
             ChangedInFunc = false;
             BlockVisited.clear();
-           // System.out.println("b");
             SCCPInBlock(curFunc.thisEntranceBlock);
-          //  System.out.println("c");
             if (!ChangedInFunc) break;
         }
     }
@@ -282,6 +276,16 @@ public class SparseConditionalConstantPropagation extends Pass {
                 return new IntegerConstant(IntegerType.IRBitWidth.i32, 0);
             else
                 return curOperand;
+        }
+        if(curOperand.Defs.size() == 1 && curOperand.Defs.iterator().next() instanceof moveInstruction){
+            moveInstruction tmpInst = (moveInstruction) curOperand.Defs.iterator().next();
+            if(tmpInst.rs instanceof IntegerConstant) {
+                IntegerConstant tmpIConst= new IntegerConstant(IntegerType.IRBitWidth.i32,
+                        ((IntegerConstant) tmpInst.rs).value);
+                curOperand.ReplaceRegisterUse(tmpIConst);
+                ConstValueMap.put(curOperand,tmpIConst);
+                return tmpIConst;
+            }
         }
         return ConstValueMap.getOrDefault(curOperand, null);
     }
