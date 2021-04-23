@@ -80,6 +80,9 @@ public class SparseConditionalConstantPropagation extends Pass {
                     || (tmpInst instanceof icmpInstruction && checkIcmp((icmpInstruction) tmpInst))) {
                 tmpInst.removeInst();
                 ChangedInFunc = true;
+            } else if(tmpInst instanceof moveInstruction && checkMove((moveInstruction) tmpInst)){
+                tmpInst.removeInst();
+                ChangedInFunc = true;
             }
 
         }
@@ -270,6 +273,25 @@ public class SparseConditionalConstantPropagation extends Pass {
         return false;
     }
 
+    public boolean checkMove(moveInstruction curInst){
+        IROperand rs = getConstant(curInst.rs);
+        if(rs != null){
+            if (rs instanceof BooleanConstant) {
+                BooleanConstant replaceResult = new BooleanConstant(((BooleanConstant) rs).value);
+                ConstValueMap.put(curInst.rd, replaceResult);
+                curInst.rd.ReplaceRegisterUse(replaceResult);
+                return true;
+            } else if (rs instanceof IntegerConstant) {
+                IntegerConstant replaceResult = new IntegerConstant(IntegerType.IRBitWidth.i32,
+                        ((IntegerConstant) rs).value);
+                ConstValueMap.put(curInst.rd,replaceResult);
+                curInst.rd.ReplaceRegisterUse(replaceResult);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public IROperand getConstant(IROperand curOperand) {
         if (curOperand.isConstant()) {
             if (curOperand instanceof NullConstant)
@@ -277,16 +299,18 @@ public class SparseConditionalConstantPropagation extends Pass {
             else
                 return curOperand;
         }
+        /*
         if(curOperand.Defs.size() == 1 && curOperand.Defs.iterator().next() instanceof moveInstruction){
             moveInstruction tmpInst = (moveInstruction) curOperand.Defs.iterator().next();
             if(tmpInst.rs instanceof IntegerConstant) {
                 IntegerConstant tmpIConst= new IntegerConstant(IntegerType.IRBitWidth.i32,
                         ((IntegerConstant) tmpInst.rs).value);
-                curOperand.ReplaceRegisterUse(tmpIConst);
-                ConstValueMap.put(curOperand,tmpIConst);
-                return tmpIConst;
+        //        curOperand.ReplaceRegisterUse(tmpIConst);
+          //      ConstValueMap.put(curOperand,tmpIConst);
+            //    return tmpIConst;
             }
         }
+         */
         return ConstValueMap.getOrDefault(curOperand, null);
     }
 }
