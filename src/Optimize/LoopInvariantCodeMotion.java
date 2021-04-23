@@ -25,6 +25,7 @@ public class LoopInvariantCodeMotion extends Pass {
     public HashMap<IRBasicBlock, HashSet<Loop>> allLoops;//head,loop
     public HashSet<IRBasicBlock> Visited;
     public ArrayList<IRBasicBlock> curLoopBlockStack;
+    public int cnt;
 
     public LoopInvariantCodeMotion(IRModule tmpModule) {
         super(tmpModule);
@@ -76,6 +77,7 @@ public class LoopInvariantCodeMotion extends Pass {
             curLoopBlockStack.clear();
             if (!allLoops.containsKey(blockHead))
                 allLoops.put(blockHead, new HashSet<>());
+            cnt = 0;
             getLoop(blockTail, blockHead);
         }
     }
@@ -92,9 +94,10 @@ public class LoopInvariantCodeMotion extends Pass {
     }
 
     public void getLoop(IRBasicBlock curBlock, IRBasicBlock HeadBlock) {
+        cnt++;
+        if(cnt >= 50) return;
         Visited.add(curBlock);
         curLoopBlockStack.add(curBlock);
-        if(allLoops.get(HeadBlock).size() > 20) return;
         if (curBlock == HeadBlock) {
             Loop curLoop = new Loop();
             for(int i = curLoopBlockStack.size()-1; i >= 0;--i)

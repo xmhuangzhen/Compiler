@@ -80,7 +80,7 @@ public class Main {
 
        //     System.out.println("------------START------OPT-----------");
 
-            int cnt = 72;
+            int cnt = 32;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
