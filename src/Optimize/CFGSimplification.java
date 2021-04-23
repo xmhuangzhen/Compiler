@@ -30,6 +30,14 @@ public class CFGSimplification extends Pass {
     }
 
     public void ConstructCFG() {
+  /*      int cnt = 0;
+        for(IRBasicBlock tmp = curFunc.thisEntranceBlock;
+        tmp != null; tmp = tmp.nextBasicBlocks){
+            cnt++;
+        }
+        System.out.println("CFG:"+curFunc.thisFunctionName+","+cnt);
+*/
+
         for (IRBasicBlock tmpIRBasicBlock = curFunc.thisEntranceBlock;
              tmpIRBasicBlock != null;
              tmpIRBasicBlock = tmpIRBasicBlock.nextBasicBlocks) {
@@ -94,48 +102,25 @@ public class CFGSimplification extends Pass {
                 curFunc.removeBasicBlock(curBlock,true);
                 return true;
             } else {
-                if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
+                if (curBlock.CFGPredecessor.size() == 1 /*&& curBlock != curFunc.thisReturnBlock */&&
                         !(curBlock.HeadInst instanceof phiInstruction)) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
-                    if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
+                    if (preBlock.CFGSuccessor.size() == 1 /*&& preBlock != curFunc.thisEntranceBlock*/) {
+
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
 
-/*
-                        if (curBlock.HeadInst == curBlock.TailInst && curBlock.CFGSuccessor.size() == 1
-                                && curBlock.CFGSuccessor.get(0) == curBlock.nextBasicBlocks
-                                && preBlock.TailInst instanceof brInstruction) {
-
-                            IRBasicBlock sucBlock = curBlock.CFGSuccessor.get(0);
-                                System.out.println(preBlock+","+curBlock+","+sucBlock+",2222222222222222222222");
-                            ((brInstruction) preBlock.TailInst).replaceBlock(curBlock, sucBlock);
-                            preBlock.CFGSuccessor.remove(curBlock);
-                            preBlock.CFGSuccessor.add(sucBlock);
-                            sucBlock.CFGPredecessor.remove(curBlock);
-                            sucBlock.CFGPredecessor.add(preBlock);
-                            curFunc.removeBasicBlock(curBlock);
-                            for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
-                                 tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
-                                tmpBlock.replacePhiInstBlock(curBlock, preBlock);
-                            }
-                            return true;
+  /*                      System.out.println("----------------------------------------------");
+                        System.out.println(curBlock+"->"+preBlock);
+                        for(var tmp = curFunc.thisEntranceBlock;tmp != null;
+                        tmp = tmp.nextBasicBlocks){
+                            System.out.println(tmp+","+tmp.CFGSuccessor);
                         }
+                        System.out.println(curFunc.thisReturnBlock);
+                        for(var tmp = curFunc.thisReturnBlock;tmp!=null;
+                        tmp = tmp.prevBasicBlocks)
+                            System.out.println(tmp+","+tmp.CFGPredecessor);
 */
-                        /*
-
-                        System.out.println("-----------------------");
-                        System.out.println(preBlock+","+curBlock);
-                        for(IRInstruction tmpInst = preBlock.HeadInst;
-                        tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
-                            System.out.println(tmpInst);
-                        }
-                        System.out.println("---");
-                        for(IRInstruction tmpInst = curBlock.HeadInst;
-                            tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
-                            System.out.println(tmpInst);
-                        }
-*/
-
                         preBlock.TailInst.removeInst();
 
                         for (IRInstruction tmpInst = curBlock.HeadInst;

@@ -16,6 +16,13 @@ public class RISCVCFGConstructor {
     }
 
     public boolean run() {
+  /*      int cnt = 0;
+        for(RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;
+        tmpBlock != null; tmpBlock = tmpBlock .nextBlock){
+            cnt++;
+        }
+        System.out.println(curFunc+","+cnt);
+*/
         for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;
              tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
             tmpBlock.successor.clear();

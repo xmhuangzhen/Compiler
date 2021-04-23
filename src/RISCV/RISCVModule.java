@@ -156,7 +156,7 @@ public class RISCVModule {
 
     public RISCVBasicBlock getRISCVBasicBlock(IRBasicBlock tmpBlock) {
         if (BasicBlockMap.containsKey(tmpBlock)) return BasicBlockMap.get(tmpBlock);
-        RISCVBasicBlock tmpRes = new RISCVBasicBlock(tmpBlock, /*tmpBlock.BasicBlockName+*/"LBB" + (BlockCnt++));
+        RISCVBasicBlock tmpRes = new RISCVBasicBlock(tmpBlock, "LBB" + (BlockCnt++));
         BasicBlockMap.put(tmpBlock, tmpRes);
         return tmpRes;
     }

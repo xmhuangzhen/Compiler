@@ -41,13 +41,8 @@ public class InstSelector implements IRVisitor {
         for (var tmpVar : it.IRGlobalVarTable.values()) {
             curRISCVModule.addGlobalReg(tmpVar);
         }
-        for (var tmpFunc : it.IRFunctionTable.values()) {
+        for (var tmpFunc : it.IRFunctionTable.values())
             curRISCVModule.addFunc(tmpFunc);
-            for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock; tmpBlock != null;
-                 tmpBlock = tmpBlock.nextBasicBlocks) {
-                curRISCVModule.getRISCVBasicBlock(tmpBlock);
-            }
-        }
         for (var tmpFunc : it.IRFunctionTable.values()) {
             if (!tmpFunc.IsBuiltIn) {
                 tmpFunc.accept(this);
@@ -130,37 +125,36 @@ public class InstSelector implements IRVisitor {
         } else {
             RISCVBasicBlock tmpIfTrueBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
             RISCVBasicBlock tmpIfFalseBlock = curRISCVModule.getRISCVBasicBlock(it.brIfFalse);
-            if(it.brCond.Defs.size() == 1 && it.brCond.Defs.iterator().next() instanceof icmpInstruction &&
-                it.brCond.Defs.iterator().next() == it.preIRInstruction){
+            if (it.brCond.Defs.size() == 1 && it.brCond.Defs.iterator().next() instanceof icmpInstruction &&
+                    it.brCond.Defs.iterator().next() == it.preIRInstruction) {
                 icmpInstruction tmpInst = (icmpInstruction) it.brCond.Defs.iterator().next();
-                RISCVRegister tmpLReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp1,curRISCVBasicBlock);
-                RISCVRegister tmpRReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp2,curRISCVBasicBlock);
-                //curRISCVBasicBlock.removeLastInst();
-//                System.out.println(tmpLReg+","+tmpRReg+","+tmpInst);
+                RISCVRegister tmpLReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp1, curRISCVBasicBlock);
+                RISCVRegister tmpRReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp2, curRISCVBasicBlock);
+
                 // eq, ne, sgt, sge, slt, sle
-                if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.eq){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.eq,tmpIfTrueBlock,tmpIfFalseBlock));
-                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.ne){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.ne,tmpIfTrueBlock,tmpIfFalseBlock));
-                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sgt){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.gt,tmpIfTrueBlock,tmpIfFalseBlock));
-                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sge){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.ge,tmpIfTrueBlock,tmpIfFalseBlock));
-                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.slt){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.lt,tmpIfTrueBlock,tmpIfFalseBlock));
-                } else if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sle){
-                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
-                            RISCVInstruction.RISCVCompareENUMType.le,tmpIfTrueBlock,tmpIfFalseBlock));
+                if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.eq) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.eq, tmpIfTrueBlock, tmpIfFalseBlock));
+                } else if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.ne) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.ne, tmpIfTrueBlock, tmpIfFalseBlock));
+                } else if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sgt) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.gt, tmpIfTrueBlock, tmpIfFalseBlock));
+                } else if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sge) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.ge, tmpIfTrueBlock, tmpIfFalseBlock));
+                } else if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.slt) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.lt, tmpIfTrueBlock, tmpIfFalseBlock));
+                } else if (tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.sle) {
+                    curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg, tmpRReg,
+                            RISCVInstruction.RISCVCompareENUMType.le, tmpIfTrueBlock, tmpIfFalseBlock));
                 } else throw new RuntimeException();
             } else {
                 RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond, curRISCVBasicBlock);
                 curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg, null,
-                        RISCVInstruction.RISCVCompareENUMType.ne,tmpIfTrueBlock, tmpIfFalseBlock));
+                        RISCVInstruction.RISCVCompareENUMType.ne, tmpIfTrueBlock, tmpIfFalseBlock));
             }
         }
     }
@@ -336,7 +330,7 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(getElementPtrInstruction it) {
-     //   System.out.println(it);
+        //   System.out.println(it);
         if (it.GetElementPtrPtr instanceof GlobalVariables) {
             RISCVRegister rd = curRISCVModule.getRISCVReg(it.GetElementPtrResult, curRISCVBasicBlock);
             curRISCVBasicBlock.addInstruction(new RISCVlaInst(rd,
@@ -404,7 +398,7 @@ public class InstSelector implements IRVisitor {
     @Override
     public void visit(icmpInstruction it) {
         //eq, ne, sgt, sge, slt, sle -> eq,ne,lt,le,gt,ge
-        if(it.nextIRInstruction instanceof brInstruction) return;
+        if (it.nextIRInstruction instanceof brInstruction) return;
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.IcmpResult, curRISCVBasicBlock);
         RISCVRegister rs1 = curRISCVModule.getRISCVReg(it.IcmpOp1, curRISCVBasicBlock);
         RISCVRegister rs2 = curRISCVModule.getRISCVReg(it.IcmpOp2, curRISCVBasicBlock);

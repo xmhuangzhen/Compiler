@@ -80,7 +80,7 @@ public class Main {
 
        //     System.out.println("------------START------OPT-----------");
 
-            int cnt = 32;
+            int cnt = 12;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
@@ -88,39 +88,62 @@ public class Main {
                 boolean modified = false;
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+//                if(modified) System.out.print("a");
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
+  //              if(modified) System.out.print("b");
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+    //            if(modified) System.out.print("c");
 
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
+      //          if(modified) System.out.print("d");
+
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+        //        if(modified) System.out.print("e");
 
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
+          //      if(modified) System.out.print("f");
+
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+            //    if(modified) System.out.print("g");
+
 
                 BinaryInstSimplification tmpBinarySimp =
                         new BinaryInstSimplification(currentModule);
                 modified |= tmpBinarySimp.run();
+              //  if(modified) System.out.print("h");
 
                 CommonSubexpressionElimination tmpCSE =
                         new CommonSubexpressionElimination(currentModule);
                 modified |= tmpCSE.run();
+                //if(modified) System.out.print("i");
+
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+//                if(modified) System.out.print("j");
+
                 LoopInvariantCodeMotion tmpLICM =
                         new LoopInvariantCodeMotion(currentModule);
                 modified |= tmpLICM.run();
+  //              if(modified) System.out.print("k");
+
+
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+    //            if(modified) System.out.print("l");
+      //          System.out.println("");
 
                 if (!modified) break;
             }
+//            System.out.println(cnt);
 
             new IRPrinter("output.ll").run(currentModule);
 

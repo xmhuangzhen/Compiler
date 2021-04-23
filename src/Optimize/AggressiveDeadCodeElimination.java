@@ -9,10 +9,7 @@ import IR.Instruction.phiInstruction;
 import IR.Operand.IROperand;
 import IR.Operand.Register;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 //http://www.cs.cmu.edu/afs/cs/academic/class/15745-s12/public/lectures/L14-SSA-Optimizations-1up.pdf
 
@@ -46,7 +43,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                 W.clear();
                 WVisited.clear();
 
-                // System.out.println("---------------------" + curFunc.thisFunctionName + "-------------");
+
                 for (IRBasicBlock tmpBlock = curFunc.thisReturnBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.prevBasicBlocks) {
                     for (IRInstruction tmpInst = tmpBlock.TailInst;
@@ -59,14 +56,10 @@ public class AggressiveDeadCodeElimination extends Pass {
 
                 while (!W.isEmpty()) {
                     IRInstruction S = W.poll();
-                    //  System.out.println(S);
                     if (LiveInst.contains(S)) continue;
                     LiveInst.add(S);
-                    //       System.out.println("----------------");
-                    //     System.out.println(S.toString());
 
                     for (IROperand tmpReg : S.getuse()) {
-                        //                    System.out.println(tmpReg.toString());
                         for (IRInstruction tmpInst : tmpReg.Defs) {
                             if (tmpReg.Defs != null && !WVisited.contains(tmpInst)) {
                                 W.offer(tmpInst);
@@ -141,14 +134,21 @@ public class AggressiveDeadCodeElimination extends Pass {
 
                 for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                    ArrayList<IRInstruction> NeedRemoveInst = new ArrayList<>();
                     for (IRInstruction tmpInst = tmpBlock.HeadInst;
                          tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
                         if (!LiveInst.contains(tmpInst)) {
-                            tmpInst.removeInst();
-                            modified = true;
+                            NeedRemoveInst.add(tmpInst);
                         }
+   //                 if(!NeedRemoveInst.isEmpty())
+     //                   System.out.println(NeedRemoveInst);
+                    for(IRInstruction tmpInst : NeedRemoveInst){
+                        tmpInst.removeInst();
+                        modified = true;
+                    }
                 }
             }
+ //       System.out.println("---------------------------");
         return modified;
     }
 }

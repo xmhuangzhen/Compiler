@@ -23,7 +23,7 @@ public class InlineExpander extends Pass {
     HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
 
 
-    public static int InstLimit = 700, RecursiveLimit = 2;
+    public static int InstLimit = 700, RecursiveLimit = 2, BlockNumLimit = 200;
     public static int BlockNum = 0, RegNum = 0;
 
     public InlineExpander(IRModule tmpModule) {
@@ -71,14 +71,15 @@ public class InlineExpander extends Pass {
             if (!tmpFunc.IsBuiltIn) {
                 updateFuncInstNumMap(tmpFunc);
             }
-        HashSet<String> removeFuncList = new HashSet<>();
+        HashSet<IRFunction> removeFuncList = new HashSet<>();
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
             if (!tmpFunc.IsBuiltIn) {
                 if (!CalleeFunc.contains(tmpFunc) && !tmpFunc.thisFunctionName.equals("main"))
-                    removeFuncList.add(tmpFunc.thisFunctionName);
+                    removeFuncList.add(tmpFunc);
             }
-        for (var tmpString : removeFuncList)
-            curIRModule.IRFunctionTable.remove(tmpString);
+        for (var tmpFunc : removeFuncList) {
+            curIRModule.removeFunc(tmpFunc);
+        }
         //   System.out.println("-------------------");
         //System.out.println(CanBeInlined);
         ArrayList<callInstruction> InlineList = new ArrayList<>();
@@ -163,6 +164,7 @@ public class InlineExpander extends Pass {
     public boolean InlineCall(callInstruction CallInst, IRFunction curFunc) {
         IRBasicBlock curBlock = CallInst.thisBasicBlock;
         IRFunction calleeFunc = CallInst.CallFunction;
+        if(getBlockNum(curFunc) > BlockNumLimit) return false;
         if (FuncInstNumMap.get(calleeFunc) + FuncInstNumMap.get(calleeFunc) >= InstLimit) {
             return false;
         }
@@ -214,6 +216,8 @@ public class InlineExpander extends Pass {
         AfterCallBlock.nextBasicBlocks = curBlock.nextBasicBlocks;
         if (curBlock.nextBasicBlocks != null)
             curBlock.nextBasicBlocks.prevBasicBlocks = AfterCallBlock;
+        else
+            curFunc.thisReturnBlock = AfterCallBlock;
         repEndBlock.nextBasicBlocks = AfterCallBlock;
         curBlock.nextBasicBlocks = repStartBlock;
         repStartBlock.prevBasicBlocks = curBlock;

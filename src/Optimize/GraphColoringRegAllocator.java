@@ -208,6 +208,7 @@ public class GraphColoringRegAllocator extends ASMPass {
              tmpBlock != null; tmpBlock = tmpBlock.nextBlock) {
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst;
                  tmpInst != null; tmpInst = tmpInst.nextInst) {
+                //if(tmpInst.)
                 initialed.addAll(tmpInst.use());
                 initialed.addAll(tmpInst.def());
             }

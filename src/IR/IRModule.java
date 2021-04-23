@@ -5,6 +5,7 @@ import AST.ASTTypeNode.ClassTypeNode;
 import AST.ASTTypeNode.NonArrayTypeNode;
 import AST.ASTTypeNode.TypeNode;
 import Backend.IRVisitor;
+import IR.Instruction.IRInstruction;
 import IR.Operand.GlobalVariables;
 import IR.Operand.Parameter;
 import IR.Operand.Register;
@@ -260,6 +261,17 @@ public class IRModule {
             IRGlobalVarTable.put("const_string_no"+IRConstStringTable.size(),tmpGlobalVariables);
             return tmpGlobalVariables;
         }
+    }
+
+    public void removeFunc(IRFunction tmpFunc){
+        String tmpName = tmpFunc.thisFunctionName;
+        for(IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+        tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks){
+            for(IRInstruction tmpInst = tmpBlock.HeadInst;
+            tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
+                tmpInst.removeInst();
+        }
+        IRFunctionTable.remove(tmpName);
     }
 
     public void accept(IRVisitor it){

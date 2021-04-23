@@ -18,9 +18,9 @@ public class LivenessAnalysis {
 
     public LivenessAnalysis(RISCVFunction tmpFunc) {
         curFunc = tmpFunc;
-        BLockUses = new LinkedHashMap<>();
-        BLockDefs = new LinkedHashMap<>();
-        BlockVisited = new LinkedHashSet<>();
+        BLockUses = new HashMap<>();
+        BLockDefs = new HashMap<>();
+        BlockVisited = new HashSet<>();
     }
 
     public boolean run() {
@@ -30,11 +30,11 @@ public class LivenessAnalysis {
 
         for (RISCVBasicBlock tmpBlock = curFunc.EntranceBlock; tmpBlock != null;
              tmpBlock = tmpBlock.nextBlock) {
-            HashSet<RISCVRegister> tmpUse = new LinkedHashSet<>();
-            HashSet<RISCVRegister> tmpDef = new LinkedHashSet<>();
+            HashSet<RISCVRegister> tmpUse = new HashSet<>();
+            HashSet<RISCVRegister> tmpDef = new HashSet<>();
             for (RISCVInstruction tmpInst = tmpBlock.HeadInst; tmpInst != null;
                  tmpInst = tmpInst.nextInst) {
-                HashSet<RISCVRegister> usenotdef = new LinkedHashSet<>(tmpInst.use());
+                HashSet<RISCVRegister> usenotdef = new HashSet<>(tmpInst.use());
                 usenotdef.removeAll(tmpDef);
                 tmpUse.addAll(usenotdef);
                 tmpDef.addAll(tmpInst.def());
@@ -59,12 +59,12 @@ public class LivenessAnalysis {
         if(BlockVisited.contains(curBlock)) return;
         BlockVisited.add(curBlock);
 
-        HashSet<RISCVRegister> liveOut = new LinkedHashSet<>();
+        HashSet<RISCVRegister> liveOut = new HashSet<>();
         for (var sucBlock : curBlock.successor)
             liveOut.addAll(sucBlock.LiveIn);
         curBlock.LiveOut.addAll(liveOut);
 
-        HashSet<RISCVRegister> liveIn = new LinkedHashSet<>(liveOut);
+        HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
         liveIn.removeAll(BLockDefs.get(curBlock));
         liveIn.addAll(BLockUses.get(curBlock));
         liveIn.removeAll(curBlock.LiveIn);
