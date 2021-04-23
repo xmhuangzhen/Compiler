@@ -102,10 +102,10 @@ public class CFGSimplification extends Pass {
                 curFunc.removeBasicBlock(curBlock,true);
                 return true;
             } else {
-                if (curBlock.CFGPredecessor.size() == 1 /*&& curBlock != curFunc.thisReturnBlock */&&
+                if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
                         !(curBlock.HeadInst instanceof phiInstruction)) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
-                    if (preBlock.CFGSuccessor.size() == 1 /*&& preBlock != curFunc.thisEntranceBlock*/) {
+                    if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
 
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
