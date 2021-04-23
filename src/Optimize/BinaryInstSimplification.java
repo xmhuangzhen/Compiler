@@ -100,8 +100,9 @@ public class BinaryInstSimplification extends Pass {
                                     } else if (op1 == binaryOpInstruction.BinaryOperandENUM.sub) {
                                         if (Type == 1) {// xxx - src12
                                             if (op2 == binaryOpInstruction.BinaryOperandENUM.add) {
-                                                //reg-(src12-src22)
-                                                src3 = src12 - src22;
+                                                //reg+src22-src12
+                                                src3 = src22 - src12;
+                                                op3 = binaryOpInstruction.BinaryOperandENUM.add;
                                                 canComb = true;
                                             } else if (op2 == binaryOpInstruction.BinaryOperandENUM.sub) {
                                                 if (Type2 == 1) {//reg-(src12+src22)

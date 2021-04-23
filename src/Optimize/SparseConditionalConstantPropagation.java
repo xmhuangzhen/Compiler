@@ -81,7 +81,7 @@ public class SparseConditionalConstantPropagation extends Pass {
                 tmpInst.removeInst();
                 ChangedInFunc = true;
             } else if(tmpInst instanceof moveInstruction && checkMove((moveInstruction) tmpInst)){
-            //    tmpInst.removeInst();
+                tmpInst.removeInst();
                 ChangedInFunc = true;
             }
         }
@@ -273,19 +273,18 @@ public class SparseConditionalConstantPropagation extends Pass {
     }
 
     public boolean checkMove(moveInstruction curInst){
-        boolean canRemove = true;
         IRInstruction preInst = null;
         for(var tmp : curInst.rd.Defs){
-            if(preInst == null){
-                preInst = tmp;
-            } else {
-                if(preInst != tmp){
-                    canRemove = false;
-                    break;
-                }
+            if(preInst == null) preInst = tmp;
+            else {
+                if(preInst != tmp) return false;
             }
         }
-        if(!canRemove) return false;
+        for(var tmp : curInst.rd.use){
+            if(tmp instanceof retInstruction) return false;
+        }
+//        System.out.println(curInst+","+curInst.rd.Defs);
+
         IROperand rs = getConstant(curInst.rs);
         if(rs != null){
             if (rs instanceof BooleanConstant) {
@@ -296,8 +295,9 @@ public class SparseConditionalConstantPropagation extends Pass {
             } else if (rs instanceof IntegerConstant) {
                 IntegerConstant replaceResult = new IntegerConstant(IntegerType.IRBitWidth.i32,
                         ((IntegerConstant) rs).value);
-                ConstValueMap.put(curInst.rd,replaceResult);
 
+//                System.out.println(curInst);
+                ConstValueMap.put(curInst.rd,replaceResult);
                 curInst.rd.ReplaceRegisterUse(replaceResult);
                 return true;
             }
