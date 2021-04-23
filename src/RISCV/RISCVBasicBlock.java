@@ -39,6 +39,18 @@ public class RISCVBasicBlock {
         LiveIn = new HashSet<>();
     }
 
+    public void removeLastInst(){
+        if(TailInst == null) throw new RuntimeException();
+        TailInst = TailInst.preInst;
+        if(TailInst != null) {
+//            System.out.println(TailInst);
+            TailInst.nextInst.preInst = null;
+            TailInst.nextInst = null;
+        } else {
+            HeadInst = null;
+        }
+    }
+
     public void addInstruction(RISCVInstruction tmpInst){
         if(HeadInst == null){
             HeadInst = tmpInst;

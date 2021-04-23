@@ -62,7 +62,8 @@ public class LoopInvariantCodeMotion extends Pass {
              curBlock != null; curBlock = curBlock.nextBasicBlocks) {
             for (IRBasicBlock sucBlock : curBlock.CFGSuccessor) {
                 if (IsDom(curBlock, sucBlock)) {
-                    backEdges.add(new Pair<>(curBlock, sucBlock));
+                    backEdges.add(new Pair<>(curBlock, sucBlock));//tail, head
+                //    System.out.println(sucBlock+"->"+curBlock);
                 }
             }
         }
@@ -93,16 +94,21 @@ public class LoopInvariantCodeMotion extends Pass {
     public void getLoop(IRBasicBlock curBlock, IRBasicBlock HeadBlock) {
         Visited.add(curBlock);
         curLoopBlockStack.add(curBlock);
+        if(allLoops.get(HeadBlock).size() > 20) return;
         if (curBlock == HeadBlock) {
             Loop curLoop = new Loop();
             for(int i = curLoopBlockStack.size()-1; i >= 0;--i)
                 curLoop.LoopBlock.add(curLoopBlockStack.get(i));
+       //     for(var tmp : curLoop.LoopBlock)
+         //       System.out.print(tmp+"->");
+           // System.out.println("");
             allLoops.get(HeadBlock).add(curLoop);
             curLoopBlockStack.remove(curBlock);
             return;
         }
         for (var tmpBlock : curBlock.CFGPredecessor)
-            if (!Visited.contains(tmpBlock)) {
+          //  if (!Visited.contains(tmpBlock)) {
+            if(!curLoopBlockStack.contains(tmpBlock)){
                 getLoop(tmpBlock, HeadBlock);
             }
         curLoopBlockStack.remove(curBlock);
@@ -155,6 +161,8 @@ public class LoopInvariantCodeMotion extends Pass {
                     if (LoopHasCall) break;
                 }
                 if (LoopHasCall) continue;
+
+            //    System.out.println(LoopBlock);
 
                 Visited.clear();
                 for (Loop tmpLoop : LoopSet) {

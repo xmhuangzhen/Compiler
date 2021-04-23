@@ -130,10 +130,13 @@ public class InstSelector implements IRVisitor {
         } else {
             RISCVBasicBlock tmpIfTrueBlock = curRISCVModule.getRISCVBasicBlock(it.brIfTrue);
             RISCVBasicBlock tmpIfFalseBlock = curRISCVModule.getRISCVBasicBlock(it.brIfFalse);
-        /*    if(it.brCond.Defs.size() == 1 && it.brCond.Defs.iterator().next() instanceof icmpInstruction){
+            if(it.brCond.Defs.size() == 1 && it.brCond.Defs.iterator().next() instanceof icmpInstruction &&
+                it.brCond.Defs.iterator().next() == it.preIRInstruction){
                 icmpInstruction tmpInst = (icmpInstruction) it.brCond.Defs.iterator().next();
                 RISCVRegister tmpLReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp1,curRISCVBasicBlock);
                 RISCVRegister tmpRReg = curRISCVModule.getRISCVReg(tmpInst.IcmpOp2,curRISCVBasicBlock);
+                //curRISCVBasicBlock.removeLastInst();
+//                System.out.println(tmpLReg+","+tmpRReg+","+tmpInst);
                 // eq, ne, sgt, sge, slt, sle
                 if(tmpInst.IcmpOperandType == icmpInstruction.IcmpOperandENUM.eq){
                     curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
@@ -154,11 +157,11 @@ public class InstSelector implements IRVisitor {
                     curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpLReg,tmpRReg,
                             RISCVInstruction.RISCVCompareENUMType.le,tmpIfTrueBlock,tmpIfFalseBlock));
                 } else throw new RuntimeException();
-            } else {*/
+            } else {
                 RISCVRegister tmpCondReg = curRISCVModule.getRISCVReg(it.brCond, curRISCVBasicBlock);
                 curRISCVBasicBlock.addInstruction(new RISCVBranchInst(tmpCondReg, null,
                         RISCVInstruction.RISCVCompareENUMType.ne,tmpIfTrueBlock, tmpIfFalseBlock));
-           // }
+            }
         }
     }
 
@@ -401,6 +404,7 @@ public class InstSelector implements IRVisitor {
     @Override
     public void visit(icmpInstruction it) {
         //eq, ne, sgt, sge, slt, sle -> eq,ne,lt,le,gt,ge
+        if(it.nextIRInstruction instanceof brInstruction) return;
         RISCVRegister rd = curRISCVModule.getRISCVReg(it.IcmpResult, curRISCVBasicBlock);
         RISCVRegister rs1 = curRISCVModule.getRISCVReg(it.IcmpOp1, curRISCVBasicBlock);
         RISCVRegister rs2 = curRISCVModule.getRISCVReg(it.IcmpOp2, curRISCVBasicBlock);
