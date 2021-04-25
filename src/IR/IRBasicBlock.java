@@ -42,7 +42,9 @@ public class IRBasicBlock {
     public IRBasicBlock PostDominatorTreeLabel, PostDominatorTreeAncestor;
     public HashSet<IRBasicBlock> PostDominatorTreeBucket;
     public HashSet<IRBasicBlock> PostDominanceFrontier;
-  //  public HashSet<IRBasicBlock> PostDominanceFrontierReverse;
+
+    //for LICM use
+    public HashSet<IRBasicBlock> DominatorChildren;
 
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
@@ -77,7 +79,8 @@ public class IRBasicBlock {
         PostDominatorTreeAncestor = null;
         PostDominatorTreeBucket = new LinkedHashSet<>();
         PostDominanceFrontier = new LinkedHashSet<>();
-      //  PostDominanceFrontierReverse = new LinkedHashSet<>();
+
+        DominatorChildren = new HashSet<>();
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){

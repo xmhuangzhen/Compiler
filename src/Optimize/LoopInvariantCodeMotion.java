@@ -20,19 +20,17 @@ import java.util.LinkedHashSet;
 public class LoopInvariantCodeMotion extends Pass {
 
     public IRFunction curFunc;
-    public ArrayList<Pair<IRBasicBlock, IRBasicBlock>> backEdges; //Tail,Head
     public HashMap<IROperand, HashSet<IRInstruction>> reachDefMap;
-    public HashMap<IRBasicBlock, HashSet<Loop>> allLoops;//head,loop
-    public HashSet<IRBasicBlock> Visited;
+    public HashMap<IRBasicBlock, ArrayList<Loop>> allLoops;//head,loop
     public ArrayList<IRBasicBlock> curLoopBlockStack;
+    public HashSet<IRBasicBlock> Visited;
     public int cnt;
 
     public LoopInvariantCodeMotion(IRModule tmpModule) {
         super(tmpModule);
-        backEdges = new ArrayList<>();
         allLoops = new HashMap<>();
-        Visited = new HashSet<>();
         reachDefMap = new HashMap<>();
+        Visited = new HashSet<>();
         curLoopBlockStack = new ArrayList<>();
     }
 
@@ -61,26 +59,23 @@ public class LoopInvariantCodeMotion extends Pass {
     public void FindingLoops() {
         for (IRBasicBlock curBlock = curFunc.thisEntranceBlock;
              curBlock != null; curBlock = curBlock.nextBasicBlocks) {
-            for (IRBasicBlock sucBlock : curBlock.CFGSuccessor) {
-                if (IsDom(curBlock, sucBlock)) {
-                    backEdges.add(new Pair<>(curBlock, sucBlock));//tail, head
-                //    System.out.println(sucBlock+"->"+curBlock);
-                }
-            }
+            curBlock.DominatorChildren.clear();
         }
 
-        for (var tmp : backEdges) {
-            IRBasicBlock blockTail = tmp.a;
-            IRBasicBlock blockHead = tmp.b;
+        for (IRBasicBlock curBlock = curFunc.thisEntranceBlock;
+             curBlock != null; curBlock = curBlock.nextBasicBlocks) {
+            if (curBlock.DominatorTreeImmediateDominator != null)
+                curBlock.DominatorTreeImmediateDominator.DominatorChildren.add(curBlock);
+        }
 
-            Visited.clear();
+        for (IRBasicBlock blockHead = curFunc.thisEntranceBlock;
+             blockHead != null; blockHead = blockHead.nextBasicBlocks) {
+            allLoops.put(blockHead, new ArrayList<>());
             curLoopBlockStack.clear();
-            if (!allLoops.containsKey(blockHead))
-                allLoops.put(blockHead, new HashSet<>());
-            cnt = 0;
-            getLoop(blockTail, blockHead);
+            getLoop(blockHead, blockHead);
         }
     }
+
 
     public boolean IsDom(IRBasicBlock curBlock, IRBasicBlock sucBlock) {
         //check whether sucBlock is the ancestor of curblock
@@ -94,24 +89,16 @@ public class LoopInvariantCodeMotion extends Pass {
     }
 
     public void getLoop(IRBasicBlock curBlock, IRBasicBlock HeadBlock) {
-        cnt++;
-        if(cnt >= 50) return;
-        Visited.add(curBlock);
         curLoopBlockStack.add(curBlock);
-        if (curBlock == HeadBlock) {
+        if (curBlock.CFGSuccessor.contains(HeadBlock)) {
             Loop curLoop = new Loop();
-            for(int i = curLoopBlockStack.size()-1; i >= 0;--i)
+            for (int i = 0; i < curLoopBlockStack.size(); ++i)
                 curLoop.LoopBlock.add(curLoopBlockStack.get(i));
-       //     for(var tmp : curLoop.LoopBlock)
-         //       System.out.print(tmp+"->");
-           // System.out.println("");
             allLoops.get(HeadBlock).add(curLoop);
             curLoopBlockStack.remove(curBlock);
             return;
         }
-        for (var tmpBlock : curBlock.CFGPredecessor)
-          //  if (!Visited.contains(tmpBlock)) {
-            if(!curLoopBlockStack.contains(tmpBlock)){
+        for (var tmpBlock : curBlock.DominatorChildren) {
                 getLoop(tmpBlock, HeadBlock);
             }
         curLoopBlockStack.remove(curBlock);
@@ -143,7 +130,7 @@ public class LoopInvariantCodeMotion extends Pass {
 
                 //check no call
                 boolean LoopHasCall = false;
-                HashSet<Loop> LoopSet = allLoops.get(LoopHead);
+                ArrayList<Loop> LoopSet = allLoops.get(LoopHead);
                 HashSet<IRBasicBlock> LoopBlock = new HashSet<>();
                 Visited.clear();
                 for (Loop tmpLoop : LoopSet) {
@@ -165,27 +152,25 @@ public class LoopInvariantCodeMotion extends Pass {
                 }
                 if (LoopHasCall) continue;
 
-            //    System.out.println(LoopBlock);
 
                 Visited.clear();
                 for (Loop tmpLoop : LoopSet) {
                     boolean canLoop = true;
 
-                    for(IRBasicBlock tmpBlock : tmpLoop.LoopBlock){
-                        if(!IsDom(tmpBlock,preBlock)){
+                    for (IRBasicBlock tmpBlock : tmpLoop.LoopBlock) {
+                        if (!IsDom(tmpBlock, preBlock)) {
                             canLoop = false;
                             break;
                         }
                     }
 
-                    if(!canLoop) continue;
+                    if (!canLoop) continue;
 
                     for (IRBasicBlock tmpBlock : tmpLoop.LoopBlock) {
                         if (!Visited.contains(tmpBlock)) {
                             Visited.add(tmpBlock);
 
-                            for (IRInstruction curInst = tmpBlock.HeadInst;
-                                 curInst != null; ) {
+                            for (IRInstruction curInst = tmpBlock.HeadInst; curInst != null; ) {
                                 IRInstruction tmpInst = curInst;
                                 curInst = curInst.nextIRInstruction;
                                 if (tmpInst instanceof binaryOpInstruction) {
@@ -208,6 +193,31 @@ public class LoopInvariantCodeMotion extends Pass {
                                                         ((binaryOpInstruction) tmpInst).BinaryOp1,
                                                         ((binaryOpInstruction) tmpInst).BinaryOp2,
                                                         ((binaryOpInstruction) tmpInst).BinaryResult));
+                                        changed = true;
+                                    }
+                                } else if (tmpInst instanceof icmpInstruction) {
+                                    boolean AllUseDontChange = true;
+//                                    System.out.println(tmpInst);
+                                    for (var tmp : tmpInst.getuse()) {
+                                        if (reachDefMap.containsKey(tmp)) {
+                                            for (var tmpUseDef : reachDefMap.get(tmp)) {
+                                                if (LoopBlock.contains(tmpUseDef.thisBasicBlock)) {
+                                                    AllUseDontChange = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (AllUseDontChange) {
+//                                        System.out.println("2");
+                                        tmpInst.removeInst();
+                                        preBlock.addBasicBlockInstPreInst(preBlock.TailInst,
+                                                new icmpInstruction(preBlock,
+                                                        ((icmpInstruction) tmpInst).IcmpOperandType,
+                                                        ((icmpInstruction) tmpInst).IcmpType,
+                                                        ((icmpInstruction) tmpInst).IcmpOp1,
+                                                        ((icmpInstruction) tmpInst).IcmpOp2,
+                                                        ((icmpInstruction) tmpInst).IcmpResult));
                                         changed = true;
                                     }
                                 }
