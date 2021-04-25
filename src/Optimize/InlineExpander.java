@@ -98,7 +98,7 @@ public class InlineExpander extends Pass {
             }
 
         if (forceInline) {
-            for (var tmpFunc : curIRModule.IRFunctionTable.values())
+/*            for (var tmpFunc : curIRModule.IRFunctionTable.values())
                 if (!tmpFunc.IsBuiltIn && !CanBeInlined.contains(tmpFunc)) {
                     boolean IsRecursiveCall = true;
                     for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
@@ -123,6 +123,20 @@ public class InlineExpander extends Pass {
                                 }
                         }
 
+                    }
+                }
+
+ */
+            for (var tmpFunc : curIRModule.IRFunctionTable.values())
+                if (!tmpFunc.IsBuiltIn) {
+                    for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
+                         tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
+                        for (IRInstruction tmpInst = tmpBlock.HeadInst;
+                             tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
+                            if (tmpInst instanceof callInstruction &&
+                                    !((callInstruction) tmpInst).CallFunction.IsBuiltIn) {
+                                InlineList.add((callInstruction) tmpInst);
+                            }
                     }
                 }
 

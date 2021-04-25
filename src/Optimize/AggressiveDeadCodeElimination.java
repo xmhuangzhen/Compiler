@@ -99,7 +99,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                             WVisited.add(checkInst);
                         }
                     }
-/*
+
                     for (var preBlock : S.thisBasicBlock.CFGSuccessor) {
                         IRInstruction checkInst = preBlock.TailInst;
                         if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
@@ -115,7 +115,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                             }
                         }
                     }
-*/
+
                     IRInstruction checkInst = S.thisBasicBlock.TailInst;
                     if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
                         W.offer(checkInst);

@@ -13,6 +13,7 @@ public class ASMPrinter {
 
     public RISCVModule curRISCVModule;
     public PrintStream ASMPrintStream;
+    public int curNum;
 
     public ASMPrinter(RISCVModule tmpModule, PrintStream tmpPrintStream) {
         curRISCVModule = tmpModule;
@@ -34,6 +35,10 @@ public class ASMPrinter {
         ASMPrintStream.println("\t.globl\t" + thisFunc.FunctionName+"\t\t\t\t\t# start function : "+thisFunc.FunctionName);
         ASMPrintStream.println("\t.p2align\t2");
         ASMPrintStream.println(thisFunc.FunctionName + ":");
+//        thisFunc.getDFSOrder();
+
+//        for(curNum = 0; curNum < thisFunc.DFSOrder.size();++curNum)
+  //          runRISCVBasicBlock(thisFunc.DFSOrder.get(curNum),thisFunc);
         for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
             runRISCVBasicBlock(tmpBlock,thisFunc);
         ASMPrintStream.println("# end function : "+thisFunc.FunctionName);
@@ -45,6 +50,8 @@ public class ASMPrinter {
             ASMPrintStream.println(thisBasicBlock.BlockName + ":");
             for (RISCVInstruction tmpInst = thisBasicBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
                 if(tmpInst instanceof RISCVJumpInst){
+//                    if(curNum < thisFunc.DFSOrder.size()-1 &&
+  //                          ((RISCVJumpInst) tmpInst).JumpToBlock == thisFunc.DFSOrder.get(curNum+1)) break;
                     if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
                 }
                 ASMPrintStream.println("\t" + tmpInst.toString());

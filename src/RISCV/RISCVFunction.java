@@ -30,6 +30,8 @@ public class RISCVFunction {
 
     public HashSet<RISCVPhyReg> usedPhyReg;
 
+    public ArrayList<RISCVBasicBlock> DFSOrder;
+
     public RISCVFunction(IRFunction tmpFunc){
         thisIRFunc = tmpFunc;
         FunctionName = tmpFunc.thisFunctionName;
@@ -43,6 +45,7 @@ public class RISCVFunction {
         GCStackNum = 0;
 
         usedPhyReg = new HashSet<>();
+        DFSOrder = new ArrayList<>();
     }
 
     public void addBlock(RISCVBasicBlock tmpBlock){
@@ -64,6 +67,18 @@ public class RISCVFunction {
     public int GCRealStackSize(){
         return 4*GCStackNum + (16-(4*GCStackNum%16))+
                 4*16+4*MaxParaCall;
+    }
+
+    public void getDFSOrder(){
+        DFSOrder.clear();
+        runDFS(EntranceBlock);
+    }
+
+    public void runDFS(RISCVBasicBlock curBlock){
+        if(DFSOrder.contains(curBlock)) return;
+        DFSOrder.add(curBlock);
+        for(int i = curBlock.successor.size()-1; i >= 0;--i)
+            runDFS(curBlock.successor.get(i));
     }
 
     @Override
