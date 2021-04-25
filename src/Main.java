@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
- //            input = new FileInputStream("test.mx");
+             input = new FileInputStream("test.mx");
         //  else
-              input = System.in;
+ //             input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -80,7 +80,7 @@ public class Main {
 
        //     System.out.println("------------START------OPT-----------");
 
-            int cnt = 12;
+            int cnt = 2;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
@@ -105,7 +105,7 @@ public class Main {
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
         //        if(modified) System.out.print("e");
-
+/*
                 InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
           //      if(modified) System.out.print("f");
@@ -141,7 +141,7 @@ public class Main {
     //            if(modified) System.out.print("l");
       //          System.out.println("");
 
-                if (!modified) break;
+  */              if (!modified) break;
             }
 //            System.out.println(cnt);
 
@@ -153,7 +153,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-       //     new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
 

@@ -22,7 +22,7 @@ public class AggressiveDeadCodeElimination extends Pass {
 
     public AggressiveDeadCodeElimination(IRModule tmpModule) {
         super(tmpModule);
-        LiveInst = new LinkedHashSet<>();
+        LiveInst = new HashSet<>();
         W = new LinkedList<>();
         WVisited = new LinkedHashSet<>();
     }
@@ -43,6 +43,11 @@ public class AggressiveDeadCodeElimination extends Pass {
                 W.clear();
                 WVisited.clear();
 
+                System.out.println("------------------"+tmpFunc.thisFunctionName+"------------");
+                for(IRBasicBlock tmp = curFunc.thisEntranceBlock;
+                tmp != null; tmp = tmp.nextBasicBlocks)
+                    System.out.println(tmp+","+tmp.CFGSuccessor);
+
 
                 for (IRBasicBlock tmpBlock = curFunc.thisReturnBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.prevBasicBlocks) {
@@ -58,6 +63,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                     IRInstruction S = W.poll();
                     if (LiveInst.contains(S)) continue;
                     LiveInst.add(S);
+                    System.out.println(S+","+S.thisBasicBlock);
 
                     for (IROperand tmpReg : S.getuse()) {
                         for (IRInstruction tmpInst : tmpReg.Defs) {
@@ -101,7 +107,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                             }
                         }
                     }
-/*
+
                     for (var preBlock : S.thisBasicBlock.CFGSuccessor) {
                         IRInstruction checkInst = preBlock.TailInst;
                         if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
@@ -117,7 +123,7 @@ public class AggressiveDeadCodeElimination extends Pass {
                             }
                         }
                     }
-*/
+
                     IRInstruction checkInst = S.thisBasicBlock.TailInst;
                     if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
                         W.offer(checkInst);
@@ -134,6 +140,8 @@ public class AggressiveDeadCodeElimination extends Pass {
 
                 }
 
+//                System.out.println(LiveInst);
+
                 for (IRBasicBlock tmpBlock = curFunc.thisEntranceBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
                     ArrayList<IRInstruction> NeedRemoveInst = new ArrayList<>();
@@ -142,8 +150,8 @@ public class AggressiveDeadCodeElimination extends Pass {
                         if (!LiveInst.contains(tmpInst)) {
                             NeedRemoveInst.add(tmpInst);
                         }
-   //                 if(!NeedRemoveInst.isEmpty())
-     //                   System.out.println(NeedRemoveInst);
+                    System.out.println(LiveInst);
+                    System.out.println(NeedRemoveInst);
                     for(IRInstruction tmpInst : NeedRemoveInst){
                         tmpInst.removeInst();
                         modified = true;
