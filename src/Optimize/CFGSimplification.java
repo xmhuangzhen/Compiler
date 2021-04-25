@@ -110,17 +110,6 @@ public class CFGSimplification extends Pass {
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();
 
-  /*                      System.out.println("----------------------------------------------");
-                        System.out.println(curBlock+"->"+preBlock);
-                        for(var tmp = curFunc.thisEntranceBlock;tmp != null;
-                        tmp = tmp.nextBasicBlocks){
-                            System.out.println(tmp+","+tmp.CFGSuccessor);
-                        }
-                        System.out.println(curFunc.thisReturnBlock);
-                        for(var tmp = curFunc.thisReturnBlock;tmp!=null;
-                        tmp = tmp.prevBasicBlocks)
-                            System.out.println(tmp+","+tmp.CFGPredecessor);
-*/
                         preBlock.TailInst.removeInst();
 
                         for (IRInstruction tmpInst = curBlock.HeadInst;
