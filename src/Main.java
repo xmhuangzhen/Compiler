@@ -145,7 +145,7 @@ public class Main {
             }
 //            System.out.println(cnt);
 
-            new IRPrinter("output.ll").run(currentModule);
+   //         new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
