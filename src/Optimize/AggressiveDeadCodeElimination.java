@@ -43,11 +43,6 @@ public class AggressiveDeadCodeElimination extends Pass {
                 W.clear();
                 WVisited.clear();
 
-                System.out.println("------------------"+tmpFunc.thisFunctionName+"------------");
-                for(IRBasicBlock tmp = curFunc.thisEntranceBlock;
-                tmp != null; tmp = tmp.nextBasicBlocks)
-                    System.out.println(tmp+","+tmp.CFGSuccessor);
-
 
                 for (IRBasicBlock tmpBlock = curFunc.thisReturnBlock;
                      tmpBlock != null; tmpBlock = tmpBlock.prevBasicBlocks) {
@@ -63,7 +58,6 @@ public class AggressiveDeadCodeElimination extends Pass {
                     IRInstruction S = W.poll();
                     if (LiveInst.contains(S)) continue;
                     LiveInst.add(S);
-                    System.out.println(S+","+S.thisBasicBlock);
 
                     for (IROperand tmpReg : S.getuse()) {
                         for (IRInstruction tmpInst : tmpReg.Defs) {
@@ -150,8 +144,6 @@ public class AggressiveDeadCodeElimination extends Pass {
                         if (!LiveInst.contains(tmpInst)) {
                             NeedRemoveInst.add(tmpInst);
                         }
-                    System.out.println(LiveInst);
-                    System.out.println(NeedRemoveInst);
                     for(IRInstruction tmpInst : NeedRemoveInst){
                         tmpInst.removeInst();
                         modified = true;
