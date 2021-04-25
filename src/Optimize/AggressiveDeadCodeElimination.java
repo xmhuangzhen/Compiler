@@ -93,10 +93,12 @@ public class AggressiveDeadCodeElimination extends Pass {
                             WVisited.add(checkInst);
                         }
 
-                        checkInst = checkInst.preIRInstruction;
-                        if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
-                            W.offer(checkInst);
-                            WVisited.add(checkInst);
+                        if(checkInst != null) {
+                            checkInst = checkInst.preIRInstruction;
+                            if (checkInst instanceof brInstruction && !WVisited.contains(checkInst)) {
+                                W.offer(checkInst);
+                                WVisited.add(checkInst);
+                            }
                         }
                     }
 
