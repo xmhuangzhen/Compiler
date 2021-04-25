@@ -23,7 +23,7 @@ public class InlineExpander extends Pass {
     HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
 
 
-    public static int InstLimit = 700, CallExpandLimit = 8, BlockNumLimit = 200;
+    public static int InstLimit = 700, CallExpandLimit = 4, BlockNumLimit = 200;
     public static int BlockNum = 0, RegNum = 0;
 
     public InlineExpander(IRModule tmpModule) {
@@ -145,7 +145,7 @@ public class InlineExpander extends Pass {
         boolean modified = false;
         for (var tmpInst : InlineList) {
             IRFunction tmpFunc = tmpInst.thisBasicBlock.BasicBlockFunction;
-            boolean changed = InlineCall(tmpInst, tmpFunc);
+            boolean changed = InlineCall(tmpInst, tmpFunc,forceInline);
             modified |= changed;
             constructCFG(tmpFunc);
         }
@@ -175,7 +175,7 @@ public class InlineExpander extends Pass {
             FuncInstNumMap.replace(tmpFunc, cnt);
     }
 
-    public boolean InlineCall(callInstruction CallInst, IRFunction curFunc) {
+    public boolean InlineCall(callInstruction CallInst, IRFunction curFunc, boolean forceInline) {
         IRBasicBlock curBlock = CallInst.thisBasicBlock;
         IRFunction calleeFunc = CallInst.CallFunction;
         if(getBlockNum(curFunc) > BlockNumLimit) return false;
@@ -183,8 +183,10 @@ public class InlineExpander extends Pass {
             return false;
         }
 
+        if(forceInline) {
             calleeFunc.CallExpandNum++;
             if (calleeFunc.CallExpandNum > CallExpandLimit) return false;
+        }
 
         BlockMap.clear();
         for (IRBasicBlock tmpBlock = calleeFunc.thisEntranceBlock;
