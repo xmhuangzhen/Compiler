@@ -99,7 +99,7 @@ public class CFGSimplification extends Pass {
             if (curBlock.DFN == 0) {
                 for (IRBasicBlock SucBlock : curBlock.CFGSuccessor)
                     SucBlock.removePhiInstBlock(curBlock);
-                curFunc.removeBasicBlock(curBlock,true);
+                curFunc.removeBasicBlock(curBlock, true);
                 return true;
             } else {
                 if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
@@ -124,7 +124,7 @@ public class CFGSimplification extends Pass {
                             preBlock.TailInst = tmpInst;
                         }
 
-                        curFunc.removeBasicBlock(curBlock,false);
+                        curFunc.removeBasicBlock(curBlock, false);
                         for (IRBasicBlock tmpBlcok = curFunc.thisEntranceBlock;
                              tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)
                             tmpBlcok.replacePhiInstBlock(curBlock, preBlock);
@@ -136,10 +136,33 @@ public class CFGSimplification extends Pass {
                         }
                         preBlock.CFGSuccessor.remove(curBlock);
                         return true;
-
                     }
                 }
+        /*        if(!(curBlock.HeadInst instanceof phiInstruction) &&
+                curBlock.CFGPredecessor.size() == 1 && curBlock.CFGSuccessor.size() >= 1 &&
+                curBlock.HeadInst == curBlock.TailInst && curBlock.HeadInst instanceof brInstruction
+                && ((brInstruction) curBlock.HeadInst).brCond == null){
+
+                    System.out.println("1");
+
+                    IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
+                    preBlock.removebrBlock(curBlock);
+                    curFunc.removeBasicBlock(curBlock,true);
+                    for (IRBasicBlock tmpBlcok = curFunc.thisEntranceBlock;
+                         tmpBlcok != null; tmpBlcok = tmpBlcok.nextBasicBlocks)
+                        tmpBlcok.replacePhiInstBlockAggressive(curBlock, preBlock);
+
+                    for (IRBasicBlock tmpBlock : curBlock.CFGSuccessor) {
+                        tmpBlock.CFGPredecessor.remove(curBlock);
+                        curBlock.CFGPredecessor.add(preBlock);
+                        preBlock.CFGSuccessor.add(tmpBlock);
+                    }
+                    preBlock.CFGSuccessor.remove(curBlock);
+                    return true;
+                }
+  */
             }
+
         }
         return false;
     }

@@ -1,10 +1,12 @@
 package Optimize;
 
+import IR.IRBasicBlock;
 import RISCV.Inst.RISCVInstruction;
 import RISCV.Operand.RISCVRegister;
 import RISCV.RISCVBasicBlock;
 import RISCV.RISCVFunction;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import java.util.HashSet;
@@ -21,6 +23,7 @@ public class LivenessAnalysis {
         BLockUses = new HashMap<>();
         BLockDefs = new HashMap<>();
         BlockVisited = new HashSet<>();
+        CalculateQueue = new LinkedList<>();
     }
 
     public boolean run() {
@@ -52,30 +55,66 @@ public class LivenessAnalysis {
         tmpBlock = tmpBlock.nextBlock){
             System.out.println(tmpBlock.BlockName+","+tmpBlock.LiveOut  );
         }
-      */  return false;
+      */
+        return false;
     }
 
-    public void CalculateLiveOut(RISCVBasicBlock curBlock) {
-        if(BlockVisited.contains(curBlock)) return;
-        BlockVisited.add(curBlock);
+    /*
+        public void CalculateLiveOut(RISCVBasicBlock curBlock) {
+            if(BlockVisited.contains(curBlock)) return;
+            BlockVisited.add(curBlock);
 
-        HashSet<RISCVRegister> liveOut = new HashSet<>();
-        for (var sucBlock : curBlock.successor)
-            liveOut.addAll(sucBlock.LiveIn);
-        curBlock.LiveOut.addAll(liveOut);
+            HashSet<RISCVRegister> liveOut = new HashSet<>();
+            for (var sucBlock : curBlock.successor)
+                liveOut.addAll(sucBlock.LiveIn);
+            curBlock.LiveOut.addAll(liveOut);
 
-        HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
-        liveIn.removeAll(BLockDefs.get(curBlock));
-        liveIn.addAll(BLockUses.get(curBlock));
-        liveIn.removeAll(curBlock.LiveIn);
+            HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
+            liveIn.removeAll(BLockDefs.get(curBlock));
+            liveIn.addAll(BLockUses.get(curBlock));
+            liveIn.removeAll(curBlock.LiveIn);
 
-        if (!liveIn.isEmpty()) {
-            curBlock.LiveIn.addAll(liveIn);
-            BlockVisited.removeAll(curBlock.predecessor);
+            if (!liveIn.isEmpty()) {
+                curBlock.LiveIn.addAll(liveIn);
+                BlockVisited.removeAll(curBlock.predecessor);
+            }
+
+            for (var preBlock : curBlock.predecessor) {
+                CalculateLiveOut(preBlock);
+            }
         }
 
-        for (var preBlock : curBlock.predecessor) {
-            CalculateLiveOut(preBlock);
+    */
+    public Queue<RISCVBasicBlock> CalculateQueue;
+
+    public void CalculateLiveOut(RISCVBasicBlock startBlock) {
+        CalculateQueue.clear();
+        BlockVisited.clear();
+        CalculateQueue.offer(startBlock);
+        BlockVisited.add(startBlock);
+        while (!CalculateQueue.isEmpty()) {
+            RISCVBasicBlock curBlock = CalculateQueue.poll();
+
+            HashSet<RISCVRegister> liveOut = new HashSet<>();
+            for (var sucBlock : curBlock.successor)
+                liveOut.addAll(sucBlock.LiveIn);
+            curBlock.LiveOut.addAll(liveOut);
+
+            HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
+            liveIn.removeAll(BLockDefs.get(curBlock));
+            liveIn.addAll(BLockUses.get(curBlock));
+            liveIn.removeAll(curBlock.LiveIn);
+
+            if (!liveIn.isEmpty()) {
+                curBlock.LiveIn.addAll(liveIn);
+                BlockVisited.removeAll(curBlock.predecessor);
+            }
+
+            for (var preBlock : curBlock.predecessor)
+                if (!BlockVisited.contains(preBlock)) {
+                    CalculateQueue.offer(preBlock);
+                    BlockVisited.add(preBlock);
+                }
         }
     }
 

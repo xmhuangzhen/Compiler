@@ -2,6 +2,7 @@ package IR;
 
 import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
+import IR.Instruction.brInstruction;
 import IR.Instruction.phiInstruction;
 import IR.Operand.IROperand;
 
@@ -143,7 +144,33 @@ public class IRBasicBlock {
         }
     }
 
-    public void replacePhiInstBlock(IRBasicBlock tmpBlock,IRBasicBlock newBlock){
+    public void removebrBlock(IRBasicBlock tmpBlock) {
+        for(IRInstruction tmpInst = TailInst; tmpInst != null; tmpInst = tmpInst.preIRInstruction)
+            if(tmpInst instanceof brInstruction){
+                if(((brInstruction) tmpInst).brIfTrue == tmpBlock){
+                    ((brInstruction) tmpInst).brIfTrue = null;
+                }
+                if(((brInstruction) tmpInst).brIfFalse == tmpBlock){
+                    ((brInstruction) tmpInst).brIfFalse = null;
+                }
+            }
+        for(IRInstruction tmpInst = TailInst; tmpInst != null; tmpInst = tmpInst.preIRInstruction)
+            if(tmpInst instanceof brInstruction){
+                if(((brInstruction) tmpInst).brIfTrue == null && ((brInstruction) tmpInst).brIfFalse == null){
+                    removeInst(tmpInst);
+                } else if(((brInstruction) tmpInst).brCond != null){
+                    if(((brInstruction) tmpInst).brIfTrue == null){
+                        ((brInstruction) tmpInst).brCond = null;
+                    } else if(((brInstruction) tmpInst).brIfFalse == null){
+                        ((brInstruction) tmpInst).brIfTrue = ((brInstruction) tmpInst).brIfFalse;
+                        ((brInstruction) tmpInst).brIfFalse = null;
+                        ((brInstruction) tmpInst).brCond = null;
+                    }
+                }
+            }
+    }
+
+    public void replacePhiInstBlock(IRBasicBlock tmpBlock, IRBasicBlock newBlock){
         for(IRInstruction tmpInst = HeadInst; tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
             if(tmpInst instanceof phiInstruction) {
 //                System.out.println(tmpInst+","+tmpBlock+"->"+newBlock);
@@ -153,6 +180,15 @@ public class IRBasicBlock {
         }
     }
 
+    public void replacePhiInstBlockAggressive(IRBasicBlock tmpBlock,IRBasicBlock newBlock){
+        for(IRInstruction tmpInst = HeadInst; tmpInst != null; tmpInst = tmpInst.nextIRInstruction){
+            if(tmpInst instanceof phiInstruction) {
+//                System.out.println(tmpInst+","+tmpBlock+"->"+newBlock);
+                ((phiInstruction) tmpInst).replaceBlockAggressive(tmpBlock,newBlock);
+            }
+            else return;
+        }
+    }
     public void accept(IRVisitor it){
         it.visit(this);
     }

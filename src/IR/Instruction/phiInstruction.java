@@ -69,6 +69,22 @@ public class phiInstruction extends IRInstruction{
         }
     }
 
+    public void replaceBlockAggressive(IRBasicBlock originBlock, IRBasicBlock newBlock){
+        for(int i = 0;i < PhiLabel.size();++i){
+            IRBasicBlock tmpLabel = PhiLabel.get(i);
+            if(tmpLabel == newBlock){
+                return;
+            }
+        }
+        for(int i = 0;i < PhiLabel.size();++i){
+            IRBasicBlock tmpLabel = PhiLabel.get(i);
+            if(tmpLabel == originBlock){
+                PhiLabel.set(i,newBlock);
+            }
+        }
+    }
+
+
     //for CFG Simplification use
     public void removeBlock(IRBasicBlock tmpBlock){
         for(int i = 0;i < PhiLabel.size();++i){

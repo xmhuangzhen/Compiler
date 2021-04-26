@@ -44,8 +44,6 @@ public class PostDominatorTreeConstructor extends Pass {
                 //(1) get dfs order
                 tmpFunc.CalculatePostDFSOrder();
 
-//                System.out.println(tmpFunc.PostDFSOrder);
-
                 //(2) get semi dominator
                 for (int i = tmpFunc.PostDFNcurNumber; i > 1; --i) {
                     IRBasicBlock BlockW = tmpFunc.PostDFSOrder.get(i - 1);
@@ -60,7 +58,6 @@ public class PostDominatorTreeConstructor extends Pass {
 
 
                     for (IRBasicBlock BlockV : BlockW.PostDominatorTreeFather.PostDominatorTreeBucket) {
-                        //    BlockW.DominatorTreeFather.DominatorTreeBucket.remove(BlockV);
                         IRBasicBlock BlockU = Eval(BlockV);
                         if (BlockU.PostDominatorTreeSemiDominator.PostDFN < BlockV.PostDominatorTreeSemiDominator.PostDFN)
                             BlockV.PostDominatorTreeImmediateDominator = BlockU;
@@ -72,6 +69,8 @@ public class PostDominatorTreeConstructor extends Pass {
 
                 for (int i = 2; i <= tmpFunc.PostDFNcurNumber; ++i) {
                     IRBasicBlock BlockW = tmpFunc.PostDFSOrder.get(i - 1);
+                    if(BlockW.PostDominatorTreeImmediateDominator == null)
+                        System.out.println(BlockW.BasicBlockName+","+BlockW.PostDominatorTreeSemiDominator.BasicBlockName);
                     if (BlockW.PostDominatorTreeImmediateDominator.PostDFN != BlockW.PostDominatorTreeSemiDominator.PostDFN)
                         BlockW.PostDominatorTreeImmediateDominator =
                                 BlockW.PostDominatorTreeImmediateDominator.PostDominatorTreeImmediateDominator;

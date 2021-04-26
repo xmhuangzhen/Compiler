@@ -22,8 +22,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        //      System.out.println("start building: " + dtf.format(LocalDateTime.now()));
+      //  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+       //       System.out.println("start building: " + dtf.format(LocalDateTime.now()));
 
         InputStream input = null;
        //     if(args.length != 0)
@@ -144,8 +144,7 @@ public class Main {
                 if (!modified) break;
             }
 //            System.out.println(cnt);
-
-   //         new IRPrinter("output.ll").run(currentModule);
+//            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA
@@ -153,7 +152,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-            new IRPrinter("output.ll").run(currentModule);
+   //         new IRPrinter("output.ll").run(currentModule);
 
 
 
@@ -167,11 +166,13 @@ public class Main {
      //       ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
        //     asmPrinter1.run();
 
+  //          System.out.println("start coloring building: " + dtf.format(LocalDateTime.now()));
 
             GraphColoringRegAllocator regAlloc =
                     new GraphColoringRegAllocator(instSelector.curRISCVModule);
             regAlloc.run();
 
+//            System.out.println("Finish coloring: " + dtf.format(LocalDateTime.now()));
 
             // ASM Print
 //            PrintStream printStream = System.out;
@@ -185,6 +186,6 @@ public class Main {
             throw new RuntimeException();
         }
 
-        //   System.out.println("Finish building: " + dtf.format(LocalDateTime.now()));
+      //     System.out.println("Finish building: " + dtf.format(LocalDateTime.now()));
     }
 }

@@ -143,7 +143,6 @@ public class IRFunction {
                  tmpInst = tmpInst.nextIRInstruction) {
                 if (tmpInst instanceof brInstruction) {
                     if (((brInstruction) tmpInst).brIfTrue != null) {
-                    //    System.out.println(tmpInst+","+tmpBlock+","+((brInstruction) tmpInst).brIfTrue);
                         tmpBlock.PostCFGPredecessor.add(((brInstruction) tmpInst).brIfTrue);
                         ((brInstruction) tmpInst).brIfTrue.PostCFGSuccessor.add(tmpBlock);
                     }
@@ -168,7 +167,6 @@ public class IRFunction {
             tmpBlock.PostDominatorTreeAncestor = null;
             tmpBlock.PostDominatorTreeFather = null;
             tmpBlock.PostDominanceFrontier.clear();
-          //  tmpBlock.PostDominanceFrontierReverse.clear();
         }
         PostCFGDFS(thisReturnBlock);
     }
