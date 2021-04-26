@@ -1113,18 +1113,15 @@ public class IRBuilder implements ASTVisitor {
                 it.ExprResult = tmpResult;
             }
         } else if (it.op.equals("!")) {
-/*            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
-                    "not" + (RegNum++));
-            currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
-                    bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
-                    new BooleanConstant(true), it.expr.ExprResult, tmpResult));
-            it.ExprResult = tmpResult;
-
-            if(it.thenBlock != null){
-                currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
-                        it.ExprResult,it.thenBlock,it.elseBlock));
+            if(it.thenBlock == null) {
+                Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+                        "not" + (RegNum++));
+                currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
+                        bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
+                        new BooleanConstant(true), it.expr.ExprResult, tmpResult));
+                it.ExprResult = tmpResult;
             }
-  */      } else if (it.op.equals("~")) {
+          } else if (it.op.equals("~")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
                     "notb" + (RegNum++));
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
