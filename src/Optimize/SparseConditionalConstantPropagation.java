@@ -306,12 +306,15 @@ public class SparseConditionalConstantPropagation extends Pass {
     }
 
     public IROperand getConstant(IROperand curOperand) {
-        if (curOperand.isConstant()) {
-            if (curOperand instanceof NullConstant)
-                return new IntegerConstant(IntegerType.IRBitWidth.i32, 0);
-            else
-                return curOperand;
+        if(curOperand != null) {
+            if (curOperand.isConstant()) {
+                if (curOperand instanceof NullConstant)
+                    return new IntegerConstant(IntegerType.IRBitWidth.i32, 0);
+                else
+                    return curOperand;
+            }
+            return ConstValueMap.getOrDefault(curOperand, null);
         }
-        return ConstValueMap.getOrDefault(curOperand, null);
+        else return null;
     }
 }

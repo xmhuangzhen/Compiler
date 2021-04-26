@@ -76,7 +76,7 @@ public class Main {
             tmpSSAConstructor.run();
 
             currentModule = tmpSSAConstructor.curIRModule;
-      //      new IRPrinter("output.ll").run(currentModule);
+    //        new IRPrinter("output.ll").run(currentModule);
 
        //     System.out.println("------------START------OPT-----------");
 

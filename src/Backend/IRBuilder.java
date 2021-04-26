@@ -1068,9 +1068,9 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(UnaryExprNode it) {
-        if(it.thenBlock != null){
-            it.expr.thenBlock = it.thenBlock;
-            it.expr.elseBlock = it.elseBlock;
+        if(it.op.equals("!") && it.thenBlock != null){
+            it.expr.thenBlock = it.elseBlock;
+            it.expr.elseBlock = it.thenBlock;
         }
 
         it.expr.accept(this);
@@ -1113,7 +1113,7 @@ public class IRBuilder implements ASTVisitor {
                 it.ExprResult = tmpResult;
             }
         } else if (it.op.equals("!")) {
-            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
+/*            Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
                     "not" + (RegNum++));
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
                     bitwiseBinaryInstruction.BitwiseBinaryOperandType.xor,
@@ -1124,7 +1124,7 @@ public class IRBuilder implements ASTVisitor {
                 currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
                         it.ExprResult,it.thenBlock,it.elseBlock));
             }
-        } else if (it.op.equals("~")) {
+  */      } else if (it.op.equals("~")) {
             Register tmpResult = new Register(new IntegerType(IntegerType.IRBitWidth.i1),
                     "notb" + (RegNum++));
             currentBasicBlock.addBasicBlockInst(new bitwiseBinaryInstruction(currentBasicBlock,
