@@ -17,6 +17,7 @@ public abstract class IRInstruction {
     public IRInstruction(IRBasicBlock tmpBasicBlock){
         thisBasicBlock = tmpBasicBlock;
         HasSideEffect = false;
+
     }
 
     public void replaceInst(IRInstruction tmpInst){

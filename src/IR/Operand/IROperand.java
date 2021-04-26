@@ -1,5 +1,6 @@
 package IR.Operand;
 
+import IR.IRBasicBlock;
 import IR.Instruction.IRInstruction;
 import IR.TypeSystem.IRTypeSystem;
 
@@ -13,6 +14,8 @@ abstract public class IROperand {
     //for SSA use
     public HashSet<IRInstruction> Defs;
     public HashSet<IRInstruction> use;
+
+
 
     public IROperand(IRTypeSystem tmpType) {
         super();
