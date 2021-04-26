@@ -1,59 +1,50 @@
 /*
 Test Package: Optim
 Author: 18' Zonghan YANG
-Time: 2021-04-01
+Time: 2021-03-25
 Input:
 === input ===
-5 6
-1 1 4 5 1 4
-1 9 1 9 8 1 0
+
 === end ===
 Output:
 === output ===
-1
-10
-14
-51
-67
-63
-115
-57
-49
-33
-4
-0
-1338
+
 === end ===
 ExitCode: 0
-InstLimit: 2500000
+InstLimit: 1800000
 */
 
-class taskStress {
-    int ret;
-    taskStress() {
-        int a=4,b=7,c=7,d=2,e=5,f=5,g=7,h=8,i=5,j=1,k=4,l=8,m=1,n=3,o=3,p=5,q=6,r=8,s=2,t=4,u=1,v=4,w=4,x=9,y=3,A=1,B=6,C=6,D=8,E=4,F=1,G=7,H=4,I=2,J=6,K=8,L=7,M=9,N=5,O=6,P=4,Q=4,R=9,S=1,T=2,U=4,V=2,W=6,X=9,Y=3,Z=998;
-        for (a = 0; a%Z < 100; Z=Z+10) {
-            a=b;b=c+6;c=d;d=e+4;e=f+9;f=g;g=h;h=i+1;i=j+4;j=k;k=l+6;l=m;m=n;n=o;o=p+6;p=q;q=r;r=s+2;s=t;t=u;u=v+1;v=w;w=x+1;x=y+4;y=A+9;A=B+8;B=C+9;C=D+8;D=E+6;E=F;F=G;G=H+6;H=I;I=J+7;J=K+5;K=L+1;L=M+7;M=N;N=O;O=P;P=Q+9;Q=R;R=S;S=T+9;T=U+9;U=V;V=W+9;W=X+2;X=Y;Y=Z/2;Z=Z^1;
+
+int test() {
+    int [] a = new int [10000];
+    int i, j, k, l;
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            for (k = 0; k < 10; k++) {
+                for (l = 0; l < 10; l++) {
+                    a[i * 1000 + j * 100 + k * 10 + l] = i + l;
+                }
+            }
         }
-        ret = -1;
-        for (ret=Z; (c==Z)&&(K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t); Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++)
-        for (Z++; K!=l&&s<=A&&u>=V&&o>=m&&G==q&&Q>=w&&r>P||H==m&&q<=D||j<T&&I<=h||C<=y||R==W||P<=O||O>a||e<d||m!=E||P>w||y>Y&&P==G||J>=R&&U>J&&n!=A&&t>=E&&V!=P&&S==y&&g==W&&C<=y&&k==N&&W<=q&&t<m&&O==Y||u==D||r>h&&I==x&&H>Q||i<k&&s!=g||S<=S||n!=e||W!=j||a!=r&&L==l||f>X&&n!=P&&M>q&&l==S&&H>=j||B<B||s>w&&s<S&&B==J||l>F&&Y<A&&C<D&&v<L&&w<S&&i<=c||v==g||h>=p&&T!=I||C!=y&&D>=i&&q>X&&s==Y||H<=I||V<=n||Q>U||a>=t&&N<=W&&L<=q||b>J||A>G||t<o&&O<i||E!=o&&j<=y||S>=q&&Y>Q||Y<=O||f<u||j!=C||T!=S||C!=s||S==c||k>=v||C>=J&&o>x||G<h||h==v&&i==O||e>=P||l<O||a<=T&&c==S||N<m||y!=C||C<=h&&G>=r||a<O&&n!=V||A>v&&a<=v&&o>o&&b>Y&&q==s&&R<=m&&m>=H&&e>=R&&p<F||C>U&&v!=P||y<=V&&g>=K||U<=r&&R!=h||r==k&&X<a&&S==f||c<=I||o==K||s==p&&q<=y||k==B&&F==e||m>s||W>o||S>g||C>=y||O>m&&E<=e&&x>D||k!=i||a>l&&L>=e&&p!=P||R==Q&&y>M||f>h||R<U||c!=j&&O==n||e>=p&&P<s||Q>U||S!=W&&f!=f||x!=F||N>F||h<B||O<f||F>=S||h!=K||u>n&&n>=O||F<=r||E<=w||A<=i||t==q||n<h&&R>=y||U>=i||d<P||U<=l&&p>=v||J!=u||B<x||G<=f&&T>=I||L>=D&&j>=U&&X>r||T>q&&x<o||I<i||d>=N||J>t&&P!=B&&i>K&&O>j||O<h||A>v&&D>K&&A<I&&V==D||K>=Q&&p==e||c==E||d>=u&&R==r&&f!=s||s>=h||p>=v&&y==s&&O>t&&V==D||a!=U||d<u&&M==T||d>=q||E<V||f>=r&&n==y||i>k&&Y!=a||W!=d&&a>=N&&h<n&&k<=C&&F>U||S<=G&&i!=U||o>e||p>s&&S>R||p==B&&d==F||Q<N&&L>N||g!=e&&i<=q&&N!=u&&B==w&&Q<=p||P<D&&f!=u||p>=E&&a>=a&&i>Y&&X<i||p!=o||J!=y&&h!=y||T>D||Q!=h&&L>=P&&i==W||y<y&&M!=n||F<T||k<e&&u>L||H>=N&&X<=M&&w!=D||d==h&&N<o||O!=b||O!=v||i==s&&w>m&&a<=A||Y>X&&u<=e&&p!=e&&g>M||a>=c||U<U||L>=k&&U<f&&b!=Y&&y>n||w<=T||q>=r||k!=S||h<=j||v!=N||F>=I||B<s&&A>d||q<k&&a<=j||A!=r||b<=h||D<=D&&K!=p||d<=q&&u>j||g==m&&d>=p||o<=j&&r>V&&D<q||p>=r&&v>B||q!=U&&S==s||H>n||F>=o||H<E||C>t||i>=B||t>=U||C>H||X<p&&d==O||n<=Y&&K<=E||A<u&&F<=t; Z++) ret=Z;
-        if (ret == -1) println("wtf");
     }
-    int main() {
-        printlnInt(ret);
+    int sum = 0;
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 10; j++) {
+            for (k = 0; k < 10; k++) {
+                for (l = 0; l < 10; l++) {
+                    if ((l & 1) == 1) {
+                        sum = sum + a[i * 1000 + j * 100 + k * 10 + l];
+                    } else {
+                        sum = sum - a[i * 1000 + j * 100 + k * 10 + l];
+                    }
+                }
+            }
+        }
     }
-};
+    return sum;
+}
 
 
 int main() {
-    taskStress str = new taskStress(); // hard to build IR, slow in DomTree builder
-    str.main();
-    return 0;
+    return test() ^ 5000;
 }

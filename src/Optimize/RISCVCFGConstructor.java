@@ -16,7 +16,8 @@ public class RISCVCFGConstructor {
     }
 
     public boolean run() {
-  /*      int cnt = 0;
+  /*
+        int cnt = 0;
         for(RISCVBasicBlock tmpBlock = curFunc.EntranceBlock;
         tmpBlock != null; tmpBlock = tmpBlock .nextBlock){
             cnt++;
