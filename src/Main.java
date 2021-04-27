@@ -80,7 +80,7 @@ public class Main {
 
        //     System.out.println("------------START------OPT-----------");
 
-            int cnt = 12;
+            int cnt = 18;
             while (true) {
                 cnt--;
                 if(cnt == 0) break;
@@ -152,7 +152,7 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-     //       new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
 

@@ -71,6 +71,26 @@ public class RISCVBranchInst extends RISCVInstruction {
         return res;
     }
 
+    public String SimpleToString(){
+        StringBuilder tmpString = new StringBuilder("b");
+    /*    tmpString.append(CompareType.name());
+        if(BranchUnsigned) tmpString.append("u");
+        tmpString.append(" ").append(rs1.toString()).append(",").append(rs2.toString()).append(",");
+        tmpString.append(IfTrueBasicBlock.toString());
+    */
+
+        tmpString.append(CompareType.name());
+        if(rs2 == null) tmpString.append("z");
+        tmpString.append(" ");
+
+        tmpString.append(rs1.toString() + ",");
+        if(rs2 != null) tmpString.append(rs2.toString()+",");
+        tmpString.append(IfTrueBasicBlock.toString());
+//        tmpString.append("\n\tj ").append(IfFalseBasicBlock.toString());
+
+        return tmpString.toString();
+    }
+
     @Override
     public String toString() {
         StringBuilder tmpString = new StringBuilder("b");

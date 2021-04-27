@@ -1,5 +1,6 @@
 package Backend;
 
+import RISCV.Inst.RISCVBranchInst;
 import RISCV.Inst.RISCVInstruction;
 import RISCV.Inst.RISCVJumpInst;
 import RISCV.Operand.RISCVGlobalReg;
@@ -35,12 +36,12 @@ public class ASMPrinter {
         ASMPrintStream.println("\t.globl\t" + thisFunc.FunctionName+"\t\t\t\t\t# start function : "+thisFunc.FunctionName);
         ASMPrintStream.println("\t.p2align\t2");
         ASMPrintStream.println(thisFunc.FunctionName + ":");
-//        thisFunc.getDFSOrder();
+        thisFunc.getDFSOrder();
 
-//        for(curNum = 0; curNum < thisFunc.DFSOrder.size();++curNum)
-  //          runRISCVBasicBlock(thisFunc.DFSOrder.get(curNum),thisFunc);
-        for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
-            runRISCVBasicBlock(tmpBlock,thisFunc);
+        for(curNum = 0; curNum < thisFunc.DFSOrder.size();++curNum)
+            runRISCVBasicBlock(thisFunc.DFSOrder.get(curNum),thisFunc);
+//        for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
+  //          runRISCVBasicBlock(tmpBlock,thisFunc);
         ASMPrintStream.println("# end function : "+thisFunc.FunctionName);
     }
 
@@ -50,9 +51,17 @@ public class ASMPrinter {
             ASMPrintStream.println(thisBasicBlock.BlockName + ":");
             for (RISCVInstruction tmpInst = thisBasicBlock.HeadInst; tmpInst != null; tmpInst = tmpInst.nextInst) {
                 if(tmpInst instanceof RISCVJumpInst){
-//                    if(curNum < thisFunc.DFSOrder.size()-1 &&
-  //                          ((RISCVJumpInst) tmpInst).JumpToBlock == thisFunc.DFSOrder.get(curNum+1)) break;
-                    if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
+                    if(curNum < thisFunc.DFSOrder.size()-1 &&
+                            ((RISCVJumpInst) tmpInst).JumpToBlock == thisFunc.DFSOrder.get(curNum+1)) break;
+            //        if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
+                }
+                else if(tmpInst instanceof RISCVBranchInst){
+                    if(curNum < thisFunc.DFSOrder.size()-1 &&
+                            ((RISCVBranchInst) tmpInst).IfFalseBasicBlock == thisFunc.DFSOrder.get(curNum+1)) {
+                        ASMPrintStream.println("\t"+((RISCVBranchInst) tmpInst).SimpleToString());
+                        break;
+                    }
+
                 }
                 ASMPrintStream.println("\t" + tmpInst.toString());
             }

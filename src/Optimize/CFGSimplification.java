@@ -138,7 +138,7 @@ public class CFGSimplification extends Pass {
                         return true;
                     }
                 }
-        /*        if(!(curBlock.HeadInst instanceof phiInstruction) &&
+    /*            if(!(curBlock.HeadInst instanceof phiInstruction) &&
                 curBlock.CFGPredecessor.size() == 1 && curBlock.CFGSuccessor.size() >= 1 &&
                 curBlock.HeadInst == curBlock.TailInst && curBlock.HeadInst instanceof brInstruction
                 && ((brInstruction) curBlock.HeadInst).brCond == null){
