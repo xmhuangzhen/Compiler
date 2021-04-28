@@ -182,7 +182,7 @@ public class LoopInvariantCodeMotion extends Pass {
                         curInst = curInst.nextIRInstruction;
                         if (tmpInst instanceof binaryOpInstruction || tmpInst instanceof icmpInstruction
                                 || tmpInst instanceof bitwiseBinaryInstruction
-                        || tmpInst instanceof getElementPtrInstruction) {
+                     /*   || tmpInst instanceof getElementPtrInstruction*/) {
                             boolean AllUseDontChange = true;
                             for (var tmp : tmpInst.getuse()) {
                                 if (reachDefMap.containsKey(tmp)) {
