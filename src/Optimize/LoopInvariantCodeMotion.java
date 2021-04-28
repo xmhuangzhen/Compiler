@@ -181,7 +181,7 @@ public class LoopInvariantCodeMotion extends Pass {
                         IRInstruction tmpInst = curInst;
                         curInst = curInst.nextIRInstruction;
                         if (tmpInst instanceof binaryOpInstruction || tmpInst instanceof icmpInstruction
-                                || tmpInst instanceof bitwiseBinaryInstruction
+                      //          || tmpInst instanceof bitwiseBinaryInstruction
                      /*   || tmpInst instanceof getElementPtrInstruction*/) {
                             boolean AllUseDontChange = true;
                             for (var tmp : tmpInst.getuse()) {

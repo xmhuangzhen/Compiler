@@ -1,425 +1,8 @@
 	.text
-	.globl	Heap_Node.maxHeapify					# start function : Heap_Node.maxHeapify
+	.globl	search					# start function : search
 	.p2align	2
-Heap_Node.maxHeapify:
+search:
 #LBB0:
-	sw ra,-4(sp)
-	sw s1,-12(sp)
-	mv s0,sp
-	addi sp,sp,-88
-LBB1:
-	li a2,2
-	mul a2,a1,a2
-	addi a3,a2,1
-	li a2,2
-	mul a2,a1,a2
-	addi a2,a2,2
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a3,a4,LBB2
-LBB3:
-	mv a3,a1
-LBB4:
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a2,a4,LBB7
-LBB8:
-LBB9:
-	beq a3,a1,LBB12
-LBB13:
-	addi a2,a0,0
-	lw a2,0(a2)
-	addi a4,a2,0
-	lw a5,0(a4)
-	slli a4,a1,2
-	add a4,a5,a4
-	lw a6,0(a4)
-	addi a4,a2,0
-	lw a4,0(a4)
-	slli a1,a1,2
-	add a5,a4,a1
-	addi a1,a2,0
-	lw a4,0(a1)
-	slli a1,a3,2
-	add a1,a4,a1
-	lw a1,0(a1)
-	sw a1,0(a5)
-	addi a1,a2,0
-	lw a2,0(a1)
-	slli a1,a3,2
-	add a1,a2,a1
-	sw a6,0(a1)
-	li a1,2
-	mul a1,a3,a1
-	addi a2,a1,1
-	li a1,2
-	mul a1,a3,a1
-	addi a1,a1,2
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a2,a4,LBB15
-LBB16:
-	mv a2,a3
-LBB17:
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a1,a4,LBB20
-LBB21:
-LBB22:
-	beq a2,a3,LBB25
-LBB26:
-	addi a1,a0,0
-	lw a1,0(a1)
-	addi a4,a1,0
-	lw a5,0(a4)
-	slli a4,a3,2
-	add a4,a5,a4
-	lw a6,0(a4)
-	addi a4,a1,0
-	lw a4,0(a4)
-	slli a3,a3,2
-	add a5,a4,a3
-	addi a3,a1,0
-	lw a4,0(a3)
-	slli a3,a2,2
-	add a3,a4,a3
-	lw a3,0(a3)
-	sw a3,0(a5)
-	addi a1,a1,0
-	lw a3,0(a1)
-	slli a1,a2,2
-	add a1,a3,a1
-	sw a6,0(a1)
-	li a1,2
-	mul a1,a2,a1
-	addi a3,a1,1
-	li a1,2
-	mul a1,a2,a1
-	addi a1,a1,2
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a3,a4,LBB28
-LBB29:
-	mv a3,a2
-LBB30:
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a1,a4,LBB33
-LBB34:
-LBB35:
-	beq a3,a2,LBB38
-LBB39:
-	addi a1,a0,0
-	lw a1,0(a1)
-	addi a4,a1,0
-	lw a5,0(a4)
-	slli a4,a2,2
-	add a4,a5,a4
-	lw a6,0(a4)
-	addi a4,a1,0
-	lw a4,0(a4)
-	slli a2,a2,2
-	add a5,a4,a2
-	addi a2,a1,0
-	lw a4,0(a2)
-	slli a2,a3,2
-	add a2,a4,a2
-	lw a2,0(a2)
-	sw a2,0(a5)
-	addi a1,a1,0
-	lw a2,0(a1)
-	slli a1,a3,2
-	add a1,a2,a1
-	sw a6,0(a1)
-	li a1,2
-	mul a1,a3,a1
-	addi a1,a1,1
-	li a2,2
-	mul a2,a3,a2
-	addi a2,a2,2
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a1,a4,LBB41
-LBB42:
-	mv a1,a3
-LBB43:
-	addi a4,a0,0
-	lw a4,0(a4)
-	lw a4,4(a4)
-	blt a2,a4,LBB46
-LBB47:
-LBB48:
-	beq a1,a3,LBB51
-LBB52:
-	addi a2,a0,0
-	lw a2,0(a2)
-	addi a4,a2,0
-	lw a5,0(a4)
-	slli a4,a3,2
-	add a4,a5,a4
-	lw a6,0(a4)
-	addi a4,a2,0
-	lw a4,0(a4)
-	slli a3,a3,2
-	add a5,a4,a3
-	addi a3,a2,0
-	lw a4,0(a3)
-	slli a3,a1,2
-	add a3,a4,a3
-	lw a3,0(a3)
-	sw a3,0(a5)
-	addi a2,a2,0
-	lw a3,0(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	sw a6,0(a2)
-	call Heap_Node.maxHeapify
-LBB53:
-LBB40:
-LBB27:
-LBB14:
-	mv a0,s1
-	addi sp,sp,88
-	lw s1,-12(sp)
-	mv s0,sp
-	lw ra,-4(sp)
-	ret
-LBB51:
-	j LBB53
-LBB46:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a2,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a1,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB49
-LBB50:
-	j LBB48
-LBB49:
-	mv a1,a2
-	j LBB48
-LBB41:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a1,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a3,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB44
-LBB45:
-	mv a1,a3
-	j LBB43
-LBB44:
-	j LBB43
-LBB38:
-	j LBB40
-LBB33:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a1,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a3,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB36
-LBB37:
-	j LBB35
-LBB36:
-	mv a3,a1
-	j LBB35
-LBB28:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a3,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a2,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB31
-LBB32:
-	mv a3,a2
-	j LBB30
-LBB31:
-	j LBB30
-LBB25:
-	j LBB27
-LBB20:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a1,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a2,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB23
-LBB24:
-	j LBB22
-LBB23:
-	mv a2,a1
-	j LBB22
-LBB15:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a2,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a3,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB18
-LBB19:
-	mv a2,a3
-	j LBB17
-LBB18:
-	j LBB17
-LBB12:
-	j LBB14
-LBB7:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a2,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a3,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB10
-LBB11:
-	j LBB9
-LBB10:
-	mv a3,a2
-	j LBB9
-LBB2:
-	addi a4,a0,0
-	lw a4,0(a4)
-	addi a4,a4,0
-	lw a5,0(a4)
-	slli a4,a3,2
-	add a4,a5,a4
-	lw a4,0(a4)
-	lw a5,4(a4)
-	li a4,0
-	sub a4,a4,a5
-	addi a5,a0,0
-	lw a5,0(a5)
-	addi a5,a5,0
-	lw a6,0(a5)
-	slli a5,a1,2
-	add a5,a6,a5
-	lw a5,0(a5)
-	lw a6,4(a5)
-	li a5,0
-	sub a5,a5,a6
-	bgt a4,a5,LBB5
-LBB6:
-	mv a3,a1
-	j LBB4
-LBB5:
-	j LBB4
-# end function : Heap_Node.maxHeapify
-	.globl	dijkstra					# start function : dijkstra
-	.p2align	2
-dijkstra:
-#LBB54:
 	sw ra,-4(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
@@ -431,104 +14,23 @@ dijkstra:
 	sw s8,-40(sp)
 	sw s9,-44(sp)
 	sw s10,-48(sp)
-	sw s11,-52(sp)
 	mv s0,sp
-	addi sp,sp,-88
-	mv s3,a0
-	lui a0,%hi(n)
-	lw s1,%lo(n)(a0)
-	li a0,4
-	mul a0,s1,a0
-	addi a0,a0,4
-	call malloc
-	sw s1,0(a0)
-	addi a0,a0,4
-	addi s6,a0,0
-	lui a0,%hi(n)
-	lw s1,%lo(n)(a0)
-	li a0,4
-	mul a0,s1,a0
-	addi a0,a0,4
-	call malloc
-	sw s1,0(a0)
-	addi a0,a0,4
-	addi s5,a0,0
-	li a0,0
-LBB55:
-	lui a1,%hi(n)
-	lw a1,%lo(n)(a1)
-	blt a0,a1,LBB56
-LBB57:
-	slli a0,s3,2
-	add a1,s5,a0
-	li a0,0
-	sw a0,0(a1)
-	li a0,4
-	call malloc
-	addi s1,a0,0
-	mv a0,s1
-	addi s4,a0,0
-	li a0,8
-	call malloc
-	addi s2,a0,0
-	li a0,0
-	sw a0,4(s2)
-	addi s7,s2,0
-	li a0,68
-	call malloc
-	li a1,16
-	sw a1,0(a0)
-	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s7)
-	sw s2,0(s4)
-	li a0,8
-	call malloc
-	addi s2,a0,0
-	li a0,0
-	sw a0,4(s2)
-	sw s3,0(s2)
-	mv s3,s1
-	addi a0,s3,0
-	lw s4,0(a0)
-	lw a0,4(s4)
-	addi a1,s4,0
-	lw a1,0(a1)
-	addi a1,a1,-4
-	lw a1,0(a1)
-	beq a0,a1,LBB58
-LBB59:
-	addi a0,s4,0
-	lw a1,0(a0)
-	lw a0,4(s4)
-	slli a0,a0,2
-	add a0,a1,a0
-	sw s2,0(a0)
-	lw a0,4(s4)
-	addi a0,a0,1
-	sw a0,4(s4)
-	addi a0,s3,0
-	lw a0,0(a0)
-	lw a0,4(a0)
-	addi a2,a0,-1
-	addi a3,s3,0
-	addi a4,s3,0
-	addi a6,s3,0
-LBB63:
-	li a0,0
-	bgt a2,a0,LBB64
-LBB65:
-LBB68:
-	mv a0,s1
-	addi a0,a0,0
-	lw a0,0(a0)
-	lw a0,4(a0)
-	li a1,0
-	bne a0,a1,LBB69
-LBB70:
-	mv a0,s5
-LBB102:
-	addi sp,sp,88
+	addi sp,sp,-84
+	mv s5,a0
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	beq s5,a0,LBB1
+LBB2:
+	li s6,0
+LBB13:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s6,a0,LBB14
+LBB15:
+LBB12:
+LBB77:
+	mv a0,s7
+	addi sp,sp,84
 	lw s1,-12(sp)
 	lw s2,-16(sp)
 	lw s3,-20(sp)
@@ -539,650 +41,1030 @@ LBB102:
 	lw s8,-40(sp)
 	lw s9,-44(sp)
 	lw s10,-48(sp)
-	lw s11,-52(sp)
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
-LBB69:
-	mv a0,s1
-	addi a1,a0,0
-	lw a1,0(a1)
-	addi a1,a1,0
-	lw a1,0(a1)
-	addi a1,a1,0
-	lw s2,0(a1)
-	addi a1,a0,0
-	lw a2,0(a1)
-	addi a1,a0,0
-	lw a1,0(a1)
-	lw a1,4(a1)
-	addi a1,a1,-1
-	addi a3,a2,0
-	lw a3,0(a3)
-	addi a3,a3,0
-	lw a6,0(a3)
-	addi a3,a2,0
-	lw a3,0(a3)
-	addi a5,a3,0
-	addi a3,a2,0
-	lw a4,0(a3)
-	slli a3,a1,2
-	add a3,a4,a3
-	lw a3,0(a3)
-	sw a3,0(a5)
-	addi a2,a2,0
-	lw a2,0(a2)
-	slli a1,a1,2
-	add a1,a2,a1
-	sw a6,0(a1)
-	addi a1,a0,0
-	lw a1,0(a1)
-	lw a2,4(a1)
-	addi a2,a2,-1
-	sw a2,4(a1)
-	addi a1,a0,0
-	lw a1,0(a1)
-	lw a1,4(a1)
-	li a2,1
-	blt a2,a1,LBB71
-LBB72:
-	li a1,0
-LBB73:
-	addi a2,a0,0
-	lw a2,0(a2)
-	lw a2,4(a2)
-	li a3,2
-	blt a3,a2,LBB76
-LBB77:
-LBB78:
-	li a2,0
-	beq a1,a2,LBB81
-LBB82:
-	addi a2,a0,0
-	lw a2,0(a2)
-	addi a3,a2,0
-	lw a3,0(a3)
-	addi a3,a3,0
-	lw a6,0(a3)
-	addi a3,a2,0
-	lw a3,0(a3)
-	addi a5,a3,0
-	addi a3,a2,0
-	lw a4,0(a3)
-	slli a3,a1,2
-	add a3,a4,a3
-	lw a3,0(a3)
-	sw a3,0(a5)
-	addi a2,a2,0
-	lw a3,0(a2)
-	slli a2,a1,2
-	add a2,a3,a2
-	sw a6,0(a2)
-	call Heap_Node.maxHeapify
-LBB83:
-	lw s9,0(s2)
-	slli a0,s9,2
-	add a0,s6,a0
-	lw a1,0(a0)
-	li a0,1
-	beq a1,a0,LBB84
-LBB85:
-	slli a0,s9,2
-	add a1,s6,a0
-	li a0,1
-	sw a0,0(a1)
-	lui a0,%hi(g)
-	lw a0,%lo(g)(a0)
-	addi a0,a0,8
-	lw a1,0(a0)
-	slli a0,s9,2
+LBB14:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s6,2
 	add a0,a1,a0
-	lw a0,0(a0)
-	mv s8,a0
-LBB86:
-	li a0,-1
-	bne s8,a0,LBB87
-LBB88:
-	j LBB68
-LBB87:
-	lui a0,%hi(g)
-	lw a0,%lo(g)(a0)
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB16
+LBB17:
+	addi s6,s6,1
+	j LBB13
+LBB16:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
 	addi a0,a0,0
 	lw a1,0(a0)
-	slli a0,s8,2
-	add a0,a1,a0
-	lw a0,0(a0)
-	lw s2,4(a0)
-	lui a0,%hi(g)
-	lw a0,%lo(g)(a0)
-	addi a0,a0,0
-	lw a1,0(a0)
-	slli a0,s8,2
-	add a0,a1,a0
-	lw a0,0(a0)
-	lw a1,8(a0)
-	slli a0,s9,2
-	add a0,s5,a0
-	lw a0,0(a0)
-	add a1,a0,a1
-	slli a0,s2,2
-	add a0,s5,a0
-	lw a0,0(a0)
-	bge a1,a0,LBB89
-LBB90:
-	slli a0,s2,2
-	add a0,s5,a0
-	sw a1,0(a0)
-	li a0,8
-	call malloc
-	addi a1,a0,0
-	sw s2,0(a1)
-	slli a0,s2,2
-	add a0,s5,a0
-	lw a0,0(a0)
-	sw a0,4(a1)
-	addi a0,s1,0
-	lw a0,0(a0)
-	mv s2,a0
-	mv s11,a1
-	mv a0,s2
-	lw a0,4(a0)
-	addi a1,s2,0
-	lw a1,0(a1)
-	addi a1,a1,-4
-	lw a1,0(a1)
-	beq a0,a1,LBB92
-LBB93:
-	addi a0,s2,0
-	lw a1,0(a0)
-	lw a0,4(s2)
+	add a0,s6,s5
 	slli a0,a0,2
 	add a0,a1,a0
-	sw s11,0(a0)
-	lw a0,4(s2)
-	addi a0,a0,1
-	sw a0,4(s2)
-	mv a0,s1
-	addi a0,a0,0
-	lw a0,0(a0)
-	lw a0,4(a0)
-	addi a2,a0,-1
-	addi a3,s1,0
-	addi a4,s1,0
-	addi a5,s1,0
-LBB97:
+	lw a1,0(a0)
 	li a0,0
-	bgt a2,a0,LBB98
-LBB99:
-LBB91:
-	lui a0,%hi(g)
-	lw a0,%lo(g)(a0)
+	beq a1,a0,LBB18
+	j LBB17
+LBB18:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
 	addi a0,a0,4
 	lw a1,0(a0)
-	slli a0,s8,2
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s6,a0
+	addi a0,a0,-1
+	sub a0,a0,s5
+	slli a0,a0,2
 	add a0,a1,a0
-	lw a0,0(a0)
-	mv s8,a0
-	j LBB86
-LBB98:
-	addi a1,a2,-1
-	li a0,2
-	div a1,a1,a0
-	lw a0,0(a4)
-	addi a0,a0,0
-	lw a6,0(a0)
-	slli a0,a1,2
-	add a0,a6,a0
-	lw a0,0(a0)
-	lw a6,4(a0)
-	li a0,0
-	sub a0,a0,a6
-	lw a6,0(a5)
-	addi a6,a6,0
-	lw a7,0(a6)
-	slli a6,a2,2
-	add a6,a7,a6
-	lw a6,0(a6)
-	lw a7,4(a6)
-	li a6,0
-	sub a6,a6,a7
-	bge a0,a6,LBB100
-LBB101:
-	lw a0,0(a3)
-	addi a6,a0,0
-	lw a7,0(a6)
-	slli a6,a1,2
-	add a6,a7,a6
-	lw t1,0(a6)
-	addi a6,a0,0
-	lw a7,0(a6)
-	slli a6,a1,2
-	add t0,a7,a6
-	addi a6,a0,0
-	lw a7,0(a6)
-	slli a6,a2,2
-	add a6,a7,a6
-	lw a6,0(a6)
-	sw a6,0(t0)
-	addi a0,a0,0
-	lw a6,0(a0)
-	slli a0,a2,2
-	add a0,a6,a0
-	sw t1,0(a0)
-	mv a2,a1
-	j LBB97
-LBB100:
-	j LBB99
-LBB92:
-	addi a0,s2,0
-	lw s4,0(a0)
-	lw s10,4(s2)
-	addi s7,s2,0
-	addi a0,s4,-4
 	lw a1,0(a0)
-	li a0,2
-	mul s3,a1,a0
-	li a0,4
-	mul a0,s3,a0
-	addi a0,a0,4
-	call malloc
-	sw s3,0(a0)
-	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s7)
 	li a0,0
-	sw a0,4(s2)
-	addi a2,s2,0
-LBB94:
-	lw a0,4(s2)
-	bne a0,s10,LBB95
-LBB96:
-	j LBB93
-LBB95:
-	lw a1,0(a2)
-	lw a0,4(s2)
+	beq a1,a0,LBB19
+	j LBB17
+LBB19:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s6,a0
+	addi a0,a0,-1
+	sub a0,a0,s5
 	slli a0,a0,2
 	add a1,a1,a0
-	lw a0,4(s2)
-	slli a0,a0,2
-	add a0,s4,a0
-	lw a0,0(a0)
+	li a0,1
 	sw a0,0(a1)
-	lw a0,4(s2)
-	addi a0,a0,1
-	sw a0,4(s2)
-	j LBB94
-LBB89:
-	j LBB91
-LBB84:
-	j LBB68
-LBB81:
-	j LBB83
-LBB76:
-	addi a2,a0,0
-	lw a2,0(a2)
-	addi a2,a2,0
-	lw a2,0(a2)
-	addi a2,a2,8
-	lw a2,0(a2)
-	lw a3,4(a2)
-	li a2,0
-	sub a2,a2,a3
-	addi a3,a0,0
-	lw a3,0(a3)
-	addi a3,a3,0
-	lw a4,0(a3)
-	slli a3,a1,2
-	add a3,a4,a3
-	lw a3,0(a3)
-	lw a4,4(a3)
-	li a3,0
-	sub a3,a3,a4
-	bgt a2,a3,LBB79
-LBB80:
-	j LBB78
-LBB79:
-	li a1,2
-	j LBB78
-LBB71:
-	addi a1,a0,0
-	lw a1,0(a1)
-	addi a1,a1,0
-	lw a1,0(a1)
-	addi a1,a1,4
-	lw a1,0(a1)
-	lw a2,4(a1)
-	li a1,0
-	sub a1,a1,a2
-	addi a2,a0,0
-	lw a2,0(a2)
-	addi a2,a2,0
-	lw a2,0(a2)
-	addi a2,a2,0
-	lw a2,0(a2)
-	lw a3,4(a2)
-	li a2,0
-	sub a2,a2,a3
-	bgt a1,a2,LBB74
-LBB75:
-	li a1,0
-	j LBB73
-LBB74:
-	li a1,1
-	j LBB73
-LBB64:
-	addi a1,a2,-1
-	li a0,2
-	div a1,a1,a0
-	lw a0,0(a3)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
 	addi a0,a0,0
-	lw a5,0(a0)
-	slli a0,a1,2
-	add a0,a5,a0
-	lw a0,0(a0)
-	lw a5,4(a0)
+	lw a1,0(a0)
+	add a0,s6,s5
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s6,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s5,2
+	add a0,a1,a0
+	sw s6,0(a0)
+	addi s4,s5,1
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	beq s4,a0,LBB20
+LBB21:
+	li s3,0
+LBB32:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s3,a0,LBB33
+LBB34:
+LBB31:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s6,2
+	add a1,a1,a0
 	li a0,0
-	sub a0,a0,a5
-	lw a5,0(a4)
-	addi a5,a5,0
-	lw a7,0(a5)
-	slli a5,a2,2
-	add a5,a7,a5
-	lw a5,0(a5)
-	lw a7,4(a5)
-	li a5,0
-	sub a5,a5,a7
-	bge a0,a5,LBB66
-LBB67:
-	lw a0,0(a6)
-	addi a5,a0,0
-	lw a7,0(a5)
-	slli a5,a1,2
-	add a5,a7,a5
-	lw t1,0(a5)
-	addi a5,a0,0
-	lw a7,0(a5)
-	slli a5,a1,2
-	add t0,a7,a5
-	addi a5,a0,0
-	lw a7,0(a5)
-	slli a5,a2,2
-	add a5,a7,a5
-	lw a5,0(a5)
-	sw a5,0(t0)
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
 	addi a0,a0,0
-	lw a5,0(a0)
-	slli a0,a2,2
-	add a0,a5,a0
-	sw t1,0(a0)
-	mv a2,a1
+	lw a1,0(a0)
+	add a0,s6,s5
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s6,a0
+	addi a0,a0,-1
+	sub a0,a0,s5
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB17
+LBB33:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s3,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB35
+LBB36:
+	addi s3,s3,1
+	j LBB32
+LBB35:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s3,s4
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB37
+	j LBB36
+LBB37:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s3,a0
+	addi a0,a0,-1
+	sub a0,a0,s4
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB38
+	j LBB36
+LBB38:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s3,a0
+	addi a0,a0,-1
+	sub a0,a0,s4
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s3,s4
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s3,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s4,2
+	add a0,a1,a0
+	sw s3,0(a0)
+	addi s1,s4,1
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	beq s1,a0,LBB39
+LBB40:
+	li s2,0
+LBB51:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB52
+LBB53:
+LBB50:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s3,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s3,s4
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s3,a0
+	addi a0,a0,-1
+	sub a0,a0,s4
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB36
+LBB52:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB54
+LBB55:
+	addi s2,s2,1
+	j LBB51
+LBB54:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s2,s1
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB56
+	j LBB55
+LBB56:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-1
+	sub a0,a0,s1
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB57
+	j LBB55
+LBB57:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-1
+	sub a0,a0,s1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s2,s1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
+	sw s2,0(a0)
+	addi s9,s1,1
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	beq s9,a0,LBB58
+LBB59:
+	li s8,0
+LBB70:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s8,a0,LBB71
+LBB72:
+LBB69:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s2,s1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-1
+	sub a0,a0,s1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB55
+LBB71:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s8,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB73
+LBB74:
+	addi s8,s8,1
+	j LBB70
+LBB73:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add a0,s8,s9
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB75
+	j LBB74
+LBB75:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s8,a0
+	addi a0,a0,-1
+	sub a0,a0,s9
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB76
+	j LBB74
+LBB76:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s8,a0
+	addi a0,a0,-1
+	sub a0,a0,s9
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	add s10,s8,s9
+	slli a0,s10,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s8,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s9,2
+	add a0,a1,a0
+	sw s8,0(a0)
+	addi a0,s9,1
+	call search
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s8,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	slli a0,s10,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s8,a0
+	addi a0,a0,-1
+	sub a0,a0,s9
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB74
+LBB58:
+	li s8,0
+LBB60:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s8,a0,LBB61
+LBB62:
+	la a0,const_string_no2
+	call println
+	j LBB69
+LBB61:
+	li s9,0
+LBB63:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s9,a0,LBB64
+LBB65:
+	la a0,const_string_no2
+	call println
+	addi s8,s8,1
+	j LBB60
+LBB64:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s8,2
+	add a0,a1,a0
+	lw a0,0(a0)
+	beq a0,s9,LBB66
+LBB67:
+	la a0,const_string_no1
+	call print
+LBB68:
+	addi s9,s9,1
 	j LBB63
 LBB66:
-	j LBB65
-LBB58:
-	addi a0,s4,0
-	lw s8,0(a0)
-	lw s10,4(s4)
-	addi s7,s4,0
-	addi a0,s8,-4
-	lw a1,0(a0)
-	li a0,2
-	mul s9,a1,a0
-	li a0,4
-	mul a0,s9,a0
-	addi a0,a0,4
-	call malloc
-	sw s9,0(a0)
-	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s7)
-	li a0,0
-	sw a0,4(s4)
-	addi a2,s4,0
-LBB60:
-	lw a0,4(s4)
-	bne a0,s10,LBB61
-LBB62:
-	j LBB59
-LBB61:
-	lw a1,0(a2)
-	lw a0,4(s4)
-	slli a0,a0,2
-	add a1,a1,a0
-	lw a0,4(s4)
-	slli a0,a0,2
-	add a0,s8,a0
+	la a0,const_string_no0
+	call print
+	j LBB68
+LBB39:
+	li s1,0
+LBB41:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s1,a0,LBB42
+LBB43:
+	la a0,const_string_no2
+	call println
+	j LBB50
+LBB42:
+	li s2,0
+LBB44:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB45
+LBB46:
+	la a0,const_string_no2
+	call println
+	addi s1,s1,1
+	j LBB41
+LBB45:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
 	lw a0,0(a0)
-	sw a0,0(a1)
-	lw a0,4(s4)
-	addi a0,a0,1
-	sw a0,4(s4)
-	j LBB60
-LBB56:
-	slli a1,a0,2
-	add a2,s5,a1
-	lui a1,%hi(INF)
-	lw a1,%lo(INF)(a1)
-	sw a1,0(a2)
-	slli a1,a0,2
-	add a2,s6,a1
-	li a1,0
-	sw a1,0(a2)
-	addi a0,a0,1
-	j LBB55
-# end function : dijkstra
+	beq a0,s2,LBB47
+LBB48:
+	la a0,const_string_no1
+	call print
+LBB49:
+	addi s2,s2,1
+	j LBB44
+LBB47:
+	la a0,const_string_no0
+	call print
+	j LBB49
+LBB20:
+	li s1,0
+LBB22:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s1,a0,LBB23
+LBB24:
+	la a0,const_string_no2
+	call println
+	j LBB31
+LBB23:
+	li s2,0
+LBB25:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB26
+LBB27:
+	la a0,const_string_no2
+	call println
+	addi s1,s1,1
+	j LBB22
+LBB26:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
+	lw a0,0(a0)
+	beq a0,s2,LBB28
+LBB29:
+	la a0,const_string_no1
+	call print
+LBB30:
+	addi s2,s2,1
+	j LBB25
+LBB28:
+	la a0,const_string_no0
+	call print
+	j LBB30
+LBB1:
+	li s1,0
+LBB3:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s1,a0,LBB4
+LBB5:
+	la a0,const_string_no2
+	call println
+	j LBB12
+LBB4:
+	li s2,0
+LBB6:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB7
+LBB8:
+	la a0,const_string_no2
+	call println
+	addi s1,s1,1
+	j LBB3
+LBB7:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
+	lw a0,0(a0)
+	beq a0,s2,LBB9
+LBB10:
+	la a0,const_string_no1
+	call print
+LBB11:
+	addi s2,s2,1
+	j LBB6
+LBB9:
+	la a0,const_string_no0
+	call print
+	j LBB11
+# end function : search
 	.globl	main					# start function : main
 	.p2align	2
 main:
-#LBB103:
+#LBB78:
 	sw ra,-4(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
 	sw s3,-20(sp)
-	sw s4,-24(sp)
-	sw s5,-28(sp)
 	mv s0,sp
 	addi sp,sp,-84
-LBB104:
-	li a1,10000000
-	lui a0,%hi(INF)
-	sw a1,%lo(INF)(a0)
-	call getInt
-	lui a1,%hi(n)
-	sw a0,%lo(n)(a1)
-	call getInt
-	lui a1,%hi(m)
-	sw a0,%lo(m)(a1)
-	li a0,16
+LBB79:
+	li a1,8
+	lui a0,%hi(N)
+	sw a1,%lo(N)(a0)
+	li a0,36
 	call malloc
+	li a1,8
+	sw a1,0(a0)
+	addi a0,a0,4
 	addi a1,a0,0
-	lui a0,%hi(g)
-	sw a1,%lo(g)(a0)
-	lui a0,%hi(g)
-	lw s1,%lo(g)(a0)
-	lui a0,%hi(n)
-	lw s2,%lo(n)(a0)
-	lui a0,%hi(m)
-	lw s3,%lo(m)(a0)
-	addi s5,s1,0
-	li a0,4
-	mul a0,s3,a0
-	addi s4,a0,4
-	mv a0,s4
+	lui a0,%hi(row)
+	sw a1,%lo(row)(a0)
+	li a0,36
 	call malloc
-	sw s3,0(a0)
+	li a1,8
+	sw a1,0(a0)
 	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s5)
-	addi s5,s1,4
-	mv a0,s4
+	addi a1,a0,0
+	lui a0,%hi(col)
+	sw a1,%lo(col)(a0)
+	li a0,12
 	call malloc
-	sw s3,0(a0)
+	li a1,2
+	sw a1,0(a0)
 	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s5)
-	addi s4,s1,8
-	li a0,4
-	mul a0,s2,a0
-	addi a0,a0,4
-	call malloc
-	sw s2,0(a0)
-	addi a0,a0,4
-	addi a0,a0,0
-	sw a0,0(s4)
-	addi a3,s1,4
+	addi a1,a0,0
+	lui a0,%hi(d)
+	sw a1,%lo(d)(a0)
 	li a0,0
-LBB105:
-	blt a0,s3,LBB106
-LBB107:
-	addi a3,s1,8
-	li a0,0
-LBB108:
-	blt a0,s2,LBB109
-LBB110:
-	li a0,0
-	sw a0,12(s1)
-	li s5,0
-LBB111:
-	lui a0,%hi(m)
-	lw a0,%lo(m)(a0)
-	blt s5,a0,LBB112
-LBB113:
+LBB80:
+	li a1,8
+	blt a0,a1,LBB81
+LBB82:
 	li s1,0
-LBB114:
-	lui a0,%hi(n)
-	lw a0,%lo(n)(a0)
-	blt s1,a0,LBB115
-LBB116:
+LBB83:
+	li a0,2
+	blt s1,a0,LBB84
+LBB85:
+	lui a0,%hi(N)
+	lw a1,%lo(N)(a0)
 	li a0,0
-LBB123:
+	beq a0,a1,LBB89
+LBB90:
+	li s1,0
+LBB101:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s1,a0,LBB102
+LBB103:
+LBB100:
+	li a0,0
+LBB127:
 	addi sp,sp,84
 	lw s1,-12(sp)
 	lw s2,-16(sp)
 	lw s3,-20(sp)
-	lw s4,-24(sp)
-	lw s5,-28(sp)
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
-LBB115:
-	mv a0,s1
-	call dijkstra
-	mv s3,a0
+LBB102:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB104
+LBB105:
+	addi s1,s1,1
+	j LBB101
+LBB104:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	addi a0,s1,0
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB106
+	j LBB105
+LBB106:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s1,a0
+	addi a0,a0,-1
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB107
+	j LBB105
+LBB107:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s1,a0
+	addi a0,a0,-1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	addi a0,s1,0
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s1,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a0,%lo(col)(a0)
+	addi a0,a0,0
+	sw s1,0(a0)
+	lui a0,%hi(N)
+	lw a1,%lo(N)(a0)
+	li a0,1
+	beq a0,a1,LBB108
+LBB109:
 	li s2,0
-LBB117:
-	lui a0,%hi(n)
-	lw a0,%lo(n)(a0)
-	blt s2,a0,LBB118
+LBB120:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB121
+LBB122:
 LBB119:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s1,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	addi a0,s1,0
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s1,a0
+	addi a0,a0,-1
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB105
+LBB121:
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB123
+LBB124:
+	addi s2,s2,1
+	j LBB120
+LBB123:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	addi a0,s2,1
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB125
+	j LBB124
+LBB125:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-2
+	slli a0,a0,2
+	add a0,a1,a0
+	lw a1,0(a0)
+	li a0,0
+	beq a1,a0,LBB126
+	j LBB124
+LBB126:
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-2
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	addi s3,s2,1
+	slli a0,s3,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a1,a1,a0
+	li a0,1
+	sw a0,0(a1)
+	lui a0,%hi(col)
+	lw a0,%lo(col)(a0)
+	addi a0,a0,4
+	sw s2,0(a0)
+	li a0,2
+	call search
+	lui a0,%hi(row)
+	lw a1,%lo(row)(a0)
+	slli a0,s2,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,0
+	lw a1,0(a0)
+	slli a0,s3,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	lui a0,%hi(d)
+	lw a0,%lo(d)(a0)
+	addi a0,a0,4
+	lw a1,0(a0)
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	add a0,s2,a0
+	addi a0,a0,-2
+	slli a0,a0,2
+	add a1,a1,a0
+	li a0,0
+	sw a0,0(a1)
+	j LBB124
+LBB108:
+	li s2,0
+LBB110:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB111
+LBB112:
+	la a0,const_string_no2
+	call println
+	j LBB119
+LBB111:
+	li s3,0
+LBB113:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s3,a0,LBB114
+LBB115:
+	la a0,const_string_no2
+	call println
+	addi s2,s2,1
+	j LBB110
+LBB114:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s2,2
+	add a0,a1,a0
+	lw a0,0(a0)
+	beq a0,s3,LBB116
+LBB117:
+	la a0,const_string_no1
+	call print
+LBB118:
+	addi s3,s3,1
+	j LBB113
+LBB116:
+	la a0,const_string_no0
+	call print
+	j LBB118
+LBB89:
+	li s1,0
+LBB91:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s1,a0,LBB92
+LBB93:
+	la a0,const_string_no2
+	call println
+	j LBB100
+LBB92:
+	li s2,0
+LBB94:
+	lui a0,%hi(N)
+	lw a0,%lo(N)(a0)
+	blt s2,a0,LBB95
+LBB96:
 	la a0,const_string_no2
 	call println
 	addi s1,s1,1
-	j LBB114
-LBB118:
-	slli a0,s2,2
-	add a0,s3,a0
-	lw a1,0(a0)
-	lui a0,%hi(INF)
-	lw a0,%lo(INF)(a0)
-	beq a1,a0,LBB120
-LBB121:
-	slli a0,s2,2
-	add a0,s3,a0
+	j LBB91
+LBB95:
+	lui a0,%hi(col)
+	lw a1,%lo(col)(a0)
+	slli a0,s1,2
+	add a0,a1,a0
 	lw a0,0(a0)
-	call toString
-	call print
-LBB122:
+	beq a0,s2,LBB97
+LBB98:
 	la a0,const_string_no1
 	call print
+LBB99:
 	addi s2,s2,1
-	j LBB117
-LBB120:
+	j LBB94
+LBB97:
 	la a0,const_string_no0
 	call print
-	j LBB122
-LBB112:
-	call getInt
-	mv s1,a0
-	call getInt
-	mv s2,a0
-	call getInt
-	mv s3,a0
-	lui a0,%hi(g)
-	lw s4,%lo(g)(a0)
-	li a0,12
+	j LBB99
+LBB84:
+	lui a0,%hi(d)
+	lw a1,%lo(d)(a0)
+	slli a0,s1,2
+	add s2,a1,a0
+	li a0,64
 	call malloc
-	addi a2,a0,0
-	sw s1,0(a2)
-	sw s2,4(a2)
-	sw s3,8(a2)
-	addi a0,s4,0
-	lw a1,0(a0)
-	lw a0,12(s4)
-	slli a0,a0,2
-	add a0,a1,a0
-	sw a2,0(a0)
-	addi a0,s4,4
-	lw a1,0(a0)
-	lw a0,12(s4)
-	slli a0,a0,2
-	add a2,a1,a0
-	addi a0,s4,8
-	lw a1,0(a0)
-	slli a0,s1,2
-	add a0,a1,a0
-	lw a0,0(a0)
-	sw a0,0(a2)
-	addi a0,s4,8
-	lw a1,0(a0)
-	slli a0,s1,2
-	add a1,a1,a0
-	lw a0,12(s4)
-	sw a0,0(a1)
-	lw a0,12(s4)
-	addi a0,a0,1
-	sw a0,12(s4)
-	addi s5,s5,1
-	j LBB111
-LBB109:
-	lw a2,0(a3)
+	li a1,15
+	sw a1,0(a0)
+	addi a0,a0,4
+	addi a0,a0,0
+	sw a0,0(s2)
+	li a0,0
+LBB86:
+	li a1,15
+	blt a0,a1,LBB87
+LBB88:
+	addi s1,s1,1
+	j LBB83
+LBB87:
+	lui a1,%hi(d)
+	lw a2,%lo(d)(a1)
+	slli a1,s1,2
+	add a1,a2,a1
+	lw a2,0(a1)
 	slli a1,a0,2
 	add a2,a2,a1
-	li a1,-1
+	li a1,0
 	sw a1,0(a2)
 	addi a0,a0,1
-	j LBB108
-LBB106:
-	lw a2,0(a3)
+	j LBB86
+LBB81:
+	lui a1,%hi(row)
+	lw a2,%lo(row)(a1)
 	slli a1,a0,2
 	add a2,a2,a1
-	li a1,-1
+	li a1,0
+	sw a1,0(a2)
+	lui a1,%hi(col)
+	lw a2,%lo(col)(a1)
+	slli a1,a0,2
+	add a2,a2,a1
+	li a1,0
 	sw a1,0(a2)
 	addi a0,a0,1
-	j LBB105
+	j LBB80
 # end function : main
 .section	.sdata,"aw",@progbits
 	.p2align	2
-n:
+N:
+	.word	8
+
+	.p2align	2
+row:
 	.word	0
 
 	.p2align	2
-m:
+col:
 	.word	0
 
 	.p2align	2
-g:
+d:
 	.word	0
-
-	.p2align	2
-INF:
-	.word	10000000
 
 const_string_no0:
-	.asciz	"-1"
+	.asciz	" O"
 
 const_string_no1:
-	.asciz	" "
+	.asciz	" ."
 
 const_string_no2:
 	.asciz	""

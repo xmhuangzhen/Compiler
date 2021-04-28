@@ -100,55 +100,12 @@ public class Main {
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-                InlineExpander tmpInline = new InlineExpander(currentModule,false);
+                InlineExpander tmpInline = new InlineExpander(currentModule);
                 modified |= tmpInline.run();
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
                 BinaryInstSimplification tmpBinarySimp = new BinaryInstSimplification(currentModule);
-                modified |= tmpBinarySimp.run();
-
-                CommonSubexpressionElimination tmpCSE =
-                        new CommonSubexpressionElimination(currentModule);
-                modified |= tmpCSE.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-
-                LoopInvariantCodeMotion tmpLICM =
-                        new LoopInvariantCodeMotion(currentModule);
-                modified |= tmpLICM.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-                if (!modified) break;
-            }
-
-             cnt = 18;
-            while (true) {
-                cnt--;
-                if(cnt == 0) break;
-
-                boolean modified = false;
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-                SparseConditionalConstantPropagation tmpSCCP =
-                        new SparseConditionalConstantPropagation(currentModule);
-
-                modified |= tmpSCCP.run();
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-                AggressiveDeadCodeElimination tmpADCE =
-                        new AggressiveDeadCodeElimination(currentModule);
-                modified |= tmpADCE.run();
-
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-                InlineExpander tmpInline = new InlineExpander(currentModule,true);
-                modified |= tmpInline.run();
-
-                tmpCFGSimp = new CFGSimplification(currentModule);
-                modified |= tmpCFGSimp.run();
-                BinaryInstSimplification tmpBinarySimp =
-                        new BinaryInstSimplification(currentModule);
                 modified |= tmpBinarySimp.run();
 
                 CommonSubexpressionElimination tmpCSE =

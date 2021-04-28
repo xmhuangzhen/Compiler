@@ -26,20 +26,19 @@ public class InlineExpander extends Pass {
     public static int InstLimit = 600, CallExpandLimit = 3, BlockNumLimit = 200;
     public static int BlockNum = 0, RegNum = 0;
 
-    public InlineExpander(IRModule tmpModule, boolean tmpForce) {
+    public InlineExpander(IRModule tmpModule) {
         super(tmpModule);
         FuncInstNumMap = new HashMap<>();
         CanBeInlined = new HashSet<>();
         CalleeIROperandMap = new LinkedHashMap<>();
         BlockMap = new LinkedHashMap<>();
         CalleeFunc = new HashSet<>();
-        forceInline = tmpForce;
     }
 
     @Override
     public boolean run() {
         boolean modified = false;
-  //      forceInline = false;
+        forceInline = false;
         int InlineCnt = 20;
         while (true) {
             InlineCnt--;
@@ -48,7 +47,7 @@ public class InlineExpander extends Pass {
             modified |= changed;
             if (!changed) break;
         }
-/*
+
         forceInline = true;
         InlineCnt = 20;
         while (true) {
@@ -58,7 +57,7 @@ public class InlineExpander extends Pass {
             modified |= changed;
             if (!changed) break;
         }
-*/
+
         return modified;
     }
 
