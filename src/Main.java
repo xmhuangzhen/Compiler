@@ -28,7 +28,7 @@ public class Main {
         InputStream input = null;
        //     if(args.length != 0)
  //            input = new FileInputStream("test.mx");
-        //  else
+             //  else
               input = System.in;
 
         try {
@@ -88,59 +88,80 @@ public class Main {
                 boolean modified = false;
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-//                if(modified) System.out.print("a");
                 SparseConditionalConstantPropagation tmpSCCP =
                         new SparseConditionalConstantPropagation(currentModule);
                 modified |= tmpSCCP.run();
-  //              if(modified) System.out.print("b");
+
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-    //            if(modified) System.out.print("c");
-
                 AggressiveDeadCodeElimination tmpADCE =
                         new AggressiveDeadCodeElimination(currentModule);
                 modified |= tmpADCE.run();
-      //          if(modified) System.out.print("d");
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-        //        if(modified) System.out.print("e");
-
-                InlineExpander tmpInline = new InlineExpander(currentModule);
+                InlineExpander tmpInline = new InlineExpander(currentModule,false);
                 modified |= tmpInline.run();
-          //      if(modified) System.out.print("f");
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-            //    if(modified) System.out.print("g");
-
-
-                BinaryInstSimplification tmpBinarySimp =
-                        new BinaryInstSimplification(currentModule);
+                BinaryInstSimplification tmpBinarySimp = new BinaryInstSimplification(currentModule);
                 modified |= tmpBinarySimp.run();
-              //  if(modified) System.out.print("h");
 
                 CommonSubexpressionElimination tmpCSE =
                         new CommonSubexpressionElimination(currentModule);
                 modified |= tmpCSE.run();
-                //if(modified) System.out.print("i");
-
-
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-//                if(modified) System.out.print("j");
 
                 LoopInvariantCodeMotion tmpLICM =
                         new LoopInvariantCodeMotion(currentModule);
                 modified |= tmpLICM.run();
-  //              if(modified) System.out.print("k");
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+                if (!modified) break;
+            }
 
+             cnt = 18;
+            while (true) {
+                cnt--;
+                if(cnt == 0) break;
+
+                boolean modified = false;
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+                SparseConditionalConstantPropagation tmpSCCP =
+                        new SparseConditionalConstantPropagation(currentModule);
+
+                modified |= tmpSCCP.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+                AggressiveDeadCodeElimination tmpADCE =
+                        new AggressiveDeadCodeElimination(currentModule);
+                modified |= tmpADCE.run();
 
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
-    //            if(modified) System.out.print("l");
-      //          System.out.println("");
+                InlineExpander tmpInline = new InlineExpander(currentModule,true);
+                modified |= tmpInline.run();
 
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+                BinaryInstSimplification tmpBinarySimp =
+                        new BinaryInstSimplification(currentModule);
+                modified |= tmpBinarySimp.run();
+
+                CommonSubexpressionElimination tmpCSE =
+                        new CommonSubexpressionElimination(currentModule);
+                modified |= tmpCSE.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
+
+                LoopInvariantCodeMotion tmpLICM =
+                        new LoopInvariantCodeMotion(currentModule);
+                modified |= tmpLICM.run();
+                tmpCFGSimp = new CFGSimplification(currentModule);
+                modified |= tmpCFGSimp.run();
                 if (!modified) break;
             }
 //            System.out.println(cnt);
@@ -166,13 +187,9 @@ public class Main {
      //       ASMPrinter asmPrinter1 = new ASMPrinter(instSelector.curRISCVModule,printStream1);
        //     asmPrinter1.run();
 
-  //          System.out.println("start coloring building: " + dtf.format(LocalDateTime.now()));
-
             GraphColoringRegAllocator regAlloc =
                     new GraphColoringRegAllocator(instSelector.curRISCVModule);
             regAlloc.run();
-
-//            System.out.println("Finish coloring: " + dtf.format(LocalDateTime.now()));
 
             // ASM Print
 //            PrintStream printStream = System.out;

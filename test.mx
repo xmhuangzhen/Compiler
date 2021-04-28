@@ -1,68 +1,275 @@
-/*
-Test Package: Optim
-Author: 18' Zonghan YANG
-Time: 2021-04-07
-Input:
-=== input ===
 
-=== end ===
-Output:
-=== output ===
+class Edge {
+  int from;
+  int to;
+  int weight;
+};
 
-=== end ===
-ExitCode: 0
-InstLimit: 99999
-*/
+class EdgeList {
+  void init(int n, int m) {
+    edges = new Edge[m];
+    next = new int[m];
+    first = new int[n];
+    int i;
+    for (i = 0; i < m; ++i)
+      next[i] = -1;
+    for (i = 0; i < n; ++i)
+      first[i] = -1;
+    size = 0;
+  }
 
-int unsigned_shl(int x, int k) {
-    return x << k;
+  void addEdge(int u, int v, int w) {
+    Edge e = new Edge();
+    e.from = u;
+    e.to = v;
+    e.weight = w;
+
+    edges[size] = e;
+    next[size] = first[u];
+    first[u] = size;
+    ++size;
+  }
+
+  int nVertices() {
+    return first.size();
+  }
+
+  int nEdges() {
+    return edges.size();
+  }
+
+
+  Edge[] edges;
+  int[] next;
+  int[] first;
+  int size;
+};
+class Array_Node {
+  Array_Node() {
+    sz = 0;
+    storage = new Node[16];
+  }
+
+  void push_back(Node v) {
+    if (size() == storage.size()) {
+      doubleStorage();
+    }
+    storage[sz] = v;
+    ++sz;
+  }
+
+  Node pop_back() {
+    --sz;
+    return storage[sz];
+  }
+
+  Node back() {
+    return storage[sz - 1];
+  }
+
+  Node front() {
+    return storage[0];
+  }
+
+  int size() {
+    return sz;
+  }
+
+  void resize(int newSize) {
+    while (storage.size() < newSize)
+      doubleStorage();
+    sz = newSize;
+  }
+
+  Node get(int i) {
+    return storage[i];
+  }
+
+  void set(int i, Node v) {
+    storage[i] = v;
+  }
+
+  void swap(int i, int j) {
+    Node t = storage[i];
+    storage[i] = storage[j];
+    storage[j] = t;
+  }
+
+
+//private:
+  void doubleStorage() {
+    Node[] copy = storage;
+    int szCopy = sz;
+
+    storage = new Node[copy.size() * 2];
+    sz = 0;
+
+    for (; sz != szCopy; ++sz) {
+      storage[sz] = copy[sz];
+    }
+  }
+
+
+  Node[] storage;
+  int sz;
+};
+
+
+class Heap_Node {
+  Heap_Node() {
+    storage = new Array_Node();
+  }
+
+  void push(Node v) {
+    storage.push_back(v);
+    int x = size() - 1;
+    while (x > 0) {
+      int p = pnt(x);
+      if (storage.get(p).key_() >= storage.get(x).key_())
+        break;
+      storage.swap(p, x);
+      x = p;
+    }
+  }
+
+  Node pop() {
+    Node res = storage.front();
+    storage.swap(0, size() - 1);
+    storage.pop_back();
+    maxHeapify(0);
+    return res;
+  }
+
+  Node top() {
+    return storage.front();
+  }
+
+  int size() {
+    return storage.size();
+  }
+
+// private:
+  int lchild(int x) {
+    return x * 2 + 1;
+  }
+
+  int rchild(int x) {
+    return x * 2 + 2;
+  }
+
+  int pnt(int x) {
+    return (x - 1) / 2;
+  }
+
+  void maxHeapify(int x) {
+    int l = lchild(x);
+    int r = rchild(x);
+    int largest = x;
+
+    if (l < size() && storage.get(l).key_() > storage.get(largest).key_())
+      largest = l;
+    if (r < size() && storage.get(r).key_() > storage.get(largest).key_())
+      largest = r;
+
+    if (largest == x)
+      return;
+
+    storage.swap(x, largest);
+    maxHeapify(largest);
+  }
+
+  Array_Node storage;
+};
+
+
+int n;
+int m;
+EdgeList g;
+int INF = 10000000;
+
+void init() {
+  n = getInt();
+  m = getInt();
+  g = new EdgeList();
+  g.init(n, m);
+
+  int i;
+  for (i = 0; i < m; ++i) {
+    int u = getInt();
+    int v = getInt();
+    int w = getInt();
+    g.addEdge(u, v, w);
+  }
 }
 
-int unsigned_shr(int x, int k) { // k should be (0, 31)
-    int INT_MIN = 1 << 31;
-    if (x >= 0) return x >> k;
-    else return (1 << (31 - k)) | ((x ^ INT_MIN) >> k);
+class Node {
+  int key_() {
+    return -dist;
+  }
+
+  int node;
+  int dist;
+};
+
+
+int[] dijkstra(int s) {
+  int[] visited = new int[n];
+  int[] d = new int[n];
+  int i;
+  for (i = 0; i < n; ++i) {
+    d[i] = INF;
+    visited[i] = 0;
+  }
+  d[s] = 0;
+
+  Heap_Node q = new Heap_Node();
+  Node src = new Node();
+  src.dist = 0;
+  src.node = s;
+  q.push(src);
+
+  while (q.size() != 0) {
+    Node node = q.pop();
+    int u = node.node;
+    if (visited[u] == 1)
+      continue;
+    visited[u] = 1;
+    int k;
+    for (k = g.first[u]; k != -1; k = g.next[k]) {
+      int v = g.edges[k].to;
+      int w = g.edges[k].weight;
+      int alt = d[u] + w;
+      if (alt >= d[v])
+        continue;
+      d[v] = alt;
+      node = new Node();
+      node.node = v;
+      node.dist = d[v];
+      q.push(node);
+    }
+  }
+
+  return d;
 }
 
-int rng(int rng_seed) {
-    int rng_mask = 1073741823;
-    int x = rng_seed;
-    x = x ^ unsigned_shl(x, 13);
-    x = x ^ unsigned_shr(x, 17);
-    x = x ^ unsigned_shl(x, 5);
-    x = x & rng_mask;
-    return x;
-}
 
-int test(int q, int w, int e, int r, int t, int y, int u, int i, int o, int p) { // long parameter list test
-    if (q == w) {
-		if (w != e || e != r) {
-			return test(w, e, r, t, y, u, i, o, p, q) + 1;
-		} else {
-			return test(w, e, r, t, y - 1, u - 2, i, o, p, q) + 2;
-		}
-	} else {
-		return q + w + q;
-	}
-}
 
 int main() {
-    int rng_seed = 19260817;
-    int sum = 0;
-    for ( ; ; ) {
-        int u = rng(rng_seed);
-        int v = rng(u);
-        rng_seed = v;
-        if ((u & 255) != (v & 255)) {
-            int w = rng(rng_seed);
-            int x = rng(w);
-			int y = rng(x);
-			int z = rng(y);
-			int zz = rng(z);
-			rng_seed = zz;
-            sum = sum ^ test(w & 3, w >> 28, x & 1, x >> 29, y >> 25, y & 31, z >> 15, z & 32767, zz >> 15, zz & 32767);
-        }
-		else break;
+  init();
+  int i;
+  int j;
+  for (i = 0; i < n; ++i) {
+    int[] d = dijkstra(i);
+    for (j = 0; j < n; ++j) {
+      if (d[j] == INF) {
+        print("-1");
+      } else {
+        print(toString(d[j]));
+      }
+      print(" ");
     }
-    return sum - 19;
+    println("");
+  }
+
+  return 0;
 }

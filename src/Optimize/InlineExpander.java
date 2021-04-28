@@ -20,46 +20,49 @@ public class InlineExpander extends Pass {
     public HashSet<IRFunction> CalleeFunc;
     public HashSet<IRFunction> CanBeInlined;
     public HashMap<IROperand, IROperand> CalleeIROperandMap;
-    HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
-
+    public HashMap<IRBasicBlock, IRBasicBlock> BlockMap;
+    public boolean forceInline;
 
     public static int InstLimit = 600, CallExpandLimit = 3, BlockNumLimit = 200;
     public static int BlockNum = 0, RegNum = 0;
 
-    public InlineExpander(IRModule tmpModule) {
+    public InlineExpander(IRModule tmpModule, boolean tmpForce) {
         super(tmpModule);
         FuncInstNumMap = new HashMap<>();
         CanBeInlined = new HashSet<>();
         CalleeIROperandMap = new LinkedHashMap<>();
         BlockMap = new LinkedHashMap<>();
         CalleeFunc = new HashSet<>();
+        forceInline = tmpForce;
     }
 
     @Override
     public boolean run() {
         boolean modified = false;
+  //      forceInline = false;
         int InlineCnt = 20;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
-            boolean changed = tryInline(false);
+            boolean changed = tryInline();
             modified |= changed;
             if (!changed) break;
         }
-
-        InlineCnt = 10;
+/*
+        forceInline = true;
+        InlineCnt = 20;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
-            boolean changed = tryInline(true);
+            boolean changed = tryInline();
             modified |= changed;
             if (!changed) break;
         }
-
+*/
         return modified;
     }
 
-    public boolean tryInline(boolean forceInline) {
+    public boolean tryInline() {
         FuncInstNumMap.clear();
         CanBeInlined.clear();
         CalleeFunc.clear();
@@ -80,8 +83,6 @@ public class InlineExpander extends Pass {
         for (var tmpFunc : removeFuncList) {
             curIRModule.removeFunc(tmpFunc);
         }
-        //   System.out.println("-------------------");
-        //System.out.println(CanBeInlined);
         ArrayList<callInstruction> InlineList = new ArrayList<>();
 
         for (var tmpFunc : curIRModule.IRFunctionTable.values())
@@ -98,35 +99,6 @@ public class InlineExpander extends Pass {
             }
 
         if (forceInline) {
-/*            for (var tmpFunc : curIRModule.IRFunctionTable.values())
-                if (!tmpFunc.IsBuiltIn && !CanBeInlined.contains(tmpFunc)) {
-                    boolean IsRecursiveCall = true;
-                    for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
-                         tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
-                        for (IRInstruction tmpInst = tmpBlock.HeadInst;
-                             tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
-                            if (tmpInst instanceof callInstruction &&
-                                    ((callInstruction) tmpInst).CallFunction != tmpFunc &&
-                                    !((callInstruction) tmpInst).CallFunction.IsBuiltIn) {
-                                IsRecursiveCall = false;
-                                break;
-                            }
-                    }
-                    if (IsRecursiveCall) {
-                        for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
-                             tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
-                            for (IRInstruction tmpInst = tmpBlock.HeadInst;
-                                 tmpInst != null; tmpInst = tmpInst.nextIRInstruction)
-                                if (tmpInst instanceof callInstruction &&
-                                        ((callInstruction) tmpInst).CallFunction == tmpFunc) {
-                                    InlineList.add((callInstruction) tmpInst);
-                                }
-                        }
-
-                    }
-                }
-
- */
             for (var tmpFunc : curIRModule.IRFunctionTable.values())
                 if (!tmpFunc.IsBuiltIn) {
                     for (IRBasicBlock tmpBlock = tmpFunc.thisEntranceBlock;
@@ -145,7 +117,7 @@ public class InlineExpander extends Pass {
         boolean modified = false;
         for (var tmpInst : InlineList) {
             IRFunction tmpFunc = tmpInst.thisBasicBlock.BasicBlockFunction;
-            boolean changed = InlineCall(tmpInst, tmpFunc,forceInline);
+            boolean changed = InlineCall(tmpInst, tmpFunc, forceInline);
             modified |= changed;
             constructCFG(tmpFunc);
         }
@@ -178,12 +150,15 @@ public class InlineExpander extends Pass {
     public boolean InlineCall(callInstruction CallInst, IRFunction curFunc, boolean forceInline) {
         IRBasicBlock curBlock = CallInst.thisBasicBlock;
         IRFunction calleeFunc = CallInst.CallFunction;
-        if(getBlockNum(curFunc) > BlockNumLimit) return false;
-        if (FuncInstNumMap.get(calleeFunc) + FuncInstNumMap.get(calleeFunc) >= InstLimit) {
+        if (getBlockNum(curFunc) > BlockNumLimit) {
+            return false;
+        }
+        if (FuncInstNumMap.get(calleeFunc) + FuncInstNumMap.get(curFunc) >= InstLimit) {
             return false;
         }
 
-        if(forceInline) {
+
+        if (forceInline) {
             calleeFunc.CallExpandNum++;
             if (calleeFunc.CallExpandNum > CallExpandLimit) return false;
         }
@@ -384,7 +359,7 @@ public class InlineExpander extends Pass {
             for (int i = 0; i < OriInst.GetElementPtrIdx.size(); ++i) {
                 IROperand tmpRepOperand = getReplaceOperand(OriInst.GetElementPtrIdx.get(i));
                 resInst.GetElementPtrIdx.add(tmpRepOperand);
-                if(tmpRepOperand instanceof Register||tmpRepOperand instanceof Parameter)
+                if (tmpRepOperand instanceof Register || tmpRepOperand instanceof Parameter)
                     tmpRepOperand.AddRegisterUseInInstruction(resInst);
             }
             return resInst;
@@ -416,7 +391,7 @@ public class InlineExpander extends Pass {
             for (int i = 0; i < OriInst.PhiValue.size(); ++i) {
                 IROperand tmpRepOperand = getReplaceOperand(OriInst.PhiValue.get(i));
                 resInst.PhiValue.add(tmpRepOperand);
-                if(tmpRepOperand instanceof Register || tmpRepOperand instanceof Parameter)
+                if (tmpRepOperand instanceof Register || tmpRepOperand instanceof Parameter)
                     tmpRepOperand.AddRegisterUseInInstruction(resInst);
             }
             return resInst;

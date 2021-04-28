@@ -6,6 +6,7 @@ import IR.IRModule;
 import IR.Instruction.IRInstruction;
 import IR.Instruction.*;
 import IR.Operand.IROperand;
+import IR.Operand.Parameter;
 import IR.Operand.Register;
 import org.antlr.v4.runtime.misc.Pair;
 
@@ -179,7 +180,9 @@ public class LoopInvariantCodeMotion extends Pass {
                     for (IRInstruction curInst = tmpBlock.HeadInst; curInst != null; ) {
                         IRInstruction tmpInst = curInst;
                         curInst = curInst.nextIRInstruction;
-                        if (tmpInst instanceof binaryOpInstruction) {
+                        if (tmpInst instanceof binaryOpInstruction || tmpInst instanceof icmpInstruction
+                                || tmpInst instanceof bitwiseBinaryInstruction
+                        || tmpInst instanceof getElementPtrInstruction) {
                             boolean AllUseDontChange = true;
                             for (var tmp : tmpInst.getuse()) {
                                 if (reachDefMap.containsKey(tmp)) {
@@ -194,36 +197,7 @@ public class LoopInvariantCodeMotion extends Pass {
                             if (AllUseDontChange) {
                                 tmpInst.removeInst();
                                 preBlock.addBasicBlockInstPreInst(preBlock.TailInst,
-                                        new binaryOpInstruction(preBlock,
-                                                ((binaryOpInstruction) tmpInst).BinaryOperandType,
-                                                ((binaryOpInstruction) tmpInst).BinaryOp1,
-                                                ((binaryOpInstruction) tmpInst).BinaryOp2,
-                                                ((binaryOpInstruction) tmpInst).BinaryResult));
-                                changed = true;
-                            }
-                        } else if (tmpInst instanceof icmpInstruction) {
-                            boolean AllUseDontChange = true;
-//                                    System.out.println(tmpInst);
-                            for (var tmp : tmpInst.getuse()) {
-                                if (reachDefMap.containsKey(tmp)) {
-                                    for (var tmpUseDef : reachDefMap.get(tmp)) {
-                                        if (LoopBlock.contains(tmpUseDef.thisBasicBlock)) {
-                                            AllUseDontChange = false;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if (AllUseDontChange) {
-//                                        System.out.println("2");
-                                tmpInst.removeInst();
-                                preBlock.addBasicBlockInstPreInst(preBlock.TailInst,
-                                        new icmpInstruction(preBlock,
-                                                ((icmpInstruction) tmpInst).IcmpOperandType,
-                                                ((icmpInstruction) tmpInst).IcmpType,
-                                                ((icmpInstruction) tmpInst).IcmpOp1,
-                                                ((icmpInstruction) tmpInst).IcmpOp2,
-                                                ((icmpInstruction) tmpInst).IcmpResult));
+                                        getnewInst(tmpInst, preBlock));
                                 changed = true;
                             }
                         }
@@ -232,5 +206,43 @@ public class LoopInvariantCodeMotion extends Pass {
             }
         }
         return changed;
+    }
+
+    public IRInstruction getnewInst(IRInstruction tmpInst, IRBasicBlock preBlock) {
+        if (tmpInst instanceof binaryOpInstruction) {
+            return new binaryOpInstruction(preBlock,
+                    ((binaryOpInstruction) tmpInst).BinaryOperandType,
+                    ((binaryOpInstruction) tmpInst).BinaryOp1,
+                    ((binaryOpInstruction) tmpInst).BinaryOp2,
+                    ((binaryOpInstruction) tmpInst).BinaryResult);
+        }
+        if (tmpInst instanceof icmpInstruction) {
+            return new icmpInstruction(preBlock,
+                    ((icmpInstruction) tmpInst).IcmpOperandType,
+                    ((icmpInstruction) tmpInst).IcmpType,
+                    ((icmpInstruction) tmpInst).IcmpOp1,
+                    ((icmpInstruction) tmpInst).IcmpOp2,
+                    ((icmpInstruction) tmpInst).IcmpResult);
+        }
+        if(tmpInst instanceof bitwiseBinaryInstruction){
+            return new bitwiseBinaryInstruction(preBlock,
+                    ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryOperandType,
+                    ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryOp1,
+                    ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryOp2,
+                    ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryResult);
+        }
+        if(tmpInst instanceof getElementPtrInstruction){
+            getElementPtrInstruction retInst = new getElementPtrInstruction(preBlock,
+                    ((getElementPtrInstruction) tmpInst).GetElementPtrPtr,
+                    ((getElementPtrInstruction) tmpInst).GetElementPtrResult);
+            for(int i = 0;i<((getElementPtrInstruction) tmpInst).GetElementPtrIdx.size();++i) {
+                retInst.GetElementPtrIdx.add(((getElementPtrInstruction) tmpInst).GetElementPtrIdx.get(i));
+                if(retInst.GetElementPtrIdx.get(i) instanceof Register ||
+                retInst.GetElementPtrIdx.get(i) instanceof Parameter)
+                    retInst.GetElementPtrIdx.get(i).AddRegisterUseInInstruction(retInst);
+            }
+            return retInst;
+        }
+        return null;
     }
 }
