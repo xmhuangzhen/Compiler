@@ -35,7 +35,7 @@ public class CommonSubexpressionElimination extends Pass{
                         || tmpInst instanceof bitcastInstruction
                         || tmpInst instanceof bitwiseBinaryInstruction
                         || tmpInst instanceof icmpInstruction
-                        || tmpInst instanceof getElementPtrInstruction){
+                     /*   || tmpInst instanceof getElementPtrInstruction*/){
                             String tmpString = getCSEString(tmpInst);
                             if(CSEInstMap.containsKey(tmpString)){
                                 Register rd = getRd(tmpInst);

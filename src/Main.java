@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
- //            input = new FileInputStream("test.mx");
+             input = new FileInputStream("test.mx");
              //  else
-              input = System.in;
+ //             input = System.in;
 
         try {
             RootNode ASTRoot;
