@@ -34,8 +34,7 @@ public class CommonSubexpressionElimination extends Pass{
                         if(tmpInst instanceof binaryOpInstruction
                         || tmpInst instanceof bitcastInstruction
                         || tmpInst instanceof bitwiseBinaryInstruction
-                        || tmpInst instanceof icmpInstruction
-                     /*   || tmpInst instanceof getElementPtrInstruction*/){
+                        || tmpInst instanceof icmpInstruction){
                             String tmpString = getCSEString(tmpInst);
                             if(CSEInstMap.containsKey(tmpString)){
                                 Register rd = getRd(tmpInst);
@@ -72,14 +71,14 @@ public class CommonSubexpressionElimination extends Pass{
             icmpInstruction tmpInst = (icmpInstruction) curInst;
             return tmpInst.IcmpOp1+"|"+tmpInst.IcmpOperandType.name()+"|"+
                     tmpInst.IcmpOp2;
-        } else if(curInst instanceof getElementPtrInstruction){
+/*        } else if(curInst instanceof getElementPtrInstruction){
             getElementPtrInstruction tmpInst = (getElementPtrInstruction) curInst;
             StringBuilder tmpRet = new StringBuilder();
             tmpRet.append(tmpInst.GetElementPtrResult+"|"+tmpInst.GetElementPtrPtr+"|");
             for(int i = 0;i < tmpInst.GetElementPtrIdx.size();++i)
                 tmpRet.append(tmpInst.GetElementPtrIdx.get(i)+"|");
             return tmpRet.toString();
-        } else {
+  */      } else {
             throw new RuntimeException();
         }
     }
@@ -93,9 +92,9 @@ public class CommonSubexpressionElimination extends Pass{
             return ((bitwiseBinaryInstruction) curInst).bitwiseBinaryResult;
         } else if(curInst instanceof icmpInstruction){
             return ((icmpInstruction) curInst).IcmpResult;
-        } else if(curInst instanceof getElementPtrInstruction){
+/*        } else if(curInst instanceof getElementPtrInstruction){
             return ((getElementPtrInstruction) curInst).GetElementPtrResult;
-        } else {
+  */      } else {
             throw new RuntimeException();
         }
     }

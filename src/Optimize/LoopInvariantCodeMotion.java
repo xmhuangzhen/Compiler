@@ -182,7 +182,7 @@ public class LoopInvariantCodeMotion extends Pass {
                         curInst = curInst.nextIRInstruction;
                         if (tmpInst instanceof binaryOpInstruction || tmpInst instanceof icmpInstruction
                                 || tmpInst instanceof bitwiseBinaryInstruction
-                        || tmpInst instanceof getElementPtrInstruction) {
+                       /* || tmpInst instanceof getElementPtrInstruction*/) {
                             boolean AllUseDontChange = true;
                             for (var tmp : tmpInst.getuse()) {
                                 if (reachDefMap.containsKey(tmp)) {
@@ -231,7 +231,7 @@ public class LoopInvariantCodeMotion extends Pass {
                     ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryOp2,
                     ((bitwiseBinaryInstruction) tmpInst).bitwiseBinaryResult);
         }
-        if(tmpInst instanceof getElementPtrInstruction){
+/*        if(tmpInst instanceof getElementPtrInstruction){
             getElementPtrInstruction retInst = new getElementPtrInstruction(preBlock,
                     ((getElementPtrInstruction) tmpInst).GetElementPtrPtr,
                     ((getElementPtrInstruction) tmpInst).GetElementPtrResult);
@@ -243,6 +243,6 @@ public class LoopInvariantCodeMotion extends Pass {
             }
             return retInst;
         }
-        return null;
+  */      return null;
     }
 }
