@@ -399,6 +399,92 @@ LBB55:
 	sw a6,0(a1)
 	li a1,2
 	mul a1,a3,a1
+	addi a2,a1,1
+	li a1,2
+	mul a1,a3,a1
+	addi a1,a1,2
+	addi a4,a0,0
+	lw a4,0(a4)
+	lw a4,4(a4)
+	blt a2,a4,LBB57
+LBB58:
+	mv a2,a3
+LBB59:
+	addi a4,a0,0
+	lw a4,0(a4)
+	lw a4,4(a4)
+	blt a1,a4,LBB62
+LBB63:
+LBB64:
+	beq a2,a3,LBB67
+LBB68:
+	addi a1,a0,0
+	lw a1,0(a1)
+	addi a4,a1,0
+	lw a5,0(a4)
+	slli a4,a3,2
+	add a4,a5,a4
+	lw a6,0(a4)
+	addi a4,a1,0
+	lw a4,0(a4)
+	slli a3,a3,2
+	add a5,a4,a3
+	addi a3,a1,0
+	lw a4,0(a3)
+	slli a3,a2,2
+	add a3,a4,a3
+	lw a3,0(a3)
+	sw a3,0(a5)
+	addi a1,a1,0
+	lw a3,0(a1)
+	slli a1,a2,2
+	add a1,a3,a1
+	sw a6,0(a1)
+	li a1,2
+	mul a1,a2,a1
+	addi a3,a1,1
+	li a1,2
+	mul a1,a2,a1
+	addi a1,a1,2
+	addi a4,a0,0
+	lw a4,0(a4)
+	lw a4,4(a4)
+	blt a3,a4,LBB70
+LBB71:
+	mv a3,a2
+LBB72:
+	addi a4,a0,0
+	lw a4,0(a4)
+	lw a4,4(a4)
+	blt a1,a4,LBB75
+LBB76:
+LBB77:
+	beq a3,a2,LBB80
+LBB81:
+	addi a1,a0,0
+	lw a1,0(a1)
+	addi a4,a1,0
+	lw a5,0(a4)
+	slli a4,a2,2
+	add a4,a5,a4
+	lw a6,0(a4)
+	addi a4,a1,0
+	lw a4,0(a4)
+	slli a2,a2,2
+	add a5,a4,a2
+	addi a2,a1,0
+	lw a4,0(a2)
+	slli a2,a3,2
+	add a2,a4,a2
+	lw a2,0(a2)
+	sw a2,0(a5)
+	addi a1,a1,0
+	lw a2,0(a1)
+	slli a1,a3,2
+	add a1,a2,a1
+	sw a6,0(a1)
+	li a1,2
+	mul a1,a3,a1
 	addi a1,a1,1
 	li a2,2
 	mul a2,a3,a2
@@ -406,18 +492,18 @@ LBB55:
 	addi a4,a0,0
 	lw a4,0(a4)
 	lw a4,4(a4)
-	blt a1,a4,LBB57
-LBB58:
+	blt a1,a4,LBB83
+LBB84:
 	mv a1,a3
-LBB59:
+LBB85:
 	addi a4,a0,0
 	lw a4,0(a4)
 	lw a4,4(a4)
-	blt a2,a4,LBB62
-LBB63:
-LBB64:
-	beq a1,a3,LBB67
-LBB68:
+	blt a2,a4,LBB88
+LBB89:
+LBB90:
+	beq a1,a3,LBB93
+LBB94:
 	addi a2,a0,0
 	lw a2,0(a2)
 	addi a4,a2,0
@@ -441,6 +527,8 @@ LBB68:
 	add a2,a3,a2
 	sw a6,0(a2)
 	call Heap_Node.maxHeapify
+LBB95:
+LBB82:
 LBB69:
 LBB56:
 	mv a0,s1
@@ -449,9 +537,9 @@ LBB56:
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
-LBB67:
-	j LBB69
-LBB62:
+LBB93:
+	j LBB95
+LBB88:
 	addi a4,a0,0
 	lw a4,0(a4)
 	addi a4,a4,0
@@ -472,13 +560,13 @@ LBB62:
 	lw a6,4(a5)
 	li a5,0
 	sub a5,a5,a6
-	bgt a4,a5,LBB65
-LBB66:
-	j LBB64
-LBB65:
+	bgt a4,a5,LBB91
+LBB92:
+	j LBB90
+LBB91:
 	mv a1,a2
-	j LBB64
-LBB57:
+	j LBB90
+LBB83:
 	addi a4,a0,0
 	lw a4,0(a4)
 	addi a4,a4,0
@@ -499,9 +587,121 @@ LBB57:
 	lw a6,4(a5)
 	li a5,0
 	sub a5,a5,a6
+	bgt a4,a5,LBB86
+LBB87:
+	mv a1,a3
+	j LBB85
+LBB86:
+	j LBB85
+LBB80:
+	j LBB82
+LBB75:
+	addi a4,a0,0
+	lw a4,0(a4)
+	addi a4,a4,0
+	lw a5,0(a4)
+	slli a4,a1,2
+	add a4,a5,a4
+	lw a4,0(a4)
+	lw a5,4(a4)
+	li a4,0
+	sub a4,a4,a5
+	addi a5,a0,0
+	lw a5,0(a5)
+	addi a5,a5,0
+	lw a6,0(a5)
+	slli a5,a3,2
+	add a5,a6,a5
+	lw a5,0(a5)
+	lw a6,4(a5)
+	li a5,0
+	sub a5,a5,a6
+	bgt a4,a5,LBB78
+LBB79:
+	j LBB77
+LBB78:
+	mv a3,a1
+	j LBB77
+LBB70:
+	addi a4,a0,0
+	lw a4,0(a4)
+	addi a4,a4,0
+	lw a5,0(a4)
+	slli a4,a3,2
+	add a4,a5,a4
+	lw a4,0(a4)
+	lw a5,4(a4)
+	li a4,0
+	sub a4,a4,a5
+	addi a5,a0,0
+	lw a5,0(a5)
+	addi a5,a5,0
+	lw a6,0(a5)
+	slli a5,a2,2
+	add a5,a6,a5
+	lw a5,0(a5)
+	lw a6,4(a5)
+	li a5,0
+	sub a5,a5,a6
+	bgt a4,a5,LBB73
+LBB74:
+	mv a3,a2
+	j LBB72
+LBB73:
+	j LBB72
+LBB67:
+	j LBB69
+LBB62:
+	addi a4,a0,0
+	lw a4,0(a4)
+	addi a4,a4,0
+	lw a5,0(a4)
+	slli a4,a1,2
+	add a4,a5,a4
+	lw a4,0(a4)
+	lw a5,4(a4)
+	li a4,0
+	sub a4,a4,a5
+	addi a5,a0,0
+	lw a5,0(a5)
+	addi a5,a5,0
+	lw a6,0(a5)
+	slli a5,a2,2
+	add a5,a6,a5
+	lw a5,0(a5)
+	lw a6,4(a5)
+	li a5,0
+	sub a5,a5,a6
+	bgt a4,a5,LBB65
+LBB66:
+	j LBB64
+LBB65:
+	mv a2,a1
+	j LBB64
+LBB57:
+	addi a4,a0,0
+	lw a4,0(a4)
+	addi a4,a4,0
+	lw a5,0(a4)
+	slli a4,a2,2
+	add a4,a5,a4
+	lw a4,0(a4)
+	lw a5,4(a4)
+	li a4,0
+	sub a4,a4,a5
+	addi a5,a0,0
+	lw a5,0(a5)
+	addi a5,a5,0
+	lw a6,0(a5)
+	slli a5,a3,2
+	add a5,a6,a5
+	lw a5,0(a5)
+	lw a6,4(a5)
+	li a5,0
+	sub a5,a5,a6
 	bgt a4,a5,LBB60
 LBB61:
-	mv a1,a3
+	mv a2,a3
 	j LBB59
 LBB60:
 	j LBB59
@@ -565,7 +765,7 @@ LBB47:
 	.globl	main					# start function : main
 	.p2align	2
 main:
-#LBB70:
+#LBB96:
 	sw ra,-4(sp)
 	sw s1,-12(sp)
 	sw s2,-16(sp)
@@ -580,7 +780,7 @@ main:
 	sw s11,-52(sp)
 	mv s0,sp
 	addi sp,sp,-84
-LBB71:
+LBB97:
 	call getInt
 	mv s1,a0
 	call getInt
@@ -624,30 +824,30 @@ LBB71:
 	lui a0,%hi(INF)
 	sw a1,%lo(INF)(a0)
 	li a0,0
-LBB72:
-	blt a0,s2,LBB73
-LBB74:
+LBB98:
+	blt a0,s2,LBB99
+LBB100:
 	li a0,0
-LBB75:
-	blt a0,s1,LBB76
-LBB77:
+LBB101:
+	blt a0,s1,LBB102
+LBB103:
 	li a0,0
 	sw a0,12(s3)
 	li s5,0
-LBB78:
+LBB104:
 	lui a0,%hi(m)
 	lw a0,%lo(m)(a0)
-	blt s5,a0,LBB79
-LBB80:
+	blt s5,a0,LBB105
+LBB106:
 	li a0,0
-	mv s4,a0
-LBB81:
+	mv s8,a0
+LBB107:
 	lui a0,%hi(n)
 	lw a0,%lo(n)(a0)
-	blt s4,a0,LBB82
-LBB83:
+	blt s8,a0,LBB108
+LBB109:
 	li a0,0
-LBB124:
+LBB150:
 	addi sp,sp,84
 	lw s1,-12(sp)
 	lw s2,-16(sp)
@@ -663,52 +863,52 @@ LBB124:
 	mv s0,sp
 	lw ra,-4(sp)
 	ret
-LBB82:
-	mv s2,s4
+LBB108:
+	mv s2,s8
 	lui a0,%hi(n)
-	lw s5,%lo(n)(a0)
+	lw s3,%lo(n)(a0)
 	li a0,4
-	mul a0,s5,a0
+	mul a0,s3,a0
 	addi s1,a0,4
 	mv a0,s1
 	call malloc
-	sw s5,0(a0)
+	sw s3,0(a0)
 	addi a0,a0,4
-	addi s3,a0,0
+	addi s7,a0,0
 	mv a0,s1
 	call malloc
-	sw s5,0(a0)
+	sw s3,0(a0)
 	addi a0,a0,4
-	addi s6,a0,0
+	addi s4,a0,0
 	li a0,0
-LBB84:
+LBB110:
 	lui a1,%hi(n)
 	lw a1,%lo(n)(a1)
-	blt a0,a1,LBB85
-LBB86:
+	blt a0,a1,LBB111
+LBB112:
 	slli a0,s2,2
-	add a1,s6,a0
+	add a1,s4,a0
 	li a0,0
 	sw a0,0(a1)
 	li a0,4
 	call malloc
 	addi s1,a0,0
 	mv a0,s1
-	addi s7,a0,0
+	addi s5,a0,0
 	li a0,8
 	call malloc
-	addi s5,a0,0
+	addi s3,a0,0
 	li a0,0
-	sw a0,4(s5)
-	addi s8,s5,0
+	sw a0,4(s3)
+	addi s6,s3,0
 	li a0,68
 	call malloc
 	li a1,16
 	sw a1,0(a0)
 	addi a0,a0,4
 	addi a0,a0,0
-	sw a0,0(s8)
-	sw s5,0(s7)
+	sw a0,0(s6)
+	sw s3,0(s5)
 	li a0,8
 	call malloc
 	addi a1,a0,0
@@ -725,8 +925,8 @@ LBB86:
 	lw a1,0(a1)
 	addi a1,a1,-4
 	lw a1,0(a1)
-	beq a0,a1,LBB87
-LBB88:
+	beq a0,a1,LBB113
+LBB114:
 	addi a0,s2,0
 	lw a1,0(a0)
 	lw a0,4(s2)
@@ -741,112 +941,112 @@ LBB88:
 	lw a0,0(a0)
 	lw a0,4(a0)
 	addi a2,a0,-1
-LBB92:
+LBB118:
 	li a0,0
-	bgt a2,a0,LBB93
-LBB94:
-LBB97:
+	bgt a2,a0,LBB119
+LBB120:
+LBB123:
 	mv a0,s1
 	addi a0,a0,0
 	lw a0,0(a0)
 	lw a0,4(a0)
 	li a1,0
-	bne a0,a1,LBB98
-LBB99:
-	mv s1,s6
+	bne a0,a1,LBB124
+LBB125:
+	mv s1,s4
 	li s2,0
-LBB118:
+LBB144:
 	lui a0,%hi(n)
 	lw a0,%lo(n)(a0)
-	blt s2,a0,LBB119
-LBB120:
+	blt s2,a0,LBB145
+LBB146:
 	la a0,const_string_no2
 	call println
-	addi a0,s4,1
-	mv s4,a0
-	j LBB81
-LBB119:
+	addi a0,s8,1
+	mv s8,a0
+	j LBB107
+LBB145:
 	slli a0,s2,2
 	add a0,s1,a0
 	lw a1,0(a0)
 	lui a0,%hi(INF)
 	lw a0,%lo(INF)(a0)
-	beq a1,a0,LBB121
-LBB122:
+	beq a1,a0,LBB147
+LBB148:
 	slli a0,s2,2
 	add a0,s1,a0
 	lw a0,0(a0)
 	call toString
 	call print
-LBB123:
+LBB149:
 	la a0,const_string_no1
 	call print
 	addi s2,s2,1
-	j LBB118
-LBB121:
+	j LBB144
+LBB147:
 	la a0,const_string_no0
 	call print
-	j LBB123
-LBB98:
+	j LBB149
+LBB124:
 	mv a0,s1
 	call Heap_Node.pop
-	lw s8,0(a0)
-	slli a0,s8,2
-	add a0,s3,a0
+	lw s3,0(a0)
+	slli a0,s3,2
+	add a0,s7,a0
 	lw a1,0(a0)
 	li a0,1
-	beq a1,a0,LBB100
-LBB101:
-	slli a0,s8,2
-	add a1,s3,a0
+	beq a1,a0,LBB126
+LBB127:
+	slli a0,s3,2
+	add a1,s7,a0
 	li a0,1
 	sw a0,0(a1)
 	lui a0,%hi(g)
 	lw a0,%lo(g)(a0)
 	addi a0,a0,8
 	lw a1,0(a0)
-	slli a0,s8,2
+	slli a0,s3,2
 	add a0,a1,a0
 	lw a0,0(a0)
-	mv s5,a0
-LBB102:
+	mv s6,a0
+LBB128:
 	li a0,-1
-	bne s5,a0,LBB103
-LBB104:
-	j LBB97
-LBB103:
+	bne s6,a0,LBB129
+LBB130:
+	j LBB123
+LBB129:
 	lui a0,%hi(g)
 	lw a2,%lo(g)(a0)
 	addi a0,a2,0
 	lw a1,0(a0)
-	slli a0,s5,2
+	slli a0,s6,2
 	add a0,a1,a0
 	lw a0,0(a0)
 	lw s2,4(a0)
 	addi a0,a2,0
 	lw a1,0(a0)
-	slli a0,s5,2
+	slli a0,s6,2
 	add a0,a1,a0
 	lw a0,0(a0)
 	lw a1,8(a0)
-	slli a0,s8,2
-	add a0,s6,a0
+	slli a0,s3,2
+	add a0,s4,a0
 	lw a0,0(a0)
 	add a1,a0,a1
 	slli a0,s2,2
-	add a0,s6,a0
+	add a0,s4,a0
 	lw a0,0(a0)
-	bge a1,a0,LBB105
-LBB106:
+	bge a1,a0,LBB131
+LBB132:
 	slli a0,s2,2
-	add a0,s6,a0
+	add a0,s4,a0
 	sw a1,0(a0)
 	li a0,8
 	call malloc
 	addi a1,a0,0
 	sw s2,0(a1)
 	slli a0,s2,2
-	add a0,s6,a0
+	add a0,s4,a0
 	lw a0,0(a0)
 	sw a0,4(a1)
 	addi a0,s1,0
@@ -859,8 +1059,8 @@ LBB106:
 	lw a1,0(a1)
 	addi a1,a1,-4
 	lw a1,0(a1)
-	beq a0,a1,LBB108
-LBB109:
+	beq a0,a1,LBB134
+LBB135:
 	addi a0,s2,0
 	lw a1,0(a0)
 	lw a0,4(s2)
@@ -876,21 +1076,21 @@ LBB109:
 	lw a0,0(a0)
 	lw a0,4(a0)
 	addi a2,a0,-1
-LBB113:
+LBB139:
 	li a0,0
-	bgt a2,a0,LBB114
-LBB115:
-LBB107:
+	bgt a2,a0,LBB140
+LBB141:
+LBB133:
 	lui a0,%hi(g)
 	lw a0,%lo(g)(a0)
 	addi a0,a0,4
 	lw a1,0(a0)
-	slli a0,s5,2
+	slli a0,s6,2
 	add a0,a1,a0
 	lw a0,0(a0)
-	mv s5,a0
-	j LBB102
-LBB114:
+	mv s6,a0
+	j LBB128
+LBB140:
 	addi a1,a2,-1
 	li a0,2
 	div a1,a1,a0
@@ -914,8 +1114,8 @@ LBB114:
 	lw a4,4(a3)
 	li a3,0
 	sub a3,a3,a4
-	bge a0,a3,LBB116
-LBB117:
+	bge a0,a3,LBB142
+LBB143:
 	addi a0,s1,0
 	lw a0,0(a0)
 	addi a3,a0,0
@@ -939,13 +1139,13 @@ LBB117:
 	add a0,a3,a0
 	sw a6,0(a0)
 	mv a2,a1
-	j LBB113
-LBB116:
-	j LBB115
-LBB108:
+	j LBB139
+LBB142:
+	j LBB141
+LBB134:
 	addi a0,s2,0
 	lw s10,0(a0)
-	lw s7,4(s2)
+	lw s5,4(s2)
 	addi s11,s2,0
 	addi a0,s10,-4
 	lw a1,0(a0)
@@ -961,12 +1161,12 @@ LBB108:
 	sw a0,0(s11)
 	li a0,0
 	sw a0,4(s2)
-LBB110:
+LBB136:
 	lw a0,4(s2)
-	bne a0,s7,LBB111
-LBB112:
-	j LBB109
-LBB111:
+	bne a0,s5,LBB137
+LBB138:
+	j LBB135
+LBB137:
 	addi a0,s2,0
 	lw a1,0(a0)
 	lw a0,4(s2)
@@ -980,12 +1180,12 @@ LBB111:
 	lw a0,4(s2)
 	addi a0,a0,1
 	sw a0,4(s2)
-	j LBB110
-LBB105:
-	j LBB107
-LBB100:
-	j LBB97
-LBB93:
+	j LBB136
+LBB131:
+	j LBB133
+LBB126:
+	j LBB123
+LBB119:
 	addi a1,a2,-1
 	li a0,2
 	div a1,a1,a0
@@ -1009,8 +1209,8 @@ LBB93:
 	lw a4,4(a3)
 	li a3,0
 	sub a3,a3,a4
-	bge a0,a3,LBB95
-LBB96:
+	bge a0,a3,LBB121
+LBB122:
 	addi a0,s1,0
 	lw a0,0(a0)
 	addi a3,a0,0
@@ -1034,34 +1234,34 @@ LBB96:
 	add a0,a3,a0
 	sw a6,0(a0)
 	mv a2,a1
-	j LBB92
-LBB95:
-	j LBB94
-LBB87:
+	j LBB118
+LBB121:
+	j LBB120
+LBB113:
 	addi a0,s2,0
-	lw s5,0(a0)
-	lw s8,4(s2)
+	lw s3,0(a0)
+	lw s5,4(s2)
 	addi s9,s2,0
-	addi a0,s5,-4
+	addi a0,s3,-4
 	lw a1,0(a0)
 	li a0,2
-	mul s7,a1,a0
+	mul s6,a1,a0
 	li a0,4
-	mul a0,s7,a0
+	mul a0,s6,a0
 	addi a0,a0,4
 	call malloc
-	sw s7,0(a0)
+	sw s6,0(a0)
 	addi a0,a0,4
 	addi a0,a0,0
 	sw a0,0(s9)
 	li a0,0
 	sw a0,4(s2)
-LBB89:
+LBB115:
 	lw a0,4(s2)
-	bne a0,s8,LBB90
-LBB91:
-	j LBB88
-LBB90:
+	bne a0,s5,LBB116
+LBB117:
+	j LBB114
+LBB116:
 	addi a0,s2,0
 	lw a1,0(a0)
 	lw a0,4(s2)
@@ -1069,26 +1269,26 @@ LBB90:
 	add a1,a1,a0
 	lw a0,4(s2)
 	slli a0,a0,2
-	add a0,s5,a0
+	add a0,s3,a0
 	lw a0,0(a0)
 	sw a0,0(a1)
 	lw a0,4(s2)
 	addi a0,a0,1
 	sw a0,4(s2)
-	j LBB89
-LBB85:
+	j LBB115
+LBB111:
 	slli a1,a0,2
-	add a2,s6,a1
+	add a2,s4,a1
 	lui a1,%hi(INF)
 	lw a1,%lo(INF)(a1)
 	sw a1,0(a2)
 	slli a1,a0,2
-	add a2,s3,a1
+	add a2,s7,a1
 	li a1,0
 	sw a1,0(a2)
 	addi a0,a0,1
-	j LBB84
-LBB79:
+	j LBB110
+LBB105:
 	call getInt
 	mv s1,a0
 	call getInt
@@ -1130,8 +1330,8 @@ LBB79:
 	addi a0,a0,1
 	sw a0,12(s4)
 	addi s5,s5,1
-	j LBB78
-LBB76:
+	j LBB104
+LBB102:
 	addi a1,s3,8
 	lw a2,0(a1)
 	slli a1,a0,2
@@ -1139,8 +1339,8 @@ LBB76:
 	li a1,-1
 	sw a1,0(a2)
 	addi a0,a0,1
-	j LBB75
-LBB73:
+	j LBB101
+LBB99:
 	addi a1,s3,4
 	lw a2,0(a1)
 	slli a1,a0,2
@@ -1148,7 +1348,7 @@ LBB73:
 	li a1,-1
 	sw a1,0(a2)
 	addi a0,a0,1
-	j LBB72
+	j LBB98
 # end function : main
 .section	.sdata,"aw",@progbits
 	.p2align	2
