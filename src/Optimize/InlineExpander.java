@@ -49,7 +49,7 @@ public class InlineExpander extends Pass {
         }
 
         forceInline = true;
-        InlineCnt = 20;
+        InlineCnt = 1;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
