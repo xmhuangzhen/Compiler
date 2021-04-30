@@ -1,5 +1,6 @@
 package IR;
 
+import Backend.IRBuilder;
 import Backend.IRVisitor;
 import IR.Instruction.IRInstruction;
 import IR.Instruction.allocaInstruction;
@@ -24,6 +25,7 @@ public class IRFunction {
 
     public IRBasicBlock thisEntranceBlock;
     public IRBasicBlock thisReturnBlock;
+
 
     //for Dominator Tree
     public ArrayList<IRBasicBlock> DFSOrder;

@@ -24,6 +24,7 @@ public class RISCVFunction {
     public int NaiveStackCounting;
 
     public RISCVBasicBlock EntranceBlock = null, LastBlock = null;
+    public RISCVBasicBlock TailCallEntryBlock;
 
     //for graph coloring use
     public int GCStackNum;

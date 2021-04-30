@@ -15,6 +15,7 @@ public class callInstruction extends IRInstruction{
     public IRFunction CallFunction;
     public ArrayList<IROperand> CallParameters;
     public Register CallResult;
+    public boolean IsTailCall;
 
     public callInstruction(IRBasicBlock tmpBasicBlock, Register tmpResult,
                            IRFunction tmpFunction) {
@@ -25,6 +26,8 @@ public class callInstruction extends IRInstruction{
         if(CallResult != null) CallResult.Defs.add(this);
 
         HasSideEffect = true;
+
+        IsTailCall = false;
     }
 
     @Override

@@ -53,6 +53,10 @@ public class InstSelector implements IRVisitor {
     @Override
     public void visit(IRFunction it) {
         curRISCVFunction = curRISCVModule.RISCVFuncMap.get(it);
+        curRISCVBasicBlock = curRISCVModule.getRISCVBasicBlock(null);//stack frame use
+        curRISCVFunction.addBlock(curRISCVBasicBlock);
+        curRISCVBasicBlock.addInstruction(new RISCVJumpInst(
+                curRISCVModule.getRISCVBasicBlock(it.thisEntranceBlock)));
         curRISCVBasicBlock = curRISCVModule.getRISCVBasicBlock(it.thisEntranceBlock);
 
         //(1) add para to PhyReg
@@ -71,6 +75,8 @@ public class InstSelector implements IRVisitor {
                     new RISCVImm(OffsetValue)));
             OffsetValue += 4;
         }
+
+        curRISCVFunction.TailCallEntryBlock = curRISCVBasicBlock;
 
         for (IRBasicBlock tmpBlock = it.thisEntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks)
             tmpBlock.accept(this);
@@ -438,37 +444,61 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(phiInstruction it) {
-        //todo
+        //no here
     }
 
     @Override
     public void visit(callInstruction it) {
-        //(1) save 1st-8th par to a0-a7
-        for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
-            RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(
-                    curRISCVModule.getPhyReg("a" + i),
-                    tmpReg));
-        }
+        if (it.IsTailCall) {
+            for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
+                RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
+                curRISCVBasicBlock.addInstruction(new RISCVmvInst(
+                        curRISCVModule.getPhyReg("a" + i),
+                        tmpReg));
+            }
 
-        //(2) save others to stack
-        int OffsetValue = 0;
-        for (int i = 8; i < it.CallParameters.size(); ++i) {
-            curRISCVBasicBlock.addInstruction(new RISCVsInst(
-                    curRISCVModule.getWidth(it.CallParameters.get(i)),
-                    curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock),
-                    curRISCVModule.getPhyReg("sp"),
-                    new RISCVImm(OffsetValue)));
-            OffsetValue += 4;
-        }
-        if (it.CallParameters.size() > curRISCVFunction.MaxParaCall)
-            curRISCVFunction.MaxParaCall = it.CallParameters.size();
-        //(3) funccall
-        curRISCVBasicBlock.addInstruction(new RISCVCallInst(curRISCVModule.RISCVFuncMap.get(it.CallFunction)));
-        if (it.CallFunction.thisReturnValue != null) {
-            curRISCVBasicBlock.addInstruction(new RISCVmvInst(
-                    curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock),
-                    curRISCVModule.getPhyReg("a0")));
+            //(2) save others to stack
+            int OffsetValue = 0;
+            for (int i = 8; i < it.CallParameters.size(); ++i) {
+                curRISCVBasicBlock.addInstruction(new RISCVsInst(
+                        curRISCVModule.getWidth(it.CallParameters.get(i)),
+                        curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock),
+                        curRISCVModule.getPhyReg("sp"),
+                        new RISCVImm(OffsetValue)));
+                OffsetValue += 4;
+            }
+            //(3) funccall
+            //System.out.println(curRISCVBasicBlock.BlockName+","+curRISCVFunction.TailCallEntryBlock);
+            curRISCVBasicBlock.addInstruction(new RISCVJumpInst(curRISCVFunction.TailCallEntryBlock));
+        } else {
+
+            //(1) save 1st-8th par to a0-a7
+            for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
+                RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
+                curRISCVBasicBlock.addInstruction(new RISCVmvInst(
+                        curRISCVModule.getPhyReg("a" + i),
+                        tmpReg));
+            }
+
+            //(2) save others to stack
+            int OffsetValue = 0;
+            for (int i = 8; i < it.CallParameters.size(); ++i) {
+                curRISCVBasicBlock.addInstruction(new RISCVsInst(
+                        curRISCVModule.getWidth(it.CallParameters.get(i)),
+                        curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock),
+                        curRISCVModule.getPhyReg("sp"),
+                        new RISCVImm(OffsetValue)));
+                OffsetValue += 4;
+            }
+            if (it.CallParameters.size() > curRISCVFunction.MaxParaCall)
+                curRISCVFunction.MaxParaCall = it.CallParameters.size();
+            //(3) funccall
+            curRISCVBasicBlock.addInstruction(new RISCVCallInst(curRISCVModule.RISCVFuncMap.get(it.CallFunction)));
+            if (it.CallFunction.thisReturnValue != null) {
+                curRISCVBasicBlock.addInstruction(new RISCVmvInst(
+                        curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock),
+                        curRISCVModule.getPhyReg("a0")));
+            }
         }
     }
 
