@@ -449,7 +449,8 @@ public class InstSelector implements IRVisitor {
 
     @Override
     public void visit(callInstruction it) {
-        if (it.IsTailCall) {
+  /*      if (it.IsTailCall) {
+            System.out.println(it.toString());
             for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
                 RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
                 curRISCVBasicBlock.addInstruction(new RISCVmvInst(
@@ -463,15 +464,17 @@ public class InstSelector implements IRVisitor {
                 curRISCVBasicBlock.addInstruction(new RISCVsInst(
                         curRISCVModule.getWidth(it.CallParameters.get(i)),
                         curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock),
-                        curRISCVModule.getPhyReg("sp"),
+                        curRISCVModule.getPhyReg("s0"),
                         new RISCVImm(OffsetValue)));
                 OffsetValue += 4;
             }
             //(3) funccall
+            if (it.CallParameters.size() > curRISCVFunction.MaxParaCall)
+                curRISCVFunction.MaxParaCall = it.CallParameters.size();
             //System.out.println(curRISCVBasicBlock.BlockName+","+curRISCVFunction.TailCallEntryBlock);
             curRISCVBasicBlock.addInstruction(new RISCVJumpInst(curRISCVFunction.TailCallEntryBlock));
         } else {
-
+*/
             //(1) save 1st-8th par to a0-a7
             for (int i = 0; i < Integer.min(8, it.CallParameters.size()); ++i) {
                 RISCVRegister tmpReg = curRISCVModule.getRISCVReg(it.CallParameters.get(i), curRISCVBasicBlock);
@@ -499,7 +502,7 @@ public class InstSelector implements IRVisitor {
                         curRISCVModule.getRISCVReg(it.CallResult, curRISCVBasicBlock),
                         curRISCVModule.getPhyReg("a0")));
             }
-        }
+    //    }
     }
 
     @Override

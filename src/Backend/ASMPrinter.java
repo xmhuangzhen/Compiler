@@ -40,8 +40,8 @@ public class ASMPrinter {
 
         for(curNum = 0; curNum < thisFunc.DFSOrder.size();++curNum)
             runRISCVBasicBlock(thisFunc.DFSOrder.get(curNum),thisFunc);
-  //      for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
-    //        runRISCVBasicBlock(tmpBlock,thisFunc);
+ //       for(RISCVBasicBlock tmpBlock = thisFunc.EntranceBlock; tmpBlock != null; tmpBlock = tmpBlock.nextBlock)
+   //         runRISCVBasicBlock(tmpBlock,thisFunc);
         ASMPrintStream.println("# end function : "+thisFunc.FunctionName);
     }
 
@@ -53,7 +53,7 @@ public class ASMPrinter {
                 if(tmpInst instanceof RISCVJumpInst){
                     if(curNum < thisFunc.DFSOrder.size()-1 &&
                             ((RISCVJumpInst) tmpInst).JumpToBlock == thisFunc.DFSOrder.get(curNum+1)) break;
-      //              if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
+ //                   if(((RISCVJumpInst) tmpInst).JumpToBlock == thisBasicBlock.nextBlock) break;
                 }
                 else if(tmpInst instanceof RISCVBranchInst){
                     if(curNum < thisFunc.DFSOrder.size()-1 &&

@@ -266,6 +266,7 @@ public class IRBuilder implements ASTVisitor {
         if (currentBasicBlock.TailInst instanceof callInstruction
                 && ((callInstruction) currentBasicBlock.TailInst).CallFunction == currentFunction &&
                 currentFunction.thisFunctionType.FuncReturnType instanceof VoidType) {
+          //  System.out.println(currentBasicBlock.TailInst);
             ((callInstruction) currentBasicBlock.TailInst).IsTailCall = true;
         } else if (currentBasicBlock.TailInst instanceof brInstruction
                 && ((brInstruction) currentBasicBlock.TailInst).brCond == null

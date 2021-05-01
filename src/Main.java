@@ -27,7 +27,7 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
- //            input = new FileInputStream("test.mx");
+ //           input = new FileInputStream("test.mx");
              //  else
               input = System.in;
 
@@ -52,7 +52,8 @@ public class Main {
 
             IRBuilder tmpIRBuilder = new IRBuilder(semanticCheck.gScope);
             tmpIRBuilder.visit(ASTRoot);
- //           new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+
+            //           new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
 
             //--------Opt Start------
             //(1) Construct SSA (CFG -> Dominator Tree -> Dominance Frontier -> SSA)
@@ -61,6 +62,11 @@ public class Main {
             IRModule currentModule = tmpCFGConstructor.curIRModule;
             CFGSimplification tmpCFGSimp = new CFGSimplification(currentModule);
             tmpCFGSimp.run();
+
+            TailCallElimination tmpTCE = new TailCallElimination(currentModule);
+       //     tmpTCE.run();
+       //     new IRPrinter("output.ll").run(tmpIRBuilder.currentModule);
+
 
             DominatorTreeConstructor tmpDominatorTreeConstructor =
                     new DominatorTreeConstructor(currentModule);
@@ -78,10 +84,8 @@ public class Main {
             currentModule = tmpSSAConstructor.curIRModule;
     //        new IRPrinter("output.ll").run(currentModule);
 
-       //     System.out.println("------------START------OPT-----------");
+    //        System.out.println("------------START------OPT-----------");
 
-         ///   TailCallElimination tmpTCE = new TailCallElimination(currentModule);
-            ////tmpTCE.run();
 
             int cnt = 18;
             while (true) {
@@ -125,7 +129,7 @@ public class Main {
                 if (!modified) break;
             }
 //            System.out.println(cnt);
-  //          new IRPrinter("output.ll").run(currentModule);
+            new IRPrinter("output.ll").run(currentModule);
 
 
             //(n) Destruct SSA

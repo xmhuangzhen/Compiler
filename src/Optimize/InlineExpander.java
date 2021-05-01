@@ -49,7 +49,7 @@ public class InlineExpander extends Pass {
         }
 
         forceInline = true;
-        InlineCnt = 1;
+        InlineCnt = 20;
         while (true) {
             InlineCnt--;
             if (InlineCnt == 0) break;
@@ -344,8 +344,8 @@ public class InlineExpander extends Pass {
             callInstruction OriInst = (callInstruction) curInst;
             callInstruction resInst = new callInstruction(repBlock,
                     (Register) getReplaceOperand(OriInst.CallResult), OriInst.CallFunction);
-            if(OriInst.IsTailCall && repBlock.BasicBlockFunction == OriInst.CallFunction)
-                resInst.IsTailCall = true;
+      //      if(OriInst.IsTailCall && repBlock.BasicBlockFunction == OriInst.CallFunction)
+         //       resInst.IsTailCall = true;
             for (int i = 0; i < OriInst.CallParameters.size(); ++i) {
                 IROperand tmpRepOperand = getReplaceOperand(OriInst.CallParameters.get(i));
                 resInst.CallParameters.add(tmpRepOperand);
