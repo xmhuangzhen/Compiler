@@ -140,7 +140,7 @@ public class CFGSimplification extends Pass {
                 return true;
             } else {
                 if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
-                        !(curBlock.HeadInst instanceof phiInstruction) && curBlock.CFGSuccessor.size() == 1) {
+                        !(curBlock.HeadInst instanceof phiInstruction)/* && curBlock.CFGSuccessor.size() == 1*/) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
                     if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
 
