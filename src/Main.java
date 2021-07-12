@@ -27,9 +27,9 @@ public class Main {
 
         InputStream input = null;
        //     if(args.length != 0)
- //           input = new FileInputStream("test.mx");
+            input = new FileInputStream("test.mx");
              //  else
-              input = System.in;
+ //             input = System.in;
 
         try {
             RootNode ASTRoot;
@@ -126,9 +126,17 @@ public class Main {
                 modified |= tmpLICM.run();
                 tmpCFGSimp = new CFGSimplification(currentModule);
                 modified |= tmpCFGSimp.run();
+
                 if (!modified) break;
             }
-//            System.out.println(cnt);
+
+
+            //trivial polyhedral model
+            PolyhedralModel tmpPoly = new PolyhedralModel(currentModule);
+            tmpPoly.run();
+
+
+            //            System.out.println(cnt);
             new IRPrinter("output.ll").run(currentModule);
 
 
@@ -137,7 +145,9 @@ public class Main {
                     new SSADestructor(currentModule);
             tmpSSADestructor.run();
             //--------Opt End------
-    //        new IRPrinter("output.ll").run(currentModule);
+
+
+            //new IRPrinter("output.ll").run(currentModule);
 
 
 

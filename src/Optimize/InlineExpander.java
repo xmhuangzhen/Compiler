@@ -167,10 +167,16 @@ public class InlineExpander extends Pass {
              tmpBlock != null; tmpBlock = tmpBlock.nextBasicBlocks) {
             IRBasicBlock repBlock = new IRBasicBlock(curFunc,
                     tmpBlock.BasicBlockName + "_i" + (BlockNum++));
+            repBlock.LoopPos = tmpBlock.LoopPos;
+            repBlock.PolyBBType = tmpBlock.PolyBBType;
             BlockMap.put(tmpBlock, repBlock);
         }
         IRBasicBlock repEndBlock = getReplaceBlock(calleeFunc.thisReturnBlock);
         IRBasicBlock repStartBlock = getReplaceBlock(calleeFunc.thisEntranceBlock);
+        repEndBlock.LoopPos = calleeFunc.thisReturnBlock.LoopPos;
+        repEndBlock.PolyBBType = calleeFunc.thisReturnBlock.PolyBBType;
+        repStartBlock.LoopPos = calleeFunc.thisEntranceBlock.LoopPos;
+        repStartBlock.PolyBBType = calleeFunc.thisEntranceBlock.PolyBBType;
 
         CalleeIROperandMap.clear();
         for (int i = 0; i < CallInst.CallParameters.size(); ++i) {

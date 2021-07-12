@@ -47,6 +47,12 @@ public class IRBasicBlock {
     //for LICM use
     public HashSet<IRBasicBlock> DominatorChildren;
 
+    //for polyhedral
+    public enum PolyBBENUMType{init_stmt,cond_stmt,step_stmt,otherwise}
+    public PolyBBENUMType PolyBBType;
+    public ArrayList<IROperand> DefsInBB;
+    public int LoopPos;
+
     public IRBasicBlock(IRFunction tmpFunction, String tmpName){
         BasicBlockFunction = tmpFunction;
         BasicBlockName = tmpName;
@@ -82,6 +88,10 @@ public class IRBasicBlock {
         PostDominanceFrontier = new LinkedHashSet<>();
 
         DominatorChildren = new HashSet<>();
+
+        PolyBBType = PolyBBENUMType.otherwise;
+        DefsInBB = new ArrayList<>();
+        LoopPos = 0;
     }
 
     public void addBasicBlockInst(IRInstruction tmpInst){

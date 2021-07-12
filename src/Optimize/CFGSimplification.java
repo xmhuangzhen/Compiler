@@ -140,9 +140,11 @@ public class CFGSimplification extends Pass {
                 return true;
             } else {
                 if (curBlock.CFGPredecessor.size() == 1 && curBlock != curFunc.thisReturnBlock &&
-                        !(curBlock.HeadInst instanceof phiInstruction)/* && curBlock.CFGSuccessor.size() == 1*/) {
+                        !(curBlock.HeadInst instanceof phiInstruction)
+                        && curBlock.PolyBBType == IRBasicBlock.PolyBBENUMType.otherwise/* && curBlock.CFGSuccessor.size() == 1*/) {
                     IRBasicBlock preBlock = curBlock.CFGPredecessor.get(0);
-                    if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock) {
+                    if (preBlock.CFGSuccessor.size() == 1 && preBlock != curFunc.thisEntranceBlock &&
+                    preBlock.PolyBBType == IRBasicBlock.PolyBBENUMType.otherwise) {
 
                         if (preBlock.CFGSuccessor.get(0) != curBlock)
                             throw new RuntimeException();

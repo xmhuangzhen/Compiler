@@ -29,7 +29,7 @@ public class IRBuilder implements ASTVisitor {
     public Stack<IRBasicBlock> StackForBreak;
     public Stack<IRBasicBlock> StackForContinue;
     //    public HashMap<IRBuilder, phiInstruction> LogicalPhiTable;
-    public static int BlockNum, RegNum;
+    public static int BlockNum, RegNum,LoopNum;
 
     public IRIdExprAddrMap IdAddrMap;
 
@@ -44,7 +44,7 @@ public class IRBuilder implements ASTVisitor {
         IdAddrMap = null;
         BlockNum = 0;
         RegNum = 0;
-
+        LoopNum = 0;
 //        LogicalPhiTable = new HashMap<>();
     }
 
@@ -446,17 +446,34 @@ public class IRBuilder implements ASTVisitor {
     @Override
     public void visit(ForStmtNode it) {//for(init;cond;step)
         //initialize
+        LoopNum++;
+        IRBasicBlock ForInitBlock = new IRBasicBlock(currentFunction,
+                "for_init_block"+(BlockNum++));
+        ForInitBlock.PolyBBType = IRBasicBlock.PolyBBENUMType.init_stmt;
+        ForInitBlock.LoopPos = LoopNum;
         IRBasicBlock ForCondBlock = (it.condExpr == null) ? null :
                 new IRBasicBlock(currentFunction, "for_cond_block" + (BlockNum++));
+        ForCondBlock.PolyBBType = IRBasicBlock.PolyBBENUMType.cond_stmt;
+        ForCondBlock.LoopPos = LoopNum;
         IRBasicBlock ForStepBlock = (it.stepExpr == null) ? null :
                 new IRBasicBlock(currentFunction, "for_step_block" + (BlockNum++));
+        ForStepBlock.PolyBBType = IRBasicBlock.PolyBBENUMType.step_stmt;
+        ForStepBlock.LoopPos = LoopNum;
         IRBasicBlock ForBodyBlock =
                 new IRBasicBlock(currentFunction, "for_body_block" + (BlockNum++));
         IRBasicBlock ForDestBlock = new IRBasicBlock(currentFunction, "for_dest_block" + (BlockNum++));
 
         //visit init
         if (it.initExpr != null) {
+            currentBasicBlock.addBasicBlockInst(new brInstruction(currentBasicBlock,
+                    null,ForInitBlock,null));
+            currentBasicBlock = ForInitBlock;
+            IdAddrMap = new IRIdExprAddrMap(IdAddrMap);
+            currentFunction.addFunctionBasicBlock(ForInitBlock);
+
             it.initExpr.accept(this);
+
+            IdAddrMap = IdAddrMap.ParentMap;
         }
 
         //visit condition
@@ -580,6 +597,8 @@ public class IRBuilder implements ASTVisitor {
         it.lhs.accept(this);
         it.rhs.accept(this);
         it.ExprResult = it.rhs.ExprResult;
+        ///////////////////////
+        currentBasicBlock.DefsInBB.add(it.lhs.ExprLResult);
         currentBasicBlock.addBasicBlockInst(new storeInstruction(currentBasicBlock,
                 it.rhs.ExprResult, it.lhs.ExprLResult));
     }
@@ -841,6 +860,8 @@ public class IRBuilder implements ASTVisitor {
             if (it.thenBlock != null) {///////!!!!!!!!!!!! if in cond -- no phiInstruction need!
                 IRBasicBlock AndandBBlock = new IRBasicBlock(currentFunction,
                         "andand_bb" + (BlockNum++));
+                AndandBBlock.PolyBBType = currentBasicBlock.PolyBBType;
+                AndandBBlock.LoopPos = currentBasicBlock.LoopPos;
                 it.lhs.thenBlock = AndandBBlock;
                 it.lhs.elseBlock = it.elseBlock;
                 it.rhs.thenBlock = it.thenBlock;
@@ -888,6 +909,8 @@ public class IRBuilder implements ASTVisitor {
             if (it.thenBlock != null) {
                 IRBasicBlock OrorBBlock = new IRBasicBlock(currentFunction,
                         "oror_bb" + (BlockNum++));
+                OrorBBlock.PolyBBType = currentBasicBlock.PolyBBType;
+                OrorBBlock.LoopPos = currentBasicBlock.LoopPos;
                 it.lhs.thenBlock = it.thenBlock;
                 it.lhs.elseBlock = OrorBBlock;
                 it.rhs.thenBlock = it.thenBlock;

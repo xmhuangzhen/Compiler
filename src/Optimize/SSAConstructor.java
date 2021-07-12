@@ -93,6 +93,9 @@ public class SSAConstructor extends Pass {
                                 phiInstruction tmpPhiInst = new phiInstruction(BlockY, tmpPhiResult);
                                 PhiInstMap.get(BlockY).put(tmpAllocaInst, tmpPhiInst);
 
+                                tmpAllocaInst.AllocaResult.RenameReg.add(tmpPhiResult);
+
+
                                 //Line 12
                                 BlockF.add(BlockY);
 

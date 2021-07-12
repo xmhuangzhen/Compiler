@@ -15,7 +15,10 @@ abstract public class IROperand {
     public HashSet<IRInstruction> Defs;
     public HashSet<IRInstruction> use;
 
-
+    //for polyhedral model
+    public HashSet<IROperand> RenameReg;
+    public int stepval;
+    public IRInstruction defInstInLoop;
 
     public IROperand(IRTypeSystem tmpType) {
         super();
@@ -23,6 +26,9 @@ abstract public class IROperand {
         NeedPtr = false;
         Defs = new LinkedHashSet<>();
         use = new HashSet<>();
+        RenameReg = new HashSet<>();
+        stepval = 0;
+        defInstInLoop = null;
     }
 
     public void AddRegisterUseInInstruction(IRInstruction tmpInst) {
